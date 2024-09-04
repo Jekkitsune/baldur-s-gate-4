@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/08/28 21:29:48 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/04 20:31:04 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	get_all_rays(t_data *data)
 	float		space;
 
 	i = 0;
-	space = FOV / NB_RAYS;
+	space = (float)FOV / NB_RAYS;
 	rad_i = data->player.angle - (space * (NB_RAYS / 2));
 	if (rad_i < 0)
 		rad_i += 2 * M_PI;
@@ -46,11 +46,13 @@ void	draw_ray(t_data *data, float diff, t_impact ray, int i)
 	if (ray.face == 0)
 		return ;
 	if (ray.length <= 0)
-		size = data->render_distance * (data->win_size.y / data->render_distance);
+		size = 0;
 	else
-		size = (data->render_distance / ray.length) * (data->win_size.y / data->render_distance);
+		size = data->win_size.y / (ray.length / (data->scale * 2));
 	//size += 10;
-	size *= 10;
+	//size *= 10;
+	if (size > data->win_size.y)
+		size = data->win_size.y;
 	if (ray.face == 1 || ray.face == 3)
 		color = 0xFF349CEB;
 	else

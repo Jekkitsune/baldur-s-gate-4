@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 21:33:33 by fparis            #+#    #+#             */
-/*   Updated: 2024/08/28 20:19:27 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/04 17:23:27 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,18 +151,6 @@ void	show_minimap(t_data *data)
 		}
 		i.y++;
 	}
-
-	// int	i2 = 0;
-	// while (i2 < data->minimap.UI_size)
-	// {
-	// 	mlx_pixel_put(data->mlx, data->win, data->minimap.pos.x + i2, data->minimap.pos.y + data->minimap.UI_size / 2, 0xFFb734eb);
-	// 	mlx_pixel_put(data->mlx, data->win, data->minimap.pos.x + i2, data->minimap.pos.y + data->minimap.UI_size, 0xFFb734eb);
-	// 	mlx_pixel_put(data->mlx, data->win, data->minimap.pos.x + i2, data->minimap.pos.y, 0xFFb734eb);
-	// 	mlx_pixel_put(data->mlx, data->win, data->minimap.pos.x + data->minimap.UI_size / 2, data->minimap.pos.y + i2, 0xFFb734eb);
-	// 	mlx_pixel_put(data->mlx, data->win, data->minimap.pos.x + data->minimap.UI_size, data->minimap.pos.y + i2, 0xFFb734eb);
-	// 	mlx_pixel_put(data->mlx, data->win, data->minimap.pos.x, data->minimap.pos.y + i2, 0xFFb734eb);
-	// 	i2++;
-	// }
 	draw_player_vision(data);
 }
 

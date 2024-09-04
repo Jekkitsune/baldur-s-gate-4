@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/08/28 21:30:19 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/04 20:06:09 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 # define GROUND '0'
 # define WALL '1'
 
-# define NB_RAYS 300
-# define FOV 1.5
+# define NB_RAYS 500
+# define FOV 1.57
 
 typedef struct s_vector
 {
@@ -60,7 +60,7 @@ typedef	struct s_map
 typedef struct s_player
 {
 	t_vector	pos;
-	t_vector	offset;
+	t_vectorf	offset;
 	float		angle;
 	int			movement[4];
 	int			rotation[2];

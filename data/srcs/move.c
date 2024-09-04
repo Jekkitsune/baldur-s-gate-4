@@ -6,11 +6,27 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2024/08/28 20:14:08 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/04 20:17:42 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	change_pos(t_data *data, float angle)
+{
+	t_vectorf	direc;
+	t_player 	*p;
+
+	p = &data->player;
+	if (angle > 2 * M_PI)
+		angle = angle - (2 * M_PI);
+	if (angle < 0)
+		angle = (2 * M_PI) + angle;
+	direc.x = cosf(angle);
+	direc.y = sinf(angle);
+	p->offset.x += direc.x * p->speed;
+	p->offset.y += direc.y * p->speed;
+}
 
 void	move(t_data *data)
 {
@@ -20,13 +36,13 @@ void	move(t_data *data)
 	//printf("pos:x %d, y: %d\nmovement: %d, %d, %d, %d\noffset: %d, %d\n", p->pos.x, p->pos.y, p->movement[0], p->movement[1], p->movement[2], p->movement[3], p->offset.x, p->offset.y);
 	//printf("angle: %f\n", p->angle);
 	if (p->movement[0])
-		p->offset.y -= p->speed;
+		change_pos(data, p->angle);
 	if (p->movement[1])
-		p->offset.x -= p->speed;
+		change_pos(data, p->angle - (M_PI / 2));
 	if (p->movement[2])
-		p->offset.y += p->speed;
+		change_pos(data, p->angle + M_PI);
 	if (p->movement[3])
-		p->offset.x += p->speed;
+		change_pos(data, p->angle + (M_PI / 2));
 	
 	if (p->rotation[0])
 		p->angle -= 0.1;
