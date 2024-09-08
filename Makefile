@@ -6,12 +6,12 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2024/08/28 19:43:02 by fparis           ###   ########.fr        #
+#    Updated: 2024/09/05 23:18:18 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = #-Wextra -Werror -g #-Wall
+CFLAGS = #-Wextra -Werror -Wall -g
 NAME = bg4
 HEADER = data/headers
 
@@ -28,7 +28,9 @@ SRCS = main.c\
 		move.c\
 		draw_utils.c\
 		raycast.c\
-		player_vision.c
+		player_vision.c\
+		shape_func.c\
+		init_data.c
 
 LIBFT = data/libft/libft.a
 

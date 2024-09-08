@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/04 20:31:04 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/08 16:40:34 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,29 @@ void	get_all_rays(t_data *data)
 		direc.x = cosf(rad_i);
 		direc.y = sinf(rad_i);
 		data->player.vision[i] = get_impact(data->player.pos, direc, data);
+		data->player.vision[i].angle = rad_i;
 		rad_i += space;
 		if (rad_i > 2 * M_PI)
 			rad_i -= 2 * M_PI;
 		i++;
 	}
+}
+
+float	fix_fisheye(t_data *data, t_impact ray, float size)
+{
+	float	p_angle;
+	float	r_angle;
+	float	c_angle;
+
+	p_angle = data->player.angle;
+	r_angle = ray.angle;
+	c_angle = p_angle - r_angle;
+	if (c_angle > 2 * M_PI)
+		c_angle -= 2 * M_PI;
+	if (c_angle < 0)
+		c_angle += 2 * M_PI;
+	size *= cosf(c_angle);
+	return (size);
 }
 
 void	draw_ray(t_data *data, float diff, t_impact ray, int i)
@@ -48,9 +66,8 @@ void	draw_ray(t_data *data, float diff, t_impact ray, int i)
 	if (ray.length <= 0)
 		size = 0;
 	else
-		size = data->win_size.y / (ray.length / (data->scale * 2));
-	//size += 10;
-	//size *= 10;
+		size = data->win_size.y / fix_fisheye(data, ray, ray.length) * 20;
+		//size = data->win_size.y / (ray.length / (data->scale * 2));
 	if (size > data->win_size.y)
 		size = data->win_size.y;
 	if (ray.face == 1 || ray.face == 3)
@@ -62,7 +79,9 @@ void	draw_ray(t_data *data, float diff, t_impact ray, int i)
 	i2 = 0;
 	while (i2 < diff)
 	{
-		draw_line(data, vec((i * diff) + i2, posy.x), vec((i * diff) + i2, posy.y), vec(color, 1));
+		draw_line(data, vec((i * diff) + i2, 0), vec((i * diff) + i2, posy.x), linfo(0xFF0000BB, 1, data->check_shape[0]));
+		draw_line(data, vec((i * diff) + i2, posy.x), vec((i * diff) + i2, posy.y), linfo(color, 1, data->check_shape[0]));
+		draw_line(data, vec((i * diff) + i2, posy.y), vec((i * diff) + i2, data->win_size.y), linfo(0xFF00BB00, 1, data->check_shape[0]));
 		i2++;
 	}
 }
@@ -76,7 +95,7 @@ void	show_screen(t_data *data)
 
 	vision = data->player.vision;
 	i = 0;
-	diff = data->win_size.x / NB_RAYS;
+	diff = (float)data->win_size.x / (float)NB_RAYS;
 	while (i < NB_RAYS)
 	{
 		draw_ray(data, diff, data->player.vision[i], i);

@@ -6,48 +6,54 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 00:42:04 by fparis            #+#    #+#             */
-/*   Updated: 2024/08/28 17:56:07 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/08 16:46:31 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_vertical_line(t_data *data, t_vector p1, t_vector p2, t_vector col_width)
+void	draw_vertical_line(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 {
-	t_vector	i;
+	//t_vector	i;
 
 	if (p1.y > p2.y)
-		return (draw_vertical_line(data, p2, p1, col_width));
-	i.x = p1.x;
-	i.y = p1.y;
-	while (i.y < p2.y)
+		return (draw_vertical_line(data, p2, p1, info));
+	// i.x = p1.x;
+	// i.y = p1.y;
+	// while (i.y < p2.y)
+	// {
+	// 	draw_square(data, i, info);
+	// 	i.y++;
+	// }
+	while (p1.y < p2.y)
 	{
-		draw_square(data, i, col_width);
-		i.y++;
+		mlx_pixel_put(data->mlx, data->win, p1.x, p1.y, info.color);
+		p1.y++;
 	}
 }
 
-void	draw_square(t_data *data, t_vector pos, t_vector col_width)
+void	draw_square(t_data *data, t_vector pos, t_linfo info)
 {
 	t_vector	i;
 	t_vector	offset;
 
-	offset.x = pos.x - (col_width.y / 2);
-	offset.y = pos.y - (col_width.y / 2);
+	offset.x = pos.x - (info.width / 2);
+	offset.y = pos.y - (info.width / 2);
 	i.y = 0;
-	while (i.y < col_width.y)
+	while (i.y < info.width)
 	{
 		i.x = 0;
-		while (i.x < col_width.y)
+		while (i.x < info.width)
 		{
-			mlx_pixel_put(data->mlx, data->win, i.x + offset.x, i.y + offset.y, col_width.x);
+			if (info.check(data, vec_sum(i, offset)))
+				mlx_pixel_put(data->mlx, data->win, i.x + offset.x, i.y + offset.y, info.color);
 			i.x++;
 		}
 		i.y++;
 	}
 }
 
-void	draw_shallow(t_data *data, t_vector p1, t_vector p2, t_vector col_width)
+void	draw_shallow(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 {
 	int			y_diff;
 	t_vector	delta;
@@ -71,12 +77,12 @@ void	draw_shallow(t_data *data, t_vector p1, t_vector p2, t_vector col_width)
 		}
 		else
 			checker += 2 * delta.y;
-		draw_square(data, i, col_width);
+		draw_square(data, i, info);
 		i.x++;
 	}
 }
 
-void	draw_deep(t_data *data, t_vector p1, t_vector p2, t_vector col_width)
+void	draw_deep(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 {
 	int			x_diff;
 	t_vector	delta;
@@ -100,27 +106,27 @@ void	draw_deep(t_data *data, t_vector p1, t_vector p2, t_vector col_width)
 		}
 		else
 			checker += 2 * delta.x;
-		draw_square(data, i, col_width);
+		draw_square(data, i, info);
 		i.y++;
 	}
 }
 
-void	draw_line(t_data *data, t_vector p1, t_vector p2, t_vector col_width)
+void	draw_line(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 {
 	if (p1.x == p2.x)
-		return (draw_vertical_line(data, p1, p2, col_width));
+		return (draw_vertical_line(data, p1, p2, info));
 	if (ft_abs(p1.x - p2.x) >= ft_abs(p1.y - p2.y))
 	{
 		if (p1.x <= p2.x)
-			draw_shallow(data, p1, p2, col_width);
+			draw_shallow(data, p1, p2, info);
 		else
-			draw_shallow(data, p2, p1, col_width);
+			draw_shallow(data, p2, p1, info);
 	}
 	else
 	{
 		if (p1.y <= p2.y)
-			draw_deep(data, p1, p2, col_width);
+			draw_deep(data, p1, p2, info);
 		else
-			draw_deep(data, p2, p1, col_width);
+			draw_deep(data, p2, p1, info);
 	}
 }

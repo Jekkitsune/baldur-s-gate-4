@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/04 20:17:42 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/05 20:50:03 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,6 @@ void	move(t_data *data)
 		if (p->angle < 0)
 			p->angle = (2 * M_PI) + p->angle;
 	}
-	if (p->movement[0] || p->movement[1] || p->movement[2] || p->movement[3] || p->rotation[0] || p->rotation[1])
+	//if (p->movement[0] || p->movement[1] || p->movement[2] || p->movement[3] || p->rotation[0] || p->rotation[1])
 		get_all_rays(data);
 }

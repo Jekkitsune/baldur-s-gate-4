@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/04 20:06:09 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/08 16:53:01 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdio.h>
+# include <sys/time.h>
 
 # define GROUND '0'
 # define WALL '1'
 
-# define NB_RAYS 500
+# define NB_RAYS 1800
 # define FOV 1.57
 
 typedef struct s_vector
@@ -34,6 +35,12 @@ typedef struct s_vector
 	int	x;
 	int	y;
 }	t_vector;
+
+typedef struct s_vecvec
+{
+	t_vector	vec1;
+	t_vector	vec2;
+}	t_vecvec;
 
 typedef struct s_vectorf
 {
@@ -48,6 +55,7 @@ typedef struct s_impact
 	float		length;
 	int			face;
 	t_vectorf	direc;
+	float		angle;
 }	t_impact;
 
 typedef	struct s_map
@@ -90,7 +98,15 @@ typedef struct s_data
 	int			render_distance;
 	int			test_key;
 	float		test_length;
+	int			(*check_shape[2])(struct s_data *data, t_vector vec);
 } t_data;
+
+typedef	struct s_linfo
+{
+	int	color;
+	int	width;
+	int	(*check)(t_data *data, t_vector vec);
+}	t_linfo;
 
 void		print_map(t_map *map);
 void		print_chunk(t_data *data);
@@ -106,13 +122,18 @@ int			key_down_manager(int key, void *param);
 void		init_player(t_data *data);
 void		move(t_data *data);
 t_vector	vec(int x, int y);
-void		draw_line(t_data *data, t_vector p1, t_vector p2, t_vector col_width);
+void		draw_line(t_data *data, t_vector p1, t_vector p2, t_linfo info);
 t_vector	vec_add(t_vector vec, int add);
-void		draw_square(t_data *data, t_vector pos, t_vector col_width);
 t_impact	get_impact(t_vector start, t_vectorf direc, t_data *data);
 t_vector	vec_mult(t_vector vec, int mult);
 int			in_window(t_vector win_size, t_vector vec);
 void		get_all_rays(t_data *data);
 void		show_screen(t_data *data);
+t_vecvec	vecvec(t_vector vec1, t_vector vec2);
+t_data		*init_data(t_data *data);
+int			default_shape(__attribute__((unused)) t_data *data, __attribute__((unused)) t_vector vec);
+int			in_minimap(t_data *data, t_vector vec);
+t_linfo		linfo(int color, int width, int (*check_shape)(t_data *data, t_vector vec));
+void		draw_square(t_data *data, t_vector pos, t_linfo info);
 
 #endif

@@ -6,11 +6,15 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/04 19:03:12 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/08 16:55:20 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+unsigned long	frame = 0;
+unsigned long	starttime;
+unsigned long	newtime;
 
 int	loop(void *param)
 {
@@ -18,10 +22,27 @@ int	loop(void *param)
 
 	data = (t_data *)param;
 	move(data);
+	if (data->test_key)
+	{
+		data->test_key = 0;
+		data->scale++;
+	}
 	mlx_clear_window(data->mlx, data->win);
 	update_chunk(data);
 	show_screen(data);
-	show_minimap(data);
+	//show_minimap(data);
+
+	struct timeval 	tv;
+	gettimeofday(&tv, NULL);
+	newtime = tv.tv_sec;
+	if (newtime > starttime)
+	{
+		printf("%zu\n", frame);
+		frame = 0;
+		starttime = newtime;
+	}
+	frame++;
+
 	return (0);
 }
 
@@ -29,21 +50,16 @@ int	main(int argc, char **argv)
 {
 	t_data	data;
 
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	starttime = tv.tv_sec;
+
 	if (argc < 2)
 	{
 		ft_putstr_fd("Not enough maps!\n", 2);
 		return (1);
 	}
-	ft_bzero(&data, sizeof(t_data));
-	data.test_key = 0;
-	data.win_size.x = 1600;
-	data.win_size.y = 800;
-	data.mlx = mlx_init();
-	data.win = mlx_new_window(data.mlx, data.win_size.x, data.win_size.y, "Baldur's Gate 4");
-	data.scale = 10;
-	data.render_distance = 500;
-
-	data.test_length = 0;
+	init_data(&data);
 	
 	data.current_map = create_map(argv[1]);
 	print_map(data.current_map);
@@ -53,7 +69,7 @@ int	main(int argc, char **argv)
 
 	create_minimap(&data, 300, 50);
 
-	mlx_set_fps_goal(data.mlx, 60);
+	//mlx_set_fps_goal(data.mlx, 60);
 	mlx_on_event(data.mlx, data.win, MLX_KEYDOWN, key_down_manager, &data);
 	mlx_on_event(data.mlx, data.win, MLX_KEYUP, key_up_manager, &data);
 	
