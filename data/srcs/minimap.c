@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 21:33:33 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/08 15:48:20 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/10 15:27:35 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,26 +121,28 @@ void	draw_player_vision(t_data *data)
 {
 	t_vector	center_map;
 	t_vector	p_delta_posx;
+	t_vector	p_delta_posx2;
 	int			i;
 
 	center_map = vec(data->minimap.pos.x + (data->minimap.UI_size / 2), data->minimap.pos.y + data->minimap.UI_size / 2);
 	draw_square(data, center_map, linfo(0xFFb734eb, 4, data->check_shape[1]));
-	// i = 0;
-	// while (i < NB_RAYS)
-	// {
-	// 	p_delta_posx.x = (data->player.vision[i].direc.x * data->player.vision[i].length) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.x;
-	// 	p_delta_posx.y = (data->player.vision[i].direc.y * data->player.vision[i].length) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.y;
-	// 	draw_line(data, center_map, p_delta_posx, linfo(0xFF00FF00, 3, data->check_shape[1]));
-	// 	i++;
-	// }
+	i = 0;
+	while (i < NB_RAYS)
+	{
+		p_delta_posx.x = (data->player.vision[i].direc.x * data->player.vision[i].length) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.x;
+		p_delta_posx.y = (data->player.vision[i].direc.y * data->player.vision[i].length) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.y;
+		draw_line(data, center_map, p_delta_posx, linfo(0xFF00FF00, 3, data->check_shape[0]));
+		i++;
+	}
 	p_delta_posx.x = (data->player.vision[NB_RAYS / 2].direc.x * 10) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.x;
 	p_delta_posx.y = (data->player.vision[NB_RAYS / 2].direc.y * 10) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.y;
 	draw_line(data, center_map, p_delta_posx, linfo(0xFF00FF00, 3, data->check_shape[1]));
-	p_delta_posx.x = (data->player.vision[0].direc.x * 10) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.x;
-	p_delta_posx.y = center_map.y - 30;
-	draw_square(data, p_delta_posx, linfo(0xFFFF0000, 4, data->check_shape[1]));
-	p_delta_posx.x = (data->player.vision[NB_RAYS - 1].direc.x * 10) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.x;
-	draw_square(data, p_delta_posx, linfo(0xFF00FF00, 4, data->check_shape[1]));
+	p_delta_posx.x = (data->player.camera_plane.x * 10) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.x;
+	p_delta_posx.y = (data->player.camera_plane.y * 10) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.y;
+	draw_line(data, center_map, p_delta_posx, linfo(0xFF0000FF, 3, data->check_shape[0]));
+	p_delta_posx.x = (-data->player.camera_plane.x * 10) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.x;
+	p_delta_posx.y = (-data->player.camera_plane.y * 10) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.y;
+	draw_line(data, center_map, p_delta_posx, linfo(0xFF0000FF, 3, data->check_shape[0]));
 }
 
 void	show_minimap(t_data *data)

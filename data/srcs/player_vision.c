@@ -6,13 +6,13 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/08 16:40:34 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/10 15:58:58 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	get_all_rays(t_data *data)
+void	get_all_rays_old(t_data *data)
 {
 	int			i;
 	float		rad_i;
@@ -33,6 +33,24 @@ void	get_all_rays(t_data *data)
 		rad_i += space;
 		if (rad_i > 2 * M_PI)
 			rad_i -= 2 * M_PI;
+		i++;
+	}
+}
+
+void	get_all_rays(t_data *data)
+{
+	double		camera;
+	int			i;
+	float		diff;
+	t_vectorf	direc;
+
+	i = 0;
+	while (i < NB_RAYS)
+	{
+		camera = (2 * i / (double) NB_RAYS) - 1;
+		direc.x = data->player.direction.x + data->player.camera_plane.x * camera;
+		direc.y = data->player.direction.y + data->player.camera_plane.y * camera;
+		data->player.vision[i] = get_impact(data->player.pos, direc, data);
 		i++;
 	}
 }
@@ -66,8 +84,8 @@ void	draw_ray(t_data *data, float diff, t_impact ray, int i)
 	if (ray.length <= 0)
 		size = 0;
 	else
-		size = data->win_size.y / fix_fisheye(data, ray, ray.length) * 20;
-		//size = data->win_size.y / (ray.length / (data->scale * 2));
+		size = data->win_size.y / (ray.length / (data->scale * 2));
+		//size = data->win_size.y / fix_fisheye(data, ray, ray.length) * 20;
 	if (size > data->win_size.y)
 		size = data->win_size.y;
 	if (ray.face == 1 || ray.face == 3)
@@ -79,9 +97,10 @@ void	draw_ray(t_data *data, float diff, t_impact ray, int i)
 	i2 = 0;
 	while (i2 < diff)
 	{
-		draw_line(data, vec((i * diff) + i2, 0), vec((i * diff) + i2, posy.x), linfo(0xFF0000BB, 1, data->check_shape[0]));
-		draw_line(data, vec((i * diff) + i2, posy.x), vec((i * diff) + i2, posy.y), linfo(color, 1, data->check_shape[0]));
-		draw_line(data, vec((i * diff) + i2, posy.y), vec((i * diff) + i2, data->win_size.y), linfo(0xFF00BB00, 1, data->check_shape[0]));
+		draw_line_raycast(data, i * diff + i2, posy.x, posy.y, color);
+		//draw_line(data, vec((i * diff) + i2, 0), vec((i * diff) + i2, posy.x), linfo(0xFF0000BB, 1, data->check_shape[0]));
+		//draw_line(data, vec((i * diff) + i2, posy.x), vec((i * diff) + i2, posy.y), linfo(color, 1, data->check_shape[0]));
+		//draw_line(data, vec((i * diff) + i2, posy.y), vec((i * diff) + i2, data->win_size.y), linfo(0xFF00BB00, 1, data->check_shape[0]));
 		i2++;
 	}
 }

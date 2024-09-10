@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/08 16:55:20 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/10 15:51:45 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	loop(void *param)
 	mlx_clear_window(data->mlx, data->win);
 	update_chunk(data);
 	show_screen(data);
-	//show_minimap(data);
+	show_minimap(data);
 
 	struct timeval 	tv;
 	gettimeofday(&tv, NULL);

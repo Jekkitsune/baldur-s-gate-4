@@ -1,45 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_utils.c                                     :+:      :+:    :+:   */
+/*   trigo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/24 23:28:20 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/08 19:04:24 by fparis           ###   ########.fr       */
+/*   Created: 2024/09/08 20:15:40 by fparis            #+#    #+#             */
+/*   Updated: 2024/09/08 20:17:01 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_vector	vec_sum(t_vector vec1, t_vector vec2)
+float	angle_add(float angle, float add)
 {
-	t_vector	res;
-
-	res.x = vec1.x + vec2.x;
-	res.y = vec1.y + vec2.y;
-	return (res);
-}
-
-t_vector	vec_mult(t_vector vec, int mult)
-{
-	vec.x *= mult;
-	vec.y *= mult;
-	return (vec);
-}
-
-t_vector	vec_add(t_vector vec, int add)
-{
-	vec.x += add;
-	vec.y += add;
-	return (vec);
-}
-
-t_vector	vec(int x, int y)
-{
-	t_vector	res;
-
-	res.x = x;
-	res.y = y;
-	return (res);
+	angle += add;
+	if (angle > 2 * M_PI)
+		angle -= 2 * M_PI;
+	if (angle < 0)
+		angle += 2 * M_PI;
+	return (angle);
 }

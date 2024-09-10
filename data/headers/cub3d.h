@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/08 16:53:01 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/10 15:58:12 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <sys/time.h>
+# include <stdbool.h>
 
 # define GROUND '0'
 # define WALL '1'
@@ -30,17 +31,12 @@
 # define NB_RAYS 1800
 # define FOV 1.57
 
+
 typedef struct s_vector
 {
 	int	x;
 	int	y;
 }	t_vector;
-
-typedef struct s_vecvec
-{
-	t_vector	vec1;
-	t_vector	vec2;
-}	t_vecvec;
 
 typedef struct s_vectorf
 {
@@ -75,6 +71,8 @@ typedef struct s_player
 	int			speed;
 	int			is_running;
 	t_impact	vision[NB_RAYS];
+	t_vectorf	camera_plane;
+	t_vectorf	direction;
 }	t_player;
 
 typedef struct minimap
@@ -129,11 +127,14 @@ t_vector	vec_mult(t_vector vec, int mult);
 int			in_window(t_vector win_size, t_vector vec);
 void		get_all_rays(t_data *data);
 void		show_screen(t_data *data);
-t_vecvec	vecvec(t_vector vec1, t_vector vec2);
 t_data		*init_data(t_data *data);
 int			default_shape(__attribute__((unused)) t_data *data, __attribute__((unused)) t_vector vec);
 int			in_minimap(t_data *data, t_vector vec);
 t_linfo		linfo(int color, int width, int (*check_shape)(t_data *data, t_vector vec));
 void		draw_square(t_data *data, t_vector pos, t_linfo info);
+float		angle_add(float angle, float add);
+void		draw_line_raycast(t_data *data, int x, int start, int end, int color);
+
+void	get_all_rays_old(t_data *data);
 
 #endif

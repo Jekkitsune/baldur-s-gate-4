@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 00:42:04 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/08 16:46:31 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/10 14:33:32 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,16 @@
 
 void	draw_vertical_line(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 {
-	//t_vector	i;
+	t_vector	i;
 
 	if (p1.y > p2.y)
 		return (draw_vertical_line(data, p2, p1, info));
-	// i.x = p1.x;
-	// i.y = p1.y;
-	// while (i.y < p2.y)
-	// {
-	// 	draw_square(data, i, info);
-	// 	i.y++;
-	// }
-	while (p1.y < p2.y)
+	i.x = p1.x;
+	i.y = p1.y;
+	while (i.y < p2.y)
 	{
-		mlx_pixel_put(data->mlx, data->win, p1.x, p1.y, info.color);
-		p1.y++;
+		draw_square(data, i, info);
+		i.y++;
 	}
 }
 
@@ -45,7 +40,7 @@ void	draw_square(t_data *data, t_vector pos, t_linfo info)
 		i.x = 0;
 		while (i.x < info.width)
 		{
-			if (info.check(data, vec_sum(i, offset)))
+			//if (info.check(data, vec_sum(i, offset)))
 				mlx_pixel_put(data->mlx, data->win, i.x + offset.x, i.y + offset.y, info.color);
 			i.x++;
 		}

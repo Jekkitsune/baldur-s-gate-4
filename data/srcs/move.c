@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/05 20:50:03 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/10 15:58:31 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ void	move(t_data *data)
 	t_player *p;
 
 	p = &data->player;
-	//printf("pos:x %d, y: %d\nmovement: %d, %d, %d, %d\noffset: %d, %d\n", p->pos.x, p->pos.y, p->movement[0], p->movement[1], p->movement[2], p->movement[3], p->offset.x, p->offset.y);
-	//printf("angle: %f\n", p->angle);
 	if (p->movement[0])
 		change_pos(data, p->angle);
 	if (p->movement[1])
@@ -76,6 +74,10 @@ void	move(t_data *data)
 			p->angle = p->angle - (2 * M_PI);
 		if (p->angle < 0)
 			p->angle = (2 * M_PI) + p->angle;
+		data->player.camera_plane.x = cosf(angle_add(data->player.angle, M_PI / 2));
+		data->player.camera_plane.y = sinf(angle_add(data->player.angle, M_PI / 2));
+		data->player.direction.x = cosf(data->player.angle);
+		data->player.direction.y = sinf(data->player.angle);
 	}
 	//if (p->movement[0] || p->movement[1] || p->movement[2] || p->movement[3] || p->rotation[0] || p->rotation[1])
 		get_all_rays(data);

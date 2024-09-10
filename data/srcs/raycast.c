@@ -6,11 +6,34 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2024/08/28 19:42:24 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/10 15:47:13 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	draw_line_raycast(t_data *data, int x, int start, int end, int color)
+{
+	int	i;
+
+	i = 0;
+	while (i < start)
+	{
+		mlx_pixel_put(data->mlx, data->win, x, i, 0xFF0000BB);
+		i++;
+	}
+	i = start;
+	while (i <= end)
+	{
+		mlx_pixel_put(data->mlx, data->win, x, i, color);
+		i++;
+	}
+	while (i < data->win_size.y)
+	{
+		mlx_pixel_put(data->mlx, data->win, x, i, 0xFF00BB00);
+		i++;
+	}
+}
 
 t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length, t_vector impact_pos)
 {
@@ -105,8 +128,10 @@ t_impact	get_impact(t_vector start, t_vectorf direc, t_data *data)
 	slope_coef.x = data->scale * 2;
 	slope_coef.y = data->scale * 2;
 	if (delta.x != 0)
-		slope_coef.x = sqrt(pow(data->scale * 2, 2) + pow(delta.y / delta.x * (data->scale * 2), 2));
+		slope_coef.x = fabs((double)(data->scale * 2) / direc.x);
+		//slope_coef.x = sqrt(pow(data->scale * 2, 2) + pow(delta.y / delta.x * (data->scale * 2), 2));
 	if (delta.y != 0)
-		slope_coef.y = sqrt(pow(data->scale * 2, 2) + pow(delta.x / delta.y * (data->scale * 2), 2));
+		slope_coef.y = fabs((double)(data->scale * 2) / direc.y);
+		//slope_coef.y = sqrt(pow(data->scale * 2, 2) + pow(delta.x / delta.y * (data->scale * 2), 2));
 	return (raycast(start, direc, data, slope_coef));
 }
