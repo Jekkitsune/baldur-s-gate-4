@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2024/09/10 15:00:30 by fparis           ###   ########.fr        #
+#    Updated: 2024/09/10 16:55:03 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ SRCS = main.c\
 		player_vision.c\
 		shape_func.c\
 		init_data.c\
-		trigo_utils.c
+		trigo_utils.c\
+		draw_utils_2.c
 
 LIBFT = data/libft/libft.a
 

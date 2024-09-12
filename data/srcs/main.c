@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/10 15:51:45 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/12 18:58:16 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	loop(void *param)
 		data->test_key = 0;
 		data->scale++;
 	}
-	mlx_clear_window(data->mlx, data->win);
+	//mlx_clear_window(data->mlx, data->win);
 	update_chunk(data);
 	show_screen(data);
 	show_minimap(data);
@@ -67,7 +67,7 @@ int	main(int argc, char **argv)
 	
 	init_player(&data);
 
-	create_minimap(&data, 300, 50);
+	create_minimap(&data, 200, 30);
 
 	//mlx_set_fps_goal(data.mlx, 60);
 	mlx_on_event(data.mlx, data.win, MLX_KEYDOWN, key_down_manager, &data);

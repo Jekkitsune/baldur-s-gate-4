@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/10 15:58:12 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/12 17:51:19 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct minimap
 	t_vector	pos;
 	int			chunk_size;
 	char		**chunk;
+	void		*img;
 }	t_minimap;
 
 typedef struct s_data
@@ -97,13 +98,15 @@ typedef struct s_data
 	int			test_key;
 	float		test_length;
 	int			(*check_shape[2])(struct s_data *data, t_vector vec);
+	void		*screen_display;
 } t_data;
 
 typedef	struct s_linfo
 {
-	int	color;
-	int	width;
-	int	(*check)(t_data *data, t_vector vec);
+	int		color;
+	int		width;
+	void	*img;
+	int		(*check)(t_data *data, t_vector vec);
 }	t_linfo;
 
 void		print_map(t_map *map);
@@ -130,7 +133,7 @@ void		show_screen(t_data *data);
 t_data		*init_data(t_data *data);
 int			default_shape(__attribute__((unused)) t_data *data, __attribute__((unused)) t_vector vec);
 int			in_minimap(t_data *data, t_vector vec);
-t_linfo		linfo(int color, int width, int (*check_shape)(t_data *data, t_vector vec));
+t_linfo		linfo(int color, int width, int (*check_shape)(t_data *data, t_vector vec), void *img);
 void		draw_square(t_data *data, t_vector pos, t_linfo info);
 float		angle_add(float angle, float add);
 void		draw_line_raycast(t_data *data, int x, int start, int end, int color);

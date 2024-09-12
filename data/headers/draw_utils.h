@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_utils.c                                        :+:      :+:    :+:   */
+/*   draw_utils.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/24 23:22:30 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/10 16:34:35 by fparis           ###   ########.fr       */
+/*   Created: 2024/09/12 18:29:13 by fparis            #+#    #+#             */
+/*   Updated: 2024/09/12 18:30:09 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#ifndef DRAW_UTILS_H
+# define DRAW_UTILS_H
 
-int	in_bound(t_map map, t_vector vec)
-{
-	return ((vec.x >= 0 && vec.x < map.size.x)
-		&& (vec.y >= 0 && vec.y < map.size.y));
-}
+# include "cub3d.h"
 
-int	in_window(t_vector win_size, t_vector vec)
-{
-	return ((vec.x >= 0 && vec.x < win_size.x)
-		&& (vec.y >= 0 && vec.y < win_size.y));
-}
+void	reverse_draw_vertical_line(t_data *data, t_vector p1, t_vector p2, t_linfo info);
+void	reverse_draw_shallow(t_data *data, t_vector p1, t_vector p2, t_linfo info);
+void	reverse_draw_deep(t_data *data, t_vector p1, t_vector p2, t_linfo info);
+
+#endif

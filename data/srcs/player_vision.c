@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/10 15:58:58 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/12 18:08:14 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ void	draw_ray(t_data *data, float diff, t_impact ray, int i)
 		size = 0;
 	else
 		size = data->win_size.y / (ray.length / (data->scale * 2));
-		//size = data->win_size.y / fix_fisheye(data, ray, ray.length) * 20;
 	if (size > data->win_size.y)
 		size = data->win_size.y;
 	if (ray.face == 1 || ray.face == 3)
@@ -112,6 +111,8 @@ void	show_screen(t_data *data)
 	int			color;
 	t_impact	*vision;
 
+	if (!data->screen_display)
+		data->screen_display = mlx_new_image(data->mlx, data->win_size.x, data->win_size.y);
 	vision = data->player.vision;
 	i = 0;
 	diff = (float)data->win_size.x / (float)NB_RAYS;
@@ -120,4 +121,5 @@ void	show_screen(t_data *data)
 		draw_ray(data, diff, data->player.vision[i], i);
 		i++;
 	}
+	mlx_put_image_to_window(data->mlx, data->win, data->screen_display, 0, 0);
 }

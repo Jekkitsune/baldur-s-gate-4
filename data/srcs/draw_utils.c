@@ -6,21 +6,21 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 00:42:04 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/10 14:33:32 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/12 18:54:16 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "draw_utils.h"
 
 void	draw_vertical_line(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 {
 	t_vector	i;
 
 	if (p1.y > p2.y)
-		return (draw_vertical_line(data, p2, p1, info));
+		return (reverse_draw_vertical_line(data, p1, p2, info));
 	i.x = p1.x;
 	i.y = p1.y;
-	while (i.y < p2.y)
+	while (i.y < p2.y && info.check(data, i))
 	{
 		draw_square(data, i, info);
 		i.y++;
@@ -40,7 +40,9 @@ void	draw_square(t_data *data, t_vector pos, t_linfo info)
 		i.x = 0;
 		while (i.x < info.width)
 		{
-			//if (info.check(data, vec_sum(i, offset)))
+			if (info.img)
+				mlx_set_image_pixel(data->mlx, info.img, i.x + offset.x, i.y + offset.y, info.color);
+			else
 				mlx_pixel_put(data->mlx, data->win, i.x + offset.x, i.y + offset.y, info.color);
 			i.x++;
 		}
@@ -63,7 +65,7 @@ void	draw_shallow(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 	i.x = p1.x;
 	i.y = p1.y;
 	checker = (2 * delta.y) - delta.x; 
-	while (i.x <= p2.x)
+	while (i.x <= p2.x && info.check(data, i))
 	{
 		if (checker > 0)
 		{
@@ -92,7 +94,7 @@ void	draw_deep(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 	i.x = p1.x;
 	i.y = p1.y;
 	checker = (2 * delta.x) - delta.y;
-	while (i.y <= p2.y)
+	while (i.y <= p2.y && info.check(data, i))
 	{
 		if (checker > 0)
 		{
@@ -115,13 +117,13 @@ void	draw_line(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 		if (p1.x <= p2.x)
 			draw_shallow(data, p1, p2, info);
 		else
-			draw_shallow(data, p2, p1, info);
+			reverse_draw_shallow(data, p1, p2, info);
 	}
 	else
 	{
 		if (p1.y <= p2.y)
 			draw_deep(data, p1, p2, info);
 		else
-			draw_deep(data, p2, p1, info);
+			reverse_draw_deep(data, p1, p2, info);
 	}
 }
