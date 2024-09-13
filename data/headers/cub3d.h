@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/12 17:51:19 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/12 22:38:57 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,15 @@ typedef struct s_player
 	t_vector	pos;
 	t_vectorf	offset;
 	float		angle;
-	int			movement[4];
-	int			rotation[2];
+	int			movement[6];
+	int			rotation[4];
 	int			speed;
 	int			is_running;
 	t_impact	vision[NB_RAYS];
 	t_vectorf	camera_plane;
 	t_vectorf	direction;
+	int			pitch;
+	int			height;
 }	t_player;
 
 typedef struct minimap

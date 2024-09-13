@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/10 15:58:31 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/12 22:48:08 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,20 @@ void	move(t_data *data)
 	if (p->movement[3])
 		change_pos(data, p->angle + (M_PI / 2));
 	
-	if (p->rotation[0])
-		p->angle -= 0.1;
 	if (p->rotation[1])
+		p->angle -= 0.1;
+	if (p->rotation[3])
 		p->angle += 0.1;
+	if (p->rotation[0])
+		p->pitch += 50;
+	if (p->rotation[2])
+		p->pitch -= 50;
 
+	if (p->movement[4])
+		p->height += 50 * (data->scale * 2);
+	if (p->movement[5])
+		p->height -= 50 * (data->scale * 2);
+	
 	if (p->offset.x > data->scale)
 	{
 		p->pos.x++;
@@ -68,7 +77,7 @@ void	move(t_data *data)
 		p->offset.y = data->scale - (ft_abs(p->offset.y) - ft_abs(data->scale));
 	}
 
-	if (p->rotation[0] || p->rotation[1])
+	if (p->rotation[1] || p->rotation[3])
 	{
 		if (p->angle > 2 * M_PI)
 			p->angle = p->angle - (2 * M_PI);
@@ -79,6 +88,5 @@ void	move(t_data *data)
 		data->player.direction.x = cosf(data->player.angle);
 		data->player.direction.y = sinf(data->player.angle);
 	}
-	//if (p->movement[0] || p->movement[1] || p->movement[2] || p->movement[3] || p->rotation[0] || p->rotation[1])
-		get_all_rays(data);
+	get_all_rays(data);
 }
