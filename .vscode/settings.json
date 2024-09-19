@@ -3,6 +3,8 @@
 		"cub3d.h": "c",
 		"stdio.h": "c",
 		"mlx.h": "c",
-		"chrono": "c"
+		"chrono": "c",
+		"stdbool.h": "c",
+		"time.h": "c"
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/13 23:30:21 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/18 21:48:16 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,22 @@ int	loop(void *param)
 	update_chunk(data);
 	show_screen(data);
 	show_minimap(data);
+
+	for (int i = 10; i < 500; i++)
+	{
+		for (int u = 10; u < 500; u++)
+			mlx_pixel_put(data->mlx, data->win, i, u, 0xFFf50a8f);
+	}
+	for (int i = 500; i < 500 * 2; i++)
+	{
+		for (int u = 10; u < 500; u++)
+			mlx_pixel_put(data->mlx, data->win, i, u, average_color(0xFFf50a8f, 0xFFcc5e9c));
+	}
+	for (int i = 500 * 2; i < 500 * 3; i++)
+	{
+		for (int u = 10; u < 500; u++)
+			mlx_pixel_put(data->mlx, data->win, i, u, 0xFFcc5e9c);
+	}
 
 	struct timeval 	tv;
 	gettimeofday(&tv, NULL);

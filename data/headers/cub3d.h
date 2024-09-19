@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/13 22:24:13 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/18 22:27:29 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,12 @@ typedef struct s_impact
 	t_vectorf	direc;
 	float		angle;
 }	t_impact;
+
+typedef struct s_texture
+{
+	uint32_t	**tab;
+	int			size;
+}	t_texture;
 
 typedef	struct s_map
 {
@@ -151,5 +157,6 @@ void	get_all_rays_old(t_data *data);
 void	camera_move(t_data *data);
 void	correct_pos(t_data *data, t_vector *pos, t_vectorf *offset);
 void	rotate_focus(t_data *data);
+uint32_t	average_color(uint32_t col1, uint32_t col2);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/12 22:43:54 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/18 21:40:08 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	key_up_manager(int key, void *param)
 {
 	t_data	*data;
 
-	printf("key: %d\n", key);
+	//printf("key: %d\n", key);
 	data = (t_data *)param;
 	if (key == 26 || key == 4 || key == 22 || key == 7 || (key >= 79 && key <= 82) || (key >= 89 && key <= 90))
 		register_player_movement(data, key, 0);
