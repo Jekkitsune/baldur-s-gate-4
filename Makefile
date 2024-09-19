@@ -6,12 +6,12 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2024/09/18 18:49:55 by fparis           ###   ########.fr        #
+#    Updated: 2024/09/19 18:20:29 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = #-Wextra -Werror -Wall -g
+CFLAGS = -g #-Wextra -Werror -Wall -g
 NAME = bg4
 HEADER = data/headers
 
@@ -33,6 +33,7 @@ SRCS = main.c\
 		init_data.c\
 		trigo_utils.c\
 		draw_utils_2.c\
+		parsing.c\
 		mouse.c\
 		move_utils.c\
 		resize.c

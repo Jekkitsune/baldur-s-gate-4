@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/18 21:48:16 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/19 18:20:36 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,23 +89,26 @@ int	main(int argc, char **argv)
 	gettimeofday(&tv, NULL);
 	starttime = tv.tv_sec;
 
-	if (argc < 2)
-	{
-		ft_putstr_fd("Not enough maps!\n", 2);
-		return (1);
-	}
+
 	init_data(&data);
 	
-	data.current_map = create_map(argv[1]);
+	if (!parsing(argc, argv, &data))
+		return (false);
+	printf("North Texture: %s\n", data.textures[0]);
+	printf("South Texture: %s\n", data.textures[1]);
+	printf("West Texture: %s\n", data.textures[2]);
+	printf("East Texture: %s\n", data.textures[3]);
+	printf("Floor Color: %s\n", data.floor_color);
+	printf("Ceiling Color: %s\n", data.ceiling_color);
+	for (int i = 0; data.current_map->arr[i]; i++)
+		printf("%s\n", data.current_map->arr[i]);
 	print_map(data.current_map);
-	printf("\n\n\n\n\n\n\n");
-	
+
 	init_player(&data);
 
 	create_minimap(&data, 200, 30);
 
 	//mlx_set_fps_goal(data.mlx, 60);
-	mlx_mouse_hide();
 	mlx_on_event(data.mlx, data.win, MLX_KEYDOWN, key_down_manager, &data);
 	mlx_on_event(data.mlx, data.win, MLX_KEYUP, key_up_manager, &data);
 	mlx_on_event(data.mlx, data.win, MLX_WINDOW_EVENT, window_manager, &data);
@@ -118,5 +121,6 @@ int	main(int argc, char **argv)
 
 	mlx_destroy_window(data.mlx, data.win);
 	mlx_destroy_display(data.mlx);
+	free(data.current_map);
 	return (0);
 }

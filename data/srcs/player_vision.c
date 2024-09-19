@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player_vision.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/13 23:35:37 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/19 18:16:56 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	get_all_rays(t_data *data)
 {
 	double		camera;
 	int			i;
-	float		diff;
+	//float		diff;
 	t_vectorf	direc;
 
 	i = 0;

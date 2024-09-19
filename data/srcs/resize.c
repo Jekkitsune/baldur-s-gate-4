@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:23:58 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/19 18:09:31 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/19 18:21:11 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_texture	*upscale(t_texture *tex, int new_size)
 	uint32_t	*val_tab;
 	t_texture	*res;
 
-	
+	res = ft_calloc(sizeof())
 	divided = tex->size / new_size;
 	i = 0;
 
