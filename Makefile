@@ -6,7 +6,7 @@
 #    By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2024/09/12 22:32:47 by gmassoni         ###   ########.fr        #
+#    Updated: 2024/09/19 18:16:24 by gmassoni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,9 @@ SRCS = main.c\
 		init_data.c\
 		trigo_utils.c\
 		draw_utils_2.c\
-		parsing.c
+		parsing.c\
+		mouse.c\
+		move_utils.c
 
 LIBFT = data/libft/libft.a
 

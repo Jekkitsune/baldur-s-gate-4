@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/17 16:27:19 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:18:06 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,20 @@ typedef struct s_player
 	t_vector	pos;
 	t_vectorf	offset;
 	float		angle;
-	int			movement[4];
-	int			rotation[2];
+	int			movement[6];
+	int			rotation[4];
 	int			speed;
 	int			is_running;
 	t_impact	vision[NB_RAYS];
 	t_vectorf	camera_plane;
 	t_vectorf	direction;
+	int			pitch;
+	int			height;
+	int			focus_mode;
+	float		focus_dist;
+
+	t_vector	target_pos;
+	t_vectorf	target_offset;
 }	t_player;
 
 typedef struct minimap
@@ -102,6 +109,7 @@ typedef struct s_data
 	float		test_length;
 	int			(*check_shape[2])(struct s_data *data, t_vector vec);
 	void		*screen_display;
+	int			on_screen;
 } t_data;
 
 typedef	struct s_linfo
@@ -145,5 +153,8 @@ bool		parsing(int argc, char *argv[], t_data *data);
 bool		vec_cmp(t_vector vec1, t_vector vec2);
 
 void	get_all_rays_old(t_data *data);
+void	camera_move(t_data *data);
+void	correct_pos(t_data *data, t_vector *pos, t_vectorf *offset);
+void	rotate_focus(t_data *data);
 
 #endif

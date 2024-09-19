@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/12 18:19:36 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/12 22:58:18 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ void	draw_line_raycast(t_data *data, int x, int start, int end, int color)
 	int	i;
 
 	i = 0;
-	while (i < start)
+	while (i < start && i < data->win_size.y)
 	{
 		mlx_set_image_pixel(data->mlx, data->screen_display, x, i, 0xFF0000BB);
 		i++;
 	}
-	while (i < end)
+	while (i < end && i < data->win_size.y)
 	{
 		mlx_set_image_pixel(data->mlx, data->screen_display, x, i, color);
 		i++;

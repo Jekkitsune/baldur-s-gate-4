@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/12 22:33:19 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:16:56 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,7 @@ void	draw_ray(t_data *data, float diff, t_impact ray, int i)
 	if (ray.length <= 0)
 		size = 0;
 	else
-		size = data->win_size.y / (ray.length / (data->scale * 2));
-	if (size > data->win_size.y)
-		size = data->win_size.y;
+		size = (data->win_size.y / (ray.length / (data->scale * 2)));
 	if (ray.face == 1 || ray.face == 3)
 		color = 0xFF349CEB;
 	else
@@ -96,7 +94,7 @@ void	draw_ray(t_data *data, float diff, t_impact ray, int i)
 	i2 = 0;
 	while (i2 < diff)
 	{
-		draw_line_raycast(data, i * diff + i2, posy.x, posy.y, color);
+		draw_line_raycast(data, i * diff + i2, posy.x + data->player.pitch + (data->player.height / ray.length), posy.y + data->player.pitch + (data->player.height / ray.length), color);
 		//draw_line(data, vec((i * diff) + i2, 0), vec((i * diff) + i2, posy.x), linfo(0xFF0000BB, 1, data->check_shape[0]));
 		//draw_line(data, vec((i * diff) + i2, posy.x), vec((i * diff) + i2, posy.y), linfo(color, 1, data->check_shape[0]));
 		//draw_line(data, vec((i * diff) + i2, posy.y), vec((i * diff) + i2, data->win_size.y), linfo(0xFF00BB00, 1, data->check_shape[0]));
