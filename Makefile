@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
+#    By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2024/09/10 16:55:03 by fparis           ###   ########.fr        #
+#    Updated: 2024/09/12 22:32:47 by gmassoni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = #-Wextra -Werror -Wall -g
+CFLAGS = -g #-Wextra -Werror -Wall -g
 NAME = bg4
 HEADER = data/headers
 
@@ -32,7 +32,8 @@ SRCS = main.c\
 		shape_func.c\
 		init_data.c\
 		trigo_utils.c\
-		draw_utils_2.c
+		draw_utils_2.c\
+		parsing.c
 
 LIBFT = data/libft/libft.a
 

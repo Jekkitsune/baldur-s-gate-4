@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/12 17:51:19 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/17 16:27:19 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,9 @@ typedef struct s_data
 {
 	void		*mlx;
 	void		*win;
+	char		*textures[4];
+	char		floor_color[9];
+	char		ceiling_color[9];
 	t_vector	win_size;
 	t_map		*current_map;
 	t_minimap	minimap;
@@ -137,6 +140,9 @@ t_linfo		linfo(int color, int width, int (*check_shape)(t_data *data, t_vector v
 void		draw_square(t_data *data, t_vector pos, t_linfo info);
 float		angle_add(float angle, float add);
 void		draw_line_raycast(t_data *data, int x, int start, int end, int color);
+
+bool		parsing(int argc, char *argv[], t_data *data);
+bool		vec_cmp(t_vector vec1, t_vector vec2);
 
 void	get_all_rays_old(t_data *data);
 

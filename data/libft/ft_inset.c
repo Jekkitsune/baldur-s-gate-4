@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player.c                                           :+:      :+:    :+:   */
+/*   ft_inset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/25 22:21:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/12 22:35:32 by gmassoni         ###   ########.fr       */
+/*   Created: 2024/09/12 22:11:32 by gmassoni          #+#    #+#             */
+/*   Updated: 2024/09/12 22:12:47 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-void	init_player(t_data *data)
+int ft_inset(char c, char *set)
 {
-	data->player.speed = 1;
-	data->player.camera_plane.x = cosf(angle_add(data->player.angle, M_PI / 2));
-	data->player.camera_plane.y = sinf(angle_add(data->player.angle, M_PI / 2));
-	data->player.direction.x = cosf(data->player.angle);
-	data->player.direction.y = sinf(data->player.angle);
-	get_all_rays(data);
+    int i;
+
+    if (!set)
+        return (0);
+    i = 0;
+    while (set[i])
+    {
+        if (set[i] == c)
+            return (1);
+        i++;
+    }
+    return (0);
 }

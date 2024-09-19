@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 23:28:20 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/08 19:04:24 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/12 22:17:53 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,9 @@ t_vector	vec(int x, int y)
 	res.x = x;
 	res.y = y;
 	return (res);
+}
+
+bool	vec_cmp(t_vector vec1, t_vector vec2)
+{
+	return (vec1.x == vec2.x && vec1.y == vec2.y);
 }
