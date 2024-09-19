@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 21:09:45 by gmassoni          #+#    #+#             */
-/*   Updated: 2024/09/19 18:23:37 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/09/19 19:37:16 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,6 +298,34 @@ void	turn_map(t_data *data)
 	data->current_map->arr = new_map;
 }
 
+
+int	base_ind(char c, char	*base)
+{
+	int	i;
+
+	i = -1;
+	while (base[++i])
+		if (base[i] == c)
+			return (i);
+	return (-1);
+}
+
+unsigned int	htoi(char hex[9])
+{
+	int	res;
+
+	res = 0;
+	res += 15 * pow(16, 7);
+	res += 15 * pow(16, 6);
+	res += base_ind(hex[2], "0123456789ABCDEF") * pow(16, 5);
+	res += base_ind(hex[3], "0123456789ABCDEF") * pow(16, 4);
+	res += base_ind(hex[4], "0123456789ABCDEF") * pow(16, 3);
+	res += base_ind(hex[5], "0123456789ABCDEF") * pow(16, 2);
+	res += base_ind(hex[6], "0123456789ABCDEF") * pow(16, 1);
+	res += base_ind(hex[7], "0123456789ABCDEF") * pow(16, 0);
+	return (res);
+}
+
 bool	parsing(int argc, char *argv[], t_data *data)
 {
 	int fd;
@@ -321,5 +349,7 @@ bool	parsing(int argc, char *argv[], t_data *data)
 	}
 	close(fd);
 	turn_map(data);
+	data->ceiling_color_ui = htoi(data->ceiling_color);
+	data->floor_color_ui = htoi(data->floor_color);
 	return (true);
 }

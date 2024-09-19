@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/12 22:58:18 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/19 19:36:03 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	draw_line_raycast(t_data *data, int x, int start, int end, int color)
 	i = 0;
 	while (i < start && i < data->win_size.y)
 	{
-		mlx_set_image_pixel(data->mlx, data->screen_display, x, i, 0xFF0000BB);
+		mlx_set_image_pixel(data->mlx, data->screen_display, x, i, data->ceiling_color_ui);
 		i++;
 	}
 	while (i < end && i < data->win_size.y)
@@ -29,7 +29,7 @@ void	draw_line_raycast(t_data *data, int x, int start, int end, int color)
 	}
 	while (i < data->win_size.y)
 	{
-		mlx_set_image_pixel(data->mlx, data->screen_display, x, i, 0xFF00BB00);
+		mlx_set_image_pixel(data->mlx, data->screen_display, x, i, data->floor_color_ui);
 		i++;
 	}
 }

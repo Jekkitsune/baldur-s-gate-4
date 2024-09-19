@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/19 18:22:20 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/09/19 19:35:41 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,22 +94,24 @@ typedef struct minimap
 
 typedef struct s_data
 {
-	void		*mlx;
-	void		*win;
-	char		*textures[4];
-	char		floor_color[9];
-	char		ceiling_color[9];
-	t_vector	win_size;
-	t_map		*current_map;
-	t_minimap	minimap;
-	t_player	player;
-	int			scale;
-	int			render_distance;
-	int			test_key;
-	float		test_length;
-	int			(*check_shape[2])(struct s_data *data, t_vector vec);
-	void		*screen_display;
-	int			on_screen;
+	void			*mlx;
+	void			*win;
+	char			*textures[4];
+	char			floor_color[9];
+	char			ceiling_color[9];
+	unsigned int	floor_color_ui;
+	unsigned int	ceiling_color_ui;
+	t_vector		win_size;
+	t_map			*current_map;
+	t_minimap		minimap;
+	t_player		player;
+	int				scale;
+	int				render_distance;
+	int				test_key;
+	float			test_length;
+	int				(*check_shape[2])(struct s_data *data, t_vector vec);
+	void			*screen_display;
+	int				on_screen;
 } t_data;
 
 typedef	struct s_linfo

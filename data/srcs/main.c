@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/19 18:26:43 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:36:22 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,20 @@ int	main(int argc, char **argv)
 	printf("East Texture: %s\n", data.textures[3]);
 	printf("Floor Color: %s\n", data.floor_color);
 	printf("Ceiling Color: %s\n", data.ceiling_color);
+	int i = -1;
+	int size = 0;
+	while (data.current_map->arr[++i])
+		if (ft_strlen(data.current_map->arr[i]) > size)
+			size = ft_strlen(data.current_map->arr[i]);
+	int size2 = ft_tablen(data.current_map->arr);
+	i = -1;
+	while (++i < size)
+	{
+		int j = -1;
+		while (++j < size2)
+			printf("%c", data.current_map->arr[j][i]);
+		printf("\n");
+	}
 	print_map(data.current_map);
 
 	init_player(&data);
