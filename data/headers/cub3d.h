@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/19 18:18:06 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:22:20 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ t_linfo		linfo(int color, int width, int (*check_shape)(t_data *data, t_vector v
 void		draw_square(t_data *data, t_vector pos, t_linfo info);
 float		angle_add(float angle, float add);
 void		draw_line_raycast(t_data *data, int x, int start, int end, int color);
+int			window_manager(int event, void *param);
 
 bool		parsing(int argc, char *argv[], t_data *data);
 bool		vec_cmp(t_vector vec1, t_vector vec2);
