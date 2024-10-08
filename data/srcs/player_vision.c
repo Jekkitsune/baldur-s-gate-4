@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player_vision.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/19 18:16:56 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/10/08 01:17:04 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,9 @@ void	draw_ray(t_data *data, float diff, t_impact ray, int i)
 	posy.y = (data->win_size.y + size) / 2;
 	i2 = 0;
 	while (i2 < diff)
-	{
-		draw_line_raycast(data, i * diff + i2, posy.x + data->player.pitch + (data->player.height / ray.length), posy.y + data->player.pitch + (data->player.height / ray.length), color);
-		//draw_line(data, vec((i * diff) + i2, 0), vec((i * diff) + i2, posy.x), linfo(0xFF0000BB, 1, data->check_shape[0]));
-		//draw_line(data, vec((i * diff) + i2, posy.x), vec((i * diff) + i2, posy.y), linfo(color, 1, data->check_shape[0]));
-		//draw_line(data, vec((i * diff) + i2, posy.y), vec((i * diff) + i2, data->win_size.y), linfo(0xFF00BB00, 1, data->check_shape[0]));
+	{	
+		draw_wall(data, i * diff + i2, vec(posy.x + data->player.pitch + (data->player.height / ray.length), posy.y + data->player.pitch + (data->player.height / ray.length)), &ray);
+		//draw_line_raycast(data, i * diff + i2, posy.x + data->player.pitch + (data->player.height / ray.length), posy.y + data->player.pitch + (data->player.height / ray.length), color, &ray);
 		i2++;
 	}
 }

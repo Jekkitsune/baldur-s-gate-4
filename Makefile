@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2024/09/19 18:20:29 by fparis           ###   ########.fr        #
+#    Updated: 2024/09/22 20:46:33 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,9 @@ SRCS = main.c\
 		parsing.c\
 		mouse.c\
 		move_utils.c\
-		resize.c
+		resize.c\
+		texture_utils.c\
+		vectorf_utils.c
 
 LIBFT = data/libft/libft.a
 

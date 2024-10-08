@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 00:42:04 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/12 18:54:16 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/19 19:46:23 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ void	draw_square(t_data *data, t_vector pos, t_linfo info)
 
 	offset.x = pos.x - (info.width / 2);
 	offset.y = pos.y - (info.width / 2);
+	if (info.width <= 1)
+	{
+		offset.x = pos.x;
+		offset.y = pos.y;
+	}
 	i.y = 0;
 	while (i.y < info.width)
 	{
@@ -67,6 +72,7 @@ void	draw_shallow(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 	checker = (2 * delta.y) - delta.x; 
 	while (i.x <= p2.x && info.check(data, i))
 	{
+		draw_square(data, i, info);
 		if (checker > 0)
 		{
 			i.y += y_diff;
@@ -74,7 +80,6 @@ void	draw_shallow(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 		}
 		else
 			checker += 2 * delta.y;
-		draw_square(data, i, info);
 		i.x++;
 	}
 }
@@ -96,6 +101,7 @@ void	draw_deep(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 	checker = (2 * delta.x) - delta.y;
 	while (i.y <= p2.y && info.check(data, i))
 	{
+		draw_square(data, i, info);
 		if (checker > 0)
 		{
 			i.x += x_diff;
@@ -103,7 +109,6 @@ void	draw_deep(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 		}
 		else
 			checker += 2 * delta.x;
-		draw_square(data, i, info);
 		i.y++;
 	}
 }

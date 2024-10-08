@@ -6,13 +6,44 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/12 22:58:18 by fparis           ###   ########.fr       */
+/*   Updated: 2024/10/08 03:38:45 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_line_raycast(t_data *data, int x, int start, int end, int color)
+void	draw_wall(t_data *data, int x, t_vector pos, t_impact *ray)
+{
+	int 		tex_colomn;
+	int			i;
+	double		divided;
+	t_texture	*tex;
+
+	tex = data->textures[ray->face - 1];
+	divided = (double)tex->size / (double)(pos.y - pos.x);
+	if (ray->face % 2)
+		tex_colomn = fmod(data->player.pos.x * (data->scale * 2) + data->player.offset.x + data->scale + (ray->direc.x * ray->length), (data->scale * 2)) * tex->size / (data->scale * 2);
+	else
+		tex_colomn = fmod(data->player.pos.y * (data->scale * 2) + data->player.offset.y + data->scale + (ray->direc.y * ray->length), (data->scale * 2)) * tex->size / (data->scale * 2);
+	i = 0;
+	while (i < pos.x && i < data->win_size.y)
+	{
+		mlx_set_image_pixel(data->mlx, data->screen_display, x, i, 0xFF0000BB);
+		i++;
+	}
+	while (i < pos.y && i < data->win_size.y)
+	{
+		mlx_set_image_pixel(data->mlx, data->screen_display, x, i, tex->tab[tex_colomn][(int)((ft_abs(pos.x - i)) * divided)]);
+		i++;
+	}
+	while (i < data->win_size.y)
+	{
+		mlx_set_image_pixel(data->mlx, data->screen_display, x, i, 0xFF00BB00);
+		i++;
+	}
+}
+
+void	draw_line_raycast(t_data *data, int x, int start, int end, int color, t_impact *ray)
 {
 	int	i;
 
@@ -34,7 +65,7 @@ void	draw_line_raycast(t_data *data, int x, int start, int end, int color)
 	}
 }
 
-t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length, t_vector impact_pos)
+t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length)
 {
 	if (!in_bound(*data->current_map, impact->wall_pos)
 		|| ft_min(ft_absf(length.x), ft_absf(length.y)) > data->render_distance)
@@ -44,7 +75,6 @@ t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length, t_vector 
 	}
 	if (data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y] != WALL)
 		return (NULL);
-	impact->impact_pos = impact_pos;
 	if (ft_absf(length.x) <= ft_absf(length.y))
 	{
 		impact->face = 2;
@@ -100,14 +130,14 @@ t_impact	raycast(t_vector start, t_vectorf direc, t_data *data, t_vectorf slope_
 		while (ft_absf(length.x) <= ft_absf(length.y))
 		{
 			impact.wall_pos.x += sign.x;
-			if (check_wall(&impact, data, length, vec(start.x + (direc.x * length.x), start.y + (direc.y * length.x))))
+			if (check_wall(&impact, data, length))
 				return (impact);
 			length.x += slope_coef.x;
 		}
 		while (ft_absf(length.y) <= ft_absf(length.x))
 		{
 			impact.wall_pos.y += sign.y;
-			if (check_wall(&impact, data, length, vec(start.x + (direc.x * length.y), start.y + (direc.y * length.y))))
+			if (check_wall(&impact, data, length))
 				return (impact);
 			length.y += slope_coef.y;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 21:09:45 by gmassoni          #+#    #+#             */
-/*   Updated: 2024/09/18 18:32:16 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/09/26 03:45:50 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,13 @@ bool	process_line(t_data *data, char **split)
 	else if (ft_strlen(split[0]) == 2)
 	{
 		if (!ft_strcmp(split[0], "NO") && !data->textures[0])
-			data->textures[0] = ft_strdup(split[1]);
+			data->textures[0] = path_to_tex(data, split[1]);
 		else if (!ft_strcmp(split[0], "SO") && !data->textures[1])
-			data->textures[1] = ft_strdup(split[1]);
+			data->textures[1] = path_to_tex(data, split[1]);
 		else if (!ft_strcmp(split[0], "WE") && !data->textures[2])
-			data->textures[2] = ft_strdup(split[1]);
+			data->textures[2] = path_to_tex(data, split[1]);
 		else if (!ft_strcmp(split[0], "EA") && !data->textures[3])
-			data->textures[3] = ft_strdup(split[1]);
+			data->textures[3] = path_to_tex(data, split[1]);
 	}
 	else
 		return (false);
@@ -321,5 +321,19 @@ bool	parsing(int argc, char *argv[], t_data *data)
 	}
 	close(fd);
 	turn_map(data);
+	return (true);
+}
+
+bool	check_textures(t_texture **tex_tab)
+{
+	int	i;
+
+	i = 0;
+	while (i < NB_TEX)
+	{
+		if (!tex_tab[i])
+			return (false);
+		i++;
+	}
 	return (true);
 }

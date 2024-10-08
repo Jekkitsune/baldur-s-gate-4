@@ -5,6 +5,7 @@
 		"mlx.h": "c",
 		"chrono": "c",
 		"stdbool.h": "c",
-		"time.h": "c"
+		"time.h": "c",
+		"cstdint": "c"
 	}
 }

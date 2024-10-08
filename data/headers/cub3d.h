@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/19 18:20:17 by fparis           ###   ########.fr       */
+/*   Updated: 2024/10/08 00:42:33 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,12 @@
 # include <stdio.h>
 # include <sys/time.h>
 # include <stdbool.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 
 # define GROUND '0'
 # define WALL '1'
+# define NB_TEX 4
 
 # define NB_RAYS 1800
 # define FOV 1.57
@@ -47,7 +50,6 @@ typedef struct s_vectorf
 typedef struct s_impact
 {
 	t_vector	wall_pos;
-	t_vector	impact_pos;
 	float		length;
 	int			face;
 	t_vectorf	direc;
@@ -102,7 +104,7 @@ typedef struct s_data
 {
 	void		*mlx;
 	void		*win;
-	char		*textures[4];
+	t_texture	*textures[4];
 	char		floor_color[9];
 	char		ceiling_color[9];
 	t_vector	win_size;
@@ -153,15 +155,23 @@ int			in_minimap(t_data *data, t_vector vec);
 t_linfo		linfo(int color, int width, int (*check_shape)(t_data *data, t_vector vec), void *img);
 void		draw_square(t_data *data, t_vector pos, t_linfo info);
 float		angle_add(float angle, float add);
-void		draw_line_raycast(t_data *data, int x, int start, int end, int color);
+void		draw_line_raycast(t_data *data, int x, int start, int end, int color, t_impact *ray);
 
 bool		parsing(int argc, char *argv[], t_data *data);
 bool		vec_cmp(t_vector vec1, t_vector vec2);
 
-void	get_all_rays_old(t_data *data);
-void	camera_move(t_data *data);
-void	correct_pos(t_data *data, t_vector *pos, t_vectorf *offset);
-void	rotate_focus(t_data *data);
-uint32_t	average_color(uint32_t col1, uint32_t col2);
+void		get_all_rays_old(t_data *data);
+void		camera_move(t_data *data);
+void		correct_pos(t_data *data, t_vector *pos, t_vectorf *offset);
+void		rotate_focus(t_data *data);
+int			window_manager(int event, void *param);
+void		free_tex(t_texture *tex);
+t_texture	*new_texture(int size);
+t_vectorf	vecf(float x, float y);
+bool		check_textures(t_texture **tex_tab);
+t_texture	*path_to_tex(t_data *data, char *path);
+void		show_tex(t_data *data, t_texture *tex, t_vector pos);
+t_texture	*resize(t_texture *tex, int new_size);
+void		draw_wall(t_data *data, int x, t_vector pos, t_impact *ray);
 
 #endif

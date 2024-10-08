@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:54:47 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/12 18:54:24 by fparis           ###   ########.fr       */
+/*   Updated: 2024/09/19 19:33:00 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	reverse_draw_shallow(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 	checker = (2 * delta.y) - delta.x; 
 	while (i.x >= p2.x && info.check(data, i))
 	{
+		draw_square(data, i, info);
 		if (checker > 0)
 		{
 			i.y += y_diff;
@@ -49,7 +50,6 @@ void	reverse_draw_shallow(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 		}
 		else
 			checker += 2 * delta.y;
-		draw_square(data, i, info);
 		i.x--;
 	}
 }
@@ -71,6 +71,7 @@ void	reverse_draw_deep(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 	checker = (2 * delta.x) - delta.y;
 	while (i.y >= p2.y && info.check(data, i))
 	{
+		draw_square(data, i, info);
 		if (checker > 0)
 		{
 			i.x += x_diff;
@@ -78,7 +79,6 @@ void	reverse_draw_deep(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 		}
 		else
 			checker += 2 * delta.x;
-		draw_square(data, i, info);
 		i.y--;
 	}
 }
