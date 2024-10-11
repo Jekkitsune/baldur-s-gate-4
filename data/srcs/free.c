@@ -1,37 +1,54 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tabcpy.c                                        :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/12 22:20:14 by gmassoni          #+#    #+#             */
-/*   Updated: 2024/10/11 03:46:12 by fparis           ###   ########.fr       */
+/*   Created: 2024/10/10 23:25:12 by fparis            #+#    #+#             */
+/*   Updated: 2024/10/10 23:37:53 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3d.h"
 
-void	ft_tabcpy(char **dst, char **src)
+void	free_tex(t_texture *tex)
 {
 	int	i;
 
 	i = 0;
-	while (dst && src && src[i])
+	if (!tex)
+		return ;
+	if (tex->tab)
 	{
-		dst[i] = src[i];
-		i++;
+		while (i < tex->size)
+		{
+			if (tex->tab[i])
+				free(tex->tab[i]);
+			i++;
+		}
+		free(tex->tab);
 	}
+	free(tex);
 }
 
-void	ft_tablcpy(char **dst, char **src, size_t size)
+void	free_map(t_map *map)
 {
-	size_t	i;
+	int	x;
+	int	y;
 
-	i = 0;
-	while (dst && src && i < size)
+	x = 0;
+	y = 0;
+	while (x < map->size.x)
 	{
-		dst[i] = src[i];
-		i++;
+		while (y < map->size.y)
+		{
+			ft_lstclear(&map->arr[x][y].entities, free);
+			y++;
+		}
+		free(map->arr[x]);
+		x++;
 	}
+	free(map->arr);
+	free(map);
 }

@@ -6,31 +6,11 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:27:28 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/26 04:02:21 by fparis           ###   ########.fr       */
+/*   Updated: 2024/10/10 23:33:12 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	free_tex(t_texture *tex)
-{
-	int	i;
-
-	i = 0;
-	if (!tex)
-		return ;
-	if (tex->tab)
-	{
-		while (i < tex->size)
-		{
-			if (tex->tab[i])
-				free(tex->tab[i]);
-			i++;
-		}
-		free(tex->tab);
-	}
-	free(tex);
-}
 
 t_texture	*new_texture(int size)
 {

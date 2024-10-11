@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/08 00:42:33 by fparis           ###   ########.fr       */
+/*   Updated: 2024/10/11 04:21:40 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 
 # define GROUND '0'
 # define WALL '1'
+# define VOID ' '
 # define NB_TEX 4
 
 # define NB_RAYS 1800
@@ -47,6 +48,28 @@ typedef struct s_vectorf
 	float	y;
 }	t_vectorf;
 
+typedef struct s_texture
+{
+	uint32_t	**tab;
+	int			size;
+}	t_texture;
+
+typedef struct s_entity
+{
+	char		type;
+	void		*id;
+	t_texture	*tex;
+	t_vector	pos;
+	t_vectorf	offset;
+}	t_entity;
+
+typedef	struct s_cell
+{
+	char		type;
+	t_texture	*tex[4];
+	t_list		*entities;
+}	t_cell;
+
 typedef struct s_impact
 {
 	t_vector	wall_pos;
@@ -54,19 +77,14 @@ typedef struct s_impact
 	int			face;
 	t_vectorf	direc;
 	float		angle;
+	t_cell		*cell;
 }	t_impact;
-
-typedef struct s_texture
-{
-	uint32_t	**tab;
-	int			size;
-}	t_texture;
 
 typedef	struct s_map
 {
 	int			index;
 	t_vector	size;
-	char		**arr;
+	t_cell		**arr;
 }	t_map;
 
 typedef struct s_player
@@ -131,7 +149,6 @@ typedef	struct s_linfo
 void		print_map(t_map *map);
 void		print_chunk(t_data *data);
 
-t_map		*create_map(char *path);
 int			in_bound(t_map map, t_vector vec);
 t_vector	vec_sum(t_vector vec1, t_vector vec2);
 int			create_minimap(t_data *data, int UI_size, int fig_size);
@@ -173,5 +190,6 @@ t_texture	*path_to_tex(t_data *data, char *path);
 void		show_tex(t_data *data, t_texture *tex, t_vector pos);
 t_texture	*resize(t_texture *tex, int new_size);
 void		draw_wall(t_data *data, int x, t_vector pos, t_impact *ray);
+void		free_map(t_map *map);
 
 #endif

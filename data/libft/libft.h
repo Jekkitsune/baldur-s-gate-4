@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 13:26:57 by mbico             #+#    #+#             */
-/*   Updated: 2024/09/12 22:23:07 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/10/11 02:43:27 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,6 @@ size_t	ft_tablen(char **tab);
 int		ft_inset(char c, char *set);
 char	**ft_add_element_tab(char **tab, char *elt);
 void	ft_tabcpy(char **dst, char **src);
+void	ft_tablcpy(char **dst, char **src, size_t size);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 21:09:45 by gmassoni          #+#    #+#             */
-/*   Updated: 2024/09/26 03:45:50 by fparis           ###   ########.fr       */
+/*   Updated: 2024/10/11 04:13:14 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ bool	process_line(t_data *data, char **split)
 	return (true);
 }
 
-bool	process_first_infos(t_data *data, char *lines[6])
+bool	process_first_infos(t_data *data, char *lines[7])
 {
 	int		i;
 	char	**split;
@@ -162,33 +162,33 @@ bool	is_map_closed(char **map)
 	return (true);
 }
 
-bool	check_map(t_data *data)
+bool	check_map(t_data *data, char **map)
 {
 	int	i;
 	int	j;
 
 	i = -1;
-	while (data->current_map->arr[++i])
-		if (!ft_strlen(data->current_map->arr[i]))
+	while (map[++i])
+		if (!ft_strlen(map[i]))
 			return (false);
 	i = -1;
-	while (data->current_map->arr[++i])
+	while (map[++i])
 	{
 		j = -1;
-		while (data->current_map->arr[i][++j])
+		while (map[i][++j])
 		{
-			if (!ft_inset(data->current_map->arr[i][j], "01 NSEW"))
+			if (!ft_inset(map[i][j], "01 NSEW"))
 				return (false);
-			if (ft_inset(data->current_map->arr[i][j], "NSEW"))
+			if (ft_inset(map[i][j], "NSEW"))
 			{
 				if (!vec_cmp(data->player.pos, vec(-1, -1)))
 					return (false);
 				data->player.pos = vec(j, i);
-				if (data->current_map->arr[i][j] == 'N')
-					data->player.angle = M_PI / 2;
-				else if (data->current_map->arr[i][j] == 'S')
+				if (map[i][j] == 'N')
 					data->player.angle = M_PI + (M_PI / 2);
-				else if (data->current_map->arr[i][j] == 'E')
+				else if (map[i][j] == 'S')
+					data->player.angle = M_PI / 2;
+				else if (map[i][j] == 'E')
 					data->player.angle = 0;
 				else
 					data->player.angle = M_PI;
@@ -197,19 +197,36 @@ bool	check_map(t_data *data)
 	}
 	if (vec_cmp(data->player.pos, vec(-1, -1)))
 		return (false);
-	if (!is_map_closed(data->current_map->arr))
+	if (!is_map_closed(map))
 		return (false);
 	return (true);
 }
 
-bool	get_map(t_data *data, int fd)
+// t_cell	**add_to_map(t_map *map, char *line)
+// {
+// 	char	**res;
+
+// 	res = ft_calloc(map->size.y + 2, sizeof(t_cell **));
+// 	if (res == NULL)
+// 	{
+// 		map->size
+// 		free_map(map);
+// 		return (NULL);
+// 	}
+// 	ft_tablcpy(res, map->arr, map->size.y);
+// 	free(map->arr);
+// 	res[len] = str;
+// 	res[len + 1] = NULL;
+// 	return (res);
+// }
+
+char	**get_map(t_data *data, int fd, t_map *level)
 {
 	char	*line;
 	int		i;
+	char	**map;
 
-	data->current_map = ft_calloc(1, sizeof(t_map));
-	ft_bzero(data->current_map, sizeof(t_map));
-	data->current_map->index = 0;
+	map = NULL;
 	line = get_next_line(fd);
 	while (line && ft_strlen(line) == 1)
 	{
@@ -218,30 +235,31 @@ bool	get_map(t_data *data, int fd)
 	}
 	while (line)
 	{
-		data->current_map->size.y++;
+		level->size.y++;
 		line[ft_strlen(line) - 1] = 0;
-		data->current_map->arr = ft_add_element_tab(data->current_map->arr, line);
+		map = ft_add_element_tab(map, line);
 		line = get_next_line(fd);
 	}
-	if (!data->current_map->arr || !check_map(data))
-		return (false);
+	if (!map || !check_map(data, map))
+		return (NULL);
 	i = -1;
-	while (++i < data->current_map->size.y)
-		if (ft_strlen(data->current_map->arr[i]) > data->current_map->size.x)
-			data->current_map->size.x = ft_strlen(data->current_map->arr[i]);
-	printf("x: %i, y: %i\n", data->current_map->size.x, data->current_map->size.y);
-	return (true);
+	while (++i < level->size.y)
+		if (ft_strlen(map[i]) > level->size.x)
+			level->size.x = ft_strlen(map[i]);
+	printf("x: %i, y: %i\n", level->size.y, level->size.x);
+	return (map);
 }
 
-bool	get_map_infos(t_data *data, int fd)
+char	**get_map_infos(t_data *data, int fd, t_map *level)
 {
 	char	*line;
-	char	*lines[6];
+	char	*lines[7];
 	int		i;
+	char	**map;
 
 	data->player.pos = vec(-1, -1);
 	i = -1;
-	while (++i < 6)
+	while (++i < 7)
 		lines[i] = NULL;
 	i = 0;
 	line = get_next_line(fd);
@@ -260,47 +278,70 @@ bool	get_map_infos(t_data *data, int fd)
 		line = get_next_line(fd);
 	}
 	if (!process_first_infos(data, lines))
-		return (false);
+		return (NULL);
 	i = -1;
 	while (++i < 6)
 		free(lines[i]);
-	if (!get_map(data, fd))
-		return (false);
-	return (true);
+	map = get_map(data, fd, level);
+	if (!map)
+		return (NULL);
+	return (map);
 }
 
-void	turn_map(t_data *data)
+void	turn_map(t_data *data, char **map, t_map *level)
 {
-	char	**new_map;
-	size_t	size;
-	size_t	size2;
-	int		i;
-	int		j;
+	int		x;
+	int		y;
 
-	i = -1;
-	size = 0;
-	while (data->current_map->arr[++i])
-		if (ft_strlen(data->current_map->arr[i]) > size)
-			size = ft_strlen(data->current_map->arr[i]);
-	new_map = ft_calloc(size + 1, sizeof(char *));
-	size2 = ft_tablen(data->current_map->arr);
-	i = -1;
-	while (++i < size)
-		new_map[i] = ft_calloc(size2 + 1, sizeof(char));
-	i = -1;
-	while (++i < size)
+	x = -1;
+	while (++x < level->size.x)
 	{
-		j = -1;
-		while (++j < size2)
-			new_map[i][j] = data->current_map->arr[j][i];
+		y = -1;
+		while (++y < level->size.y)
+		{
+			if (x >= ft_strlen(map[y]))
+				level->arr[x][y].type = VOID;
+			else
+				level->arr[x][y].type = map[y][x];
+			if (level->arr[x][y].type == WALL)
+			{
+				level->arr[x][y].tex[0] = data->textures[0];
+				level->arr[x][y].tex[1] = data->textures[1];
+				level->arr[x][y].tex[2] = data->textures[2];
+				level->arr[x][y].tex[3] = data->textures[3];
+			}
+		}
 	}
-	ft_free_tab(data->current_map->arr);
-	data->current_map->arr = new_map;
+	ft_free_tab(map);
+}
+
+bool	init_level(t_map *level)
+{
+	int	i;
+
+	level->index = 0;
+	level->arr = ft_calloc(level->size.x, sizeof(t_cell *));
+	if (!level->arr)
+		return (false);
+	i = -1;
+	while (++i < level->size.x)
+	{
+		level->arr[i] = ft_calloc(level->size.y, sizeof(t_cell));
+		if (!level->arr[i])
+		{
+			ft_free_tab((char **)level->arr);
+			return (false);
+		}
+	}
+	i = -1;
+	return (true);
 }
 
 bool	parsing(int argc, char *argv[], t_data *data)
 {
-	int fd;
+	int 	fd;
+	char	**map;
+	t_map	*level;
 
 	if (argc == 1 || !format_test(argv[1]))
 	{
@@ -313,14 +354,20 @@ bool	parsing(int argc, char *argv[], t_data *data)
 		ft_putstr_fd("Error\nCannot open the given file\n", 2);
 		return (false);
 	}
-	if (!get_map_infos(data, fd))
+	level = ft_calloc(sizeof(t_map), 1);
+	if (!level)
+		return (false);
+	map = get_map_infos(data, fd, level);
+	if (!map)
 	{
 		close(fd);
 		ft_putstr_fd("Error\nThe given file does not meet the requirements\n", 2);
 		return (false);
 	}
 	close(fd);
-	turn_map(data);
+	init_level(level);
+	turn_map(data, map, level);
+	data->current_map = level;
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/13 23:30:27 by fparis           ###   ########.fr       */
+/*   Updated: 2024/10/08 21:28:19 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,7 @@ void	move(t_data *data)
 		
 	correct_pos(data, &data->player.pos, &data->player.offset);
 
-	// if (p->rotation[1] || p->rotation[3])
-	// {
+
 		if (p->angle > 2 * M_PI)
 			p->angle = p->angle - (2 * M_PI);
 		if (p->angle < 0)
@@ -87,6 +86,10 @@ void	move(t_data *data)
 		data->player.camera_plane.y = sinf(angle_add(data->player.angle, M_PI / 2));
 		data->player.direction.x = cosf(data->player.angle);
 		data->player.direction.y = sinf(data->player.angle);
-	// }
+
+	if (p->pitch > 1000)
+		p->pitch = 1000;
+	else if (p->pitch < -1000)
+		p->pitch = -1000;
 	get_all_rays(data);
 }

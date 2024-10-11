@@ -6,11 +6,44 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/08 01:17:04 by fparis           ###   ########.fr       */
+/*   Updated: 2024/10/11 04:21:15 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	draw_wall(t_data *data, int x, t_vector pos, t_impact *ray)
+{
+	int 		tex_column;
+	int			i;
+	double		divided;
+	t_texture	*tex;
+
+	tex = ray->cell->tex[ray->face - 1];
+	divided = (double)tex->size / (double)(pos.y - pos.x);
+	if (ray->face % 2)
+		tex_column = fmod(data->player.pos.x * (data->scale * 2) + data->player.offset.x + data->scale + (ray->direc.x * ray->length), (data->scale * 2)) * tex->size / (data->scale * 2);
+	else
+		tex_column = fmod(data->player.pos.y * (data->scale * 2) + data->player.offset.y + data->scale + (ray->direc.y * ray->length), (data->scale * 2)) * tex->size / (data->scale * 2);
+	if ((ray->face == 1 || ray->face == 4))
+		tex_column = tex->size - tex_column - 1;
+	i = 0;
+	while (i < pos.x && i < data->win_size.y)
+	{
+		mlx_set_image_pixel(data->mlx, data->screen_display, x, i, 0xFF0000BB);
+		i++;
+	}
+	while (i < pos.y && i < data->win_size.y)
+	{
+		mlx_set_image_pixel(data->mlx, data->screen_display, x, i, tex->tab[tex_column][(int)((ft_abs(pos.x - i)) * divided)]);
+		i++;
+	}
+	while (i < data->win_size.y)
+	{
+		mlx_set_image_pixel(data->mlx, data->screen_display, x, i, 0xFF00BB00);
+		i++;
+	}
+}
 
 void	get_all_rays_old(t_data *data)
 {
