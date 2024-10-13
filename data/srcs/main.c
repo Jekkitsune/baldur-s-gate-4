@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/08 21:21:24 by fparis           ###   ########.fr       */
+/*   Updated: 2024/10/13 04:40:06 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,9 @@ int	loop(void *param)
 	if (newtime > starttime)
 	{
 		printf("%zu\n", frame);
+		if (frame == 0)
+			frame = 1;
+		data->player.speed = (double) 1 / ((double) frame / (double) 60);
 		frame = 0;
 		starttime = newtime;
 	}
@@ -95,7 +98,7 @@ int	main(int argc, char **argv)
 	mlx_on_event(data.mlx, data.win, MLX_WINDOW_EVENT, window_manager, &data);
 	
 	update_chunk(&data);
-	print_map(data.current_map);
+	//print_map(data.current_map);
 	mlx_loop_hook(data.mlx, loop, &data);
 	mlx_mouse_move(data.mlx, data.win, data.win_size.x / 2, data.win_size.y / 2);
 	mlx_loop(data.mlx);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 16:19:11 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/19 18:35:18 by fparis           ###   ########.fr       */
+/*   Updated: 2024/10/13 04:37:22 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ t_data	*init_data(t_data *data)
 {
 	ft_bzero(data, sizeof(t_data));
 	data->test_key = 0;
-	data->win_size.x = 1600;
-	data->win_size.y = 900;
+	data->win_size.x = WIDTH;
+	data->win_size.y = HEIGHT;
 	data->mlx = mlx_init();
 	data->win = mlx_new_window(data->mlx, data->win_size.x, data->win_size.y, "Baldur's Gate 4");
 	data->scale = 10;

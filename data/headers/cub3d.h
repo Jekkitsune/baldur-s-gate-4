@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/11 04:21:40 by fparis           ###   ########.fr       */
+/*   Updated: 2024/10/13 04:36:12 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@
 # define VOID ' '
 # define NB_TEX 4
 
-# define NB_RAYS 1800
-# define FOV 1.57
+# define NB_RAYS 1600
+# define FOV 0.7
+# define HEIGHT 900
+# define WIDTH 1600
 
 
 typedef struct s_vector
