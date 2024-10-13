@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/13 04:36:12 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/10/13 09:19:08 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct s_player
 	int			height;
 	int			focus_mode;
 	float		focus_dist;
+	float		pos_z;
 
 	t_vector	target_pos;
 	t_vectorf	target_offset;
@@ -138,6 +139,7 @@ typedef struct s_data
 	int			(*check_shape[2])(struct s_data *data, t_vector vec);
 	void		*screen_display;
 	int			on_screen;
+	uint32_t	**screen_buffer;
 } t_data;
 
 typedef	struct s_linfo

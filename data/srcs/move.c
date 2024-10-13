@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/08 21:28:19 by fparis           ###   ########.fr       */
+/*   Updated: 2024/10/13 09:24:39 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,11 @@ void	move(t_data *data)
 		p->pitch += 50;
 	if (p->rotation[2])
 		p->pitch -= 50;
-
 	if (p->movement[4])
 		p->height += 50 * (data->scale * 2);
 	if (p->movement[5])
 		p->height -= 50 * (data->scale * 2);
-		
+
 	correct_pos(data, &data->player.pos, &data->player.offset);
 
 

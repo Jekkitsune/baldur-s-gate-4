@@ -1,7 +1,7 @@
 NO ./woodwall.png
-SO ./woodwall.png
-WE ./woodwall.png
-EA ./woodwall.png
+SO ./brickwall.png
+WE ./bluewall.png
+EA ./pebblewall.png
 
 C 100,100,100
 F 100,100,100

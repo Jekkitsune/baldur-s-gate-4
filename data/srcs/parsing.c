@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 21:09:45 by gmassoni          #+#    #+#             */
-/*   Updated: 2024/10/11 04:13:14 by fparis           ###   ########.fr       */
+/*   Updated: 2024/10/13 04:50:12 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,7 +246,6 @@ char	**get_map(t_data *data, int fd, t_map *level)
 	while (++i < level->size.y)
 		if (ft_strlen(map[i]) > level->size.x)
 			level->size.x = ft_strlen(map[i]);
-	printf("x: %i, y: %i\n", level->size.y, level->size.x);
 	return (map);
 }
 

@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/13 04:40:06 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/10/13 09:52:04 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,6 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 
-	printf("Floor Color: %s\n", data.floor_color);
-	printf("Ceiling Color: %s\n", data.ceiling_color);
-
 	init_player(&data);
 
 	create_minimap(&data, 200, 30);
@@ -107,5 +104,8 @@ int	main(int argc, char **argv)
 	mlx_destroy_window(data.mlx, data.win);
 	mlx_destroy_display(data.mlx);
 	//free(data.current_map);
+	for (int i = 0; i < data.win_size.y; i++)
+		free(data.screen_buffer[i]);
+	free(data.screen_buffer);
 	return (0);
 }

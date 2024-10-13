@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 16:19:11 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/13 04:37:22 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/10/13 08:52:31 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	init_shape_tab(t_data *data)
 
 t_data	*init_data(t_data *data)
 {
+	int	i;
+
 	ft_bzero(data, sizeof(t_data));
 	data->test_key = 0;
 	data->win_size.x = WIDTH;
@@ -29,6 +31,17 @@ t_data	*init_data(t_data *data)
 	data->scale = 10;
 	data->render_distance = 500;
 	data->test_length = 0;
+	data->screen_buffer = ft_calloc(data->win_size.y, sizeof(uint32_t *));
+	if (!data->screen_buffer)
+		printf("malloc failed!\n");
+	i = 0;
+	while (i < data->win_size.y)
+	{
+		data->screen_buffer[i] = ft_calloc(data->win_size.x, sizeof(uint32_t));
+		if (!data->screen_buffer[i])
+			printf("malloc failed!\n");
+		i++;
+	}
 	mlx_mouse_hide();
 	init_shape_tab(data);
 	return (data);
