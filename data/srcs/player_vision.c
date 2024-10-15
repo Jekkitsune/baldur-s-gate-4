@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/13 16:36:36 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/10/15 03:51:32 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,13 +153,12 @@ void	show_floor_and_ceiling(t_data *data)
 	float		closest_card;
 	float		tmp;
 	int			pixel_length;
-	t_vectorf	left_seg;
-	t_vectorf	right_seg;
+	t_vector	left_seg;
+	t_vector	right_seg;
 	t_texture	*left_tex;
 	t_texture	*right_tex;
-	float		img_prct;
 	int			start_index;
-	float		pixel_length_img;
+	int			pixel_length_img;
 	int			index;
 
 	y = 0;
@@ -206,47 +205,33 @@ void	show_floor_and_ceiling(t_data *data)
 			tiniest_gap = tmp;
 			closest_card = M_PI * 2;
 		}
-		pixel_length = (fabs(tiniest_gap) * data->win_size.y) / (M_PI * 2);
-		if (tiniest_gap < 0)
+		pixel_length = ((M_PI - (fabs(tiniest_gap) * 2)) * (data->win_size.x - 1)) / M_PI;
+		if (tiniest_gap > 0)
 		{
-			left_seg = vecf(0, pixel_length);
-			right_seg = vecf(left_seg.y + 1, data->win_size.x - 1);
-		}
-		else if (tiniest_gap > 0)
-		{
-			right_seg = vecf(data->win_size.x - 1 - pixel_length, data->win_size.x - 1);
-			left_seg = vecf(0, right_seg.x - 1);
+			left_seg = vec(0, pixel_length);
+			right_seg = vec(pixel_length + 1, data->win_size.x - 1);
 		}
 		else
 		{
-			left_seg = vecf(0, data->win_size.x - 1);
-			right_seg = vecf(-1, -1);
+			right_seg = vec(data->win_size.x - 1 - pixel_length, data->win_size.x - 1);
+			left_seg = vec(0, right_seg.x - 1);
 		}
-		if (tiniest_gap <= 0)
+		index = (int) (closest_card / (M_PI / 2));
+		if (index == 4)
+			index = 0;
+		if (tiniest_gap > 0)
 		{
-			index = (int) (closest_card / (M_PI / 2));
-			printf("%f original: %d\n", closest_card, index);
-			if (index == 4)
-				index = 0;
 			left_tex = data->textures[index];
-			printf("%d ,", index);
 			if (index == 3)
 				index = -1;
 			right_tex = data->textures[index + 1];
-			printf("%d\n", index + 1);
 		}
 		else
 		{
-			index = (int) (closest_card / (M_PI / 2));
-			printf("%f original: %d\n", closest_card, index);
-			if (index == 4)
-				index = 0;
 			right_tex = data->textures[index];
-			printf("%d ,", index);
 			if (index == 0)
 				index = 4;
-			left_tex = data->textures[index - 1];
-			printf("%d\n", index - 1);
+			right_tex = data->textures[index - 1];
 		}
 
 		x = 0;
@@ -271,37 +256,30 @@ void	show_floor_and_ceiling(t_data *data)
 
 			if (x >= left_seg.x && x <= left_seg.y)
 			{
-				pixel_length = fabs(left_seg.y - left_seg.x);
-				img_prct = (pixel_length / data->win_size.x) * left_tex->size;
-				pixel_length_img = img_prct * left_tex->size;
-				start_index = left_tex->size - pixel_length_img;
-				if (pixel_length == 0)
-					t.x = start_index;
-				else
-					t.x = ((x / pixel_length) * (left_tex->size)) + start_index;
-				t.y = ((y / data->win_size.y) * left_tex->size);
-				//printf("%i pixel_length x %i y %i\n", pixel_length, t.x, t.y);
+				pixel_length = ft_abs(left_seg.y - left_seg.x);
+				pixel_length_img = (pixel_length * left_tex->size) / data->win_size.x;
+				start_index = left_tex->size - pixel_length_img - 1;
+				t.x = ((x * (left_tex->size - 1)) / (data->win_size.x - 1)) + start_index;
+				t.y = ((y * (left_tex->size - 1)) / (data->win_size.y - 1));
 				if (y - (data->win_size.y / 2) >= 0)
 				{
-					color = left_tex->tab[t.y][t.x];
-					data->screen_buffer[y - data->win_size.y / 2][x] = color;
+					color = left_tex->tab[t.x][t.y];
+					data->screen_buffer[data->win_size.y - y - 1][x] = color;
 				}
 			}
 			else if (x >= right_seg.x && x <= right_seg.y)
 			{
-				pixel_length = fabs(right_seg.y - right_seg.x);
-				img_prct = (pixel_length / data->win_size.x) * right_tex->size;
-				pixel_length_img = img_prct * right_tex->size;
-				start_index = right_tex->size - pixel_length_img;
-				if (pixel_length == 0)
-					t.x = start_index;
-				else
-					t.x = ((x / pixel_length) * (right_tex->size)) + start_index;
-				t.y = ((y / data->win_size.y) * right_tex->size);
+				pixel_length = ft_abs(right_seg.y - right_seg.x);
+				pixel_length_img = (pixel_length * right_tex->size) / data->win_size.x;
+				start_index = right_tex->size - pixel_length_img - 1;
+				t.x = ((x * (right_tex->size - 1)) / (data->win_size.x - 1)) - start_index;
+				t.y = ((y * (right_tex->size - 1)) / (data->win_size.y - 1));
+				if (t.x < 0)
+					t.x = 0;
 				if (y - (data->win_size.y / 2) >= 0)
 				{
-					color = left_tex->tab[t.y][t.x];
-					data->screen_buffer[y - data->win_size.y / 2][x] = color;
+					color = right_tex->tab[t.x][t.y];
+					data->screen_buffer[data->win_size.y - y - 1][x] = color;
 				}
 			}
 
