@@ -1,7 +1,7 @@
-NO ./ciel1.png
-SO ./ciel2.png
-WE ./ciel3.png
-EA ./ciel4.png
+NO ./sl1.png
+EA ./sl2.png
+WE ./sl3.png
+SO ./sl4.png
 
 F 220,100,0
 C 225,30,0

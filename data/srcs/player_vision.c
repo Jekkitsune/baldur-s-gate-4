@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/15 03:51:32 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/10/17 07:43:49 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,61 @@ void	show_floor_and_ceiling(t_data *data)
 	int			index;
 
 	y = 0;
+	tiniest_gap = data->player.angle;
+	closest_card = 0;
+	tmp = data->player.angle - M_PI / 2;
+	if (fabs(tmp) < fabs(tiniest_gap))
+	{
+		tiniest_gap = tmp;
+		closest_card = M_PI / 2;
+	}
+	tmp = data->player.angle - M_PI;
+	if (fabs(tmp) < fabs(tiniest_gap))
+	{
+		tiniest_gap = tmp;
+		closest_card = M_PI;
+	}
+	tmp = data->player.angle - M_PI * 1.5;
+	if (fabs(tmp) < fabs(tiniest_gap))
+	{
+		tiniest_gap = tmp;
+		closest_card = M_PI * 1.5;
+	}
+	tmp = data->player.angle - M_PI * 2;
+	if (fabs(tmp) < fabs(tiniest_gap))
+	{
+		tiniest_gap = tmp;
+		closest_card = M_PI * 2;
+	}
+	pixel_length = ((M_PI - (fabs(tiniest_gap) * 2)) * (data->win_size.x - 1)) / M_PI;
+	if (tiniest_gap > 0)
+	{
+		left_seg = vec(0, pixel_length);
+		right_seg = vec(pixel_length + 1, data->win_size.x - 1);
+	}
+	else
+	{
+		right_seg = vec(data->win_size.x - 1 - pixel_length, data->win_size.x - 1);
+		left_seg = vec(0, right_seg.x - 1);
+	}
+	index = 3 - (int) (closest_card / (M_PI / 2));
+	if (index == -1)
+		index = 3;
+	if (tiniest_gap >= 0)
+	{
+		left_tex = data->textures[index];
+		if (index == 0)
+			index = 4;
+		right_tex = data->textures[index - 1];
+	}
+	else
+	{
+		right_tex = data->textures[index];
+		if (index == 3)
+			index = -1;
+		left_tex = data->textures[index + 1];
+	}
+
 	tmp_buffer = data->screen_buffer;
 	while (y < data->win_size.y)
 	{
@@ -178,61 +233,6 @@ void	show_floor_and_ceiling(t_data *data)
 		
 		floor.x = (data->player.pos.x + (5 + data->player.offset.x / 2) / 10) + row_distance * ray_dir_0.x;
 		floor.y = (data->player.pos.y + (5 + data->player.offset.y / 2) / 10) + row_distance * ray_dir_0.y;
-
-		tiniest_gap = data->player.angle;
-		closest_card = 0;
-		tmp = data->player.angle - M_PI / 2;
-		if (fabs(tmp) < fabs(tiniest_gap))
-		{
-			tiniest_gap = tmp;
-			closest_card = M_PI / 2;
-		}
-		tmp = data->player.angle - M_PI;
-		if (fabs(tmp) < fabs(tiniest_gap))
-		{
-			tiniest_gap = tmp;
-			closest_card = M_PI;
-		}
-		tmp = data->player.angle - M_PI * 1.5;
-		if (fabs(tmp) < fabs(tiniest_gap))
-		{
-			tiniest_gap = tmp;
-			closest_card = M_PI * 1.5;
-		}
-		tmp = data->player.angle - M_PI * 2;
-		if (fabs(tmp) < fabs(tiniest_gap))
-		{
-			tiniest_gap = tmp;
-			closest_card = M_PI * 2;
-		}
-		pixel_length = ((M_PI - (fabs(tiniest_gap) * 2)) * (data->win_size.x - 1)) / M_PI;
-		if (tiniest_gap > 0)
-		{
-			left_seg = vec(0, pixel_length);
-			right_seg = vec(pixel_length + 1, data->win_size.x - 1);
-		}
-		else
-		{
-			right_seg = vec(data->win_size.x - 1 - pixel_length, data->win_size.x - 1);
-			left_seg = vec(0, right_seg.x - 1);
-		}
-		index = (int) (closest_card / (M_PI / 2));
-		if (index == 4)
-			index = 0;
-		if (tiniest_gap > 0)
-		{
-			left_tex = data->textures[index];
-			if (index == 3)
-				index = -1;
-			right_tex = data->textures[index + 1];
-		}
-		else
-		{
-			right_tex = data->textures[index];
-			if (index == 0)
-				index = 4;
-			right_tex = data->textures[index - 1];
-		}
 
 		x = 0;
 		while (x < data->win_size.x)
@@ -254,38 +254,43 @@ void	show_floor_and_ceiling(t_data *data)
 			//mlx_set_image_pixel(data->mlx, data->screen_display, x, y, color);
 			data->screen_buffer[y][x] = color;
 
-			if (x >= left_seg.x && x <= left_seg.y)
+			if (!data->sky_box)
 			{
-				pixel_length = ft_abs(left_seg.y - left_seg.x);
-				pixel_length_img = (pixel_length * left_tex->size) / data->win_size.x;
-				start_index = left_tex->size - pixel_length_img - 1;
-				t.x = ((x * (left_tex->size - 1)) / (data->win_size.x - 1)) + start_index;
-				t.y = ((y * (left_tex->size - 1)) / (data->win_size.y - 1));
-				if (y - (data->win_size.y / 2) >= 0)
+				color = data->textures[1]->tab[t.x][t.y];
+				// mlx_set_image_pixel(data->mlx, data->screen_display, x, data->win_size.y - y - 1, color);
+				data->screen_buffer[data->win_size.y - y - 1][x] = color;
+			}
+			else
+			{
+				if (x >= left_seg.x && x <= left_seg.y)
 				{
-					color = left_tex->tab[t.x][t.y];
-					data->screen_buffer[data->win_size.y - y - 1][x] = color;
+					pixel_length = ft_abs(left_seg.y - left_seg.x);
+					pixel_length_img = (pixel_length * left_tex->size) / data->win_size.x;
+					start_index = left_tex->size - pixel_length_img - 1;
+					t.x = (left_tex->size - 1) - ((x * (left_tex->size - 1)) / (data->win_size.x - 1)) + start_index;
+					t.y = (left_tex->size - 1) - ((y * (left_tex->size - 1)) / (data->win_size.y - 1));
+					if (y - (data->win_size.y / 2) >= 0)
+					{
+						color = left_tex->tab[t.x][t.y];
+						data->screen_buffer[data->win_size.y - y - 1][x] = color;
+					}
+				}
+				else if (x >= right_seg.x && x <= right_seg.y)
+				{
+					pixel_length = ft_abs(right_seg.y - right_seg.x);
+					pixel_length_img = (pixel_length * right_tex->size) / data->win_size.x;
+					start_index = right_tex->size - pixel_length_img - 1;
+					t.x = ((x * (right_tex->size - 1)) / (data->win_size.x - 1)) - start_index;
+					t.y = ((y * (right_tex->size - 1)) / (data->win_size.y - 1));
+					if (t.x < 0)
+						t.x = 0;
+					if (y - (data->win_size.y / 2) >= 0)
+					{
+						color = right_tex->tab[t.x][t.y];
+						data->screen_buffer[data->win_size.y - y - 1][x] = color;
+					}
 				}
 			}
-			else if (x >= right_seg.x && x <= right_seg.y)
-			{
-				pixel_length = ft_abs(right_seg.y - right_seg.x);
-				pixel_length_img = (pixel_length * right_tex->size) / data->win_size.x;
-				start_index = right_tex->size - pixel_length_img - 1;
-				t.x = ((x * (right_tex->size - 1)) / (data->win_size.x - 1)) - start_index;
-				t.y = ((y * (right_tex->size - 1)) / (data->win_size.y - 1));
-				if (t.x < 0)
-					t.x = 0;
-				if (y - (data->win_size.y / 2) >= 0)
-				{
-					color = right_tex->tab[t.x][t.y];
-					data->screen_buffer[data->win_size.y - y - 1][x] = color;
-				}
-			}
-
-			// color = data->textures[1]->tab[t.x][t.y];
-			// mlx_set_image_pixel(data->mlx, data->screen_display, x, data->win_size.y - y - 1, color);
-			// data->screen_buffer[data->win_size.y - y - 1][x] = color;
 
 			x++;
 		}

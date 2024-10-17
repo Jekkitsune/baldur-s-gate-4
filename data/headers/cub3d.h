@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/13 09:19:08 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/10/17 06:43:56 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ typedef struct s_data
 	void		*screen_display;
 	int			on_screen;
 	uint32_t	**screen_buffer;
+	bool		sky_box;
 } t_data;
 
 typedef	struct s_linfo

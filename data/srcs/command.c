@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/18 21:40:08 by fparis           ###   ########.fr       */
+/*   Updated: 2024/10/17 06:44:33 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	key_down_manager(int key, void *param)
 		data->player.is_running = 1;
 	if (key == 8)
 		data->test_key = 1;
+	if (key == 6)
+		data->sky_box = !data->sky_box;
 	return (0);
 }
 

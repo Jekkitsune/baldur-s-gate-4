@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 16:19:11 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/13 08:52:31 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/10/17 06:44:13 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_data	*init_data(t_data *data)
 	data->scale = 10;
 	data->render_distance = 500;
 	data->test_length = 0;
+	data->sky_box = false;
 	data->screen_buffer = ft_calloc(data->win_size.y, sizeof(uint32_t *));
 	if (!data->screen_buffer)
 		printf("malloc failed!\n");
