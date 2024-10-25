@@ -6,6 +6,7 @@
 		"chrono": "c",
 		"stdbool.h": "c",
 		"time.h": "c",
-		"cstdint": "c"
+		"cstdint": "c",
+		"libft.h": "c"
 	}
 }

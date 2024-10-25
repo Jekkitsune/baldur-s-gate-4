@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player_vision.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/17 07:43:49 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/10/25 23:13:43 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,14 @@ void	draw_wall(t_data *data, int x, t_vector pos, t_impact *ray)
 		tex_column = fmod(data->player.pos.y * (data->scale * 2) + data->player.offset.y + data->scale + (ray->direc.y * ray->length), (data->scale * 2)) * tex->size / (data->scale * 2);
 	if ((ray->face == 1 || ray->face == 4))
 		tex_column = tex->size - tex_column - 1;
-	i = pos.x;
-	// while (i < pos.x && i < data->win_size.y)
-	// {
-	// 	mlx_set_image_pixel(data->mlx, data->screen_display, x, i, 0xFF0000BB);
-	// 	i++;
-	// }
+	i = 0;
+	while (i < pos.x && i < data->win_size.y)
+	{
+		//mlx_set_image_pixel(data->mlx, data->screen_display, x, i, 0xFF0000BB);
+		data->screen_buffer[i][x] = 0xFF0000BB;
+		i++;
+	}
+	i = ft_max(pos.x, i);
 	while (i < pos.y && i < data->win_size.y)
 	{
 		//mlx_set_image_pixel(data->mlx, data->screen_display, x, i, tex->tab[tex_column][(int)((ft_abs(pos.x - i)) * divided)]);
@@ -40,11 +42,12 @@ void	draw_wall(t_data *data, int x, t_vector pos, t_impact *ray)
 			data->screen_buffer[i][x] = tex->tab[tex_column][(int)((ft_abs(pos.x - i)) * divided)];
 		i++;
 	}
-	// while (i < data->win_size.y)
-	// {
-	// 	mlx_set_image_pixel(data->mlx, data->screen_display, x, i, 0xFF00BB00);
-	// 	i++;
-	// }
+	while (i < data->win_size.y)
+	{
+		//mlx_set_image_pixel(data->mlx, data->screen_display, x, i, 0xFF00BB00);
+		data->screen_buffer[i][x] = 0xFF00BB00;
+		i++;
+	}
 }
 
 void	get_all_rays_old(t_data *data)
@@ -306,14 +309,15 @@ void	show_screen(t_data *data)
 	float		diff;
 	int			color;
 
-	show_floor_and_ceiling(data);
+	//show_floor_and_ceiling(data);
 	i = 0;
-	diff = (float) data->win_size.x / (float) WIDTH;
+	diff = (float)data->win_size.x / (float)NB_RAYS;
 	while (i < NB_RAYS)
 	{
 		draw_ray(data, diff, &data->player.vision[i], i);
 		i++;
 	}
+	draw_entities(data);
 	if (!data->screen_display)
 		data->screen_display = mlx_new_image(data->mlx, data->win_size.x, data->win_size.y);
 	i = 0;

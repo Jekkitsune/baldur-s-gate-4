@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:23:58 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/03 03:01:23 by fparis           ###   ########.fr       */
+/*   Updated: 2024/10/24 03:03:50 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,19 @@ uint32_t	average_color(uint32_t *col_tab, double len)
 	int			i;
 
 	i = 0;
-	alpha = 0;
+	alpha = 0xFF;
 	red = 0;
 	green = 0;
 	blue = 0;
 	while (i < len)
 	{
-		alpha += col_tab[i] >> 24;
+		if ((col_tab[i] >> 24) < alpha)
+			alpha = col_tab[i] >> 24;
 		red += ((col_tab[i] & 0x00FF0000) >> 16);
 		green += ((col_tab[i] & 0x0000FF00) >> 8);
 		blue += (col_tab[i] & 0x000000FF);
 		i++;
 	}
-	alpha /= len;
 	red /= len;
 	green /= len;
 	blue /= len;
@@ -152,4 +152,25 @@ t_texture	*resize(t_texture *tex, int new_size)
 		start.y = divided * i_tab.y;
 	}
 	return (res);
+}
+
+void	ft_pixel_put(t_data *data, int y, int x, uint32_t color)
+{
+	float		trans;
+	uint32_t	red;
+	uint32_t	green;
+	uint32_t	blue;
+
+	if (x >= 0 && x < data->win_size.x && y >= 0 && y < data->win_size.y)
+	{
+		trans = (float)(color >> 24) / 255.0;
+		//printf("col = %d, %f\n", color >> 24, trans);
+		red = (((data->screen_buffer[y][x] & 0x00FF0000) >> 16) * (1 - trans))
+			+ (((color & 0x00FF0000) >> 16) * trans);
+		green = (((data->screen_buffer[y][x] & 0x0000FF00) >> 8) * (1 - trans))
+			+ (((color & 0x0000FF00) >> 8) * trans);
+		blue = ((data->screen_buffer[y][x] & 0x000000FF) * (1 - trans))
+			+ ((color & 0x000000FF) * trans);
+		data->screen_buffer[y][x] = (0xFF << 24) | (red << 16) | (green << 8) | blue;
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/17 06:43:56 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/10/25 23:12:39 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@
 # define VOID ' '
 # define NB_TEX 4
 
-# define NB_RAYS 1600
+# define NB_RAYS (1600 / 2)
 # define FOV 0.7
-# define HEIGHT 900
-# define WIDTH 1600
+# define HEIGHT (900 / 2)
+# define WIDTH (1600 / 2)
 
 
 typedef struct s_vector
@@ -63,6 +63,11 @@ typedef struct s_entity
 	t_texture	*tex;
 	t_vector	pos;
 	t_vectorf	offset;
+	float		distance;
+	t_vectorf	true_pos;
+	int			nb_impact;
+	t_vector	draw_x;
+	t_vector	draw_y;
 }	t_entity;
 
 typedef	struct s_cell
@@ -96,7 +101,7 @@ typedef struct s_player
 	float		angle;
 	int			movement[6];
 	int			rotation[4];
-	int			speed;
+	double		speed;
 	int			is_running;
 	t_impact	vision[NB_RAYS];
 	t_vectorf	camera_plane;
@@ -109,6 +114,8 @@ typedef struct s_player
 
 	t_vector	target_pos;
 	t_vectorf	target_offset;
+
+	t_list		*visible_entities;
 }	t_player;
 
 typedef struct minimap
@@ -125,7 +132,7 @@ typedef struct s_data
 {
 	void		*mlx;
 	void		*win;
-	t_texture	*textures[4];
+	t_texture	*textures[6];
 	char		floor_color[9];
 	char		ceiling_color[9];
 	t_vector	win_size;
@@ -194,7 +201,12 @@ bool		check_textures(t_texture **tex_tab);
 t_texture	*path_to_tex(t_data *data, char *path);
 void		show_tex(t_data *data, t_texture *tex, t_vector pos);
 t_texture	*resize(t_texture *tex, int new_size);
-void		draw_wall(t_data *data, int x, t_vector pos, t_impact *ray);
+//void		draw_wall(t_data *data, int x, t_vector pos, t_impact *ray);
 void		free_map(t_map *map);
+void		draw_thing(t_data *data, t_vector pos, t_vectorf offset, t_texture *tex);
+void		ft_pixel_put(t_data *data, int y, int x, uint32_t color);
+void		draw_entities(t_data *data);
+t_entity	*create_entity(t_data *data, t_vector pos, char typ, t_texture *tex);
+void		calculate_entity_info(t_data *data, t_entity *entity);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mbico <mbico@student.42.fr>                +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 17:22:54 by mbico             #+#    #+#             */
-/*   Updated: 2023/11/08 20:11:55 by mbico            ###   ########.fr       */
+/*   Updated: 2024/10/17 20:48:08 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	ft_lstadd_front(t_list **lst, t_list *new)
 {
 	t_list	*tmp;
 
+	if (!new)
+		return ;
 	tmp = new;
 	while (tmp->next != NULL)
 	{

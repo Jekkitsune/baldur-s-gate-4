@@ -3,14 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/13 05:03:00 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/10/25 23:09:00 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	sort_entity(t_data *data, t_entity *entity)
+{
+	t_list		*i;
+	t_list		*new;
+	t_entity	compare;
+
+	new = ft_lstnew(entity);
+	if (!new)
+		return ; //exit free pt ???
+	calculate_entity_info(data, entity);
+	entity->nb_impact++;
+	i = data->player.visible_entities;
+	if (!i || ((t_entity *)i->content)->distance <= entity->distance)
+	{
+		ft_lstadd_front(&data->player.visible_entities, new);
+		return ;
+	}
+	while (i->next && ((t_entity *)i->next->content)->distance > entity->distance)
+		i = i->next;
+	new->next = i->next;
+	i->next = new;
+}
+
+void	add_cell_entities(t_data *data, t_impact *ray)
+{
+	t_list		*cell_lst;
+	t_entity	*current_entity;
+
+	cell_lst = data->current_map->arr[ray->wall_pos.x][ray->wall_pos.y].entities;
+	while (cell_lst)
+	{
+		current_entity = cell_lst->content;
+		if (current_entity->nb_impact > 0)
+			return ;
+		sort_entity(data, current_entity);
+		cell_lst = cell_lst->next;
+	}
+}
 
 void	draw_line_raycast(t_data *data, int x, int start, int end, int color, t_impact *ray)
 {
@@ -38,12 +77,12 @@ t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length)
 {
 	if (!in_bound(*data->current_map, impact->wall_pos)
 		|| ft_min(ft_absf(length.x), ft_absf(length.y)) > data->render_distance)
-	{
-		impact->face = 0;
 		return (impact);
-	}
 	if (data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type != WALL)
+	{
+		add_cell_entities(data, impact);
 		return (NULL);
+	}
 	impact->cell = &data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y];
 	if (ft_absf(length.x) <= ft_absf(length.y))
 	{
@@ -63,12 +102,31 @@ t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length)
 	}
 }
 
+void		free_visible_lst(t_data *data)
+{
+	t_list	*i;
+	t_list	*to_free;
+
+	if (!data->player.visible_entities)
+		return ;
+	i = data->player.visible_entities;
+	while (i)
+	{
+		to_free = i;
+		i = i->next;
+		free(to_free);
+	}
+	data->player.visible_entities = NULL;
+}
+
 t_impact	raycast(t_vector start, t_vectorf direc, t_data *data, t_vectorf slope_coef)
 {
 	t_vector	sign;
 	t_vectorf	length;
 	t_impact	impact;
 
+	//free_visible_lst(data);
+	impact.face = 0;
 	impact.direc.x = direc.x;
 	impact.direc.y = direc.y;
 	if (direc.x < 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/15 00:26:31 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/10/25 23:08:55 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,13 @@ int	main(int argc, char **argv)
 	//print_map(data.current_map);
 	mlx_loop_hook(data.mlx, loop, &data);
 	mlx_mouse_move(data.mlx, data.win, data.win_size.x / 2, data.win_size.y / 2);
+
+	data.textures[4] = path_to_tex(&data, "hutao.png");
+	data.textures[5] = path_to_tex(&data, "pd.png");
+	create_entity(&data, vec(data.player.pos.x - 1, data.player.pos.y - 1), 1, data.textures[4]);
+	create_entity(&data, vec(data.player.pos.x - 1, data.player.pos.y - 2), 1, data.textures[5]);
+
 	mlx_loop(data.mlx);
-
-
 	mlx_destroy_window(data.mlx, data.win);
 	mlx_destroy_display(data.mlx);
 	//free(data.current_map);
