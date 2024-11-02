@@ -6,11 +6,48 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 19:14:32 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/25 23:08:39 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/02 21:54:20 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+t_list	*ft_lstpop(t_list **lst_start, void *check)
+{
+	t_list	*i;
+	t_list	*tmp;
+
+	if (!lst_start || !*lst_start)
+		return (NULL);
+	i = *lst_start;
+	if (i->content == check)
+	{
+		*lst_start = i->next;
+		return (i);
+	}
+	while (i->next && i->next->content != check)
+		i = i->next;
+	tmp = i;
+	i = i->next;
+	if (!i)
+		return (NULL);
+	tmp->next = i->next;
+	return (i);
+}
+
+int	ft_inlst(t_list *lst, void *check)
+{
+	t_list	*i;
+
+	i = lst;
+	while (i)
+	{
+		if (i->content == check)
+			return (1);
+		i = i->next;
+	}
+	return (0);
+}
 
 t_entity	*create_entity(t_data *data, t_vector pos, char typ, t_texture *tex)
 {
@@ -29,12 +66,12 @@ t_entity	*create_entity(t_data *data, t_vector pos, char typ, t_texture *tex)
 		free(entity);
 		return (NULL);
 	}
-	entity->id = entity;
 	entity->nb_impact = 0;
 	entity->offset = vecf(0, 0);
 	entity->pos = pos;
 	entity->tex = tex;
 	entity->type = typ;
+	entity->behavior = ft_nothing;
 	ft_lstadd_front(&data->current_map->arr[pos.x][pos.y].entities, new_lst);
 	return (entity);
 }
@@ -43,17 +80,19 @@ void	destroy_entity(t_data *data, t_entity *entity)
 {
 	t_list	*tmp;
 
-	if (entity->pos.x >= 0 && entity->pos.x < data->current_map->size.x
-		&& entity->pos.y >= 0 && entity->pos.y < data->current_map->size.y)
+	printf("try to destroy %p\n", entity);
+	if (!entity)
+		return ;
+	if (entity->active)
+		destroy_active(data, entity);
+	if (in_bound(*data->current_map, entity->pos))
 	{
-		tmp = data->current_map->arr[entity->pos.x][entity->pos.y].entities;
-		while (tmp && tmp->content != entity->id)
-			tmp = tmp->next;
+		tmp = ft_lstpop(&data->current_map->arr[entity->pos.x][entity->pos.y].entities, entity);
 		if (tmp)
-			ft_lstdelone(tmp, free);
+			free(tmp);
 	}
-	else
-		free(entity);
+	free(entity);
+	printf("successfully destroyed\n");
 }
 
 float	get_obj_x(t_data *data, t_vectorf pos, t_vectorf p_pos)
@@ -192,4 +231,29 @@ void	draw_entities(t_data *data)
 		free(to_free);
 	}
 	data->player.visible_entities = NULL;
+}
+
+void	move_entity(t_data *data, t_entity *entity, t_vectorf move)
+{
+	t_vector	last_pos;
+	t_list		*entity_lst;
+
+	last_pos = entity->pos;
+	entity->offset.x += move.x;
+	entity->offset.y += move.y;
+	correct_pos(data, &entity->pos, &entity->offset);
+	if (entity->pos.x != last_pos.x || entity->pos.y != last_pos.y)
+	{
+		if (in_bound(*data->current_map, last_pos))
+		{
+			entity_lst = ft_lstpop(&data->current_map->arr[last_pos.x][last_pos.y].entities, entity);
+			if (entity_lst && in_bound(*data->current_map, entity->pos))
+			{
+				entity_lst->next = NULL;
+				ft_lstadd_back(&data->current_map->arr[entity->pos.x][entity->pos.y].entities, entity_lst);
+				return ;
+			}
+		}
+		destroy_entity(data, entity);
+	}
 }

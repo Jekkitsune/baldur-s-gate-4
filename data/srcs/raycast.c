@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/25 23:09:00 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/02 19:56:33 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ t_impact	raycast(t_vector start, t_vectorf direc, t_data *data, t_vectorf slope_
 
 	//free_visible_lst(data);
 	impact.face = 0;
+	impact.length = 0;
 	impact.direc.x = direc.x;
 	impact.direc.y = direc.y;
 	if (direc.x < 0)

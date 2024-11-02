@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/25 23:12:39 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/02 21:25:33 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ typedef struct s_texture
 typedef struct s_entity
 {
 	char		type;
-	void		*id;
 	t_texture	*tex;
 	t_vector	pos;
 	t_vectorf	offset;
@@ -68,6 +67,8 @@ typedef struct s_entity
 	int			nb_impact;
 	t_vector	draw_x;
 	t_vector	draw_y;
+	t_bool		active;
+	void		(*behavior)(void *data, void *entity);
 }	t_entity;
 
 typedef	struct s_cell
@@ -92,6 +93,7 @@ typedef	struct s_map
 	int			index;
 	t_vector	size;
 	t_cell		**arr;
+	t_list		*active_entities;
 }	t_map;
 
 typedef struct s_player
@@ -142,12 +144,12 @@ typedef struct s_data
 	int			scale;
 	int			render_distance;
 	int			test_key;
-	float		test_length;
 	int			(*check_shape[2])(struct s_data *data, t_vector vec);
 	void		*screen_display;
 	int			on_screen;
 	uint32_t	**screen_buffer;
 	bool		sky_box;
+	int			fps;
 } t_data;
 
 typedef	struct s_linfo
@@ -208,5 +210,17 @@ void		ft_pixel_put(t_data *data, int y, int x, uint32_t color);
 void		draw_entities(t_data *data);
 t_entity	*create_entity(t_data *data, t_vector pos, char typ, t_texture *tex);
 void		calculate_entity_info(t_data *data, t_entity *entity);
+void		move_entity(t_data *data, t_entity *entity, t_vectorf move);
+void		follow_player(void *arg_data, void *arg_entity);
+void		ft_nothing(void *data, void *entity);
+t_list		*ft_lstpop(t_list **lst_start, void *check);
+void		destroy_active(t_data *data, t_entity *entity);
+t_bool		check_activity(t_data *data, t_entity *entity);
+int			ft_inlst(t_list *lst, void *check);
+void		destroy_entity(t_data *data, t_entity *entity);
+void		add_active(t_data *data, t_entity *entity, void (*behavior)(void *, void *));
+void		remove_active(t_data *data, t_entity *entity);
+void		update_all_active(t_data *data);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/25 23:08:55 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/02 21:59:08 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,29 @@ int	loop(void *param)
 
 	if (data->test_key)
 	{
+		// if (data->current_map->arr[25][10].entities)
+		// 	ft_lstpop(&data->current_map->arr[25][10].entities, data->active_entities[0]);
+		if (data->current_map->active_entities)
+			remove_active(data, data->current_map->active_entities->content);
 		data->test_key = 0;
-		data->player.focus_mode = !data->player.focus_mode; 
-		if (data->player.focus_mode)
-		{
-			data->player.focus_dist = 40;
-			data->player.target_pos = data->player.pos;
-			data->player.target_offset = data->player.offset;
-		}
-		else
-		{
-			data->player.pos = data->player.target_pos;
-			data->player.offset = data->player.target_offset;
-			data->player.height = 0;
-			data->player.pitch = 0;
-		}
+		// data->player.focus_mode = !data->player.focus_mode; 
+		// if (data->player.focus_mode)
+		// {
+		// 	data->player.focus_dist = 40;
+		// 	data->player.target_pos = data->player.pos;
+		// 	data->player.target_offset = data->player.offset;
+		// }
+		// else
+		// {
+		// 	data->player.pos = data->player.target_pos;
+		// 	data->player.offset = data->player.target_offset;
+		// 	data->player.height = 0;
+		// 	data->player.pitch = 0;
+		// }
 	}
+
 	move(data);
+	update_all_active(data);
 	update_chunk(data);
 	show_screen(data);
 	show_minimap(data);
@@ -62,7 +68,8 @@ int	loop(void *param)
 		printf("%zu\n", frame);
 		if (frame == 0)
 			frame = 1;
-		data->player.speed = (double) 1 / ((double) frame / (double) 60);
+		data->fps = frame;
+		data->player.speed = (double) 1 / ((double) data->fps / (double) 60);
 		frame = 0;
 		starttime = newtime;
 	}
@@ -101,8 +108,8 @@ int	main(int argc, char **argv)
 
 	data.textures[4] = path_to_tex(&data, "hutao.png");
 	data.textures[5] = path_to_tex(&data, "pd.png");
-	create_entity(&data, vec(data.player.pos.x - 1, data.player.pos.y - 1), 1, data.textures[4]);
-	create_entity(&data, vec(data.player.pos.x - 1, data.player.pos.y - 2), 1, data.textures[5]);
+	add_active(&data, create_entity(&data, vec(25, 10), 1, data.textures[4]), follow_player);
+	create_entity(&data, vec(25, 9), 1, data.textures[5]);
 
 	mlx_loop(data.mlx);
 	mlx_destroy_window(data.mlx, data.win);
