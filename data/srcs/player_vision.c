@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/25 23:13:43 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/02 22:04:02 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void	draw_ray(t_data *data, float diff, t_impact *ray, int i)
 	}
 }
 
-void	show_floor_and_ceiling(t_data *data)
+void	show_ceiling(t_data *data)
 {
 	int			x;
 	int			y;
@@ -151,7 +151,6 @@ void	show_floor_and_ceiling(t_data *data)
 	t_vector	cell;
 	t_vector	t;
 	uint32_t	color;
-	uint32_t	**tmp_buffer;
 	float		tiniest_gap;
 	float		closest_card;
 	float		tmp;
@@ -163,8 +162,8 @@ void	show_floor_and_ceiling(t_data *data)
 	int			start_index;
 	int			pixel_length_img;
 	int			index;
+	int			horizon;
 
-	y = 0;
 	tiniest_gap = data->player.angle;
 	closest_card = 0;
 	tmp = data->player.angle - M_PI / 2;
@@ -220,20 +219,120 @@ void	show_floor_and_ceiling(t_data *data)
 		left_tex = data->textures[index + 1];
 	}
 
-	tmp_buffer = data->screen_buffer;
+	y = 0;
 	while (y < data->win_size.y)
 	{
 		ray_dir_0.x = data->player.direction.x - data->player.camera_plane.x;
 		ray_dir_0.y = data->player.direction.y - data->player.camera_plane.y;
 		ray_dir_1.x = data->player.direction.x + data->player.camera_plane.x;
 		ray_dir_1.y = data->player.direction.y + data->player.camera_plane.y;
-		
-		p = y - (data->win_size.y / 2 + ((data->player.pitch * (data->win_size.y / 2 * 1.2)) / 1000));
+
+		horizon = (data->win_size.y / 2) - ((data->player.pitch * (data->win_size.y / 2)) / 500);
+
+		int	floor_lim = (data->win_size.y / 2) + ((data->player.pitch * (data->win_size.y / 2)) / 500);
+		p = y - horizon;
 		row_distance = data->player.pos_z / p;
 
 		floor_step.x = row_distance * (ray_dir_1.x - ray_dir_0.x) / data->win_size.x;
 		floor_step.y = row_distance * (ray_dir_1.y - ray_dir_0.y) / data->win_size.x;
-		
+
+		floor.x = (data->player.pos.x + (5 + data->player.offset.x / 2) / 10) + row_distance * ray_dir_0.x;
+		floor.y = (data->player.pos.y + (5 + data->player.offset.y / 2) / 10) + row_distance * ray_dir_0.y;
+
+		x = 0;
+		while (x < data->win_size.x)
+		{
+			cell.x = (int) floor.x;
+			cell.y = (int) floor.y;
+
+			t.x = ((int) (data->textures[0]->size * (floor.x - cell.x)) % (data->textures[0]->size - 1));
+			t.y = ((int) (data->textures[0]->size * (floor.y - cell.y)) % (data->textures[0]->size - 1));
+			if (t.x < 0)
+				t.x = 0;
+			if (t.y < 0)
+				t.y = 0;
+
+			floor.x += floor_step.x;
+			floor.y += floor_step.y;
+
+			if (!data->sky_box)
+			{
+				if (data->win_size.y - y - 1 <= floor_lim)
+				{
+					color = data->textures[1]->tab[t.x][t.y];
+					// mlx_set_image_pixel(data->mlx, data->screen_display, x, data->win_size.y - y - 1, color);
+					data->screen_buffer[data->win_size.y - y - 1][x] = color;
+				}
+			}
+			else
+			{
+				if (x >= left_seg.x && x <= left_seg.y)
+				{
+					pixel_length = ft_abs(left_seg.y - left_seg.x);
+					pixel_length_img = (pixel_length * left_tex->size) / data->win_size.x;
+					start_index = left_tex->size - pixel_length_img - 1;
+					t.x = ((x * (left_tex->size - 1)) / (data->win_size.x - 1)) + start_index;
+					t.y = ((y * (left_tex->size - 1)) / (data->win_size.y - 1));
+					if (y - (data->win_size.y / 2) >= 0)
+					{
+						color = left_tex->tab[t.x][t.y];
+						data->screen_buffer[y - (data->win_size.y / 2)][x] = color;
+					}
+				}
+				else if (x >= right_seg.x && x <= right_seg.y)
+				{
+					pixel_length = ft_abs(right_seg.y - right_seg.x);
+					pixel_length_img = (pixel_length * right_tex->size) / data->win_size.x;
+					start_index = right_tex->size - pixel_length_img - 1;
+					t.x = ((x * (right_tex->size - 1)) / (data->win_size.x - 1)) - start_index;
+					t.y = ((y * (right_tex->size - 1)) / (data->win_size.y - 1));
+					if (t.x < 0)
+						t.x = 0;
+					if (y - (data->win_size.y / 2) >= 0)
+					{
+						color = right_tex->tab[t.x][t.y];
+						data->screen_buffer[y - (data->win_size.y / 2)][x] = color;
+					}
+				}
+			}
+
+			x++;
+		}
+
+		y++;
+	}
+}
+
+void	show_floor(t_data *data)
+{
+	int			x;
+	int			y;
+	t_vectorf	ray_dir_0;
+	t_vectorf	ray_dir_1;
+	int			p;
+	float		row_distance;
+	t_vectorf	floor_step;
+	t_vectorf	floor;
+	t_vector	cell;
+	t_vector	t;
+	uint32_t	color;
+	int			horizon;
+
+	y = 0;
+	while (y < data->win_size.y)
+	{
+		ray_dir_0.x = data->player.direction.x - data->player.camera_plane.x;
+		ray_dir_0.y = data->player.direction.y - data->player.camera_plane.y;
+		ray_dir_1.x = data->player.direction.x + data->player.camera_plane.x;
+		ray_dir_1.y = data->player.direction.y + data->player.camera_plane.y;
+
+		horizon = (data->win_size.y / 2) + ((data->player.pitch * (data->win_size.y / 2)) / 500);
+		p = y - horizon;
+		row_distance = data->player.pos_z / p;
+
+		floor_step.x = row_distance * (ray_dir_1.x - ray_dir_0.x) / data->win_size.x;
+		floor_step.y = row_distance * (ray_dir_1.y - ray_dir_0.y) / data->win_size.x;
+
 		floor.x = (data->player.pos.x + (5 + data->player.offset.x / 2) / 10) + row_distance * ray_dir_0.x;
 		floor.y = (data->player.pos.y + (5 + data->player.offset.y / 2) / 10) + row_distance * ray_dir_0.y;
 
@@ -257,44 +356,6 @@ void	show_floor_and_ceiling(t_data *data)
 			//mlx_set_image_pixel(data->mlx, data->screen_display, x, y, color);
 			data->screen_buffer[y][x] = color;
 
-			if (!data->sky_box)
-			{
-				color = data->textures[1]->tab[t.x][t.y];
-				// mlx_set_image_pixel(data->mlx, data->screen_display, x, data->win_size.y - y - 1, color);
-				data->screen_buffer[data->win_size.y - y - 1][x] = color;
-			}
-			else
-			{
-				if (x >= left_seg.x && x <= left_seg.y)
-				{
-					pixel_length = ft_abs(left_seg.y - left_seg.x);
-					pixel_length_img = (pixel_length * left_tex->size) / data->win_size.x;
-					start_index = left_tex->size - pixel_length_img - 1;
-					t.x = (left_tex->size - 1) - ((x * (left_tex->size - 1)) / (data->win_size.x - 1)) + start_index;
-					t.y = (left_tex->size - 1) - ((y * (left_tex->size - 1)) / (data->win_size.y - 1));
-					if (y - (data->win_size.y / 2) >= 0)
-					{
-						color = left_tex->tab[t.x][t.y];
-						data->screen_buffer[data->win_size.y - y - 1][x] = color;
-					}
-				}
-				else if (x >= right_seg.x && x <= right_seg.y)
-				{
-					pixel_length = ft_abs(right_seg.y - right_seg.x);
-					pixel_length_img = (pixel_length * right_tex->size) / data->win_size.x;
-					start_index = right_tex->size - pixel_length_img - 1;
-					t.x = ((x * (right_tex->size - 1)) / (data->win_size.x - 1)) - start_index;
-					t.y = ((y * (right_tex->size - 1)) / (data->win_size.y - 1));
-					if (t.x < 0)
-						t.x = 0;
-					if (y - (data->win_size.y / 2) >= 0)
-					{
-						color = right_tex->tab[t.x][t.y];
-						data->screen_buffer[data->win_size.y - y - 1][x] = color;
-					}
-				}
-			}
-
 			x++;
 		}
 
@@ -309,7 +370,8 @@ void	show_screen(t_data *data)
 	float		diff;
 	int			color;
 
-	//show_floor_and_ceiling(data);
+	show_floor(data);
+	show_ceiling(data);
 	i = 0;
 	diff = (float)data->win_size.x / (float)NB_RAYS;
 	while (i < NB_RAYS)
@@ -318,18 +380,19 @@ void	show_screen(t_data *data)
 		i++;
 	}
 	draw_entities(data);
-	if (!data->screen_display)
-		data->screen_display = mlx_new_image(data->mlx, data->win_size.x, data->win_size.y);
+//	if (!data->screen_display)
+//		data->screen_display = mlx_new_image(data->mlx, data->win_size.x, data->win_size.y);
 	i = 0;
 	while (i < data->win_size.y)
 	{
 		j = 0;
 		while (j < data->win_size.x)
 		{
-			mlx_set_image_pixel(data->mlx, data->screen_display, j, i, data->screen_buffer[i][j]);
+//			mlx_set_image_pixel(data->mlx, data->screen_display, j, i, data->screen_buffer[i][j]);
+			mlx_pixel_put(data->mlx, data->win, j, i, data->screen_buffer[i][j]);
 			j++;
 		}
 		i++;
 	}
-	mlx_put_image_to_window(data->mlx, data->win, data->screen_display, 0, 0);
+//	mlx_put_image_to_window(data->mlx, data->win, data->screen_display, 0, 0);
 }
