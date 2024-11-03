@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/17 06:44:33 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/11/02 23:08:57 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,14 @@ int	key_up_manager(int key, void *param)
 		register_player_movement(data, key, 0);
 	if (key == 225)
 		data->player.is_running = 0;
+	return (0);
+}
+
+int	mouse_wheel_manager(int key, void *param)
+{
+	t_data	*data;
+
+	data = (t_data *)param;
+	data->player.mouse_wheel = key;
 	return (0);
 }

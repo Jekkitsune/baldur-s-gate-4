@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/02 21:25:33 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/03 02:50:02 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # define VOID ' '
 # define NB_TEX 4
 
-# define NB_RAYS (1600 / 2)
+# define NB_RAYS (1600)
 # define FOV 0.7
 # define HEIGHT (900 / 2)
 # define WIDTH (1600 / 2)
@@ -69,6 +69,7 @@ typedef struct s_entity
 	t_vector	draw_y;
 	t_bool		active;
 	void		(*behavior)(void *data, void *entity);
+	t_bool		possess_control;
 }	t_entity;
 
 typedef	struct s_cell
@@ -103,6 +104,7 @@ typedef struct s_player
 	float		angle;
 	int			movement[6];
 	int			rotation[4];
+	int			mouse_wheel;
 	double		speed;
 	int			is_running;
 	t_impact	vision[NB_RAYS];
@@ -114,8 +116,7 @@ typedef struct s_player
 	float		focus_dist;
 	float		pos_z;
 
-	t_vector	target_pos;
-	t_vectorf	target_offset;
+	t_entity	*possession;
 
 	t_list		*visible_entities;
 }	t_player;
@@ -134,7 +135,7 @@ typedef struct s_data
 {
 	void		*mlx;
 	void		*win;
-	t_texture	*textures[6];
+	t_texture	*textures[9];
 	char		floor_color[9];
 	char		ceiling_color[9];
 	t_vector	win_size;
@@ -221,6 +222,10 @@ void		destroy_entity(t_data *data, t_entity *entity);
 void		add_active(t_data *data, t_entity *entity, void (*behavior)(void *, void *));
 void		remove_active(t_data *data, t_entity *entity);
 void		update_all_active(t_data *data);
-
+int			mouse_wheel_manager(int key, void *param);
+void		possess(t_data *data, t_entity *entity);
+void		unpossess(t_data *data);
+void		possess_control(t_entity *entity, t_bool value);
+void		teleport_entity(t_data *data, t_entity *entity, t_vector pos, t_vectorf offset);
 
 #endif

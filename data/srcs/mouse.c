@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 18:36:04 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/13 23:23:28 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/02 23:13:06 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,16 @@ void	camera_move(t_data *data)
 		}
 		else
 			data->player.pitch += mouse_pos.y;
+	}
+	if (data->player.mouse_wheel)
+	{
+		if (data->player.focus_mode)
+		{
+			if (data->player.mouse_wheel == 1 && data->player.focus_dist > 15)
+				data->player.focus_dist -= data->player.speed * 5;
+			if (data->player.mouse_wheel == 2 && data->player.focus_dist < 100)
+				data->player.focus_dist += data->player.speed * 5;
+		}
+		data->player.mouse_wheel = 0;
 	}
 }

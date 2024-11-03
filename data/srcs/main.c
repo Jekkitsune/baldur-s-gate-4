@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/02 21:59:08 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/03 02:39:40 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,19 @@ int	loop(void *param)
 
 	if (data->test_key)
 	{
-		// if (data->current_map->arr[25][10].entities)
-		// 	ft_lstpop(&data->current_map->arr[25][10].entities, data->active_entities[0]);
-		if (data->current_map->active_entities)
-			remove_active(data, data->current_map->active_entities->content);
+		// if (data->current_map->active_entities)
+		// 	remove_active(data, data->current_map->active_entities->content);
 		data->test_key = 0;
-		// data->player.focus_mode = !data->player.focus_mode; 
-		// if (data->player.focus_mode)
-		// {
-		// 	data->player.focus_dist = 40;
-		// 	data->player.target_pos = data->player.pos;
-		// 	data->player.target_offset = data->player.offset;
-		// }
-		// else
-		// {
-		// 	data->player.pos = data->player.target_pos;
-		// 	data->player.offset = data->player.target_offset;
-		// 	data->player.height = 0;
-		// 	data->player.pitch = 0;
-		// }
+
+		t_entity	*entitest;
+
+		entitest = NULL;
+		if (in_bound(*data->current_map, data->player.pos) && data->current_map->arr[data->player.pos.x][data->player.pos.y].entities)
+			entitest = data->current_map->arr[data->player.pos.x][data->player.pos.y].entities->content;
+		if (!data->player.focus_mode && entitest)
+			possess(data, entitest);
+		else if (data->player.focus_mode)
+			unpossess(data);
 	}
 
 	move(data);
@@ -56,7 +50,6 @@ int	loop(void *param)
 	show_screen(data);
 	show_minimap(data);
 
-	//show_tex(data, data->textures[2], vec(100, 100));
 	//show_tex(data, data->textures[0], vec(100, 100));
 	//show_tex(data, data->textures[1], vec(100 + data->textures[0]->size, 100));
 
@@ -99,6 +92,7 @@ int	main(int argc, char **argv)
 	//mlx_set_fps_goal(data.mlx, 60);
 	mlx_on_event(data.mlx, data.win, MLX_KEYDOWN, key_down_manager, &data);
 	mlx_on_event(data.mlx, data.win, MLX_KEYUP, key_up_manager, &data);
+	mlx_on_event(data.mlx, data.win, MLX_MOUSEWHEEL, mouse_wheel_manager, &data);
 	mlx_on_event(data.mlx, data.win, MLX_WINDOW_EVENT, window_manager, &data);
 	
 	update_chunk(&data);
@@ -108,8 +102,12 @@ int	main(int argc, char **argv)
 
 	data.textures[4] = path_to_tex(&data, "hutao.png");
 	data.textures[5] = path_to_tex(&data, "pd.png");
+	data.textures[6] = path_to_tex(&data, "wilson_face.png");
+	data.textures[7] = path_to_tex(&data, "wilson_side.png");
+	data.textures[8] = path_to_tex(&data, "wilson_back.png");
 	add_active(&data, create_entity(&data, vec(25, 10), 1, data.textures[4]), follow_player);
 	create_entity(&data, vec(25, 9), 1, data.textures[5]);
+	possess_control(create_entity(&data, vec(26, 8), 1, data.textures[8]), true);
 
 	mlx_loop(data.mlx);
 	mlx_destroy_window(data.mlx, data.win);

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/02 22:04:02 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/03 02:10:55 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	draw_wall(t_data *data, int x, t_vector pos, t_impact *ray)
 	i = 0;
 	while (i < pos.x && i < data->win_size.y)
 	{
-		//mlx_set_image_pixel(data->mlx, data->screen_display, x, i, 0xFF0000BB);
 		data->screen_buffer[i][x] = 0xFF0000BB;
 		i++;
 	}
@@ -44,7 +43,6 @@ void	draw_wall(t_data *data, int x, t_vector pos, t_impact *ray)
 	}
 	while (i < data->win_size.y)
 	{
-		//mlx_set_image_pixel(data->mlx, data->screen_display, x, i, 0xFF00BB00);
 		data->screen_buffer[i][x] = 0xFF00BB00;
 		i++;
 	}
@@ -370,8 +368,8 @@ void	show_screen(t_data *data)
 	float		diff;
 	int			color;
 
-	show_floor(data);
-	show_ceiling(data);
+	// show_floor(data);
+	// show_ceiling(data);
 	i = 0;
 	diff = (float)data->win_size.x / (float)NB_RAYS;
 	while (i < NB_RAYS)
@@ -380,19 +378,19 @@ void	show_screen(t_data *data)
 		i++;
 	}
 	draw_entities(data);
-//	if (!data->screen_display)
-//		data->screen_display = mlx_new_image(data->mlx, data->win_size.x, data->win_size.y);
+	if (!data->screen_display)
+		data->screen_display = mlx_new_image(data->mlx, data->win_size.x, data->win_size.y);
 	i = 0;
 	while (i < data->win_size.y)
 	{
 		j = 0;
 		while (j < data->win_size.x)
 		{
-//			mlx_set_image_pixel(data->mlx, data->screen_display, j, i, data->screen_buffer[i][j]);
-			mlx_pixel_put(data->mlx, data->win, j, i, data->screen_buffer[i][j]);
+			mlx_set_image_pixel(data->mlx, data->screen_display, j, i, data->screen_buffer[i][j]);
+//			mlx_pixel_put(data->mlx, data->win, j, i, data->screen_buffer[i][j]);
 			j++;
 		}
 		i++;
 	}
-//	mlx_put_image_to_window(data->mlx, data->win, data->screen_display, 0, 0);
+	mlx_put_image_to_window(data->mlx, data->win, data->screen_display, 0, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 19:14:32 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/02 21:54:20 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/03 03:07:40 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ t_entity	*create_entity(t_data *data, t_vector pos, char typ, t_texture *tex)
 	entity->tex = tex;
 	entity->type = typ;
 	entity->behavior = ft_nothing;
+	entity->possess_control = false;
 	ft_lstadd_front(&data->current_map->arr[pos.x][pos.y].entities, new_lst);
 	return (entity);
 }
@@ -83,6 +84,8 @@ void	destroy_entity(t_data *data, t_entity *entity)
 	printf("try to destroy %p\n", entity);
 	if (!entity)
 		return ;
+	if (data->player.possession == entity)
+		unpossess(data);
 	if (entity->active)
 		destroy_active(data, entity);
 	if (in_bound(*data->current_map, entity->pos))
@@ -241,6 +244,31 @@ void	move_entity(t_data *data, t_entity *entity, t_vectorf move)
 	last_pos = entity->pos;
 	entity->offset.x += move.x;
 	entity->offset.y += move.y;
+	correct_pos(data, &entity->pos, &entity->offset);
+	if (entity->pos.x != last_pos.x || entity->pos.y != last_pos.y)
+	{
+		if (in_bound(*data->current_map, last_pos))
+		{
+			entity_lst = ft_lstpop(&data->current_map->arr[last_pos.x][last_pos.y].entities, entity);
+			if (entity_lst && in_bound(*data->current_map, entity->pos))
+			{
+				entity_lst->next = NULL;
+				ft_lstadd_back(&data->current_map->arr[entity->pos.x][entity->pos.y].entities, entity_lst);
+				return ;
+			}
+		}
+		destroy_entity(data, entity);
+	}
+}
+
+void	teleport_entity(t_data *data, t_entity *entity, t_vector pos, t_vectorf offset)
+{
+	t_vector	last_pos;
+	t_list		*entity_lst;
+
+	last_pos = entity->pos;
+	entity->pos = pos;
+	entity->offset = offset;
 	correct_pos(data, &entity->pos, &entity->offset);
 	if (entity->pos.x != last_pos.x || entity->pos.y != last_pos.y)
 	{

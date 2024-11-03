@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2024/11/02 20:25:11 by fparis           ###   ########.fr        #
+#    Updated: 2024/11/03 01:20:38 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ SRCS = main.c\
 		free.c\
 		entity.c\
 		ia.c\
-		entity_active.c
+		entity_active.c\
+		entity_possess.c
 
 LIBFT = data/libft/libft.a
 

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:27:28 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/10 23:33:12 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/03 01:15:02 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	show_tex(t_data *data, t_texture *tex, t_vector pos)
 		i.x = 0;
 		while (i.x < tex->size)
 		{
-			mlx_pixel_put(data->mlx, data->win, pos.x + i.x, pos.y + i.y, tex->tab[i.x][i.y]);
+			ft_pixel_put(data, pos.y + i.y, pos.x + i.x, tex->tab[i.x][i.y]);
 			i.x++;
 		}
 		i.y++;

@@ -3,38 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/16 22:29:47 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/11/03 03:12:08 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	change_pos(t_data *data, float angle)
+void	change_pos(t_data *data, t_vectorf *offset, float angle)
 {
 	t_vectorf	direc;
-	t_player 	*p;
 
-	p = &data->player;
 	if (angle > 2 * M_PI)
 		angle = angle - (2 * M_PI);
 	if (angle < 0)
 		angle = (2 * M_PI) + angle;
 	direc.x = cosf(angle);
 	direc.y = sinf(angle);
-	p->offset.x += direc.x * p->speed;
-	p->offset.y += direc.y * p->speed;
+	offset->x += direc.x * data->player.speed;
+	offset->y += direc.y * data->player.speed;
 }
 
 void	rotate_focus(t_data *data)
 {
-	data->player.offset.x = data->player.target_offset.x + (cosf(angle_add(data->player.angle, M_PI)) * data->player.focus_dist);
-	data->player.offset.y = data->player.target_offset.y + (sinf(angle_add(data->player.angle, M_PI)) * data->player.focus_dist);
-	data->player.pos = data->player.target_pos;
+	if (!data->player.possession)
+		return ;
+	data->player.offset.x = data->player.possession->offset.x + (cosf(angle_add(data->player.angle, M_PI)) * data->player.focus_dist);
+	data->player.offset.y = data->player.possession->offset.y + (sinf(angle_add(data->player.angle, M_PI)) * data->player.focus_dist);
+	data->player.pos = data->player.possession->pos;
 
 	correct_pos(data, &data->player.pos, &data->player.offset);
+}
+
+void	move_possession(t_data *data)
+{
+	t_player 	*p;
+	t_entity	*possession;
+	t_vectorf	offset;
+
+	possession = data->player.possession;
+	if (possession && possession->possess_control)
+	{
+		p = &data->player;
+		offset = possession->offset;
+		if (p->movement[0])
+			change_pos(data, &offset, p->angle);
+		if (p->movement[1])
+			change_pos(data, &offset, p->angle - (M_PI / 2));
+		if (p->movement[2])
+			change_pos(data, &offset, p->angle + M_PI);
+		if (p->movement[3])
+			change_pos(data, &offset, p->angle + (M_PI / 2));
+		if (p->movement[0] || p->movement[1] || p->movement[2] || p->movement[3])
+			teleport_entity(data, possession, possession->pos, offset);
+	}
 }
 
 void	move(t_data *data)
@@ -42,25 +66,21 @@ void	move(t_data *data)
 	t_player *p;
 
 	p = &data->player;
-	if (data->player.focus_mode)
-	{
-		if (p->movement[0] && p->focus_dist > 15)
-			p->focus_dist -= p->speed;
-		if (p->movement[2] && p->focus_dist < 100)
-			p->focus_dist += p->speed;
-	}
-	else
+	if (!data->player.focus_mode)
 	{
 		if (p->movement[0])
-			change_pos(data, p->angle);
+			change_pos(data, &data->player.offset, p->angle);
 		if (p->movement[1])
-			change_pos(data, p->angle - (M_PI / 2));
+			change_pos(data, &data->player.offset, p->angle - (M_PI / 2));
 		if (p->movement[2])
-			change_pos(data, p->angle + M_PI);
+			change_pos(data, &data->player.offset, p->angle + M_PI);
 		if (p->movement[3])
-			change_pos(data, p->angle + (M_PI / 2));
+			change_pos(data, &data->player.offset, p->angle + (M_PI / 2));
+		correct_pos(data, &data->player.pos, &data->player.offset);
 	}
-	
+	else
+		move_possession(data);
+
 	if (p->rotation[1])
 		p->angle -= 0.1;
 	if (p->rotation[3])
@@ -74,7 +94,6 @@ void	move(t_data *data)
 	if (p->movement[5])
 		p->height -= 50 * (data->scale * 2);
 
-	correct_pos(data, &data->player.pos, &data->player.offset);
 
 
 		if (p->angle > 2 * M_PI)
