@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 19:14:32 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/03 03:07:40 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/03 21:38:21 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,14 @@ int	ft_inlst(t_list *lst, void *check)
 	return (0);
 }
 
+t_entity	*set_entity_tex(t_entity *entity, t_texture *tex2, t_texture *tex3, t_texture *tex4)
+{
+	entity->tex[1] = tex2;
+	entity->tex[2] = tex3;
+	entity->tex[3] = tex4;
+	return (entity);
+}
+
 t_entity	*create_entity(t_data *data, t_vector pos, char typ, t_texture *tex)
 {
 	t_entity	*entity;
@@ -69,10 +77,10 @@ t_entity	*create_entity(t_data *data, t_vector pos, char typ, t_texture *tex)
 	entity->nb_impact = 0;
 	entity->offset = vecf(0, 0);
 	entity->pos = pos;
-	entity->tex = tex;
+	entity->tex[0] = tex;
+	set_entity_tex(entity, tex, tex, tex);
 	entity->type = typ;
 	entity->behavior = ft_nothing;
-	entity->possess_control = false;
 	ft_lstadd_front(&data->current_map->arr[pos.x][pos.y].entities, new_lst);
 	return (entity);
 }
@@ -190,11 +198,35 @@ void	draw_thing(t_data *data, t_vector pos, t_vectorf offset, t_texture *tex)
 	draw_thing_tex(data, x, i, tex, distance);
 }
 
+float	get_angle_diff(float angle1, float angle2)
+{
+	float	res;
+
+	res = angle1 - angle2;
+	res = fmod(res + M_PI, 2 * M_PI);
+	if (res < 0)
+		res += 2 * M_PI;
+	res -= M_PI;
+	return (res);
+}
+
 void	draw_entity(t_data *data, t_entity *entity)
 {
+	int		face;
+	float	angle_diff;
+
 	if (entity->draw_x.x == data->win_size.x)
 		return ;
-	draw_thing_tex(data, entity->draw_x, entity->draw_y, entity->tex, entity->distance);
+	angle_diff = get_angle_diff(data->player.angle, entity->angle);
+	if (angle_diff >= -(M_PI / 4) && angle_diff < M_PI / 4)
+		face = 2;
+	else if (angle_diff >= M_PI / 4 && angle_diff < (3 * M_PI) / 4)
+		face = 1;
+	else if (angle_diff >= (3 * M_PI) / 4 || angle_diff < -((3 * M_PI) / 4))
+		face = 0;
+	else if (angle_diff >= -((3 * M_PI) / 4) && angle_diff < -(M_PI / 4))
+		face = 3;
+	draw_thing_tex(data, entity->draw_x, entity->draw_y, entity->tex[face], entity->distance);
 }
 
 void	calculate_entity_info(t_data *data, t_entity *entity)

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/03 02:39:40 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/03 21:42:35 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,15 @@ int	loop(void *param)
 	if (data->on_screen)
 		mlx_mouse_move(data->mlx, data->win, data->win_size.x / 2, data->win_size.y / 2);
 
+	float test = get_angle_diff(data->player.angle, M_PI / 2);
+	//printf("%f\n", test);
+
 	if (data->test_key)
 	{
 		// if (data->current_map->active_entities)
 		// 	remove_active(data, data->current_map->active_entities->content);
 		data->test_key = 0;
-
+		data->player.angle = M_PI / 2;
 		t_entity	*entitest;
 
 		entitest = NULL;
@@ -103,11 +106,12 @@ int	main(int argc, char **argv)
 	data.textures[4] = path_to_tex(&data, "hutao.png");
 	data.textures[5] = path_to_tex(&data, "pd.png");
 	data.textures[6] = path_to_tex(&data, "wilson_face.png");
-	data.textures[7] = path_to_tex(&data, "wilson_side.png");
+	data.textures[7] = path_to_tex(&data, "wilson_side2.png");
 	data.textures[8] = path_to_tex(&data, "wilson_back.png");
-	add_active(&data, create_entity(&data, vec(25, 10), 1, data.textures[4]), follow_player);
-	create_entity(&data, vec(25, 9), 1, data.textures[5]);
-	possess_control(create_entity(&data, vec(26, 8), 1, data.textures[8]), true);
+	data.textures[9] = path_to_tex(&data, "wilson_side.png");
+	//add_active(&data, create_entity(&data, vec(25, 10), 1, data.textures[4]), follow_player);
+	//create_entity(&data, vec(25, 9), 1, data.textures[5]);
+	possess_control(set_entity_tex(create_entity(&data, vec(26, 8), 1, data.textures[6]), data.textures[7], data.textures[8], data.textures[9]), true);
 
 	mlx_loop(data.mlx);
 	mlx_destroy_window(data.mlx, data.win);

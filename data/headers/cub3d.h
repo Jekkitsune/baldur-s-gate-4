@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/03 02:50:02 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/03 21:41:50 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ typedef struct s_texture
 typedef struct s_entity
 {
 	char		type;
-	t_texture	*tex;
+	t_texture	*tex[4];
+	float		angle;
 	t_vector	pos;
 	t_vectorf	offset;
 	float		distance;
@@ -135,7 +136,7 @@ typedef struct s_data
 {
 	void		*mlx;
 	void		*win;
-	t_texture	*textures[9];
+	t_texture	*textures[10];
 	char		floor_color[9];
 	char		ceiling_color[9];
 	t_vector	win_size;
@@ -227,5 +228,7 @@ void		possess(t_data *data, t_entity *entity);
 void		unpossess(t_data *data);
 void		possess_control(t_entity *entity, t_bool value);
 void		teleport_entity(t_data *data, t_entity *entity, t_vector pos, t_vectorf offset);
+float		get_angle_diff(float angle1, float angle2);
+t_entity	*set_entity_tex(t_entity *entity, t_texture *tex2, t_texture *tex3, t_texture *tex4);
 
 #endif
