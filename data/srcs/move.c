@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/03 21:44:05 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/06 21:36:46 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,11 @@ void	move_possession(t_data *data)
 			change_pos(data, &offset, p->angle + (M_PI / 2));
 		if (p->movement[0] || p->movement[1] || p->movement[2] || p->movement[3])
 		{
-			possession->angle = p->angle;
+			if (p->movement[2])
+				possession->angle = p->angle + (M_PI) * p->movement[2];
+			else
+				possession->angle = p->angle + (M_PI / 2) * -p->movement[1] + (M_PI / 2) * p->movement[3];
+			angle_add(possession->angle, 0);
 			teleport_entity(data, possession, possession->pos, offset);
 		}
 	}

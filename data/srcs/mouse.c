@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 18:36:04 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/02 23:13:06 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/06 23:12:41 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,6 @@ void	camera_move(t_data *data)
 {
 	t_vector	mouse_pos;
 
-	mlx_mouse_get_pos(data->mlx, &mouse_pos.x, &mouse_pos.y);
-	if (mouse_pos.x != data->win_size.x / 2)
-	{
-		mouse_pos.x = (data->win_size.x / 2) - mouse_pos.x;
-		data->player.angle = angle_add(data->player.angle, -(float)mouse_pos.x / 1000 * 1.2);
-	}
-	if (mouse_pos.y != data->win_size.y / 2)
-	{
-		mouse_pos.y = (data->win_size.y / 2) - mouse_pos.y;
-		if (data->player.focus_mode)
-		{
-			if ((mouse_pos.y > 0 && data->player.height < 10000) || (mouse_pos.y < 0 && data->player.height > -5000))
-			{
-				data->player.pitch -= mouse_pos.y / 8;
-				data->player.height += mouse_pos.y * 10;
-			}
-		}
-		else
-			data->player.pitch += mouse_pos.y;
-	}
 	if (data->player.mouse_wheel)
 	{
 		if (data->player.focus_mode)
@@ -60,4 +40,30 @@ void	camera_move(t_data *data)
 		}
 		data->player.mouse_wheel = 0;
 	}
+	if (data->player.focus_mode && !data->player.mouse_button[2])
+		return ;
+	mlx_mouse_get_pos(data->mlx, &mouse_pos.x, &mouse_pos.y);
+	if (mouse_pos.x != data->win_size.x / 2)
+	{
+		mouse_pos.x = (data->win_size.x / 2) - mouse_pos.x;
+		data->player.angle = angle_add(data->player.angle, -(float)mouse_pos.x / 1000 * 1.2);
+	}
+	if (mouse_pos.y != data->win_size.y / 2)
+	{
+		mouse_pos.y = (data->win_size.y / 2) - mouse_pos.y;
+		if (data->player.focus_mode)
+		{
+			if ((mouse_pos.y < 0 && data->player.height < 5000) || (mouse_pos.y > 0 && data->player.height > -2500))
+			{
+				
+				data->player.height -= mouse_pos.y * 10;
+			}
+			if ((mouse_pos.y < 0 && data->player.pitch > -75) || (mouse_pos.y > 0 && data->player.pitch < 75))
+				data->player.pitch += mouse_pos.y / 8;
+		}
+		else
+			data->player.pitch += mouse_pos.y;
+	}
+	if (data->on_screen)
+		mlx_mouse_move(data->mlx, data->win, data->win_size.x / 2, data->win_size.y / 2);
 }

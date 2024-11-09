@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 21:09:45 by gmassoni          #+#    #+#             */
-/*   Updated: 2024/10/15 00:29:26 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/11/07 01:18:57 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,24 +202,6 @@ bool	check_map(t_data *data, char **map)
 	return (true);
 }
 
-// t_cell	**add_to_map(t_map *map, char *line)
-// {
-// 	char	**res;
-
-// 	res = ft_calloc(map->size.y + 2, sizeof(t_cell **));
-// 	if (res == NULL)
-// 	{
-// 		map->size
-// 		free_map(map);
-// 		return (NULL);
-// 	}
-// 	ft_tablcpy(res, map->arr, map->size.y);
-// 	free(map->arr);
-// 	res[len] = str;
-// 	res[len + 1] = NULL;
-// 	return (res);
-// }
-
 char	**get_map(t_data *data, int fd, t_map *level)
 {
 	char	*line;
@@ -336,18 +318,14 @@ bool	init_level(t_map *level)
 	return (true);
 }
 
-bool	parsing(int argc, char *argv[], t_data *data)
+bool	parse_map(char *path, t_data *data)
 {
 	int 	fd;
-	char	**map;
 	t_map	*level;
+	char	**map;
+	t_list	*new_lst;
 
-	if (argc == 1 || !format_test(argv[1]))
-	{
-		ft_putstr_fd("Error\nExpected at least one argument in .cub format\n", 2);
-		return (false);
-	}
-	fd = open(argv[1], O_RDONLY);
+	fd = open(path, O_RDONLY);
 	if (fd == -1)
 	{
 		ft_putstr_fd("Error\nCannot open the given file\n", 2);
@@ -356,6 +334,9 @@ bool	parsing(int argc, char *argv[], t_data *data)
 	level = ft_calloc(sizeof(t_map), 1);
 	if (!level)
 		return (false);
+	level->path = ft_calloc(ft_strlen(path), sizeof(char));
+	if (level->path)
+		ft_strlcpy(level->path, path, ft_strlen(path));
 	map = get_map_infos(data, fd, level);
 	if (!map)
 	{
@@ -366,7 +347,31 @@ bool	parsing(int argc, char *argv[], t_data *data)
 	close(fd);
 	init_level(level);
 	turn_map(data, map, level);
-	data->current_map = level;
+	if (!data->current_map)
+		data->current_map = level;
+	new_lst = ft_lstnew(level);
+	if (!new_lst)
+		exit_free(data, "Parsing malloc error");
+	ft_lstadd_back(&data->map_list, new_lst);
+	return (true);
+}
+
+bool	parsing(int argc, char *argv[], t_data *data)
+{
+	int	i;
+
+	i = 1;
+	while (i < argc)
+	{
+		if (argc == 1 || !format_test(argv[i]))
+		{
+			ft_putstr_fd("Error\nExpected at arguments in .cub format\n", 2);
+			return (false);
+		}
+		if (!parse_map(argv[i], data))
+			return (false);
+		i++;
+	}
 	return (true);
 }
 
@@ -375,7 +380,7 @@ bool	check_textures(t_texture **tex_tab)
 	int	i;
 
 	i = 0;
-	while (i < NB_TEX)
+	while (i < 4)
 	{
 		if (!tex_tab[i])
 			return (false);

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 23:25:12 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/10 23:37:53 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/09 15:07:20 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,123 @@ void	free_tex(t_texture *tex)
 	free(tex);
 }
 
-void	free_map(t_map *map)
+void	free_map(t_data *data, t_map *map)
 {
-	int	x;
-	int	y;
+	int		x;
+	int		y;
+	t_list	*lst;
+	t_list	*tmp;
 
 	x = 0;
-	y = 0;
+	lst = map->active_entities;
+	while (lst)
+	{
+		tmp = lst;
+		lst = lst->next;
+		free_entity_data(data, tmp->content);
+	}
 	while (x < map->size.x)
 	{
+		y = 0;
 		while (y < map->size.y)
 		{
-			ft_lstclear(&map->arr[x][y].entities, free);
+			lst = map->arr[x][y].entities;
+			while (lst)
+			{
+				tmp = lst;
+				lst = lst->next;
+				free_entity_data(data, tmp->content);
+			}
 			y++;
 		}
 		free(map->arr[x]);
 		x++;
 	}
 	free(map->arr);
+	if (map->path)
+		free(map->path);
 	free(map);
+}
+
+void	free_minimap(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	if (data->minimap.img)
+		mlx_destroy_image(data->mlx, data->minimap.img);
+	while (i < data->minimap.chunk_size)
+	{
+		free(data->minimap.chunk[i]);
+		i++;
+	}
+	free(data->minimap.chunk);
+	data->minimap.chunk = NULL;
+}
+
+void	free_entity_data(t_data *data, t_entity *entity)
+{
+	int	i;
+	int	i2;
+
+	if (entity->anim)
+	{
+		i = 0;
+		while (i < entity->nb_anim)
+		{
+			free(entity->anim[i].name);
+			i2 = 0;
+			while (i2 < entity->anim[i].size)
+			{
+				free_tex(entity->anim[i].tab[i2]);
+				i2++;
+			}
+			free(entity->anim[i].tab);
+			i++;
+		}
+		free(entity->anim);
+	}
+	entity->anim = NULL;
+	entity->current_anim = NULL;
+	destroy_entity(data, entity);
+}
+
+void	free_data(t_data *data)
+{
+	int		i;
+	t_list	*lst;
+	t_list	*to_free;
+
+	lst = data->map_list;
+	while (lst)
+	{
+		free_map(data, lst->content);
+		to_free = lst;
+		lst = lst->next;
+		free(to_free);
+	}
+	free_minimap(data);
+	i = 0;
+	while (i < NB_TEX)
+	{
+		free_tex(data->textures[i]);
+		i++;
+	}
+	free_visible_lst(data);
+	mlx_destroy_image(data->mlx, data->screen_display);
+	i = 0;
+	while (i < data->win_size.y)
+	{
+		free(data->screen_buffer[i]);
+		i++;
+	}
+	free(data->screen_buffer);
+}
+
+void	exit_free(t_data *data, char *error)
+{
+	free_data(data);
+	ft_putstr_fd("Cub3d error: ", 2);
+	ft_putstr_fd(error, 2);
+	ft_putstr_fd("\n", 2);
 }

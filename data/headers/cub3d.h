@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/03 21:41:50 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/09 15:05:31 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,12 @@
 # define GROUND '0'
 # define WALL '1'
 # define VOID ' '
-# define NB_TEX 4
+# define NB_TEX 10
 
 # define NB_RAYS (1600)
 # define FOV 0.7
 # define HEIGHT (900 / 2)
 # define WIDTH (1600 / 2)
-
 
 typedef struct s_vector
 {
@@ -56,6 +55,17 @@ typedef struct s_texture
 	int			size;
 }	t_texture;
 
+typedef struct s_animation
+{
+	t_texture	**tab;
+	int			size;
+	int			index;
+	char		*name;
+	int			interval;
+	int			clock;
+	void		(*anim_sound)(int index, int clock);
+}	t_animation;
+
 typedef struct s_entity
 {
 	char		type;
@@ -71,6 +81,9 @@ typedef struct s_entity
 	t_bool		active;
 	void		(*behavior)(void *data, void *entity);
 	t_bool		possess_control;
+	t_animation	*anim;
+	t_animation	*current_anim;
+	int			nb_anim;
 }	t_entity;
 
 typedef	struct s_cell
@@ -96,6 +109,7 @@ typedef	struct s_map
 	t_vector	size;
 	t_cell		**arr;
 	t_list		*active_entities;
+	char		*path;
 }	t_map;
 
 typedef struct s_player
@@ -106,6 +120,8 @@ typedef struct s_player
 	int			movement[6];
 	int			rotation[4];
 	int			mouse_wheel;
+	int			mouse_button[3];
+	t_vector	mouse_pos;
 	double		speed;
 	int			is_running;
 	t_impact	vision[NB_RAYS];
@@ -140,6 +156,7 @@ typedef struct s_data
 	char		floor_color[9];
 	char		ceiling_color[9];
 	t_vector	win_size;
+	t_list		*map_list;
 	t_map		*current_map;
 	t_minimap	minimap;
 	t_player	player;
@@ -206,7 +223,7 @@ t_texture	*path_to_tex(t_data *data, char *path);
 void		show_tex(t_data *data, t_texture *tex, t_vector pos);
 t_texture	*resize(t_texture *tex, int new_size);
 //void		draw_wall(t_data *data, int x, t_vector pos, t_impact *ray);
-void		free_map(t_map *map);
+void		free_map(t_data *data, t_map *map);
 void		draw_thing(t_data *data, t_vector pos, t_vectorf offset, t_texture *tex);
 void		ft_pixel_put(t_data *data, int y, int x, uint32_t color);
 void		draw_entities(t_data *data);
@@ -220,7 +237,7 @@ void		destroy_active(t_data *data, t_entity *entity);
 t_bool		check_activity(t_data *data, t_entity *entity);
 int			ft_inlst(t_list *lst, void *check);
 void		destroy_entity(t_data *data, t_entity *entity);
-void		add_active(t_data *data, t_entity *entity, void (*behavior)(void *, void *));
+t_entity	*add_active(t_data *data, t_entity *entity, void (*behavior)(void *, void *));
 void		remove_active(t_data *data, t_entity *entity);
 void		update_all_active(t_data *data);
 int			mouse_wheel_manager(int key, void *param);
@@ -230,5 +247,18 @@ void		possess_control(t_entity *entity, t_bool value);
 void		teleport_entity(t_data *data, t_entity *entity, t_vector pos, t_vectorf offset);
 float		get_angle_diff(float angle1, float angle2);
 t_entity	*set_entity_tex(t_entity *entity, t_texture *tex2, t_texture *tex3, t_texture *tex4);
+int			mouse_down_manager(int key, void *param);
+int			mouse_up_manager(int key, void *param);
+void		exit_free(t_data *data, char *error);
+void		free_visible_lst(t_data *data);
+void		free_data(t_data *data);
+t_texture	*get_correct_tex(t_entity *entity, int face);
+int			get_anim_index(t_entity *entity, char *name);
+void		change_anim(t_entity *entity, char *name, int reset);
+void		init_anim(t_data *data, t_animation *anim, int size, char *path);
+void		continue_anim(t_data *data, t_entity *entity);
+void		free_entity_data(t_data *data, t_entity *entity);
+
+void		init_test(t_data *data);
 
 #endif

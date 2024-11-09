@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 01:18:56 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/03 03:02:46 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/06 23:01:06 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	possess(t_data *data, t_entity *entity)
 {
 	if (!entity)
 		return ;
+	mlx_mouse_show();
 	data->player.focus_mode = 1;
 	data->player.focus_dist = 40;
 	data->player.possession = entity;
@@ -32,6 +33,7 @@ void	possess(t_data *data, t_entity *entity)
 
 void	unpossess(t_data *data)
 {
+	mlx_mouse_hide();
 	data->player.focus_mode = 0;
 	data->player.height = 0;
 	data->player.pitch = 0;

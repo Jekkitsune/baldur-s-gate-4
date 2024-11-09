@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 19:14:32 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/03 21:38:21 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/09 14:47:44 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void	draw_thing_tex(t_data *data, t_vector lim_x, t_vector lim_y, t_texture *tex
 	size_x = lim_x.y - lim_x.x;
 	size_y = lim_y.y - lim_y.x;
 	i.x = ft_max(lim_x.x, 0);
-	while (i.x < lim_x.y && i.x < data->win_size.x)
+	while (tex && i.x < lim_x.y && i.x < data->win_size.x)
 	{
 		if (((i.x * NB_RAYS) / WIDTH) < NB_RAYS && ((i.x * NB_RAYS) / WIDTH) > 0 && data->player.vision[(i.x * NB_RAYS) / WIDTH].length < distance)
 		{
@@ -226,7 +226,7 @@ void	draw_entity(t_data *data, t_entity *entity)
 		face = 0;
 	else if (angle_diff >= -((3 * M_PI) / 4) && angle_diff < -(M_PI / 4))
 		face = 3;
-	draw_thing_tex(data, entity->draw_x, entity->draw_y, entity->tex[face], entity->distance);
+	draw_thing_tex(data, entity->draw_x, entity->draw_y, get_correct_tex(entity, face), entity->distance);
 }
 
 void	calculate_entity_info(t_data *data, t_entity *entity)
@@ -264,6 +264,7 @@ void	draw_entities(t_data *data)
 		to_free = i;
 		i = i->next;
 		free(to_free);
+		data->player.visible_entities = i;
 	}
 	data->player.visible_entities = NULL;
 }

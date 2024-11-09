@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:27:28 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/03 01:15:02 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/09 14:50:51 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ t_texture	*path_to_tex(t_data *data, char *path)
 	if (!img)
 		return (NULL);
 	res = img_to_tex(data, img, size);
+	if (img)
+		mlx_destroy_image(data->mlx, img);
 	return (res);
 }
 

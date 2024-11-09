@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:24:17 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/02 21:57:02 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/09 14:50:11 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ void	update_all_active(t_data *data)
 		current = i->content;
 		i = i->next;
 		current->behavior(data, current);
+		if (current->current_anim)
+			continue_anim(data, current);
+			//show_tex(data, current->current_anim->tab[current->current_anim->index], vec(100, 100));
 	}
 }
 
@@ -46,20 +49,23 @@ t_bool	check_activity(t_data *data, t_entity *entity)
 	return (false);
 }
 
-void	add_active(t_data *data, t_entity *entity, void (*behavior)(void *, void *))
+t_entity	*add_active(t_data *data, t_entity *entity, void (*behavior)(void *, void *))
 {
 	t_list	*new_lst;
 
+	if (!entity)
+		return (NULL);
 	new_lst = ft_lstnew(entity);
 	if (!new_lst)
 	{
 		destroy_entity(data, entity);
-		return ;
+		return (NULL);
 	}
 	new_lst->content = entity;
 	entity->behavior = behavior;
 	entity->active = 1;
 	ft_lstadd_back(&data->current_map->active_entities, new_lst);
+	return (entity);
 }
 
 void	remove_active(t_data *data, t_entity *entity)

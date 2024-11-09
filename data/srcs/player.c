@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:21:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/02 19:46:51 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/06 23:11:02 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,9 @@ void	init_player(t_data *data)
 	data->player.direction.x = cosf(data->player.angle);
 	data->player.direction.y = sinf(data->player.angle);
 	data->player.pos_z = data->win_size.y * 0.5;
+	data->player.mouse_button[0] = 0;
+	data->player.mouse_button[1] = 0;
+	data->player.mouse_button[2] = 0;
+	data->player.focus_mode = 0;
 	get_all_rays(data);
 }

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/03 21:42:35 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/09 14:49:36 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ int	loop(void *param)
 	camera_move(data);
 	if (data->player.focus_mode)
 		rotate_focus(data);
-	if (data->on_screen)
-		mlx_mouse_move(data->mlx, data->win, data->win_size.x / 2, data->win_size.y / 2);
 
 	float test = get_angle_diff(data->player.angle, M_PI / 2);
 	//printf("%f\n", test);
@@ -33,9 +31,9 @@ int	loop(void *param)
 	if (data->test_key)
 	{
 		// if (data->current_map->active_entities)
-		// 	remove_active(data, data->current_map->active_entities->content);
+		//  	remove_active(data, data->current_map->active_entities->content);
+
 		data->test_key = 0;
-		data->player.angle = M_PI / 2;
 		t_entity	*entitest;
 
 		entitest = NULL;
@@ -71,6 +69,8 @@ int	loop(void *param)
 	}
 	frame++;
 
+	if (data->current_map->active_entities)
+		return (0);
 	return (0);
 }
 
@@ -97,11 +97,12 @@ int	main(int argc, char **argv)
 	mlx_on_event(data.mlx, data.win, MLX_KEYUP, key_up_manager, &data);
 	mlx_on_event(data.mlx, data.win, MLX_MOUSEWHEEL, mouse_wheel_manager, &data);
 	mlx_on_event(data.mlx, data.win, MLX_WINDOW_EVENT, window_manager, &data);
+	mlx_on_event(data.mlx, data.win, MLX_MOUSEDOWN, mouse_down_manager, &data);
+	mlx_on_event(data.mlx, data.win, MLX_MOUSEUP, mouse_up_manager, &data);
 	
 	update_chunk(&data);
 	//print_map(data.current_map);
 	mlx_loop_hook(data.mlx, loop, &data);
-	mlx_mouse_move(data.mlx, data.win, data.win_size.x / 2, data.win_size.y / 2);
 
 	data.textures[4] = path_to_tex(&data, "hutao.png");
 	data.textures[5] = path_to_tex(&data, "pd.png");
@@ -110,15 +111,14 @@ int	main(int argc, char **argv)
 	data.textures[8] = path_to_tex(&data, "wilson_back.png");
 	data.textures[9] = path_to_tex(&data, "wilson_side.png");
 	//add_active(&data, create_entity(&data, vec(25, 10), 1, data.textures[4]), follow_player);
-	//create_entity(&data, vec(25, 9), 1, data.textures[5]);
+	create_entity(&data, vec(25, 9), 1, data.textures[5]);
 	possess_control(set_entity_tex(create_entity(&data, vec(26, 8), 1, data.textures[6]), data.textures[7], data.textures[8], data.textures[9]), true);
 
+	init_test(&data);
+
 	mlx_loop(data.mlx);
+	free_data(&data);
 	mlx_destroy_window(data.mlx, data.win);
 	mlx_destroy_display(data.mlx);
-	//free(data.current_map);
-	for (int i = 0; i < data.win_size.y; i++)
-		free(data.screen_buffer[i]);
-	free(data.screen_buffer);
 	return (0);
 }
