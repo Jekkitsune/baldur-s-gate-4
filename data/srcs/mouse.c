@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 18:36:04 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/13 19:31:25 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/22 19:25:16 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	camera_move(t_data *data)
 		mouse_pos.y = (data->win_size.y / 2) - mouse_pos.y;
 		if (data->player.focus_mode)
 		{
-			if ((mouse_pos.y < 0 && data->player.height < 5000) || (mouse_pos.y > 0 && data->player.height > -2500))
+			if ((mouse_pos.y < 0 && data->player.height < HEIGHT_CAP) || (mouse_pos.y > 0 && data->player.height > -HEIGHT_CAP))
 			{
 				
 				data->player.height -= mouse_pos.y * 10;

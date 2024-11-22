@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 21:09:45 by gmassoni          #+#    #+#             */
-/*   Updated: 2024/11/07 01:18:57 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/22 18:49:53 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ bool	check_map(t_data *data, char **map)
 		j = -1;
 		while (map[i][++j])
 		{
-			if (!ft_inset(map[i][j], "01 NSEW"))
+			if (!ft_inset(map[i][j], "012 NSEW"))
 				return (false);
 			if (ft_inset(map[i][j], "NSEW"))
 			{
@@ -284,13 +284,15 @@ void	turn_map(t_data *data, char **map, t_map *level)
 				level->arr[x][y].type = VOID;
 			else
 				level->arr[x][y].type = map[y][x];
-			if (level->arr[x][y].type == WALL)
+			if (level->arr[x][y].type == WALL || level->arr[x][y].type == DOOR)
 			{
 				level->arr[x][y].tex[0] = data->textures[0];
 				level->arr[x][y].tex[1] = data->textures[1];
 				level->arr[x][y].tex[2] = data->textures[2];
 				level->arr[x][y].tex[3] = data->textures[3];
 			}
+			if (level->arr[x][y].type == DOOR)
+				level->arr[x][y].status = CLOSE;
 		}
 	}
 	ft_free_tab(map);

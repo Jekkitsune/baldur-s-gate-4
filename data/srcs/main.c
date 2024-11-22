@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/21 02:40:32 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/22 19:24:55 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ unsigned long	newtime;
 int	loop(void *param)
 {
 	t_data *data;
+	int		i;
+	int		j;
 
 	data = (t_data *)param;
 	camera_move(data);
@@ -70,6 +72,32 @@ int	loop(void *param)
 	}
 	frame++;
 
+	i = 0;
+	while (i < data->current_map->size.x)
+	{
+		j = 0;
+		while (j < data->current_map->size.y)
+		{
+			if (data->current_map->arr[i][j].type == DOOR)
+			{
+				if (data->current_map->arr[i][j].status == OPENING)
+				{
+					data->current_map->arr[i][j].timer -= 0.1;
+					if (data->current_map->arr[i][j].timer == 0)
+						data->current_map->arr[i][j].status = OPEN;
+				}
+				else if (data->current_map->arr[i][j].status == CLOSING)
+				{
+					data->current_map->arr[i][j].timer += 0.1;
+					if (data->current_map->arr[i][j].timer == 1)
+						data->current_map->arr[i][j].status = CLOSE;
+				}
+			}
+			j++;
+		}
+		i++;
+	}
+
 	if (data->current_map->active_entities)
 		return (0);
 	return (0);
@@ -105,14 +133,20 @@ int	main(int argc, char **argv)
 	//print_map(data.current_map);
 	mlx_loop_hook(data.mlx, loop, &data);
 
-	data.textures[4] = path_to_tex(&data, "hutao.png");
-	data.textures[5] = path_to_tex(&data, "pd.png");
+	data.textures[4] = path_to_tex(&data, "image.png");
+	data.textures[5] = path_to_tex(&data, "postal.png");
 	data.textures[6] = path_to_tex(&data, "wilson_face.png");
 	data.textures[7] = path_to_tex(&data, "wilson_side2.png");
 	data.textures[8] = path_to_tex(&data, "wilson_back.png");
 	data.textures[9] = path_to_tex(&data, "wilson_side.png");
-	data.textures[10] = path_to_tex(&data, "arrow.png");
-	data.textures[10]->name = "arrow";
+	data.textures[10] = path_to_tex(&data, "s1.png");
+	data.textures[11] = path_to_tex(&data, "s2.png");
+	data.textures[12] = path_to_tex(&data, "s3.png");
+	data.textures[13] = path_to_tex(&data, "s4.png");
+	data.textures[14] = path_to_tex(&data, "a.png");
+	data.textures[15] = path_to_tex(&data, "b.png");
+	data.textures[16] = path_to_tex(&data, "arrow.png");
+	data.textures[16]->name = "arrow";
 	//add_active(&data, create_entity(&data, vec(25, 10), 1, data.textures[4]), follow_player);
 	create_entity(&data, vec(25, 9), data.textures[5]);
 	possess_control(set_entity_tex(create_entity(&data, vec(26, 8), data.textures[6]), data.textures[7], data.textures[8], data.textures[9]), true);

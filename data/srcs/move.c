@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/21 02:27:26 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/22 19:25:24 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,12 @@ void	move(t_data *data)
 		p->pitch -= 50;
 	if (p->movement[4])
 		p->height += 50 * (data->scale * 2);
+	if (p->height > HEIGHT_CAP)
+		p->height = HEIGHT_CAP;
 	if (p->movement[5])
 		p->height -= 50 * (data->scale * 2);
-
+	if (p->height < -HEIGHT_CAP)
+		p->height = -HEIGHT_CAP;
 
 
 		if (p->angle > 2 * M_PI)

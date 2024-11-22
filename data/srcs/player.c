@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:21:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/06 23:11:02 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/20 19:38:55 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	init_player(t_data *data)
 	data->player.camera_plane.y = sinf(angle_add(data->player.angle, M_PI / 2));
 	data->player.direction.x = cosf(data->player.angle);
 	data->player.direction.y = sinf(data->player.angle);
-	data->player.pos_z = data->win_size.y * 0.5;
 	data->player.mouse_button[0] = 0;
 	data->player.mouse_button[1] = 0;
 	data->player.mouse_button[2] = 0;

@@ -6,9 +6,10 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2024/11/21 12:49:51 by fparis           ###   ########.fr        #
+#    Updated: 2024/11/22 19:24:04 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
 
 CC = cc
 CFLAGS = -g3 -Ofast#-Wextra -Werror -Wall -g

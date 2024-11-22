@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/20 22:56:28 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/22 19:25:58 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,24 +74,39 @@ void	draw_line_raycast(t_data *data, int x, int start, int end, int color, t_imp
 	}
 }
 
-t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length)
+t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length, t_vectorf slope_coeff, t_vector sign)
 {
 	if (!in_bound(*data->current_map, impact->wall_pos)
 		|| ft_min(ft_absf(length.x), ft_absf(length.y)) > data->render_distance)
 		return (impact);
-	if (data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type != WALL)
+	if (data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type != WALL
+		&& data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type != DOOR)
 	{
 		add_cell_entities(data, impact);
 		return (NULL);
 	}
 	impact->cell = &data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y];
+	if (impact->cell->type == DOOR)
+	{
+		if (ft_absf(length.x) > ft_absf(length.y))
+		{
+			length.y += 0.5 * slope_coeff.y;
+			if (length.y / slope_coeff.y != impact->wall_pos.y)
+				impact->wall_pos.y += sign.y;
+		}
+		else
+		{
+			length.x += 0.5 * slope_coeff.x;
+			if (length.x / slope_coeff.x != impact->wall_pos.x)
+				impact->wall_pos.x += sign.x;
+		}
+	}
 	if (ft_absf(length.x) <= ft_absf(length.y))
 	{
 		impact->face = 2;
 		if (length.x < 0)
 			impact->face = 4;
 		impact->length = ft_absf(length.x);
-		return (impact);
 	}
 	else
 	{
@@ -99,8 +114,8 @@ t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length)
 		if (length.y < 0)
 			impact->face = 3;
 		impact->length = ft_absf(length.y);
-		return (impact);
 	}
+	return (impact);
 }
 
 void		free_visible_lst(t_data *data)
@@ -160,14 +175,14 @@ t_impact	raycast(t_vector start, t_vectorf direc, t_data *data, t_vectorf slope_
 		while (ft_absf(length.x) <= ft_absf(length.y))
 		{
 			impact.wall_pos.x += sign.x;
-			if (check_wall(&impact, data, length))
+			if (check_wall(&impact, data, length, slope_coef, sign))
 				return (impact);
 			length.x += slope_coef.x;
 		}
 		while (ft_absf(length.y) <= ft_absf(length.x))
 		{
 			impact.wall_pos.y += sign.y;
-			if (check_wall(&impact, data, length))
+			if (check_wall(&impact, data, length, slope_coef, sign))
 				return (impact);
 			length.y += slope_coef.y;
 		}

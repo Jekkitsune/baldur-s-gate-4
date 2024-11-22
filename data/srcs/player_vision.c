@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/20 00:12:10 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/22 19:25:48 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ void	draw_wall(t_data *data, int x, t_vector pos, t_impact *ray)
 	if ((ray->face == 1 || ray->face == 4))
 		tex_column = tex->size - tex_column - 1;
 	i = 0;
-	while (i < pos.x && i < data->win_size.y)
-	{
-		data->screen_buffer[i][x] = 0xFF0000BB;
-		i++;
-	}
+	// while (i < pos.x && i < data->win_size.y)
+	// {
+	// 	data->screen_buffer[i][x] = 0xFF0000BB;
+	// 	i++;
+	// }
 	i = ft_max(pos.x, i);
 	while (i < pos.y && i < data->win_size.y)
 	{
@@ -41,11 +41,11 @@ void	draw_wall(t_data *data, int x, t_vector pos, t_impact *ray)
 			data->screen_buffer[i][x] = tex->tab[tex_column][(int)((ft_abs(pos.x - i)) * divided)];
 		i++;
 	}
-	while (i < data->win_size.y)
-	{
-		data->screen_buffer[i][x] = 0xFF00BB00;
-		i++;
-	}
+	// while (i < data->win_size.y)
+	// {
+	// 	data->screen_buffer[i][x] = 0xFF00BB00;
+	// 	i++;
+	// }
 }
 
 void	get_all_rays_old(t_data *data)
@@ -136,6 +136,70 @@ void	draw_ray(t_data *data, float diff, t_impact *ray, int i)
 	}
 }
 
+void	show_floor(t_data *data)
+{
+	int			x;
+	int			y;
+	t_vectorf	ray_dir_0;
+	t_vectorf	ray_dir_1;
+	int			p;
+	float		row_distance;
+	t_vectorf	floor_step;
+	t_vectorf	floor;
+	t_vector	cell;
+	t_vector	t;
+	uint32_t	color;
+	float		cam_z;
+	int			horizon;
+
+	horizon = (data->win_size.y / 2) + data->player.pitch;
+	y = horizon;
+	if (y < 0)
+		y = 0;
+	while (y < data->win_size.y)
+	{
+		ray_dir_0.x = data->player.direction.x - data->player.camera_plane.x;
+		ray_dir_0.y = data->player.direction.y - data->player.camera_plane.y;
+		ray_dir_1.x = data->player.direction.x + data->player.camera_plane.x;
+		ray_dir_1.y = data->player.direction.y + data->player.camera_plane.y;
+
+		p = y - horizon;
+		cam_z = ((data->player.height * (data->win_size.y / 2)) / HEIGHT_CAP);
+		cam_z = (data->win_size.y / 2) + ((cam_z * HEIGHT_CAP / (data->scale * 2)) / (data->win_size.y / 2));
+		row_distance = cam_z / p;
+
+		floor_step.x = row_distance * (ray_dir_1.x - ray_dir_0.x) / data->win_size.x;
+		floor_step.y = row_distance * (ray_dir_1.y - ray_dir_0.y) / data->win_size.x;
+
+		floor.x = (data->player.pos.x + (5 + data->player.offset.x / 2) / 10) + row_distance * ray_dir_0.x;
+		floor.y = (data->player.pos.y + (5 + data->player.offset.y / 2) / 10) + row_distance * ray_dir_0.y;
+
+		x = 0;
+		while (x < data->win_size.x)
+		{
+			cell.x = (int) floor.x;
+			cell.y = (int) floor.y;
+
+			t.y = ((int) (data->textures[15]->size * (floor.y - cell.y)) % (data->textures[15]->size - 1));
+			t.x = ((int) (data->textures[15]->size * (floor.x - cell.x)) % (data->textures[15]->size - 1));
+			if (t.x < 0)
+				t.x = 0;
+			if (t.y < 0)
+				t.y = 0;
+
+			floor.x += floor_step.x;
+			floor.y += floor_step.y;
+
+			color = data->textures[15]->tab[t.x][t.y];
+			//mlx_set_image_pixel(data->mlx, data->screen_display, x, y, color);
+			data->screen_buffer[y][x] = color;
+
+			x++;
+		}
+		y++;
+	}
+}
+
 void	show_ceiling(t_data *data)
 {
 	int			x;
@@ -161,7 +225,9 @@ void	show_ceiling(t_data *data)
 	int			pixel_length_img;
 	int			index;
 	int			horizon;
-
+	int			lim;
+	float		cam_z;
+	
 	tiniest_gap = data->player.angle;
 	closest_card = 0;
 	tmp = data->player.angle - M_PI / 2;
@@ -199,24 +265,25 @@ void	show_ceiling(t_data *data)
 		right_seg = vec(data->win_size.x - 1 - pixel_length, data->win_size.x - 1);
 		left_seg = vec(0, right_seg.x - 1);
 	}
-	index = 3 - (int) (closest_card / (M_PI / 2));
-	if (index == -1)
-		index = 3;
+	index = (int) (closest_card / (M_PI / 2)) + 10;
+	if (index == 14)
+		index = 10;
 	if (tiniest_gap >= 0)
 	{
 		left_tex = data->textures[index];
-		if (index == 0)
-			index = 4;
-		right_tex = data->textures[index - 1];
+		if (index == 13)
+			index = 9;
+		right_tex = data->textures[index + 1];
 	}
 	else
 	{
 		right_tex = data->textures[index];
-		if (index == 3)
-			index = -1;
-		left_tex = data->textures[index + 1];
+		if (index == 10)
+			index = 14;
+		left_tex = data->textures[index - 1];
 	}
-
+	horizon = (data->win_size.y / 2) - data->player.pitch;
+	lim = (data->win_size.y / 2) + data->player.pitch;
 	y = 0;
 	while (y < data->win_size.y)
 	{
@@ -225,11 +292,10 @@ void	show_ceiling(t_data *data)
 		ray_dir_1.x = data->player.direction.x + data->player.camera_plane.x;
 		ray_dir_1.y = data->player.direction.y + data->player.camera_plane.y;
 
-		horizon = (data->win_size.y / 2) - ((data->player.pitch * (data->win_size.y / 2)) / 500);
-
-		int	floor_lim = (data->win_size.y / 2) + ((data->player.pitch * (data->win_size.y / 2)) / 500);
 		p = y - horizon;
-		row_distance = data->player.pos_z / p;
+		cam_z = ((data->player.height * (data->win_size.y / 2)) / HEIGHT_CAP);
+		cam_z = (data->win_size.y / 2) - ((cam_z * HEIGHT_CAP / (data->scale * 2)) / (data->win_size.y / 2));
+		row_distance = cam_z / p;
 
 		floor_step.x = row_distance * (ray_dir_1.x - ray_dir_0.x) / data->win_size.x;
 		floor_step.y = row_distance * (ray_dir_1.y - ray_dir_0.y) / data->win_size.x;
@@ -243,8 +309,8 @@ void	show_ceiling(t_data *data)
 			cell.x = (int) floor.x;
 			cell.y = (int) floor.y;
 
-			t.x = ((int) (data->textures[0]->size * (floor.x - cell.x)) % (data->textures[0]->size - 1));
-			t.y = ((int) (data->textures[0]->size * (floor.y - cell.y)) % (data->textures[0]->size - 1));
+			t.y = ((int) (data->textures[14]->size * (floor.y - cell.y)) % (data->textures[14]->size - 1));
+			t.x = ((int) (data->textures[14]->size * (floor.x - cell.x)) % (data->textures[14]->size - 1));
 			if (t.x < 0)
 				t.x = 0;
 			if (t.y < 0)
@@ -255,12 +321,10 @@ void	show_ceiling(t_data *data)
 
 			if (!data->sky_box)
 			{
-				if (data->win_size.y - y - 1 <= floor_lim)
-				{
-					color = data->textures[1]->tab[t.x][t.y];
-					// mlx_set_image_pixel(data->mlx, data->screen_display, x, data->win_size.y - y - 1, color);
+				color = data->textures[14]->tab[t.x][t.y];
+				// mlx_set_image_pixel(data->mlx, data->screen_display, x, data->win_size.y - y - 1, color);
+				if (data->win_size.y - y - 1 < lim)
 					data->screen_buffer[data->win_size.y - y - 1][x] = color;
-				}
 			}
 			else
 			{
@@ -270,12 +334,12 @@ void	show_ceiling(t_data *data)
 					pixel_length_img = (pixel_length * left_tex->size) / data->win_size.x;
 					start_index = left_tex->size - pixel_length_img - 1;
 					t.x = ((x * (left_tex->size - 1)) / (data->win_size.x - 1)) + start_index;
+					if (t.x >= left_tex->size)
+						t.x = left_tex->size - 1;
 					t.y = ((y * (left_tex->size - 1)) / (data->win_size.y - 1));
-					if (y - (data->win_size.y / 2) >= 0)
-					{
-						color = left_tex->tab[t.x][t.y];
-						data->screen_buffer[y - (data->win_size.y / 2)][x] = color;
-					}
+					color = left_tex->tab[t.x][t.y];
+					if (y < lim)
+						data->screen_buffer[y][x] = color;
 				}
 				else if (x >= right_seg.x && x <= right_seg.y)
 				{
@@ -286,77 +350,14 @@ void	show_ceiling(t_data *data)
 					t.y = ((y * (right_tex->size - 1)) / (data->win_size.y - 1));
 					if (t.x < 0)
 						t.x = 0;
-					if (y - (data->win_size.y / 2) >= 0)
-					{
-						color = right_tex->tab[t.x][t.y];
-						data->screen_buffer[y - (data->win_size.y / 2)][x] = color;
-					}
+					color = right_tex->tab[t.x][t.y];
+					if (y < lim)
+						data->screen_buffer[y][x] = color;
 				}
 			}
 
 			x++;
 		}
-
-		y++;
-	}
-}
-
-void	show_floor(t_data *data)
-{
-	int			x;
-	int			y;
-	t_vectorf	ray_dir_0;
-	t_vectorf	ray_dir_1;
-	int			p;
-	float		row_distance;
-	t_vectorf	floor_step;
-	t_vectorf	floor;
-	t_vector	cell;
-	t_vector	t;
-	uint32_t	color;
-	int			horizon;
-
-	y = 0;
-	while (y < data->win_size.y)
-	{
-		ray_dir_0.x = data->player.direction.x - data->player.camera_plane.x;
-		ray_dir_0.y = data->player.direction.y - data->player.camera_plane.y;
-		ray_dir_1.x = data->player.direction.x + data->player.camera_plane.x;
-		ray_dir_1.y = data->player.direction.y + data->player.camera_plane.y;
-
-		horizon = (data->win_size.y / 2) + ((data->player.pitch * (data->win_size.y / 2)) / 500);
-		p = y - horizon;
-		row_distance = data->player.pos_z / p;
-
-		floor_step.x = row_distance * (ray_dir_1.x - ray_dir_0.x) / data->win_size.x;
-		floor_step.y = row_distance * (ray_dir_1.y - ray_dir_0.y) / data->win_size.x;
-
-		floor.x = (data->player.pos.x + (5 + data->player.offset.x / 2) / 10) + row_distance * ray_dir_0.x;
-		floor.y = (data->player.pos.y + (5 + data->player.offset.y / 2) / 10) + row_distance * ray_dir_0.y;
-
-		x = 0;
-		while (x < data->win_size.x)
-		{
-			cell.x = (int) floor.x;
-			cell.y = (int) floor.y;
-
-			t.x = ((int) (data->textures[0]->size * (floor.x - cell.x)) % (data->textures[0]->size - 1));
-			t.y = ((int) (data->textures[0]->size * (floor.y - cell.y)) % (data->textures[0]->size - 1));
-			if (t.x < 0)
-				t.x = 0;
-			if (t.y < 0)
-				t.y = 0;
-
-			floor.x += floor_step.x;
-			floor.y += floor_step.y;
-
-			color = data->textures[0]->tab[t.x][t.y];
-			//mlx_set_image_pixel(data->mlx, data->screen_display, x, y, color);
-			data->screen_buffer[y][x] = color;
-
-			x++;
-		}
-
 		y++;
 	}
 }
@@ -368,8 +369,10 @@ void	show_screen(t_data *data)
 	float		diff;
 	int			color;
 
-	// show_floor(data);
-	// show_ceiling(data);
+	if (data->player.height >= -5000)
+		show_floor(data);
+	if (data->player.height <= 5000)
+		show_ceiling(data);
 	i = 0;
 	diff = (float)data->win_size.x / (float)NB_RAYS;
 	while (i < NB_RAYS)
