@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/22 19:31:39 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/22 19:40:36 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@
 # define NB_TEX 17
 # define NB_BUTTON 20
 
-# define NB_RAYS (1600 / 2)
+# define NB_RAYS (1600)
 # define FOV 0.7
-# define HEIGHT (900 / 2)
-# define WIDTH (1600 / 2)
+# define HEIGHT (900)
+# define WIDTH (1600)
 # define HEIGHT_CAP 5000
 
 

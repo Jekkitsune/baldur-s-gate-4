@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:27:28 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/20 23:07:42 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/22 19:47:07 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ t_texture	*get_tex(t_data *data, char *name)
 	i = 0;
 	while (i < NB_TEX)
 	{
-		if (!ft_strcmp(name, data->textures[i]->name))
+		if (data->textures[i] && !ft_strcmp(name, data->textures[i]->name))
 			return (data->textures[i]);
 		i++;
 	}

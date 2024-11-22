@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/22 19:24:55 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/22 19:45:14 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	loop(void *param)
 	update_button_action(data);
 	update_chunk(data);
 	show_screen(data);
-	show_minimap(data);
+	//show_minimap(data);
 
 	//show_tex(data, data->textures[0], vec(100, 100));
 	//show_tex(data, data->textures[1], vec(100 + data->textures[0]->size, 100));
@@ -134,18 +134,18 @@ int	main(int argc, char **argv)
 	mlx_loop_hook(data.mlx, loop, &data);
 
 	data.textures[4] = path_to_tex(&data, "image.png");
-	data.textures[5] = path_to_tex(&data, "postal.png");
-	data.textures[6] = path_to_tex(&data, "wilson_face.png");
-	data.textures[7] = path_to_tex(&data, "wilson_side2.png");
-	data.textures[8] = path_to_tex(&data, "wilson_back.png");
-	data.textures[9] = path_to_tex(&data, "wilson_side.png");
-	data.textures[10] = path_to_tex(&data, "s1.png");
-	data.textures[11] = path_to_tex(&data, "s2.png");
-	data.textures[12] = path_to_tex(&data, "s3.png");
-	data.textures[13] = path_to_tex(&data, "s4.png");
-	data.textures[14] = path_to_tex(&data, "a.png");
-	data.textures[15] = path_to_tex(&data, "b.png");
-	data.textures[16] = path_to_tex(&data, "arrow.png");
+	data.textures[5] = path_to_tex(&data, "image.png");
+	data.textures[6] = path_to_tex(&data, "image.png");
+	data.textures[7] = path_to_tex(&data, "image.png");
+	data.textures[8] = path_to_tex(&data, "image.png");
+	data.textures[9] = path_to_tex(&data, "image.png");
+	data.textures[10] = path_to_tex(&data, "image.png");
+	data.textures[11] = path_to_tex(&data, "image.png");
+	data.textures[12] = path_to_tex(&data, "image.png");
+	data.textures[13] = path_to_tex(&data, "image.png");
+	data.textures[14] = path_to_tex(&data, "image.png");
+	data.textures[15] = path_to_tex(&data, "image.png");
+	data.textures[16] = path_to_tex(&data, "image.png");
 	data.textures[16]->name = "arrow";
 	//add_active(&data, create_entity(&data, vec(25, 10), 1, data.textures[4]), follow_player);
 	create_entity(&data, vec(25, 9), data.textures[5]);
