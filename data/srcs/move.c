@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/06 21:36:46 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/21 02:32:04 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,12 @@ void	move(t_data *data)
 		p->pitch -= 50;
 	if (p->movement[4])
 		p->height += 50 * (data->scale * 2);
+	if (p->height > HEIGHT_CAP)
+		p->height = HEIGHT_CAP;
 	if (p->movement[5])
 		p->height -= 50 * (data->scale * 2);
-
+	if (p->height < -HEIGHT_CAP)
+		p->height = -HEIGHT_CAP;
 
 
 		if (p->angle > 2 * M_PI)

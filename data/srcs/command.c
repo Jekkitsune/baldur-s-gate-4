@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/06 23:10:30 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/22 18:59:43 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,26 @@ void	register_player_movement(t_data *data, int key, int pressed)
 		data->player.movement[4] = pressed;
 	if (key == 90)
 		data->player.movement[5] = pressed;
+	if (key == 44)
+	{
+		int	i = 0;
+		while (i < data->current_map->size.x)
+		{
+			int	j = 0;
+			while (j < data->current_map->size.y)
+			{
+				if (data->current_map->arr[i][j].type == DOOR)
+				{
+					if (data->current_map->arr[i][j].status == OPEN)
+						data->current_map->arr[i][j].status = CLOSE;
+					else if (data->current_map->arr[i][j].status == CLOSE)
+						data->current_map->arr[i][j].status = OPEN;
+				}
+				j++;
+			}
+			i++;
+		}
+	}
 }
 
 int	key_down_manager(int key, void *param)

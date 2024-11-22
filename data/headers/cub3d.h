@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/18 20:01:19 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/11/22 18:49:34 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,19 @@
 # define GROUND '0'
 # define WALL '1'
 # define VOID ' '
-# define NB_TEX 10
+# define DOOR '2'
+# define NB_TEX 16
 
 # define NB_RAYS (1600)
 # define FOV 0.7
-# define HEIGHT (900 / 2)
-# define WIDTH (1600 / 2)
+# define HEIGHT (900)
+# define WIDTH (1600)
+# define HEIGHT_CAP 5000
+
+# define CLOSE 0
+# define OPEN 1
+# define OPENING 2
+# define CLOSING 3
 
 typedef struct s_vector
 {
@@ -91,6 +98,8 @@ typedef	struct s_cell
 	char		type;
 	t_texture	*tex[4];
 	t_list		*entities;
+	int			status;
+	int			timer;
 }	t_cell;
 
 typedef struct s_impact
@@ -131,7 +140,6 @@ typedef struct s_player
 	int			height;
 	int			focus_mode;
 	float		focus_dist;
-	float		pos_z;
 
 	t_entity	*possession;
 
@@ -152,7 +160,7 @@ typedef struct s_data
 {
 	void		*mlx;
 	void		*win;
-	t_texture	*textures[10];
+	t_texture	*textures[NB_TEX];
 	char		floor_color[9];
 	char		ceiling_color[9];
 	t_vector	win_size;
