@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/09 15:05:31 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/21 12:49:56 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@
 # define GROUND '0'
 # define WALL '1'
 # define VOID ' '
-# define NB_TEX 10
+# define NB_TEX 11
+# define NB_BUTTON 20
 
-# define NB_RAYS (1600)
+# define NB_RAYS (1600 / 2)
 # define FOV 0.7
 # define HEIGHT (900 / 2)
 # define WIDTH (1600 / 2)
@@ -53,22 +54,35 @@ typedef struct s_texture
 {
 	uint32_t	**tab;
 	int			size;
+	char		*name;
 }	t_texture;
 
 typedef struct s_animation
 {
 	t_texture	**tab;
 	int			size;
-	int			index;
 	char		*name;
 	int			interval;
-	int			clock;
 	void		(*anim_sound)(int index, int clock);
 }	t_animation;
 
+typedef struct s_button
+{
+	t_bool		active;
+	void		(*func)(void *data, void *entity);
+	t_texture	*img;
+	t_vector	start;
+	t_vector	end;
+}	t_button;
+
+typedef struct s_sheet
+{
+	t_button	buttons[NB_BUTTON];
+}	t_sheet;
+
 typedef struct s_entity
 {
-	char		type;
+	t_bool		visible;
 	t_texture	*tex[4];
 	float		angle;
 	t_vector	pos;
@@ -84,6 +98,9 @@ typedef struct s_entity
 	t_animation	*anim;
 	t_animation	*current_anim;
 	int			nb_anim;
+	int			anim_index;
+	int			anim_clock;
+	t_sheet		sheet;
 }	t_entity;
 
 typedef	struct s_cell
@@ -134,6 +151,8 @@ typedef struct s_player
 	float		pos_z;
 
 	t_entity	*possession;
+	t_button	*active_button;
+	t_entity	*arrow;
 
 	t_list		*visible_entities;
 }	t_player;
@@ -152,7 +171,7 @@ typedef struct s_data
 {
 	void		*mlx;
 	void		*win;
-	t_texture	*textures[10];
+	t_texture	*textures[NB_TEX];
 	char		floor_color[9];
 	char		ceiling_color[9];
 	t_vector	win_size;
@@ -169,6 +188,9 @@ typedef struct s_data
 	uint32_t	**screen_buffer;
 	bool		sky_box;
 	int			fps;
+	t_entity	**prefab_tab;
+	int			nb_prefab;
+	int			button_scale_size;
 } t_data;
 
 typedef	struct s_linfo
@@ -227,7 +249,7 @@ void		free_map(t_data *data, t_map *map);
 void		draw_thing(t_data *data, t_vector pos, t_vectorf offset, t_texture *tex);
 void		ft_pixel_put(t_data *data, int y, int x, uint32_t color);
 void		draw_entities(t_data *data);
-t_entity	*create_entity(t_data *data, t_vector pos, char typ, t_texture *tex);
+t_entity	*create_entity(t_data *data, t_vector pos, t_texture *tex);
 void		calculate_entity_info(t_data *data, t_entity *entity);
 void		move_entity(t_data *data, t_entity *entity, t_vectorf move);
 void		follow_player(void *arg_data, void *arg_entity);
@@ -254,11 +276,25 @@ void		free_visible_lst(t_data *data);
 void		free_data(t_data *data);
 t_texture	*get_correct_tex(t_entity *entity, int face);
 int			get_anim_index(t_entity *entity, char *name);
-void		change_anim(t_entity *entity, char *name, int reset);
+void		change_anim(t_entity *entity, char *name);
 void		init_anim(t_data *data, t_animation *anim, int size, char *path);
 void		continue_anim(t_data *data, t_entity *entity);
-void		free_entity_data(t_data *data, t_entity *entity);
+void		free_prefab_entity(t_data *data, t_entity *entity);
+int			get_anim_size(char *path);
+t_animation	*add_anim(t_animation **tab, t_animation *new, int *nb_anim);
+t_entity	*get_prefab_data(t_data *data, char *directory);
+t_entity	*spawn_entity(t_data *data, t_entity *prefab, t_vector pos);
+void		add_prefab(t_data *data, t_entity *prefab);
+void		draw_possession_button(t_data *data, t_button *buttons);
+void		check_button_click(t_data *data);
+int			get_hover_index(t_data *data);
+void		draw_hover(t_data *data, t_vector start, uint32_t color);
+t_texture	*get_tex(t_data *data, char *name);
+void		update_button_action(t_data *data);
+void		remove_arrow(t_data *data);
 
+
+void	exemple_action(void *data_param, void *entity_param);
 void		init_test(t_data *data);
 
 #endif

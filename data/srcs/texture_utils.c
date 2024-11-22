@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:27:28 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/09 14:50:51 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/20 23:07:42 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,4 +128,18 @@ void	show_tex(t_data *data, t_texture *tex, t_vector pos)
 		}
 		i.y++;
 	}
+}
+
+t_texture	*get_tex(t_data *data, char *name)
+{
+	int	i;
+
+	i = 0;
+	while (i < NB_TEX)
+	{
+		if (!ft_strcmp(name, data->textures[i]->name))
+			return (data->textures[i]);
+		i++;
+	}
+	return (NULL);
 }

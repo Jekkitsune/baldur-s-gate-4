@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/03 02:10:55 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/20 00:12:10 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -378,6 +378,8 @@ void	show_screen(t_data *data)
 		i++;
 	}
 	draw_entities(data);
+	if (data->player.possession && data->player.possession->possess_control)
+		draw_possession_button(data, data->player.possession->sheet.buttons);
 	if (!data->screen_display)
 		data->screen_display = mlx_new_image(data->mlx, data->win_size.x, data->win_size.y);
 	i = 0;

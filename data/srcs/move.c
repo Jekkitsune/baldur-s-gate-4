@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/06 21:36:46 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/21 02:27:26 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,42 @@ void	change_pos(t_data *data, t_vectorf *offset, float angle)
 
 void	rotate_focus(t_data *data)
 {
-	if (!data->player.possession)
+	t_entity	*entity;
+
+	if (!data->player.possession && !data->player.arrow)
 		return ;
-	data->player.offset.x = data->player.possession->offset.x + (cosf(angle_add(data->player.angle, M_PI)) * data->player.focus_dist);
-	data->player.offset.y = data->player.possession->offset.y + (sinf(angle_add(data->player.angle, M_PI)) * data->player.focus_dist);
-	data->player.pos = data->player.possession->pos;
+	entity = data->player.possession;
+	if (data->player.arrow)
+		entity = data->player.arrow;
+	data->player.offset.x = entity->offset.x + (cosf(angle_add(data->player.angle, M_PI)) * data->player.focus_dist);
+	data->player.offset.y = entity->offset.y + (sinf(angle_add(data->player.angle, M_PI)) * data->player.focus_dist);
+	data->player.pos = entity->pos;
 
 	correct_pos(data, &data->player.pos, &data->player.offset);
+}
+
+void	move_arrow(t_data *data)
+{
+	t_player 	*p;
+	t_entity	*arrow;
+	t_vectorf	offset;
+
+	arrow = data->player.arrow;
+	if (arrow)
+	{
+		p = &data->player;
+		offset = arrow->offset;
+		if (p->movement[0])
+			change_pos(data, &offset, p->angle);
+		if (p->movement[1])
+			change_pos(data, &offset, p->angle - (M_PI / 2));
+		if (p->movement[2])
+			change_pos(data, &offset, p->angle + M_PI);
+		if (p->movement[3])
+			change_pos(data, &offset, p->angle + (M_PI / 2));
+		if (p->movement[0] || p->movement[1] || p->movement[2] || p->movement[3])
+			teleport_entity(data, arrow, arrow->pos, offset);
+	}
 }
 
 void	move_possession(t_data *data)
@@ -58,6 +87,8 @@ void	move_possession(t_data *data)
 			change_pos(data, &offset, p->angle + (M_PI / 2));
 		if (p->movement[0] || p->movement[1] || p->movement[2] || p->movement[3])
 		{
+			if (possession->current_anim && ft_strcmp(possession->current_anim->name, "walk"))
+				change_anim(possession, "walk");
 			if (p->movement[2])
 				possession->angle = p->angle + (M_PI) * p->movement[2];
 			else
@@ -65,6 +96,8 @@ void	move_possession(t_data *data)
 			angle_add(possession->angle, 0);
 			teleport_entity(data, possession, possession->pos, offset);
 		}
+		else if (possession->current_anim && ft_strcmp(possession->current_anim->name, "idle"))
+			change_anim(possession, "idle");
 	}
 }
 
@@ -73,7 +106,7 @@ void	move(t_data *data)
 	t_player *p;
 
 	p = &data->player;
-	if (!data->player.focus_mode)
+	if (!data->player.focus_mode && !data->player.arrow)
 	{
 		if (p->movement[0])
 			change_pos(data, &data->player.offset, p->angle);
@@ -85,7 +118,9 @@ void	move(t_data *data)
 			change_pos(data, &data->player.offset, p->angle + (M_PI / 2));
 		correct_pos(data, &data->player.pos, &data->player.offset);
 	}
-	else
+	else if (data->player.arrow)
+		move_arrow(data);
+	else if (data->player.possession)
 		move_possession(data);
 
 	if (p->rotation[1])

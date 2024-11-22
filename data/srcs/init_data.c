@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 16:19:11 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/06 23:03:00 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/19 22:23:09 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_data	*init_data(t_data *data)
 	data->win_size.y = HEIGHT;
 	data->mlx = mlx_init();
 	data->win = mlx_new_window(data->mlx, data->win_size.x, data->win_size.y, "Baldur's Gate 4");
+	data->button_scale_size = 75 * data->win_size.x / 1920;
 	data->scale = 10;
 	data->render_distance = 500;
 	data->sky_box = false;

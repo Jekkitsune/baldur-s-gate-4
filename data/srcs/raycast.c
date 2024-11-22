@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/02 19:56:33 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/20 22:56:28 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ void	add_cell_entities(t_data *data, t_impact *ray)
 		current_entity = cell_lst->content;
 		if (current_entity->nb_impact > 0)
 			return ;
-		sort_entity(data, current_entity);
+		if (current_entity->visible)
+			sort_entity(data, current_entity);
 		cell_lst = cell_lst->next;
 	}
 }

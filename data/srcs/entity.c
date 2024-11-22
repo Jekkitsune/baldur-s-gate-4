@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 19:14:32 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/09 14:47:44 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/21 02:40:56 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_entity	*set_entity_tex(t_entity *entity, t_texture *tex2, t_texture *tex3, t_t
 	return (entity);
 }
 
-t_entity	*create_entity(t_data *data, t_vector pos, char typ, t_texture *tex)
+t_entity	*create_entity(t_data *data, t_vector pos, t_texture *tex)
 {
 	t_entity	*entity;
 	t_list		*new_lst;
@@ -74,12 +74,12 @@ t_entity	*create_entity(t_data *data, t_vector pos, char typ, t_texture *tex)
 		free(entity);
 		return (NULL);
 	}
+	entity->visible = true;
 	entity->nb_impact = 0;
 	entity->offset = vecf(0, 0);
 	entity->pos = pos;
 	entity->tex[0] = tex;
 	set_entity_tex(entity, tex, tex, tex);
-	entity->type = typ;
 	entity->behavior = ft_nothing;
 	ft_lstadd_front(&data->current_map->arr[pos.x][pos.y].entities, new_lst);
 	return (entity);
@@ -94,6 +94,8 @@ void	destroy_entity(t_data *data, t_entity *entity)
 		return ;
 	if (data->player.possession == entity)
 		unpossess(data);
+	if (data->player.arrow == entity)
+		data->player.arrow = NULL;
 	if (entity->active)
 		destroy_active(data, entity);
 	if (in_bound(*data->current_map, entity->pos))

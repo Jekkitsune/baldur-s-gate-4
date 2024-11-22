@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 19:02:10 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/09 14:53:19 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/20 23:05:10 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,25 +42,13 @@ void	init_anim(t_data *data, t_animation *anim, int size, char *path)
 
 void	init_test(t_data *data)
 {
-	t_entity	*test;
-	int			i;
+	t_entity	*test2;
+	t_animation	anim;
 
-	test = add_active(data, create_entity(data, vec(25, 10), 1, data->textures[4]), ft_nothing);
-	test->anim = ft_calloc(4, sizeof(t_animation));
-	test->nb_anim = 4;
-	i = 0;
-	while (i < 4)
-	{
-		test->anim[i].interval = 17;
-		i++;
-	}
-	init_anim(data, &test->anim[0], 11, "test/walk_r_01.png");
-	test->anim[0].name = ft_strjoin("walk", "");
-	init_anim(data, &test->anim[1], 11, "test/walk_r_01.png");
-	test->anim[1].name = ft_strjoin("walk_sider", "");
-	init_anim(data, &test->anim[2], 11, "test/walk_l_01.png");
-	test->anim[2].name = ft_strjoin("walk_sidel", "");
-	init_anim(data, &test->anim[3], 11, "test/walk_l_01.png");
-	test->anim[3].name = ft_strjoin("walk_back", "");
-	change_anim(test, "walk", 0);
+	add_prefab(data, get_prefab_data(data, "guard"));
+	test2 = spawn_entity(data, data->prefab_tab[0], vec(25, 10));
+	add_active(data, test2, ft_nothing);
+	possess_control(test2, true);
+	change_anim(test2, "walk");
+	test2->sheet.buttons[0].func = exemple_action;
 }

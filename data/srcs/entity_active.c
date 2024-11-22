@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:24:17 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/09 14:50:11 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/20 22:38:39 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	update_all_active(t_data *data)
 		current->behavior(data, current);
 		if (current->current_anim)
 			continue_anim(data, current);
-			//show_tex(data, current->current_anim->tab[current->current_anim->index], vec(100, 100));
 	}
 }
 

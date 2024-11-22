@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/09 14:49:36 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/21 02:40:32 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,6 @@ int	loop(void *param)
 	if (data->player.focus_mode)
 		rotate_focus(data);
 
-	float test = get_angle_diff(data->player.angle, M_PI / 2);
-	//printf("%f\n", test);
-
 	if (data->test_key)
 	{
 		// if (data->current_map->active_entities)
@@ -42,11 +39,15 @@ int	loop(void *param)
 		if (!data->player.focus_mode && entitest)
 			possess(data, entitest);
 		else if (data->player.focus_mode)
+		{
 			unpossess(data);
+			remove_arrow(data);
+		}
 	}
 
 	move(data);
 	update_all_active(data);
+	update_button_action(data);
 	update_chunk(data);
 	show_screen(data);
 	show_minimap(data);
@@ -110,9 +111,11 @@ int	main(int argc, char **argv)
 	data.textures[7] = path_to_tex(&data, "wilson_side2.png");
 	data.textures[8] = path_to_tex(&data, "wilson_back.png");
 	data.textures[9] = path_to_tex(&data, "wilson_side.png");
+	data.textures[10] = path_to_tex(&data, "arrow.png");
+	data.textures[10]->name = "arrow";
 	//add_active(&data, create_entity(&data, vec(25, 10), 1, data.textures[4]), follow_player);
-	create_entity(&data, vec(25, 9), 1, data.textures[5]);
-	possess_control(set_entity_tex(create_entity(&data, vec(26, 8), 1, data.textures[6]), data.textures[7], data.textures[8], data.textures[9]), true);
+	create_entity(&data, vec(25, 9), data.textures[5]);
+	possess_control(set_entity_tex(create_entity(&data, vec(26, 8), data.textures[6]), data.textures[7], data.textures[8], data.textures[9]), true);
 
 	init_test(&data);
 

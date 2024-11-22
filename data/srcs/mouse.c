@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 18:36:04 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/06 23:12:41 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/13 19:31:25 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	camera_move(t_data *data)
 	if (data->player.focus_mode && !data->player.mouse_button[2])
 		return ;
 	mlx_mouse_get_pos(data->mlx, &mouse_pos.x, &mouse_pos.y);
+	if (mouse_pos.x == data->player.mouse_pos.x && mouse_pos.y == data->player.mouse_pos.y)
+		return ;
 	if (mouse_pos.x != data->win_size.x / 2)
 	{
 		mouse_pos.x = (data->win_size.x / 2) - mouse_pos.x;

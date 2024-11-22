@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 23:25:12 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/09 15:07:20 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/18 22:02:07 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	free_map(t_data *data, t_map *map)
 	{
 		tmp = lst;
 		lst = lst->next;
-		free_entity_data(data, tmp->content);
+		destroy_entity(data, tmp->content);
 	}
 	while (x < map->size.x)
 	{
@@ -57,7 +57,7 @@ void	free_map(t_data *data, t_map *map)
 			{
 				tmp = lst;
 				lst = lst->next;
-				free_entity_data(data, tmp->content);
+				destroy_entity(data, tmp->content);
 			}
 			y++;
 		}
@@ -86,7 +86,22 @@ void	free_minimap(t_data *data)
 	data->minimap.chunk = NULL;
 }
 
-void	free_entity_data(t_data *data, t_entity *entity)
+void	free_prefab_tab(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->nb_prefab)
+	{
+		free_prefab_entity(data, data->prefab_tab[i]);
+		i++;
+	}
+	if (data->prefab_tab)
+		free(data->prefab_tab);
+	data->prefab_tab = NULL;
+}
+
+void	free_prefab_entity(t_data *data, t_entity *entity)
 {
 	int	i;
 	int	i2;
@@ -96,7 +111,8 @@ void	free_entity_data(t_data *data, t_entity *entity)
 		i = 0;
 		while (i < entity->nb_anim)
 		{
-			free(entity->anim[i].name);
+			if (entity->anim[i].name)
+				free(entity->anim[i].name);
 			i2 = 0;
 			while (i2 < entity->anim[i].size)
 			{
@@ -119,6 +135,7 @@ void	free_data(t_data *data)
 	t_list	*lst;
 	t_list	*to_free;
 
+	free_prefab_tab(data);
 	lst = data->map_list;
 	while (lst)
 	{
