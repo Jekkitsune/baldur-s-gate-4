@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/22 19:24:16 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/30 01:24:44 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	mouse_up_manager(int key, void *param)
 		mlx_mouse_move(data->mlx, data->win, data->player.mouse_pos.x, data->player.mouse_pos.y);
 		mlx_mouse_show();
 	}
-	if (key == 1 || key == 3)
+	if (key == 1)
 		check_button_click(data);
 	return (0);
 }

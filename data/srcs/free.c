@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 23:25:12 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/18 22:02:07 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/05 19:57:44 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	free_tex(t_texture *tex)
 	i = 0;
 	if (!tex)
 		return ;
+	if (tex->name)
+		free(tex->name);
 	if (tex->tab)
 	{
 		while (i < tex->size)
@@ -129,6 +131,26 @@ void	free_prefab_entity(t_data *data, t_entity *entity)
 	destroy_entity(data, entity);
 }
 
+void	free_tex_lst(t_data *data)
+{
+	t_list		*lst_i;
+	t_list		*tmp;
+
+	lst_i = data->textures;
+	while (lst_i)
+	{
+		if (lst_i->content)
+			free_tex(lst_i->content);
+		tmp = lst_i;
+		lst_i = lst_i->next;
+		free(tmp);
+	}
+	free_tex(data->wall_tex[0]);
+	free_tex(data->wall_tex[1]);
+	free_tex(data->wall_tex[2]);
+	free_tex(data->wall_tex[3]);
+}
+
 void	free_data(t_data *data)
 {
 	int		i;
@@ -145,12 +167,7 @@ void	free_data(t_data *data)
 		free(to_free);
 	}
 	free_minimap(data);
-	i = 0;
-	while (i < NB_TEX)
-	{
-		free_tex(data->textures[i]);
-		i++;
-	}
+	free_tex_lst(data);
 	free_visible_lst(data);
 	mlx_destroy_image(data->mlx, data->screen_display);
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:27:28 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/20 23:07:42 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/05 20:07:55 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,14 +132,27 @@ void	show_tex(t_data *data, t_texture *tex, t_vector pos)
 
 t_texture	*get_tex(t_data *data, char *name)
 {
-	int	i;
+	t_list		*i;
+	t_texture	*current_tex;
 
-	i = 0;
-	while (i < NB_TEX)
+	i = data->textures;
+	while (i)
 	{
-		if (!ft_strcmp(name, data->textures[i]->name))
-			return (data->textures[i]);
-		i++;
+		if (i->content)
+		{
+			current_tex = i->content;
+			if (!ft_strcmp(name, current_tex->name))
+				return (current_tex);
+		}
+		i = i->next;
 	}
 	return (NULL);
+}
+
+void	add_tex(t_data *data, t_texture *tex, char *name)
+{
+	if (!tex || !data)
+		return ;
+	tex->name = name;
+	ft_lstadd_front(&data->textures, ft_lstnew(tex));
 }

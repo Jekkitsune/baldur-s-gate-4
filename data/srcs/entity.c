@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 19:14:32 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/21 02:40:56 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/30 12:43:25 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,9 @@ t_entity	*create_entity(t_data *data, t_vector pos, t_texture *tex)
 		free(entity);
 		return (NULL);
 	}
+	entity->size_scale = 1;
+	entity->sheet.alive = 1;
 	entity->visible = true;
-	entity->nb_impact = 0;
 	entity->offset = vecf(0, 0);
 	entity->pos = pos;
 	entity->tex[0] = tex;
@@ -104,6 +105,8 @@ void	destroy_entity(t_data *data, t_entity *entity)
 		if (tmp)
 			free(tmp);
 	}
+	if (entity->sheet.name)
+		free(entity->sheet.name);
 	free(entity);
 	printf("successfully destroyed\n");
 }
@@ -200,18 +203,6 @@ void	draw_thing(t_data *data, t_vector pos, t_vectorf offset, t_texture *tex)
 	draw_thing_tex(data, x, i, tex, distance);
 }
 
-float	get_angle_diff(float angle1, float angle2)
-{
-	float	res;
-
-	res = angle1 - angle2;
-	res = fmod(res + M_PI, 2 * M_PI);
-	if (res < 0)
-		res += 2 * M_PI;
-	res -= M_PI;
-	return (res);
-}
-
 void	draw_entity(t_data *data, t_entity *entity)
 {
 	int		face;
@@ -241,9 +232,10 @@ void	calculate_entity_info(t_data *data, t_entity *entity)
 	p_pos.y = data->player.pos.y * (data->scale * 2) + (data->player.offset.y + data->scale);
 	entity->draw_x.x = get_obj_x(data, entity->true_pos, p_pos);
 	entity->distance = get_obj_y(data, entity->true_pos, p_pos, &entity->draw_y);
+	entity->draw_y.x -= (entity->draw_y.y - entity->draw_y.x) * (entity->size_scale - 1);
 	if (entity->draw_x.x == data->win_size.x)
 		return ;
-	entity->draw_x.y = WIDTH / entity->distance * (data->scale * 2);
+	entity->draw_x.y = (WIDTH / entity->distance * (data->scale * 2)) * entity->size_scale;
 	entity->draw_x.x = entity->draw_x.x - (entity->draw_x.y / 2);
 	entity->draw_x.y = entity->draw_x.x + entity->draw_x.y;
 }

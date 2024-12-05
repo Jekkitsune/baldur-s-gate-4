@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2024/11/22 19:24:04 by fparis           ###   ########.fr        #
+#    Updated: 2024/12/04 20:07:20 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,11 @@ SRCS = main.c\
 		load_prefab.c\
 		prefab.c\
 		buttons.c\
-		actions.c
+		actions.c\
+		spells_init.c\
+		spells.c\
+		raycast_simple.c\
+		fireball.c
 
 LIBFT = data/libft/libft.a
 

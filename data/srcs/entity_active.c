@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:24:17 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/20 22:38:39 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/04 20:19:12 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,13 @@ void	update_all_active(t_data *data)
 {
 	t_list		*i;
 	t_entity	*current;
+	t_spellinfo	*info;
 
+	if (data->player.arrow && data->player.active_button)
+	{
+		info = &data->player.active_button->spellinfo;
+		check_dist_obstacle(data, data->player.possession, info->range, info->visible_target);
+	}
 	i = data->current_map->active_entities;
 	while (i)
 	{

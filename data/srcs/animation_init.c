@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 19:02:10 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/20 23:05:10 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/05 17:52:35 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,12 @@ void	init_test(t_data *data)
 	t_entity	*test2;
 	t_animation	anim;
 
-	add_prefab(data, get_prefab_data(data, "guard"));
-	test2 = spawn_entity(data, data->prefab_tab[0], vec(25, 10));
+	add_prefab(data, get_prefab_data(data, "guard"), ft_strjoin("guard", ""));
+	data->prefab_tab[data->nb_prefab - 1]->sheet.hp = 10;
+	test2 = spawn_entity(data, get_prefab(data, "guard"), vec(25, 10), ft_strjoin("guard", ""));
 	add_active(data, test2, ft_nothing);
 	possess_control(test2, true);
-	change_anim(test2, "walk");
+	change_anim(test2, "idle");
 	test2->sheet.buttons[0].func = exemple_action;
+	init_fireball_button(data, &test2->sheet.buttons[1]);
 }

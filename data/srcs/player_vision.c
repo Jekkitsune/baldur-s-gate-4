@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/22 19:25:48 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/05 21:57:25 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,8 +180,8 @@ void	show_floor(t_data *data)
 			cell.x = (int) floor.x;
 			cell.y = (int) floor.y;
 
-			t.y = ((int) (data->textures[15]->size * (floor.y - cell.y)) % (data->textures[15]->size - 1));
-			t.x = ((int) (data->textures[15]->size * (floor.x - cell.x)) % (data->textures[15]->size - 1));
+			t.y = ((int) (data->floor->size * (floor.y - cell.y)) % (data->floor->size - 1));
+			t.x = ((int) (data->floor->size * (floor.x - cell.x)) % (data->floor->size - 1));
 			if (t.x < 0)
 				t.x = 0;
 			if (t.y < 0)
@@ -190,7 +190,7 @@ void	show_floor(t_data *data)
 			floor.x += floor_step.x;
 			floor.y += floor_step.y;
 
-			color = data->textures[15]->tab[t.x][t.y];
+			color = data->floor->tab[t.x][t.y];
 			//mlx_set_image_pixel(data->mlx, data->screen_display, x, y, color);
 			data->screen_buffer[y][x] = color;
 
@@ -265,22 +265,23 @@ void	show_ceiling(t_data *data)
 		right_seg = vec(data->win_size.x - 1 - pixel_length, data->win_size.x - 1);
 		left_seg = vec(0, right_seg.x - 1);
 	}
-	index = (int) (closest_card / (M_PI / 2)) + 10;
-	if (index == 14)
-		index = 10;
+	index = (int) (closest_card / (M_PI / 2));
+	if (index == 4)
+		index = 0;
 	if (tiniest_gap >= 0)
 	{
-		left_tex = data->textures[index];
-		if (index == 13)
-			index = 9;
-		right_tex = data->textures[index + 1];
+		left_tex = data->sky_box_tex[index];
+		if (index == 3)
+			index = -1;
+		right_tex = data->sky_box_tex[index + 1];
 	}
 	else
 	{
-		right_tex = data->textures[index];
-		if (index == 10)
-			index = 14;
-		left_tex = data->textures[index - 1];
+		right_tex = data->sky_box_tex[index];
+		if (index == 0)
+			index = 4;
+		if (data->sky_box)
+			left_tex = data->sky_box_tex[index - 1];
 	}
 	horizon = (data->win_size.y / 2) - data->player.pitch;
 	lim = (data->win_size.y / 2) + data->player.pitch;
@@ -309,8 +310,8 @@ void	show_ceiling(t_data *data)
 			cell.x = (int) floor.x;
 			cell.y = (int) floor.y;
 
-			t.y = ((int) (data->textures[14]->size * (floor.y - cell.y)) % (data->textures[14]->size - 1));
-			t.x = ((int) (data->textures[14]->size * (floor.x - cell.x)) % (data->textures[14]->size - 1));
+			t.y = ((int) (data->ceiling->size * (floor.y - cell.y)) % (data->ceiling->size - 1));
+			t.x = ((int) (data->ceiling->size * (floor.x - cell.x)) % (data->ceiling->size - 1));
 			if (t.x < 0)
 				t.x = 0;
 			if (t.y < 0)
@@ -321,7 +322,7 @@ void	show_ceiling(t_data *data)
 
 			if (!data->sky_box)
 			{
-				color = data->textures[14]->tab[t.x][t.y];
+				color = data->ceiling->tab[t.x][t.y];
 				// mlx_set_image_pixel(data->mlx, data->screen_display, x, data->win_size.y - y - 1, color);
 				if (data->win_size.y - y - 1 < lim)
 					data->screen_buffer[data->win_size.y - y - 1][x] = color;
@@ -383,6 +384,20 @@ void	show_screen(t_data *data)
 	draw_entities(data);
 	if (data->player.possession && data->player.possession->possess_control)
 		draw_possession_button(data, data->player.possession->sheet.buttons);
+	
+	// static int ii = 10;
+	// static int o = 1;
+
+	// ii += 10 * o;
+	// if (ii > 900)
+	// 	o = -1;
+	// else if (ii < 10)
+	// 	o = 1;
+	
+	// t_texture *toto = resize(get_tex(data, "test"), ii);
+	// show_tex(data, toto, vec(200 , 100));
+	// free_tex(toto);
+
 	if (!data->screen_display)
 		data->screen_display = mlx_new_image(data->mlx, data->win_size.x, data->win_size.y);
 	i = 0;

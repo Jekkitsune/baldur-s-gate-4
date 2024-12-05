@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/22 19:25:24 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/30 10:49:36 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	move_possession(t_data *data)
 	t_vectorf	offset;
 
 	possession = data->player.possession;
-	if (possession && possession->possess_control)
+	if (possession && possession->possess_control && possession->sheet.alive)
 	{
 		p = &data->player;
 		offset = possession->offset;

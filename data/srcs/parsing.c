@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 21:09:45 by gmassoni          #+#    #+#             */
-/*   Updated: 2024/11/22 18:49:53 by gmassoni         ###   ########.fr       */
+/*   Updated: 2024/12/05 19:30:10 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,14 @@ bool	process_line(t_data *data, char **split)
 	}
 	else if (ft_strlen(split[0]) == 2)
 	{
-		if (!ft_strcmp(split[0], "NO") && !data->textures[0])
-			data->textures[0] = path_to_tex(data, split[1]);
-		else if (!ft_strcmp(split[0], "SO") && !data->textures[1])
-			data->textures[1] = path_to_tex(data, split[1]);
-		else if (!ft_strcmp(split[0], "WE") && !data->textures[2])
-			data->textures[2] = path_to_tex(data, split[1]);
-		else if (!ft_strcmp(split[0], "EA") && !data->textures[3])
-			data->textures[3] = path_to_tex(data, split[1]);
+		if (!ft_strcmp(split[0], "NO") && !data->wall_tex[0])
+			data->wall_tex[0] = path_to_tex(data, split[1]);
+		else if (!ft_strcmp(split[0], "SO") && !data->wall_tex[1])
+			data->wall_tex[1] = path_to_tex(data, split[1]);
+		else if (!ft_strcmp(split[0], "WE") && !data->wall_tex[2])
+			data->wall_tex[2] = path_to_tex(data, split[1]);
+		else if (!ft_strcmp(split[0], "EA") && !data->wall_tex[3])
+			data->wall_tex[3] = path_to_tex(data, split[1]);
 	}
 	else
 		return (false);
@@ -286,10 +286,10 @@ void	turn_map(t_data *data, char **map, t_map *level)
 				level->arr[x][y].type = map[y][x];
 			if (level->arr[x][y].type == WALL || level->arr[x][y].type == DOOR)
 			{
-				level->arr[x][y].tex[0] = data->textures[0];
-				level->arr[x][y].tex[1] = data->textures[1];
-				level->arr[x][y].tex[2] = data->textures[2];
-				level->arr[x][y].tex[3] = data->textures[3];
+				level->arr[x][y].tex[0] = data->wall_tex[0];
+				level->arr[x][y].tex[1] = data->wall_tex[1];
+				level->arr[x][y].tex[2] = data->wall_tex[2];
+				level->arr[x][y].tex[3] = data->wall_tex[3];
 			}
 			if (level->arr[x][y].type == DOOR)
 				level->arr[x][y].status = CLOSE;
@@ -377,14 +377,14 @@ bool	parsing(int argc, char *argv[], t_data *data)
 	return (true);
 }
 
-bool	check_textures(t_texture **tex_tab)
+bool	check_textures(t_texture *default_tex[4])
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (i < 4)
 	{
-		if (!tex_tab[i])
+		if (!default_tex[i])
 			return (false);
 		i++;
 	}

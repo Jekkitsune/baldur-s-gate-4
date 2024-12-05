@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:42:55 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/02 21:57:37 by fparis           ###   ########.fr       */
+/*   Updated: 2024/11/30 09:50:05 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,32 @@ void	follow_player(void *arg_data, void *arg_entity)
 	else if (entity->true_pos.y > p_pos.y)
 		move.y = -speed;
 	move_entity(data, entity, move);
+}
+
+void	expire(void *arg_data, void *arg_entity)
+{
+	t_data		*data;
+	t_entity	*entity;
+
+	data = arg_data;
+	entity = arg_entity;
+	if (entity->current_anim
+		&& entity->anim_index == entity->current_anim->size - 1
+			&& entity->anim_clock <= 1)
+		destroy_entity(data, entity);
+}
+
+void	death(void *arg_data, void *arg_entity)
+{
+	t_data		*data;
+	t_entity	*entity;
+
+	data = arg_data;
+	entity = arg_entity;
+	if (entity->current_anim
+		&& entity->anim_index == entity->current_anim->size - 1
+			&& entity->anim_clock <= 1)
+		destroy_active(data, entity);
 }
 
 void	ft_nothing(void *data, void *entity)

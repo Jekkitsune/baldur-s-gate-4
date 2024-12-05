@@ -6,17 +6,17 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 20:48:52 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/21 13:30:16 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/05 21:50:39 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	update_button_action(t_data *data)
-{
-	if (data->player.active_button && data->player.active_button->func)
-		data->player.active_button->func(data, data->player.possession);
-}
+// void	update_button_action(t_data *data)
+// {
+// 	if (data->player.active_button && data->player.active_button->func)
+// 		data->player.active_button->func(data, data->player.possession);
+// }
 
 void	check_button_click(t_data *data)
 {
@@ -27,17 +27,23 @@ void	check_button_click(t_data *data)
 		i = get_hover_index(data);
 		if (i >= 0 && i < NB_BUTTON)
 		{
-			if (data->player.active_button)
-				data->player.active_button->active = 0;
-			if (data->player.active_button == &data->player.possession->sheet.buttons[i])
+			if (data->player.possession->sheet.buttons[i].func)
 			{
-				data->player.active_button = NULL;
-				remove_arrow(data);
-				return ;
+				if (data->player.active_button)
+					data->player.active_button->active = 0;
+				if (data->player.active_button == &data->player.possession->sheet.buttons[i])
+				{
+					remove_selector(data);
+					return ;
+				}
+				data->player.active_button = &data->player.possession->sheet.buttons[i];
+				data->player.possession->sheet.buttons[i].active = 1;
+				if (data->player.active_button && data->player.active_button->func)
+					data->player.active_button->func(data, data->player.possession, data->player.active_button->spellinfo);
 			}
-			data->player.active_button = &data->player.possession->sheet.buttons[i];
-			data->player.possession->sheet.buttons[i].active = 1;
 		}
+		else if (data->player.arrow && data->player.active_button && data->player.active_button->func)
+			data->player.active_button->func(data, data->player.possession, data->player.active_button->spellinfo);
 	}
 }
 
@@ -78,8 +84,6 @@ void	draw_button(t_data *data, t_button button, t_vector start)
 	t_vector	i;
 
 	draw_borders(data, start);
-	if (button.img)
-		return (draw_button_img(data, button, start));
 	i.x = 1;
 	while (i.x < data->button_scale_size)
 	{
@@ -93,6 +97,8 @@ void	draw_button(t_data *data, t_button button, t_vector start)
 	}
 	if (button.active)
 		draw_hover(data, start, 0xAA000000);
+	if (button.img)
+		draw_button_img(data, button, start);
 }
 
 int	get_hover_index(t_data *data)

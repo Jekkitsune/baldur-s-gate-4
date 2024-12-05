@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/22 19:31:39 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/05 21:16:44 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define WALL '1'
 # define VOID ' '
 # define DOOR '2'
-# define NB_TEX 17
+//# define NB_TEX 18
 # define NB_BUTTON 20
 
 # define NB_RAYS (1600 / 2)
@@ -40,6 +40,12 @@
 # define WIDTH (1600 / 2)
 # define HEIGHT_CAP 5000
 
+# define STR 0
+# define DEX 1
+# define CON 2
+# define INT 3
+# define WID 4
+# define CHA 5
 
 # define CLOSE 0
 # define OPEN 1
@@ -74,18 +80,49 @@ typedef struct s_animation
 	void		(*anim_sound)(int index, int clock);
 }	t_animation;
 
+typedef struct s_entity t_entity;
+
+typedef struct s_spellinfo
+{
+	void		(*effect)(void *data, t_entity *target, t_entity *caster, int nb);
+	t_vector	pos;
+	int			radius;
+	t_entity	*caster;
+	int			nb;
+	int			range;
+	t_bool		visible_target;
+}	t_spellinfo;
+
 typedef struct s_button
 {
-	t_bool		active;
-	void		(*func)(void *data, void *entity);
-	t_texture	*img;
-	t_vector	start;
-	t_vector	end;
+	t_bool				active;
+	void				(*func)(void *data, void *entity, t_spellinfo spellinfo);
+	t_texture			*img;
+	t_vector			start;
+	t_vector			end;
+	t_spellinfo			spellinfo;
 }	t_button;
 
 typedef struct s_sheet
 {
 	t_button	buttons[NB_BUTTON];
+	int			stats[6];
+	int			saving[6];
+	int			level;
+	int			pb;
+	int			skills[18];
+	int			speed;
+	int			ac;
+	int			hp;
+	int			hit_dice;
+	int			death_save;
+	char		*name;
+	int			size;
+	int			weight;
+	t_bool		alive;
+	int			action;
+	int			bonus_action;
+	int			reaction;
 }	t_sheet;
 
 typedef struct s_entity
@@ -109,6 +146,7 @@ typedef struct s_entity
 	int			anim_index;
 	int			anim_clock;
 	t_sheet		sheet;
+	float		size_scale;
 }	t_entity;
 
 typedef	struct s_cell
@@ -180,7 +218,7 @@ typedef struct s_data
 {
 	void		*mlx;
 	void		*win;
-	t_texture	*textures[NB_TEX];
+	t_list		*textures;
 	char		floor_color[9];
 	char		ceiling_color[9];
 	t_vector	win_size;
@@ -200,6 +238,10 @@ typedef struct s_data
 	t_entity	**prefab_tab;
 	int			nb_prefab;
 	int			button_scale_size;
+	t_texture	*ceiling;
+	t_texture	*floor;
+	t_texture	*wall_tex[4];
+	t_texture	*sky_box_tex[4];
 } t_data;
 
 typedef	struct s_linfo
@@ -249,7 +291,7 @@ int			window_manager(int event, void *param);
 void		free_tex(t_texture *tex);
 t_texture	*new_texture(int size);
 t_vectorf	vecf(float x, float y);
-bool		check_textures(t_texture **tex_tab);
+bool		check_textures(t_texture *default_tex[4]);
 t_texture	*path_to_tex(t_data *data, char *path);
 void		show_tex(t_data *data, t_texture *tex, t_vector pos);
 t_texture	*resize(t_texture *tex, int new_size);
@@ -292,18 +334,36 @@ void		free_prefab_entity(t_data *data, t_entity *entity);
 int			get_anim_size(char *path);
 t_animation	*add_anim(t_animation **tab, t_animation *new, int *nb_anim);
 t_entity	*get_prefab_data(t_data *data, char *directory);
-t_entity	*spawn_entity(t_data *data, t_entity *prefab, t_vector pos);
-void		add_prefab(t_data *data, t_entity *prefab);
+t_entity	*spawn_entity(t_data *data, t_entity *prefab, t_vector pos, char *name);
+void		add_prefab(t_data *data, t_entity *prefab, char *name);
 void		draw_possession_button(t_data *data, t_button *buttons);
 void		check_button_click(t_data *data);
 int			get_hover_index(t_data *data);
 void		draw_hover(t_data *data, t_vector start, uint32_t color);
 t_texture	*get_tex(t_data *data, char *name);
-void		update_button_action(t_data *data);
-void		remove_arrow(t_data *data);
+//void		update_button_action(t_data *data);
+void		remove_selector(t_data *data);
+void		load_spells_prefab(t_data *data);
+void		expire(void *arg_data, void *arg_entity);
+t_entity	*get_prefab(t_data *data, char *name);
+void		select_target(t_data *data);
+t_bool		confirm(t_button *pushed);
+void		death(void *arg_data, void *arg_entity);
+float		get_dist(t_vector p1, t_vector p2);
+t_bool		has_obstacle(t_data *data);
+t_impact	get_simple_impact(t_vector start, t_vectorf direc, t_data *data);
+t_bool		check_dist_obstacle(t_data *data, t_entity *entity, int dist, t_bool visible_target);
+void		damage(t_data *data, t_entity *entity, int dmg);
+void		zone_effect(t_data *data, t_spellinfo spell);
+void		add_tex(t_data *data, t_texture *tex, char *name);
 
+void	spell_info(t_spellinfo *spell, void (*effect)(void *data, t_entity *target, t_entity *caster, int nb),
+	t_vector pos, t_entity *caster);
+//spells
+void		init_fireball_button(t_data *data, t_button *button);
+void		fireball(void *data_param, void *entity_param, t_spellinfo spell);
 
-void	exemple_action(void *data_param, void *entity_param);
+void	exemple_action(void *data_param, void *entity_param, t_spellinfo spell);
 void		init_test(t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:23:58 by fparis            #+#    #+#             */
-/*   Updated: 2024/10/24 03:03:50 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/05 20:58:16 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,15 @@ uint32_t	get_color(uint32_t *col_tab, uint32_t **tab, t_vectorf start, double si
 		i.x = start.x;
 		while (i.x < end.x)
 		{
-			col_tab[col_tab_i] = tab[i.x][i.y];
+			if (col_tab_i < ceil(size) * ceil(size))
+				col_tab[col_tab_i] = tab[i.x][i.y];
 			col_tab_i++;
 			i.x++;
 		}
 		i.y++;
 	}
+	if (col_tab_i >= ceil(size) * ceil(size))
+		col_tab_i = ceil(size) * ceil(size);
 	return (average_color(col_tab, col_tab_i));
 }
 
@@ -151,6 +154,7 @@ t_texture	*resize(t_texture *tex, int new_size)
 		i_tab.y++;
 		start.y = divided * i_tab.y;
 	}
+	free(col_tab);
 	return (res);
 }
 

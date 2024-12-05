@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:22:10 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/18 21:56:37 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/05 19:32:06 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,10 +167,12 @@ t_entity	*get_prefab_data(t_data *data, char *directory)
 	entity = ft_calloc(sizeof(t_entity), 1);
 	if (!entity)
 		return (NULL);
+	entity->size_scale = 1;
+	entity->sheet.alive = true;
 	entity->offset = vecf(0, 0);
 	entity->pos = vec(-1, -1);
-	entity->tex[0] = data->textures[0];
-	set_entity_tex(entity, data->textures[0], data->textures[0], data->textures[0]);
+	entity->tex[0] = data->wall_tex[0];
+	set_entity_tex(entity, data->wall_tex[0], data->wall_tex[0], data->wall_tex[0]);
 	entity->behavior = ft_nothing;
 	entity->anim = NULL;
 	try_all_faces(data, entity, directory, "idle");

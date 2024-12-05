@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 01:18:56 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/06 23:01:06 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/04 18:29:46 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	possess_control(t_entity *entity, t_bool value)
 {
+	if (!entity)
+		return ;
 	entity->possess_control = value;
 }
 
@@ -40,4 +42,5 @@ void	unpossess(t_data *data)
 	data->player.pos = data->player.possession->pos;
 	data->player.offset = data->player.possession->offset;
 	data->player.possession = NULL;
+	data->player.active_button = NULL;
 }
