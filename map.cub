@@ -1,7 +1,7 @@
-NO ./backrooms.png
-EA ./backrooms.png
-WE ./backrooms.png
-SO ./backrooms.png
+NO ./image.png
+EA ./image.png
+WE ./image.png
+SO ./image.png
 
 F 220,100,0
 C 225,30,0
