@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:30:20 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/05 17:50:22 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/07 21:51:43 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	fireball(void *data_param, void *entity_param, t_spellinfo spell)
 	entity = entity_param;
 	if (!data->player.arrow)
 		select_target(data);
-	if (!check_dist_obstacle(data, entity, spell.range, spell.visible_target) || !confirm(data->player.active_button))
+	if (!check_dist_obstacle(data, entity, spell.range, spell.visible_target)
+		|| !confirm(data->player.active_button))
 		return ;
 	pos = data->player.arrow->pos;
 	remove_selector(data);

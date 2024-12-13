@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 03:49:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/04 20:14:41 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/08 19:33:56 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,50 @@ void	damage(t_data *data, t_entity *entity, int dmg)
 		entity->sheet.alive = false;
 		entity->behavior = death;
 	}
+}
+
+t_entity	*browse_entity_cell(t_list *lst, int index, int size, t_entity *arrow)
+{
+	t_list			*tmp;
+
+	tmp = lst;
+	while (lst && index > 0)
+	{
+		lst = lst->next;
+		index--;
+	}
+	if (!lst)
+		return (NULL);
+	if (lst->content == arrow)
+		return (NULL);
+	return (lst->content);
+}
+
+t_entity	*cycle_entity_cell(t_data *data, int move)
+{
+	static int		index = 0;
+	static t_cell	*cell = NULL;
+	t_vector		pos;
+	int				size;
+
+	if (!data->player.arrow)
+		return (NULL);
+	pos = data->player.arrow->pos;
+	if (!in_bound(*data->current_map, pos))
+		return (NULL);
+	size = ft_lstsize(data->current_map->arr[pos.x][pos.y].entities);
+	if (!size)
+		return (NULL);
+	if (&data->current_map->arr[pos.x][pos.y] != cell)
+	{
+		cell = &data->current_map->arr[pos.x][pos.y];
+		index = 0;
+	}
+	index += move;
+	while (index >= size)
+		index -= size;
+	while (index < 0)
+		index += size;
+	return (browse_entity_cell(data->current_map->arr[pos.x][pos.y].entities,
+		index, size, data->player.arrow));
 }

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/05 21:57:25 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:11:58 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -383,34 +383,12 @@ void	show_screen(t_data *data)
 	}
 	draw_entities(data);
 	if (data->player.possession && data->player.possession->possess_control)
-		draw_possession_button(data, data->player.possession->sheet.buttons);
-	
-	// static int ii = 10;
-	// static int o = 1;
-
-	// ii += 10 * o;
-	// if (ii > 900)
-	// 	o = -1;
-	// else if (ii < 10)
-	// 	o = 1;
-	
-	// t_texture *toto = resize(get_tex(data, "test"), ii);
-	// show_tex(data, toto, vec(200 , 100));
-	// free_tex(toto);
-
-	if (!data->screen_display)
-		data->screen_display = mlx_new_image(data->mlx, data->win_size.x, data->win_size.y);
-	i = 0;
-	while (i < data->win_size.y)
 	{
-		j = 0;
-		while (j < data->win_size.x)
-		{
-			mlx_set_image_pixel(data->mlx, data->screen_display, j, i, data->screen_buffer[i][j]);
-//			mlx_pixel_put(data->mlx, data->win, j, i, data->screen_buffer[i][j]);
-			j++;
-		}
-		i++;
+		draw_possession_button(data, data->player.possession->sheet.buttons);
+		if (data->player.possession->sheet.inventory_open)
+			draw_inventory(data, data->player.possession->sheet.inventory);
 	}
-	mlx_put_image_to_window(data->mlx, data->win, data->screen_display, 0, 0);
+	show_health_bar(data);
+	show_minimap(data);
+	put_screen(data);
 }

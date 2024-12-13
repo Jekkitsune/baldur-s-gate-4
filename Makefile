@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2024/12/04 20:07:20 by fparis           ###   ########.fr        #
+#    Updated: 2024/12/13 18:21:11 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,11 @@ SRCS = main.c\
 		spells_init.c\
 		spells.c\
 		raycast_simple.c\
-		fireball.c
+		fireball.c\
+		inventory.c\
+		ui.c\
+		put_screen.c\
+		inventory_2.c
 
 LIBFT = data/libft/libft.a
 

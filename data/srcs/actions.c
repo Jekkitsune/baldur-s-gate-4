@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:45:04 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/04 20:19:49 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/07 20:48:22 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_bool	check_dist_obstacle(t_data *data, t_entity *entity, int dist, t_bool visi
 {
 	if (!entity || !data->player.arrow)
 		return (false);
-	if (get_dist(entity->pos, data->player.arrow->pos) > dist || (has_obstacle(data) && visible_target))
+	if (get_dist(entity->pos, data->player.arrow->pos) > dist || (visible_target && has_obstacle(data)))
 	{
 		if (data->player.arrow->current_anim
 			&& ft_strcmp(data->player.arrow->current_anim->name, "death"))

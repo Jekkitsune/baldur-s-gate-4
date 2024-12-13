@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 21:33:33 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/20 19:37:36 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/12 22:01:51 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,11 @@ void	draw_figs(t_data *data, t_vector fig)
 				&& (pos.y + i.y + offset.y >= 0) && (pos.y + i.y + offset.y < data->minimap.UI_size))
 			{
 				if (i.x == 0 || i.x == data->minimap.fig_size - 1 || i.y == 0 || i.y == data->minimap.fig_size - 1)
-					mlx_set_image_pixel(data->mlx, data->minimap.img, pos.x + i.x + offset.x, pos.y + i.y + offset.y, 0xFFDEDEE0);
+					//mlx_set_image_pixel(data->mlx, pos.x + i.x + offset.x, pos.y + i.y + offset.y, 0xFFDEDEE0);
+					ft_pixel_put(data, pos.y + i.y + offset.y + data->minimap.pos.y, pos.x + i.x + offset.x + data->minimap.pos.x, 0xFFDEDEE0);
 				else
-					mlx_set_image_pixel(data->mlx, data->minimap.img, pos.x + i.x + offset.x, pos.y + i.y + offset.y, color);
+					//mlx_set_image_pixel(data->mlx, pos.x + i.x + offset.x, pos.y + i.y + offset.y, color);
+					ft_pixel_put(data, pos.y + i.y + offset.y + data->minimap.pos.y, pos.x + i.x + offset.x + data->minimap.pos.x, color);
 			}
 			i.x++;
 		}
@@ -124,33 +126,35 @@ void	draw_player_vision(t_data *data)
 	t_vector	p_delta_posx2;
 	int			i;
 
-	center_map = vec(data->minimap.UI_size / 2, data->minimap.UI_size / 2);
-	draw_square(data, center_map, linfo(0xFFb734eb, 4, data->check_shape[0], data->minimap.img));
+	center_map = vec(data->minimap.UI_size / 2 + data->minimap.pos.x, data->minimap.UI_size / 2 + data->minimap.pos.y);
+	//draw_square(data, center_map, linfo(0xFFb734eb, 4, data->check_shape[0]));
+	draw_square(data, center_map, linfo(0xFFb734eb, 4, data->check_shape[0]));
 	i = 0;
 	while (i < NB_RAYS)
 	{
 		p_delta_posx.x = (data->player.vision[i].direc.x * data->player.vision[i].length) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.x;
 		p_delta_posx.y = (data->player.vision[i].direc.y * data->player.vision[i].length) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.y;
-		draw_line(data, center_map, p_delta_posx, linfo(0xFF00FF00, 1, data->check_shape[1], data->minimap.img));
+		//draw_line(data, center_map, p_delta_posx, linfo(0xFF00FF00, 1, data->check_shape[1]));
+		draw_line(data, center_map, p_delta_posx, linfo(0xFF00FF00, 1, data->check_shape[1]));
 		i += 7;
 	}
 	// p_delta_posx.x = (data->player.vision[NB_RAYS / 2].direc.x * 10) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.x;
 	// p_delta_posx.y = (data->player.vision[NB_RAYS / 2].direc.y * 10) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.y;
-	// draw_line(data, center_map, p_delta_posx, linfo(0xFF00FF00, 3, data->check_shape[0], data->minimap.img));
+	// draw_line(data, center_map, p_delta_posx, linfo(0xFF00FF00, 3, data->check_shape[0]));
 	// p_delta_posx.x = (data->player.camera_plane.x * 10) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.x;
 	// p_delta_posx.y = (data->player.camera_plane.y * 10) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.y;
-	// draw_line(data, center_map, p_delta_posx, linfo(0xFF0000FF, 3, data->check_shape[0], data->minimap.img));
+	// draw_line(data, center_map, p_delta_posx, linfo(0xFF0000FF, 3, data->check_shape[0]));
 	// p_delta_posx.x = (-data->player.camera_plane.x * 10) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.x;
 	// p_delta_posx.y = (-data->player.camera_plane.y * 10) * (data->minimap.fig_size / (data->scale)) / 2 + center_map.y;
-	// draw_line(data, center_map, p_delta_posx, linfo(0xFF0000FF, 3, data->check_shape[0], data->minimap.img));
+	// draw_line(data, center_map, p_delta_posx, linfo(0xFF0000FF, 3, data->check_shape[0]));
 }
 
 void	show_minimap(t_data *data)
 {
 	t_vector	i;
 
-	if (!data->minimap.img)
-		data->minimap.img = mlx_new_image(data->mlx, data->minimap.UI_size, data->minimap.UI_size);
+	// if (!data->minimap.img)
+	// 	data->minimap.img = mlx_new_image(data->mlx, data->minimap.UI_size, data->minimap.UI_size);
 	i.y = 0;
 	while (i.y < data->minimap.chunk_size)
 	{
@@ -164,7 +168,7 @@ void	show_minimap(t_data *data)
 	}
 
 	draw_player_vision(data);
-	mlx_put_image_to_window(data->mlx, data->win, data->minimap.img, data->minimap.pos.x, data->minimap.pos.y);
+	//mlx_put_image_to_window(data->mlx, data->win, data->minimap.pos.x, data->minimap.pos.y);
 }
 
 int	create_minimap(t_data *data, int UI_size, int fig_size)

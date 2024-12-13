@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 19:14:32 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/30 12:43:25 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:31:56 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,19 @@ t_entity	*create_entity(t_data *data, t_vector pos, t_texture *tex)
 	return (entity);
 }
 
+void	destroy_inventory(t_data *data, t_entity *entity)
+{
+	int	i;
+
+	i = 0;
+	while (i < INVENTORY_SIZE)
+	{
+		if (entity->sheet.inventory[i])
+			destroy_entity(data, entity->sheet.inventory[i]);
+		i++;
+	}
+}
+
 void	destroy_entity(t_data *data, t_entity *entity)
 {
 	t_list	*tmp;
@@ -105,6 +118,7 @@ void	destroy_entity(t_data *data, t_entity *entity)
 		if (tmp)
 			free(tmp);
 	}
+	destroy_inventory(data, entity);
 	if (entity->sheet.name)
 		free(entity->sheet.name);
 	free(entity);

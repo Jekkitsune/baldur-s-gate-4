@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/04 16:16:53 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/12 23:14:19 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,28 +49,6 @@ void	add_cell_entities(t_data *data, t_impact *ray)
 		if (current_entity->visible)
 			sort_entity(data, current_entity);
 		cell_lst = cell_lst->next;
-	}
-}
-
-void	draw_line_raycast(t_data *data, int x, int start, int end, int color, t_impact *ray)
-{
-	int	i;
-
-	i = 0;
-	while (i < start && i < data->win_size.y)
-	{
-		mlx_set_image_pixel(data->mlx, data->screen_display, x, i, 0xFF0000BB);
-		i++;
-	}
-	while (i < end && i < data->win_size.y)
-	{
-		mlx_set_image_pixel(data->mlx, data->screen_display, x, i, color);
-		i++;
-	}
-	while (i < data->win_size.y)
-	{
-		mlx_set_image_pixel(data->mlx, data->screen_display, x, i, 0xFF00BB00);
-		i++;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/05 22:00:12 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:44:45 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,14 @@
 # define DOOR '2'
 //# define NB_TEX 18
 # define NB_BUTTON 20
+# define INVENTORY_SIZE 20
 
-# define NB_RAYS (1600)
+# define NB_RAYS (1600 / 2)
 # define FOV 0.7
-# define HEIGHT (900)
-# define WIDTH (1600)
+# define HEIGHT (900 / 2)
+# define WIDTH (1600 / 2)
 # define HEIGHT_CAP 5000
+# define DEFAULT_FONT "Paul.ttf"
 
 # define STR 0
 # define DEX 1
@@ -80,6 +82,21 @@ typedef struct s_animation
 	void		(*anim_sound)(int index, int clock);
 }	t_animation;
 
+typedef enum e_type
+{
+	weapon_1 = 0,
+	weapon_2 = 1,
+	head = 2,
+	body = 3,
+	hands = 4,
+	feet = 5,
+	living = 6,
+	object = 7,
+	consumable = 8,
+}	t_type;
+
+# define NON_EQUIP 6
+
 typedef struct s_entity t_entity;
 
 typedef struct s_spellinfo
@@ -88,6 +105,7 @@ typedef struct s_spellinfo
 	t_vector	pos;
 	int			radius;
 	t_entity	*caster;
+	t_entity	*target;
 	int			nb;
 	int			range;
 	t_bool		visible_target;
@@ -114,15 +132,21 @@ typedef struct s_sheet
 	int			speed;
 	int			ac;
 	int			hp;
+	int			max_hp;
 	int			hit_dice;
 	int			death_save;
 	char		*name;
 	int			size;
 	int			weight;
+	int			carry;
 	t_bool		alive;
 	int			action;
 	int			bonus_action;
 	int			reaction;
+	t_entity	*inventory[INVENTORY_SIZE];
+	t_bool		inventory_open;
+	t_type		type;
+	t_texture	*portrait;
 }	t_sheet;
 
 typedef struct s_entity
@@ -214,6 +238,14 @@ typedef struct minimap
 	void		*img;
 }	t_minimap;
 
+typedef struct	s_strput
+{
+	char		*str;
+	t_vector	pos;
+	uint32_t	color;
+	float		size;
+}	t_strput;
+
 typedef struct s_data
 {
 	void		*mlx;
@@ -233,6 +265,7 @@ typedef struct s_data
 	void		*screen_display;
 	int			on_screen;
 	uint32_t	**screen_buffer;
+	t_list		*string_to_put;
 	bool		sky_box;
 	int			fps;
 	t_entity	**prefab_tab;
@@ -248,7 +281,6 @@ typedef	struct s_linfo
 {
 	int		color;
 	int		width;
-	void	*img;
 	int		(*check)(t_data *data, t_vector vec);
 }	t_linfo;
 
@@ -275,10 +307,9 @@ void		show_screen(t_data *data);
 t_data		*init_data(t_data *data);
 int			default_shape(__attribute__((unused)) t_data *data, __attribute__((unused)) t_vector vec);
 int			in_minimap(t_data *data, t_vector vec);
-t_linfo		linfo(int color, int width, int (*check_shape)(t_data *data, t_vector vec), void *img);
+t_linfo		linfo(int color, int width, int (*check_shape)(t_data *data, t_vector vec));
 void		draw_square(t_data *data, t_vector pos, t_linfo info);
 float		angle_add(float angle, float add);
-void		draw_line_raycast(t_data *data, int x, int start, int end, int color, t_impact *ray);
 
 bool		parsing(int argc, char *argv[], t_data *data);
 bool		vec_cmp(t_vector vec1, t_vector vec2);
@@ -356,14 +387,25 @@ t_bool		check_dist_obstacle(t_data *data, t_entity *entity, int dist, t_bool vis
 void		damage(t_data *data, t_entity *entity, int dmg);
 void		zone_effect(t_data *data, t_spellinfo spell);
 void		add_tex(t_data *data, t_texture *tex, char *name);
+void		show_health_bar(t_data *data);
+void		put_screen(t_data *data);
+void		clear_string_put(t_data *data);
+void		screen_string_put(t_data *data, t_strput *to_put);
+t_strput	*strput(char *str, t_vector pos, float size, uint32_t color);
+t_texture	*get_resized_button(t_data *data, t_texture *texture);
+void		draw_inventory(t_data *data, t_entity *inventory[INVENTORY_SIZE]);
 
-void	spell_info(t_spellinfo *spell, void (*effect)(void *data, t_entity *target, t_entity *caster, int nb),
+void		spell_info(t_spellinfo *spell, void (*effect)(void *data, t_entity *target, t_entity *caster, int nb),
 	t_vector pos, t_entity *caster);
+t_entity	*cycle_entity_cell(t_data *data, int move);
+
 //spells
 void		init_fireball_button(t_data *data, t_button *button);
 void		fireball(void *data_param, void *entity_param, t_spellinfo spell);
+void		init_take_button(t_data *data, t_button *button);                      //ca marche meme si take est pas dans le .h ???
+void		init_inventory_button(t_data *data, t_button *button); 
 
-void	exemple_action(void *data_param, void *entity_param, t_spellinfo spell);
+void		exemple_action(void *data_param, void *entity_param, t_spellinfo spell);
 void		init_test(t_data *data);
 
 #endif

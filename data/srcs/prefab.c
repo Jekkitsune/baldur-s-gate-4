@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 02:10:07 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/04 18:37:27 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/08 19:16:09 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_entity	*spawn_entity(t_data *data, t_entity *prefab, t_vector pos, char *name)
 	entity->visible = true;
 	ft_lstadd_front(&data->current_map->arr[pos.x][pos.y].entities, new_lst);
 	entity->sheet.name = name;
+	change_anim(entity, "idle");
 	return (entity);
 }
 

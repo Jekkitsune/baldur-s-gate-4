@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/30 01:24:44 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/08 18:47:44 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,10 @@ int	key_up_manager(int key, void *param)
 		register_player_movement(data, key, 0);
 	if (key == 225)
 		data->player.is_running = 0;
+	if (key == 29)
+		cycle_entity_cell(data, -1);
+	else if (key == 27)
+		cycle_entity_cell(data, +1);
 	return (0);
 }
 

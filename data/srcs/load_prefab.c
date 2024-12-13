@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:22:10 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/05 19:32:06 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:22:13 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,29 @@ t_entity	*try_all_faces(t_data *data, t_entity *entity, char *directory, char *n
 	return (entity);
 }
 
+t_texture	*get_portrait(t_data *data, char *directory)
+{
+	char		*path;
+	t_texture	*tex;
+
+	path = ft_strjoin(directory, "/portrait.png");
+	tex = path_to_tex(data, path);
+	free(path);
+	if (tex)
+		return (tex);
+	path = ft_strjoin(directory, "/portrait.jpg");
+	tex = path_to_tex(data, path);
+	free(path);
+	if (tex)
+		return (tex);
+	path = ft_strjoin(directory, "/portrait.bmp");
+	tex = path_to_tex(data, path);
+	free(path);
+	if (tex)
+		return (tex);
+	return (NULL);
+}
+
 t_entity	*get_prefab_data(t_data *data, char *directory)
 {
 	t_entity	*entity;
@@ -181,5 +204,6 @@ t_entity	*get_prefab_data(t_data *data, char *directory)
 	try_all_faces(data, entity, directory, "range");
 	try_all_faces(data, entity, directory, "cast");
 	try_all_faces(data, entity, directory, "dead");
+	entity->sheet.portrait = get_resized_button(data, get_portrait(data, directory));
 	return (entity);
 }

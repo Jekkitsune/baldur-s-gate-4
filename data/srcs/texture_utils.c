@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:27:28 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/05 22:02:26 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:02:33 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,4 +155,15 @@ void	add_tex(t_data *data, t_texture *tex, char *name)
 		return ;
 	tex->name = name;
 	ft_lstadd_front(&data->textures, ft_lstnew(tex));
+}
+
+t_texture	*get_resized_button(t_data *data, t_texture *texture)
+{
+	t_texture	*resized;
+
+	if (!texture)
+		return (NULL);
+	resized = resize(texture, data->button_scale_size);
+	free_tex(texture);
+	return (resized);
 }

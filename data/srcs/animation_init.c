@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 19:02:10 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/05 17:52:35 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:28:55 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,15 @@ void	init_test(t_data *data)
 
 	add_prefab(data, get_prefab_data(data, "guard"), ft_strjoin("guard", ""));
 	data->prefab_tab[data->nb_prefab - 1]->sheet.hp = 10;
-	test2 = spawn_entity(data, get_prefab(data, "guard"), vec(25, 10), ft_strjoin("guard", ""));
+	data->prefab_tab[data->nb_prefab - 1]->sheet.max_hp = 10;
+	data->prefab_tab[data->nb_prefab - 1]->sheet.type = living;
+	test2 = spawn_entity(data, get_prefab(data, "guard"), vec(25, 10), ft_strjoin("john", ""));
+	spawn_entity(data, get_prefab(data, "guard"), vec(26, 10), ft_strjoin("genshin", ""));
 	add_active(data, test2, ft_nothing);
 	possess_control(test2, true);
 	change_anim(test2, "idle");
 	test2->sheet.buttons[0].func = exemple_action;
 	init_fireball_button(data, &test2->sheet.buttons[1]);
+	init_take_button(data, &test2->sheet.buttons[2]);
+	init_inventory_button(data, &test2->sheet.buttons[NB_BUTTON - 1]);
 }

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 23:25:12 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/05 19:57:44 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:33:09 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,10 @@ void	free_prefab_entity(t_data *data, t_entity *entity)
 		}
 		free(entity->anim);
 	}
-	entity->anim = NULL;
-	entity->current_anim = NULL;
+	// entity->anim = NULL;
+	// entity->current_anim = NULL;
+	if (entity->sheet.portrait)
+		free_tex(entity->sheet.portrait);
 	destroy_entity(data, entity);
 }
 
@@ -169,7 +171,9 @@ void	free_data(t_data *data)
 	free_minimap(data);
 	free_tex_lst(data);
 	free_visible_lst(data);
-	mlx_destroy_image(data->mlx, data->screen_display);
+	clear_string_put(data);
+	if (data->screen_display)
+		mlx_destroy_image(data->mlx, data->screen_display);
 	i = 0;
 	while (i < data->win_size.y)
 	{
@@ -185,4 +189,7 @@ void	exit_free(t_data *data, char *error)
 	ft_putstr_fd("Cub3d error: ", 2);
 	ft_putstr_fd(error, 2);
 	ft_putstr_fd("\n", 2);
+	mlx_destroy_window(data->mlx, data->win);
+	mlx_destroy_display(data->mlx);
+	exit(1);
 }

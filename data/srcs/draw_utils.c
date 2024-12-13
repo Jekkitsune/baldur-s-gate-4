@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 00:42:04 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/19 19:46:23 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/12 21:54:34 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,8 @@ void	draw_square(t_data *data, t_vector pos, t_linfo info)
 		i.x = 0;
 		while (i.x < info.width)
 		{
-			if (info.img)
-				mlx_set_image_pixel(data->mlx, info.img, i.x + offset.x, i.y + offset.y, info.color);
-			else
-				mlx_pixel_put(data->mlx, data->win, i.x + offset.x, i.y + offset.y, info.color);
+			ft_pixel_put(data, i.y + offset.y, i.x + offset.x, info.color);
+			//mlx_pixel_put(data->mlx, data->win, i.x + offset.x, i.y + offset.y, info.color);
 			i.x++;
 		}
 		i.y++;

@@ -6,20 +6,19 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 16:27:00 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/19 19:45:23 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/12 22:06:32 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_linfo	linfo(int color, int width, int (*check_shape)(t_data *data, t_vector vec), void *img)
+t_linfo	linfo(int color, int width, int (*check_shape)(t_data *data, t_vector vec))
 {
 	t_linfo	res;
 
 	res.color = color;
 	res.width = width;
 	res.check = check_shape;
-	res.img = img;
 	return (res);
 }
 
@@ -30,8 +29,9 @@ int	default_shape(__attribute__((unused)) t_data *data, __attribute__((unused)) 
 
 int	in_minimap(t_data *data, t_vector vec)
 {
-	if (vec.x < 0 || vec.x >= data->minimap.UI_size
-		|| vec.y < 0 || vec.y >= data->minimap.UI_size)
+	if (vec.x < data->minimap.pos.x || vec.x >= data->minimap.UI_size
+		+ data->minimap.pos.x || vec.y < data->minimap.pos.y || vec.y
+			>= data->minimap.UI_size + data->minimap.pos.y)
 		return (0);
 	return (1);
 }

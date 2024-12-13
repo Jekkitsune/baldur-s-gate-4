@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/05 22:01:49 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:19:50 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	loop(void *param)
 	//update_button_action(data);
 	update_chunk(data);
 	show_screen(data);
-	show_minimap(data);
 
 	struct timeval 	tv;
 	gettimeofday(&tv, NULL);
@@ -108,11 +107,7 @@ int	main(int argc, char **argv)
 	if (!parsing(argc, argv, &data))
 		return (false);
 	if (!check_textures(data.wall_tex))
-	{
-		free_data(&data);
-		ft_putstr_fd("Cannot create texture\n", 2);
-		return (1);
-	}
+		exit_free(&data, "Cannot create texture");
 
 	init_player(&data);
 
@@ -140,16 +135,13 @@ int	main(int argc, char **argv)
 	data.sky_box_tex[1] = get_tex(&data, "skybox2");
 	data.sky_box_tex[2] = get_tex(&data, "skybox3");
 	data.sky_box_tex[3] = get_tex(&data, "skybox4");
-	for (int i = 0; i < 4; i++)
-	{
-		printf("%p %s %d\n", data.sky_box_tex[i], data.sky_box_tex[i]->name, data.sky_box_tex[i]->size);
-	}
 	add_tex(&data, path_to_tex(&data, "brickwall.png"), ft_strdup("ceiling"));
 	add_tex(&data, path_to_tex(&data, "woodwall.png"), ft_strdup("floor"));
 	data.ceiling = get_tex(&data, "ceiling");
 	data.floor = get_tex(&data, "floor");
-	add_tex(&data, path_to_tex(&data, "fireball_button.png"), ft_strdup("fireball"));
-	add_tex(&data, resize(get_tex(&data, "fireball"), data.button_scale_size), ft_strdup("fireball_button"));
+	add_tex(&data, get_resized_button(&data, path_to_tex(&data, "fireball_button.png")), ft_strdup("fireball_button"));
+	add_tex(&data, get_resized_button(&data, path_to_tex(&data, "take_button.png")), ft_strdup("take_button"));
+	add_tex(&data, get_resized_button(&data, path_to_tex(&data, "inventory_button.png")), ft_strdup("inventory_button"));
 
 	init_test(&data);
 	load_spells_prefab(&data);
