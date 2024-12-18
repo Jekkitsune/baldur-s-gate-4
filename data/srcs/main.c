@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/13 18:19:50 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/14 17:46:44 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,9 +139,9 @@ int	main(int argc, char **argv)
 	add_tex(&data, path_to_tex(&data, "woodwall.png"), ft_strdup("floor"));
 	data.ceiling = get_tex(&data, "ceiling");
 	data.floor = get_tex(&data, "floor");
-	add_tex(&data, get_resized_button(&data, path_to_tex(&data, "fireball_button.png")), ft_strdup("fireball_button"));
-	add_tex(&data, get_resized_button(&data, path_to_tex(&data, "take_button.png")), ft_strdup("take_button"));
-	add_tex(&data, get_resized_button(&data, path_to_tex(&data, "inventory_button.png")), ft_strdup("inventory_button"));
+	add_tex(&data, get_resized_free(&data, path_to_tex(&data, "fireball_button.png"), data.button_scale_size), ft_strdup("fireball_button"));
+	add_tex(&data, get_resized_free(&data, path_to_tex(&data, "take_button.png"), data.button_scale_size), ft_strdup("take_button"));
+	add_tex(&data, get_resized_free(&data, path_to_tex(&data, "inventory_button.png"), data.button_scale_size), ft_strdup("inventory_button"));
 
 	init_test(&data);
 	load_spells_prefab(&data);

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:22:10 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/13 18:22:13 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/14 17:47:20 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,6 @@ t_entity	*get_prefab_data(t_data *data, char *directory)
 	try_all_faces(data, entity, directory, "range");
 	try_all_faces(data, entity, directory, "cast");
 	try_all_faces(data, entity, directory, "dead");
-	entity->sheet.portrait = get_resized_button(data, get_portrait(data, directory));
+	entity->sheet.portrait = get_resized_free(data, get_portrait(data, directory), data->button_scale_size);
 	return (entity);
 }

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:51:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/13 18:22:54 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/16 23:33:00 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,4 +120,47 @@ void	draw_inventory(t_data *data, t_entity *inventory[INVENTORY_SIZE])
 	hover_index = inventory_hover_index(data);
 	draw_equip(data, inventory, start, hover_index);
 	draw_unequip(data, inventory, start, hover_index);
+	if (data->player.active_button && data->player.possession
+		&& &data->player.possession->sheet.inventory_button == data->player.active_button
+		&& data->player.active_button->active > 0)
+	{
+		if (data->player.active_button->active - 1 >= NON_EQUIP)
+			start.y += data->button_scale_size / 2;
+		start.x = start.x + (((data->player.active_button->active - 1) % 2) * data->button_scale_size);
+		start.y = start.y + (((data->player.active_button->active - 1) / 2) * data->button_scale_size);
+		draw_hover(data, start, 0xAA000000);
+	}
+}
+
+int	can_move_inventory(t_entity *inventory[INVENTORY_SIZE], t_entity *to_move, int pos)
+{
+	t_type	type;
+
+	if (!to_move)
+		return (true);
+	type = to_move->sheet.type;
+	if (pos < NON_EQUIP)
+	{
+		if (pos == weapon_1 && inventory[weapon_2] && type != weapon_2)
+			return (false);
+		if (pos == weapon_1 && type == weapon_2)
+			return (true);
+		return (pos == type);
+	}
+	return (pos < INVENTORY_SIZE);
+}
+
+void	inventory_swap(t_entity *entity, t_entity *inventory[INVENTORY_SIZE], int index1, int index2)
+{
+	t_entity	*tmp;
+
+	if (!entity || index1 < 0 || index1 >= INVENTORY_SIZE || index2 < 0 || index2 >= INVENTORY_SIZE || index1 == index2)
+		return ;
+	if (can_move_inventory(inventory, inventory[index1], index2) && can_move_inventory(inventory, inventory[index2], index1))
+	{
+		tmp = inventory[index1];
+		inventory[index1] = inventory[index2];
+		inventory[index2] = tmp;
+	}
+	refresh_stat(entity);
 }

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:40:54 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/13 18:38:14 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/16 23:31:01 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ t_bool	add_to_inventory(t_data *data, t_entity *taker, t_entity *taken)
 		taker->sheet.inventory[i] = taken;
 		return (true);
 	}
+	refresh_stat(taker);
 	return (false);
 }
 
@@ -85,7 +86,6 @@ void	init_take_button(t_data *data, t_button *button)
 	button->spellinfo.radius = 0;
 	button->spellinfo.range = 1;
 	button->spellinfo.visible_target = false;
-	button->func = NULL;
 	button->img = get_tex(data, "take_button");
 	button->func = take;
 }
@@ -106,7 +106,6 @@ void	init_inventory_button(t_data *data, t_button *button)
 	button->spellinfo.radius = 0;
 	button->spellinfo.range = 0;
 	button->spellinfo.visible_target = false;
-	button->func = NULL;
 	button->img = get_tex(data, "inventory_button");
 	button->func = open_inventory;
 }

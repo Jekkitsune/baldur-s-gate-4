@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2024/12/13 18:21:11 by fparis           ###   ########.fr        #
+#    Updated: 2024/12/16 23:29:27 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,8 @@ SRCS = main.c\
 		inventory.c\
 		ui.c\
 		put_screen.c\
-		inventory_2.c
+		inventory_2.c\
+		stats.c
 
 LIBFT = data/libft/libft.a
 

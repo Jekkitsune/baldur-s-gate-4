@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/13 18:44:45 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/18 15:41:01 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,16 @@
 # define OPEN 1
 # define OPENING 2
 # define CLOSING 3
+
+# define D100 6
+# define D20 5
+# define D12 4
+# define D10 3
+# define D8 2
+# define D6 1
+# define D4 0
+
+typedef int t_dice[7];
 
 typedef struct s_vector
 {
@@ -106,6 +116,7 @@ typedef struct s_spellinfo
 	int			radius;
 	t_entity	*caster;
 	t_entity	*target;
+	t_entity	*summon;
 	int			nb;
 	int			range;
 	t_bool		visible_target;
@@ -113,7 +124,7 @@ typedef struct s_spellinfo
 
 typedef struct s_button
 {
-	t_bool				active;
+	int					active;
 	void				(*func)(void *data, void *entity, t_spellinfo spellinfo);
 	t_texture			*img;
 	t_vector			start;
@@ -135,6 +146,8 @@ typedef struct s_sheet
 	int			max_hp;
 	int			hit_dice;
 	int			death_save;
+	t_dice		dice_dmg;
+	int			atk_bonus;
 	char		*name;
 	int			size;
 	int			weight;
@@ -145,6 +158,7 @@ typedef struct s_sheet
 	int			reaction;
 	t_entity	*inventory[INVENTORY_SIZE];
 	t_bool		inventory_open;
+	t_button	inventory_button;
 	t_type		type;
 	t_texture	*portrait;
 }	t_sheet;
@@ -392,12 +406,15 @@ void		put_screen(t_data *data);
 void		clear_string_put(t_data *data);
 void		screen_string_put(t_data *data, t_strput *to_put);
 t_strput	*strput(char *str, t_vector pos, float size, uint32_t color);
-t_texture	*get_resized_button(t_data *data, t_texture *texture);
+t_texture	*get_resized_free(t_data *data, t_texture *texture, int size);
 void		draw_inventory(t_data *data, t_entity *inventory[INVENTORY_SIZE]);
+int			inventory_hover_index(t_data *data);
+void		refresh_stat(t_entity *entity);
 
 void		spell_info(t_spellinfo *spell, void (*effect)(void *data, t_entity *target, t_entity *caster, int nb),
 	t_vector pos, t_entity *caster);
 t_entity	*cycle_entity_cell(t_data *data, int move);
+void		inventory_swap(t_entity *entity, t_entity *inventory[INVENTORY_SIZE], int index1, int index2);
 
 //spells
 void		init_fireball_button(t_data *data, t_button *button);
