@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/12 23:14:19 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/21 23:37:25 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	add_cell_entities(t_data *data, t_impact *ray)
 
 t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length, t_vectorf slope_coeff, t_vector sign)
 {
+	int	tmp;
+
 	if (!in_bound(*data->current_map, impact->wall_pos)
 		|| ft_min(ft_absf(length.x), ft_absf(length.y)) > data->render_distance)
 		return (impact);
@@ -68,15 +70,29 @@ t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length, t_vectorf
 	{
 		if (ft_absf(length.x) > ft_absf(length.y))
 		{
+			tmp = impact->wall_pos.y;
 			length.y += 0.5 * slope_coeff.y;
 			if (length.y / slope_coeff.y != impact->wall_pos.y)
 				impact->wall_pos.y += sign.y;
+			if ((data->player.pos.x * (data->scale * 2) + data->player.offset.x + data->scale + (impact->direc.x * ft_absf(length.y))) / 20 - impact->wall_pos.x
+				> data->current_map->arr[impact->wall_pos.x][tmp].timer)
+			{
+				impact->wall_pos.y = tmp;
+				return (NULL);
+			}
 		}
 		else
 		{
+			tmp = impact->wall_pos.x;
 			length.x += 0.5 * slope_coeff.x;
 			if (length.x / slope_coeff.x != impact->wall_pos.x)
 				impact->wall_pos.x += sign.x;
+			if ((data->player.pos.y * (data->scale * 2) + data->player.offset.y + data->scale + (impact->direc.y * ft_absf(length.x))) / 20 - impact->wall_pos.y
+				> data->current_map->arr[tmp][impact->wall_pos.y].timer)
+			{
+				impact->wall_pos.x = tmp;
+				return (NULL);
+			}
 		}
 	}
 	if (ft_absf(length.x) <= ft_absf(length.y))

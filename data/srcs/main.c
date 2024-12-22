@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/14 17:46:44 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/21 23:28:52 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	loop(void *param)
 	}
 
 	move(data);
+	update_doors(data);
 	update_all_active(data);
 	//update_button_action(data);
 	update_chunk(data);
@@ -67,32 +68,6 @@ int	loop(void *param)
 		starttime = newtime;
 	}
 	frame++;
-
-	i = 0;
-	while (i < data->current_map->size.x)
-	{
-		j = 0;
-		while (j < data->current_map->size.y)
-		{
-			if (data->current_map->arr[i][j].type == DOOR)
-			{
-				if (data->current_map->arr[i][j].status == OPENING)
-				{
-					data->current_map->arr[i][j].timer -= 0.1;
-					if (data->current_map->arr[i][j].timer == 0)
-						data->current_map->arr[i][j].status = OPEN;
-				}
-				else if (data->current_map->arr[i][j].status == CLOSING)
-				{
-					data->current_map->arr[i][j].timer += 0.1;
-					if (data->current_map->arr[i][j].timer == 1)
-						data->current_map->arr[i][j].status = CLOSE;
-				}
-			}
-			j++;
-		}
-		i++;
-	}
 
 	if (data->current_map->active_entities)
 		return (0);

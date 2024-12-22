@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/18 15:41:01 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/21 23:20:55 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@
 # define NB_BUTTON 20
 # define INVENTORY_SIZE 20
 
-# define NB_RAYS (1600 / 2)
+# define NB_RAYS (1600)
 # define FOV 0.7
-# define HEIGHT (900 / 2)
-# define WIDTH (1600 / 2)
+# define HEIGHT (900)
+# define WIDTH (1600)
 # define HEIGHT_CAP 5000
 # define DEFAULT_FONT "Paul.ttf"
 
@@ -193,7 +193,7 @@ typedef	struct s_cell
 	t_texture	*tex[4];
 	t_list		*entities;
 	int			status;
-	int			timer;
+	float		timer;
 }	t_cell;
 
 typedef struct s_impact
@@ -424,5 +424,8 @@ void		init_inventory_button(t_data *data, t_button *button);
 
 void		exemple_action(void *data_param, void *entity_param, t_spellinfo spell);
 void		init_test(t_data *data);
+
+void		update_doors(t_data *data);
+void		open_door(t_data *data);
 
 #endif

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
+#    By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2024/12/16 23:29:27 by fparis           ###   ########.fr        #
+#    Updated: 2024/12/21 23:09:38 by gmassoni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,8 @@ SRCS = main.c\
 		ui.c\
 		put_screen.c\
 		inventory_2.c\
-		stats.c
+		stats.c\
+		doors.c
 
 LIBFT = data/libft/libft.a
 
