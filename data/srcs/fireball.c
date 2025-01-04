@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:30:20 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/16 21:09:56 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/04 01:48:48 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,22 @@
 
 void	fireball_damage(void *data, t_entity *target, t_entity *caster, int nb)
 {
-	if (caster && target)
-		damage(data, target, nb);
+	int	result;
+
+	if (caster && target->sheet.hp)
+	{
+		result = roll_one(20, 1) + target->sheet.saving[DEX];
+		if (result < caster->sheet.spell_dc)
+		{
+			show_info(data, "%s failed a DEX saving (%d) throw against %s's fireball (%d)\n", target->sheet.name, result, caster->sheet.name, caster->sheet.spell_dc);
+			damage(data, target, nb);
+		}
+		else
+		{
+			show_info(data, "%s succeeded a DEX saving (%d) throw against %s's fireball (%d)\n", target->sheet.name, result, caster->sheet.name, caster->sheet.spell_dc);
+			damage(data, target, nb / 2);
+		}
+	}
 }
 
 void	init_fireball_button(t_data *data, t_button *button)
@@ -23,30 +37,24 @@ void	init_fireball_button(t_data *data, t_button *button)
 	button->spellinfo.radius = 4;
 	button->spellinfo.range = 12;
 	button->spellinfo.visible_target = true;
-	button->func = fireball;
+	button->spellinfo.dice[D6] = 8;
+	button->spellinfo.effect = fireball;
+	button->func = action_select;
 	button->img = get_tex(data, "fireball_button");
+	button->spellinfo.anim = "cast";
+	button->spellinfo.timer = 1.5;
+	button->spellinfo.name = "Fireball";
 }
 
-void	fireball(void *data_param, void *entity_param, t_spellinfo spell)
+void	fireball(void *data_param, void *spell_param)
 {
-	t_data		*data;
-	t_entity	*entity;
-	t_vector	pos;
 	t_entity	*explosion;
+	t_data		*data;
+	t_spellinfo	*spell;
 
 	data = data_param;
-	entity = entity_param;
-	if (!data->player.arrow)
-		select_target(data);
-	if (!check_dist_obstacle(data, entity, spell.range, spell.visible_target)
-		|| !confirm(data->player.active_button))
-		return ;
-	pos = data->player.arrow->pos;
-	remove_selector(data);
-	explosion = spawn_entity(data, get_prefab(data, "explosion"), pos, ft_strjoin("explosion", ""));
+	spell = spell_param;
+	explosion = spawn_entity(data, get_prefab(data, "explosion"), spell->pos, ft_strjoin("explosion", ""));
 	add_active(data, explosion, expire);
-	change_anim(explosion, "idle");
-	spell_info(&spell, fireball_damage, pos, entity);
-	spell.nb = 25;
-	zone_effect(data, spell);
+	zone_effect(data, *spell, fireball_damage);
 }

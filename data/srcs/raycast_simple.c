@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 22:03:04 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/04 17:46:28 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/19 22:21:45 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_impact	*simple_check_wall(t_impact *impact, t_data *data, t_vectorf length, t_vectorf slope_coeff, t_vector sign)
 {
-	if (!in_bound(*data->current_map, impact->wall_pos)
+	if (!in_bound(data->current_map, impact->wall_pos)
 		|| ft_min(ft_absf(length.x), ft_absf(length.y)) > data->render_distance)
 		return (impact);
 	if (data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type != WALL

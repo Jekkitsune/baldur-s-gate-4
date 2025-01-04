@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 16:19:11 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/04 18:14:25 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/18 16:32:44 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ t_data	*init_data(t_data *data)
 	mlx_mouse_hide();
 	mlx_mouse_move(data->mlx, data->win, data->win_size.x / 2, data->win_size.y / 2);
 	init_shape_tab(data);
+	srand(time(NULL));
 	return (data);
 }

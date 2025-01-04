@@ -7,6 +7,7 @@
 		"stdbool.h": "c",
 		"time.h": "c",
 		"cstdint": "c",
-		"libft.h": "c"
+		"libft.h": "c",
+		"stat.h": "c"
 	}
 }

@@ -6,13 +6,13 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2024/12/16 23:29:27 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/03 19:24:27 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 CC = cc
-CFLAGS = -g3 -Ofast#-Wextra -Werror -Wall -g
+CFLAGS = -g3 -Ofast #-Wextra -Werror -Wall -g
 NAME = bg4
 HEADER = data/headers
 
@@ -59,7 +59,12 @@ SRCS = main.c\
 		ui.c\
 		put_screen.c\
 		inventory_2.c\
-		stats.c
+		stats.c\
+		dice.c\
+		properties.c\
+		pathfinding.c\
+		timer_effect.c\
+		printf_to_str.c
 
 LIBFT = data/libft/libft.a
 

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:40:54 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/16 23:31:01 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/04 01:48:52 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_bool	add_to_inventory(t_data *data, t_entity *taker, t_entity *taken)
 		free(ft_lstpop(&data->current_map->active_entities, taken));
 	if (i != -1 && i < INVENTORY_SIZE && !taker->sheet.inventory[i])
 	{
-		if (in_bound(*data->current_map, taken->pos))
+		if (in_bound(data->current_map, taken->pos))
 			free(ft_lstpop(&data->current_map->arr[taken->pos.x][taken->pos.y].entities, taken));
 		taker->sheet.inventory[i] = taken;
 		return (true);
@@ -56,28 +56,21 @@ t_bool	add_to_inventory(t_data *data, t_entity *taker, t_entity *taken)
 	return (false);
 }
 
-void	take(void *data_param, void *entity_param, t_spellinfo spell)
+void	take(void *data_param, void *spell_param)
 {
 	t_data		*data;
-	t_entity	*entity;
-	t_vector	pos;
+	t_spellinfo	*spell;
 
 	data = data_param;
-	entity = entity_param;
-	if (!data->player.arrow)
-		select_target(data);
-	if (!check_dist_obstacle(data, entity, spell.range, spell.visible_target)
-		|| !confirm(data->player.active_button))
-		return ;
-	pos = data->player.arrow->pos;
-	spell.target = cycle_entity_cell(data, 0);
-	remove_selector(data);
-	if (spell.target && spell.target->visible)
+	spell = spell_param;
+	if (spell->target && spell->target->visible)
 	{
-		if (add_to_inventory(data, entity, spell.target))
-			printf("%s picked up %s.\n", entity->sheet.name, spell.target->sheet.name);
-		return ;
-		printf("%s tried to pick up %s, but couldn't.\n", entity->sheet.name, spell.target->sheet.name);
+		if (add_to_inventory(data, spell->caster, spell->target))
+		{
+			show_info(data, "%s picked up %s.\n", spell->caster->sheet.name, spell->target->sheet.name);
+			return ;
+		}
+		show_info(data, "%s tried to pick up %s, but couldn't.\n", spell->caster->sheet.name, spell->target->sheet.name);
 	}
 }
 
@@ -87,7 +80,9 @@ void	init_take_button(t_data *data, t_button *button)
 	button->spellinfo.range = 1;
 	button->spellinfo.visible_target = false;
 	button->img = get_tex(data, "take_button");
-	button->func = take;
+	button->func = action_select;
+	button->spellinfo.effect = take;
+	button->spellinfo.name = "Take";
 }
 
 void	open_inventory(void *data_param, void *entity_param, t_spellinfo spell)
@@ -97,7 +92,8 @@ void	open_inventory(void *data_param, void *entity_param, t_spellinfo spell)
 
 	data = data_param;
 	entity = entity_param;
-	remove_selector(data);
+	data->player.active_button->active = 0;
+	data->player.active_button = NULL;
 	entity->sheet.inventory_open = !entity->sheet.inventory_open;
 }
 

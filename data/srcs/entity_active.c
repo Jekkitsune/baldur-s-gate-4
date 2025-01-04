@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:24:17 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/07 21:58:05 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/19 22:21:50 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	update_all_active(t_data *data)
 	{
 		current = i->content;
 		i = i->next;
-		current->behavior(data, current);
+		current->behavior.func(data, current);
 		if (current->current_anim)
 			continue_anim(data, current);
 	}
@@ -56,7 +56,8 @@ t_bool	check_activity(t_data *data, t_entity *entity)
 
 t_entity	*add_active(t_data *data, t_entity *entity, void (*behavior)(void *, void *))
 {
-	t_list	*new_lst;
+	t_list			*new_lst;
+	struct timeval 	tv;
 
 	if (!entity)
 		return (NULL);
@@ -67,8 +68,10 @@ t_entity	*add_active(t_data *data, t_entity *entity, void (*behavior)(void *, vo
 		return (NULL);
 	}
 	new_lst->content = entity;
-	entity->behavior = behavior;
+	entity->behavior.func = behavior;
 	entity->active = 1;
+	gettimeofday(&tv, NULL);
+	entity->behavior.start_time = tv.tv_sec;
 	ft_lstadd_back(&data->current_map->active_entities, new_lst);
 	return (entity);
 }
@@ -78,7 +81,7 @@ void	remove_active(t_data *data, t_entity *entity)
 	t_list	*to_free;
 	
 	entity->active = 0;
-	if (in_bound(*data->current_map, entity->pos))
+	if (in_bound(data->current_map, entity->pos))
 	{
 		if (ft_inlst(data->current_map->arr[entity->pos.x][entity->pos.y].entities, entity))
 		{

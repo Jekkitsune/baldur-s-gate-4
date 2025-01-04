@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:42:55 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/30 09:50:05 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/22 03:07:54 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,48 @@ void	ft_nothing(void *data, void *entity)
 {
 	if (data || entity)
 		return ;
+}
+
+void	move_to_center(t_data *data, t_entity *entity)
+{
+	t_vectorf	move;
+
+	if (fabs(entity->offset.x) < data->player.speed && fabs(entity->offset.y) < data->player.speed)
+	{
+		move_entity(data, entity, vecf(-entity->offset.x, -entity->offset.y));
+		free(pop_path(&entity->behavior.path));
+		if (!entity->behavior.path)
+		{
+			change_anim(entity, "idle");
+			entity->behavior.func = entity->behavior.next;
+			entity->behavior.next = NULL;
+		}
+		return ;
+	}
+	move.x = (entity->offset.x > 0) * -data->player.speed + (entity->offset.x < 0) * data->player.speed;
+	move.y = (entity->offset.y > 0) * -data->player.speed + (entity->offset.y < 0) * data->player.speed;
+	move_entity(data, entity, move);
+}
+
+void	entity_moving_to(void *arg_data, void *arg_entity)
+{
+	t_data		*data;
+	t_entity	*entity;
+	t_vector	to_go;
+	t_vectorf	move;
+
+	data = arg_data;
+	entity = arg_entity;
+	if (!entity || !entity->behavior.path)
+		return ;
+	if (ft_strcmp(entity->current_anim->name, "walk"))
+		change_anim(entity, "walk");
+	to_go = entity->behavior.path->pos;
+	if (entity->pos.x == to_go.x
+		&& entity->pos.y == to_go.y)
+		return (move_to_center(data, entity));
+	move.x = (to_go.x - entity->pos.x) * data->player.speed;
+	move.y = (to_go.y - entity->pos.y) * data->player.speed;
+	move_entity(data, entity, move);
+	entity->angle = (move.x < 0) * M_PI + (move.y > 0) * (M_PI / 2) + (move.y < 0) * (M_PI / 2 + M_PI);
 }

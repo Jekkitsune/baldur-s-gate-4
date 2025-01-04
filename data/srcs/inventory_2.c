@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:51:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/16 23:33:00 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/04 01:45:29 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,18 @@ void	draw_unequip(t_data *data, t_entity *inventory[INVENTORY_SIZE], t_vector st
 		draw_hover(data, current, 0x44000000);
 }
 
+void	draw_invbutton_name(t_data *data, t_entity *inventory[INVENTORY_SIZE], int index)
+{
+	t_vector	mouse_pos;
+	t_strput	*to_put;
+
+	if (index < 0 || !inventory[index] || !inventory[index]->sheet.name)
+		return ;
+	mlx_mouse_get_pos(data->mlx, &mouse_pos.x, &mouse_pos.y);
+	to_put = strput(ft_strdup(inventory[index]->sheet.name), vec(mouse_pos.x, mouse_pos.y - 10), 20, 0xFF000000);
+	screen_string_put(data, to_put, 0);
+}
+
 void	draw_inventory(t_data *data, t_entity *inventory[INVENTORY_SIZE])
 {
 	int			width;
@@ -130,6 +142,7 @@ void	draw_inventory(t_data *data, t_entity *inventory[INVENTORY_SIZE])
 		start.y = start.y + (((data->player.active_button->active - 1) / 2) * data->button_scale_size);
 		draw_hover(data, start, 0xAA000000);
 	}
+	draw_invbutton_name(data, inventory, hover_index);
 }
 
 int	can_move_inventory(t_entity *inventory[INVENTORY_SIZE], t_entity *to_move, int pos)

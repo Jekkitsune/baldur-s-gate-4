@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 19:14:32 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/13 18:31:56 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/22 02:56:02 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_entity	*create_entity(t_data *data, t_vector pos, t_texture *tex)
 	entity->pos = pos;
 	entity->tex[0] = tex;
 	set_entity_tex(entity, tex, tex, tex);
-	entity->behavior = ft_nothing;
+	entity->behavior.func = ft_nothing;
 	ft_lstadd_front(&data->current_map->arr[pos.x][pos.y].entities, new_lst);
 	return (entity);
 }
@@ -103,7 +103,7 @@ void	destroy_entity(t_data *data, t_entity *entity)
 {
 	t_list	*tmp;
 
-	printf("try to destroy %p\n", entity);
+//	printf("try to destroy %p\n", entity);
 	if (!entity)
 		return ;
 	if (data->player.possession == entity)
@@ -112,17 +112,18 @@ void	destroy_entity(t_data *data, t_entity *entity)
 		data->player.arrow = NULL;
 	if (entity->active)
 		destroy_active(data, entity);
-	if (in_bound(*data->current_map, entity->pos))
+	if (in_bound(data->current_map, entity->pos))
 	{
 		tmp = ft_lstpop(&data->current_map->arr[entity->pos.x][entity->pos.y].entities, entity);
 		if (tmp)
 			free(tmp);
 	}
 	destroy_inventory(data, entity);
+	free_path(entity->behavior.path);
 	if (entity->sheet.name)
 		free(entity->sheet.name);
 	free(entity);
-	printf("successfully destroyed\n");
+//	printf("successfully destroyed\n");
 }
 
 float	get_obj_x(t_data *data, t_vectorf pos, t_vectorf p_pos)
@@ -288,10 +289,10 @@ void	move_entity(t_data *data, t_entity *entity, t_vectorf move)
 	correct_pos(data, &entity->pos, &entity->offset);
 	if (entity->pos.x != last_pos.x || entity->pos.y != last_pos.y)
 	{
-		if (in_bound(*data->current_map, last_pos))
+		if (in_bound(data->current_map, last_pos))
 		{
 			entity_lst = ft_lstpop(&data->current_map->arr[last_pos.x][last_pos.y].entities, entity);
-			if (entity_lst && in_bound(*data->current_map, entity->pos))
+			if (entity_lst && in_bound(data->current_map, entity->pos))
 			{
 				entity_lst->next = NULL;
 				ft_lstadd_back(&data->current_map->arr[entity->pos.x][entity->pos.y].entities, entity_lst);
@@ -300,6 +301,25 @@ void	move_entity(t_data *data, t_entity *entity, t_vectorf move)
 		}
 		destroy_entity(data, entity);
 	}
+}
+
+void	move_to(t_data *data, t_entity *entity, t_vector pos)
+{
+	if (!entity)
+		return ;
+	if (entity->behavior.path)
+		free_path(entity->behavior.path);
+	entity->behavior.path = get_path(data, entity->pos, pos);
+	if (!entity->behavior.path)
+	{
+		printf("%s: \"BAH NON DCP\"\n", entity->sheet.name);
+		return ;
+	}
+	entity->behavior.next = entity->behavior.func;
+	if (!entity->active)
+		add_active(data, entity, entity_moving_to);
+	else
+		entity->behavior.func = entity_moving_to;
 }
 
 void	teleport_entity(t_data *data, t_entity *entity, t_vector pos, t_vectorf offset)
@@ -313,10 +333,10 @@ void	teleport_entity(t_data *data, t_entity *entity, t_vector pos, t_vectorf off
 	correct_pos(data, &entity->pos, &entity->offset);
 	if (entity->pos.x != last_pos.x || entity->pos.y != last_pos.y)
 	{
-		if (in_bound(*data->current_map, last_pos))
+		if (in_bound(data->current_map, last_pos))
 		{
 			entity_lst = ft_lstpop(&data->current_map->arr[last_pos.x][last_pos.y].entities, entity);
-			if (entity_lst && in_bound(*data->current_map, entity->pos))
+			if (entity_lst && in_bound(data->current_map, entity->pos))
 			{
 				entity_lst->next = NULL;
 				ft_lstadd_back(&data->current_map->arr[entity->pos.x][entity->pos.y].entities, entity_lst);

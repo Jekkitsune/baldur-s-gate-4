@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/12 23:14:19 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/19 22:21:45 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,11 @@ void	add_cell_entities(t_data *data, t_impact *ray)
 
 t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length, t_vectorf slope_coeff, t_vector sign)
 {
-	if (!in_bound(*data->current_map, impact->wall_pos)
+	if (!in_bound(data->current_map, impact->wall_pos)
 		|| ft_min(ft_absf(length.x), ft_absf(length.y)) > data->render_distance)
-		return (impact);
+			return (impact);
+	if (!length.x || !length.y)
+		return (NULL);
 	if (data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type != WALL
 		&& data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type != DOOR)
 	{

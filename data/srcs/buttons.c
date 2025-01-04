@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 20:48:52 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/16 23:33:23 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/04 02:09:23 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,74 +18,62 @@
 // 		data->player.active_button->func(data, data->player.possession);
 // }
 
-void	use(void *data_param, void *entity_param, t_spellinfo spell)
-{
-	t_data		*data;
-	t_entity	*entity;
-	t_vector	pos;
-
-	data = data_param;
-	entity = entity_param;
-	if (!entity || !spell.summon || !spell.target)
-		return ;
-	if (!data->player.arrow)
-		select_target(data);
-	if (!check_dist_obstacle(data, entity, spell.range, spell.visible_target)
-		|| !confirm(data->player.active_button) || !spell.summon)
-		return ;
-	pos = data->player.arrow->pos;
-	spell.target = cycle_entity_cell(data, 0);
-	remove_selector(data);
-}
-
-void	drop(t_data *data, t_entity *dropper, t_entity *dropped)
+void	drop(t_data *data, t_spellinfo *spell)
 {
 	t_list		*new_lst;
 	int			i;
 
-	if (!dropper || !dropped || !data->player.active_button)
+	if (!spell->caster || !spell->summon)
 		return ;
-	i = data->player.active_button->active - 1;
+	i = spell->radius;
 	if (i < 0 || i >= INVENTORY_SIZE)
 		return ;
-	new_lst = ft_lstnew(dropped);
+	new_lst = ft_lstnew(spell->summon);
 	if (!new_lst)
 		return ;
-	if (data->player.arrow)
-	{
-		dropped->offset = data->player.arrow->offset;
-		dropped->pos = data->player.arrow->pos;
-	}
-	dropped->visible = true;
-	ft_lstadd_front(&data->current_map->arr[dropped->pos.x][dropped->pos.y].entities, new_lst);
-	if (dropped->active)
-		add_active(data, dropped, dropped->behavior);
-	dropper->sheet.inventory[i] = NULL;
+	spell->summon->offset = spell->pos_offset;
+	spell->summon->pos = spell->pos;
+	spell->summon->visible = true;
+	ft_lstadd_front(&data->current_map->arr[spell->summon->pos.x][spell->summon->pos.y].entities, new_lst);
+	if (spell->summon->active)
+		add_active(data, spell->summon, spell->summon->behavior.func);
+	spell->caster->sheet.inventory[i] = NULL;
+	return ;
 }
 
-void	throw(void *data_param, void *entity_param, t_spellinfo spell)
+void	throw(void *data_param, void *spell_param)
+{
+	t_data		*data;
+	t_spellinfo	*spell;
+
+	data = data_param;
+	spell = spell_param;
+	drop(data, spell);
+	if (get_dist(spell->pos, spell->caster->pos) > 2)
+	{
+		damage(data, spell->summon, spell->nb);
+		if (spell->target)
+			damage(data, spell->target, spell->nb);
+	}
+}
+
+void	empty_button(void *data_param, void *entity_param, t_spellinfo spell)
 {
 	t_data		*data;
 	t_entity	*entity;
-	t_vector	pos;
+	t_button	*tmp;
+	int			active_tmp;
 
 	data = data_param;
 	entity = entity_param;
-	if (!data->player.arrow)
-		select_target(data);
-	if (!check_dist_obstacle(data, entity, spell.range, spell.visible_target)
-		|| !confirm(data->player.active_button) || !spell.summon)
+	tmp = data->player.active_button;
+	active_tmp = data->player.active_button->active;
+	remove_selector(data, false);
+	data->player.active_button = tmp;
+	data->player.active_button->active = active_tmp;
+	if (spell.caster)
 		return ;
-	pos = data->player.arrow->pos;
-	spell.target = cycle_entity_cell(data, 0);
-	drop(data, entity, spell.summon);
-	remove_selector(data);
-	if (get_dist(pos, entity->pos) > 2)
-	{
-		damage(data, spell.summon, spell.nb);
-		if (spell.target)
-			damage(data, spell.target, spell.nb);
-	}
+	return ;
 }
 
 void	set_inventory_button(t_data *data, t_entity *entity, int i)
@@ -97,11 +85,12 @@ void	set_inventory_button(t_data *data, t_entity *entity, int i)
 		return ;
 	used = entity->sheet.inventory[i];
 	button = &entity->sheet.inventory_button;
+	button->spellinfo.effect = NULL;
+	button->spellinfo.radius = i;
 	if (!used)
 	{
 		button->spellinfo.summon = NULL;
-		button->func = use;
-		remove_selector(data);
+		button->func = empty_button;
 		return ;
 	}
 	button->spellinfo.caster = entity;
@@ -109,10 +98,9 @@ void	set_inventory_button(t_data *data, t_entity *entity, int i)
 	button->spellinfo.visible_target = true;
 	button->spellinfo.summon = used;
 	button->spellinfo.nb = used->sheet.weight / 3;
+	button->func = action_select;
 	if (used->sheet.type != consumable)
-		button->func = throw;
-	else
-		button->func = use;
+		button->spellinfo.effect = throw;
 }
 
 t_button	*button_inventory(t_data *data, t_entity *entity)
@@ -149,7 +137,9 @@ t_button	*current_button(t_data *data)
 
 	button = button_inventory(data, data->player.possession);
 	if (button)
+	{
 		return (button);
+	}
 	i = get_hover_index(data);
 	if (i >= 0 && i < NB_BUTTON)
 		button = &data->player.possession->sheet.buttons[i];
@@ -171,7 +161,7 @@ void	check_button_click(t_data *data)
 					data->player.active_button->active = 0;
 				if (data->player.active_button == button)
 				{
-					remove_selector(data);
+					remove_selector(data, false);
 					return ;
 				}
 				data->player.active_button = button;
@@ -301,6 +291,22 @@ void	draw_hover(t_data *data, t_vector start, uint32_t color)
 	}
 }
 
+void	draw_actbutton_name(t_data *data)
+{
+	t_vector	mouse_pos;
+	t_strput	*to_put;
+	int			index;
+	char		*name;
+
+	index = get_hover_index(data);
+	name = data->player.possession->sheet.buttons[index].spellinfo.name;
+	if (index < 0 || !name)
+		return ;
+	mlx_mouse_get_pos(data->mlx, &mouse_pos.x, &mouse_pos.y);
+	to_put = strput(ft_strdup(name), vec(mouse_pos.x, mouse_pos.y - 10), 20, 0xFF000000);
+	screen_string_put(data, to_put, 0);
+}
+
 void	draw_possession_button(t_data *data, t_button *buttons)
 {
 	int	i;
@@ -325,4 +331,5 @@ void	draw_possession_button(t_data *data, t_button *buttons)
 		draw_hover(data, get_hover_pos(data, margin), 0x88000000);
 	else
 		draw_hover(data, get_hover_pos(data, margin), 0x44000000);
+	draw_actbutton_name(data);
 }

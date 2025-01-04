@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:48:43 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/30 10:48:57 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/03 00:42:56 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,24 @@ void	continue_anim(t_data *data, t_entity *entity)
 	{
 		entity->anim_index++;
 		if (entity->anim_index >= current->size)
+		{
 			entity->anim_index = 0;
+			if (entity->next_anim)
+			{
+				change_anim(entity, entity->next_anim);
+				entity->next_anim = NULL;
+				entity->anim_no_move = false;
+			}
+		}
 		entity->anim_clock = current->interval;
 	}
 }
 
-
+void	change_anim_next(t_entity *entity, char *anim1, char *anim2)
+{
+	if (!entity)
+		return ;
+	change_anim(entity, anim1);
+	entity->next_anim = anim2;
+	entity->anim_no_move = true;
+}

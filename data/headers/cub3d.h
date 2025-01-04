@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/18 15:41:01 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/04 01:46:11 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <sys/time.h>
+# include <time.h>
 # include <stdbool.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -31,7 +32,6 @@
 # define WALL '1'
 # define VOID ' '
 # define DOOR '2'
-//# define NB_TEX 18
 # define NB_BUTTON 20
 # define INVENTORY_SIZE 20
 
@@ -42,6 +42,10 @@
 # define HEIGHT_CAP 5000
 # define DEFAULT_FONT "Paul.ttf"
 
+# define MAX_SCREEN_INFO 6
+
+//Stats
+
 # define STR 0
 # define DEX 1
 # define CON 2
@@ -49,11 +53,16 @@
 # define WID 4
 # define CHA 5
 
+//Doors
+
 # define CLOSE 0
 # define OPEN 1
 # define OPENING 2
 # define CLOSING 3
 
+//Dices
+
+# define D1 7
 # define D100 6
 # define D20 5
 # define D12 4
@@ -62,7 +71,24 @@
 # define D6 1
 # define D4 0
 
+# define NB_DICE 8
+
 typedef int t_dice[7];
+
+//Properties
+
+typedef enum e_property
+{
+	finesse = 1,
+	range = 1 << 1,
+	loading = 1 << 2,
+}	t_property;
+
+// # define FINESSE 0b1
+// # define RANGE 0b10
+// # define LOADING 0b100
+
+# define NB_PROPERTIES 3
 
 typedef struct s_vector
 {
@@ -111,25 +137,38 @@ typedef struct s_entity t_entity;
 
 typedef struct s_spellinfo
 {
-	void		(*effect)(void *data, t_entity *target, t_entity *caster, int nb);
+	void		(*effect)(void *data, void *spell);
 	t_vector	pos;
+	t_vectorf	pos_offset;
 	int			radius;
 	t_entity	*caster;
 	t_entity	*target;
 	t_entity	*summon;
+	t_dice		dice;
 	int			nb;
 	int			range;
 	t_bool		visible_target;
+	char		*anim;
+	float		timer;
+	char		*name;
 }	t_spellinfo;
+
+typedef struct s_timer_effect
+{
+	t_spellinfo		spell;
+	unsigned long 	duration;
+	struct timeval 	start;
+	t_bool			in_round;
+}	t_timer_effect;
 
 typedef struct s_button
 {
-	int					active;
-	void				(*func)(void *data, void *entity, t_spellinfo spellinfo);
-	t_texture			*img;
-	t_vector			start;
-	t_vector			end;
-	t_spellinfo			spellinfo;
+	int			active;
+	void		(*func)(void *data, void *entity, t_spellinfo spellinfo);
+	t_texture	*img;
+	t_vector	start;
+	t_vector	end;
+	t_spellinfo	spellinfo;
 }	t_button;
 
 typedef struct s_sheet
@@ -141,6 +180,7 @@ typedef struct s_sheet
 	int			pb;
 	int			skills[18];
 	int			speed;
+	int			walked;
 	int			ac;
 	int			hp;
 	int			max_hp;
@@ -148,6 +188,8 @@ typedef struct s_sheet
 	int			death_save;
 	t_dice		dice_dmg;
 	int			atk_bonus;
+	int			spell_bonus;
+	int			spell_dc;
 	char		*name;
 	int			size;
 	int			weight;
@@ -161,7 +203,26 @@ typedef struct s_sheet
 	t_button	inventory_button;
 	t_type		type;
 	t_texture	*portrait;
+	int			properties : NB_PROPERTIES + 1;
+	int			team;
+	t_bool		in_combat;
 }	t_sheet;
+
+typedef struct s_path
+{
+	t_vector		pos;
+	t_vector		from;
+	struct s_path	*next;
+}	t_path;
+
+typedef struct s_behavior
+{
+	void			(*func)(void *data, void *entity);
+	unsigned long	start_time;
+	t_vector		pos;
+	void			(*next)(void *data, void *entity);
+	t_path			*path;
+}	t_behavior;
 
 typedef struct s_entity
 {
@@ -176,15 +237,17 @@ typedef struct s_entity
 	t_vector	draw_x;
 	t_vector	draw_y;
 	t_bool		active;
-	void		(*behavior)(void *data, void *entity);
+	t_behavior	behavior;
 	t_bool		possess_control;
 	t_animation	*anim;
 	t_animation	*current_anim;
+	char		*next_anim;
 	int			nb_anim;
 	int			anim_index;
 	int			anim_clock;
 	t_sheet		sheet;
 	float		size_scale;
+	t_bool		anim_no_move;
 }	t_entity;
 
 typedef	struct s_cell
@@ -235,6 +298,8 @@ typedef struct s_player
 	int			focus_mode;
 	float		focus_dist;
 
+	t_vectorf	last_angle;
+
 	t_entity	*possession;
 	t_button	*active_button;
 	t_entity	*arrow;
@@ -254,10 +319,12 @@ typedef struct minimap
 
 typedef struct	s_strput
 {
-	char		*str;
-	t_vector	pos;
-	uint32_t	color;
-	float		size;
+	char			*str;
+	t_vector		pos;
+	uint32_t		color;
+	float			size;
+	unsigned long 	duration;
+	struct timeval 	start;
 }	t_strput;
 
 typedef struct s_data
@@ -279,7 +346,6 @@ typedef struct s_data
 	void		*screen_display;
 	int			on_screen;
 	uint32_t	**screen_buffer;
-	t_list		*string_to_put;
 	bool		sky_box;
 	int			fps;
 	t_entity	**prefab_tab;
@@ -289,6 +355,9 @@ typedef struct s_data
 	t_texture	*floor;
 	t_texture	*wall_tex[4];
 	t_texture	*sky_box_tex[4];
+	t_list		*string_to_put;
+	t_list		*timer_effect;
+	t_strput	*screen_info[MAX_SCREEN_INFO];
 } t_data;
 
 typedef	struct s_linfo
@@ -301,7 +370,7 @@ typedef	struct s_linfo
 void		print_map(t_map *map);
 void		print_chunk(t_data *data);
 
-int			in_bound(t_map map, t_vector vec);
+int			in_bound(t_map *map, t_vector vec);
 t_vector	vec_sum(t_vector vec1, t_vector vec2);
 int			create_minimap(t_data *data, int UI_size, int fig_size);
 void		update_chunk(t_data *data);
@@ -387,7 +456,7 @@ int			get_hover_index(t_data *data);
 void		draw_hover(t_data *data, t_vector start, uint32_t color);
 t_texture	*get_tex(t_data *data, char *name);
 //void		update_button_action(t_data *data);
-void		remove_selector(t_data *data);
+void		remove_selector(t_data *data, t_bool reset_angle);
 void		load_spells_prefab(t_data *data);
 void		expire(void *arg_data, void *arg_entity);
 t_entity	*get_prefab(t_data *data, char *name);
@@ -399,30 +468,44 @@ t_bool		has_obstacle(t_data *data);
 t_impact	get_simple_impact(t_vector start, t_vectorf direc, t_data *data);
 t_bool		check_dist_obstacle(t_data *data, t_entity *entity, int dist, t_bool visible_target);
 void		damage(t_data *data, t_entity *entity, int dmg);
-void		zone_effect(t_data *data, t_spellinfo spell);
 void		add_tex(t_data *data, t_texture *tex, char *name);
 void		show_health_bar(t_data *data);
 void		put_screen(t_data *data);
-void		clear_string_put(t_data *data);
-void		screen_string_put(t_data *data, t_strput *to_put);
+void		clear_string_put(t_data *data, t_bool force);
+int			screen_string_put(t_data *data, t_strput *to_put, float time);
 t_strput	*strput(char *str, t_vector pos, float size, uint32_t color);
 t_texture	*get_resized_free(t_data *data, t_texture *texture, int size);
 void		draw_inventory(t_data *data, t_entity *inventory[INVENTORY_SIZE]);
 int			inventory_hover_index(t_data *data);
 void		refresh_stat(t_entity *entity);
+int			roll(t_dice dice);
+int			roll_one(int dice, int nb);
+t_bool		check_properties(int properties, int check);
 
-void		spell_info(t_spellinfo *spell, void (*effect)(void *data, t_entity *target, t_entity *caster, int nb),
-	t_vector pos, t_entity *caster);
 t_entity	*cycle_entity_cell(t_data *data, int move);
 void		inventory_swap(t_entity *entity, t_entity *inventory[INVENTORY_SIZE], int index1, int index2);
+void		free_path(t_path *path);
+void		print_path(t_path *path);
+t_path		*get_path(t_data *data, t_vector start, t_vector goal);
+t_path		*pop_path(t_path **path);
+void		entity_moving_to(void *arg_data, void *arg_entity);
+void		move_to(t_data *data, t_entity *entity, t_vector pos);
+void		change_anim_next(t_entity *entity, char *anim1, char *anim2);
+
+void		add_timer_effect(t_data *data, t_spellinfo spell, float time, t_bool in_round);
+void		update_all_timer_effects(t_data *data);
+void		show_info(t_data *data, char *str, ...);
 
 //spells
+void		action_select(void *data_param, void *entity_param, t_spellinfo spell);
+void		zone_effect(t_data *data, t_spellinfo spell, void (*effect)(void *data, t_entity *target, t_entity *caster, int nb));
+
 void		init_fireball_button(t_data *data, t_button *button);
-void		fireball(void *data_param, void *entity_param, t_spellinfo spell);
-void		init_take_button(t_data *data, t_button *button);                      //ca marche meme si take est pas dans le .h ???
+void		fireball(void *data_param, void *spell_param);
+
+void		init_take_button(t_data *data, t_button *button);
 void		init_inventory_button(t_data *data, t_button *button); 
 
-void		exemple_action(void *data_param, void *entity_param, t_spellinfo spell);
 void		init_test(t_data *data);
 
 #endif

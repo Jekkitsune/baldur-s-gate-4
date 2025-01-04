@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/14 17:46:44 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/04 01:30:14 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,29 @@ int	loop(void *param)
 		t_entity	*entitest;
 
 		entitest = NULL;
-		if (in_bound(*data->current_map, data->player.pos) && data->current_map->arr[data->player.pos.x][data->player.pos.y].entities)
+		if (in_bound(data->current_map, data->player.pos) && data->current_map->arr[data->player.pos.x][data->player.pos.y].entities)
 			entitest = data->current_map->arr[data->player.pos.x][data->player.pos.y].entities->content;
 		if (!data->player.focus_mode && entitest)
 			possess(data, entitest);
 		else if (data->player.focus_mode)
 		{
 			unpossess(data);
-			remove_selector(data);
+			remove_selector(data, false);
+		}
+		else if (data->current_map->active_entities && data->current_map->active_entities->content)
+		{
+			t_entity *owo = data->current_map->active_entities->content;
+			//printf("%s: %d %d -> %d %d\n", owo->sheet.name, owo->pos.x, owo->pos.y, data->player.pos.x, data->player.pos.y);
+			move_to(data, owo, data->player.pos);
+			//print_path(get_path(data, owo->pos, data->player.pos));
 		}
 	}
 
+	//printf("%p\n", data->player.active_button);
+
 	move(data);
 	update_all_active(data);
-	//update_button_action(data);
+	update_all_timer_effects(data);
 	update_chunk(data);
 	show_screen(data);
 
@@ -58,7 +67,7 @@ int	loop(void *param)
 	newtime = tv.tv_sec;
 	if (newtime > starttime)
 	{
-		printf("%zu\n", frame);
+		//printf("%zu\n", frame);
 		if (frame == 0)
 			frame = 1;
 		data->fps = frame;
@@ -111,9 +120,9 @@ int	main(int argc, char **argv)
 
 	init_player(&data);
 
-	create_minimap(&data, 200, 30);
+	create_minimap(&data, 100, 20);
 
-	//mlx_set_fps_goal(data.mlx, 60);
+	mlx_set_fps_goal(data.mlx, 60);
 	mlx_on_event(data.mlx, data.win, MLX_KEYDOWN, key_down_manager, &data);
 	mlx_on_event(data.mlx, data.win, MLX_KEYUP, key_up_manager, &data);
 	mlx_on_event(data.mlx, data.win, MLX_MOUSEWHEEL, mouse_wheel_manager, &data);

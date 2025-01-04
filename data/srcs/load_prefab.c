@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:22:10 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/14 17:47:20 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/02 18:45:56 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,13 +149,13 @@ t_entity	*try_all_faces(t_data *data, t_entity *entity, char *directory, char *n
 
 	base_str = ft_vajoin(directory, "/", name, NULL);
 	if (try_one_face(data, entity, base_str, ""))
-		set_anim_info(&entity->anim[entity->nb_anim - 1], ft_strjoin(name, ""), 17);
+		set_anim_info(&entity->anim[entity->nb_anim - 1], ft_strjoin(name, ""), 10);
 	if (try_one_face(data, entity, base_str, "_sidel"))
-		set_anim_info(&entity->anim[entity->nb_anim - 1], ft_strjoin(name, "_sidel"), 17);
+		set_anim_info(&entity->anim[entity->nb_anim - 1], ft_strjoin(name, "_sidel"), 10);
 	if (try_one_face(data, entity, base_str, "_back"))
-		set_anim_info(&entity->anim[entity->nb_anim - 1], ft_strjoin(name, "_back"), 17);
+		set_anim_info(&entity->anim[entity->nb_anim - 1], ft_strjoin(name, "_back"), 10);
 	if (try_one_face(data, entity, base_str, "_sider"))
-		set_anim_info(&entity->anim[entity->nb_anim - 1], ft_strjoin(name, "_sider"), 17);
+		set_anim_info(&entity->anim[entity->nb_anim - 1], ft_strjoin(name, "_sider"), 10);
 	free(base_str);
 	return (entity);
 }
@@ -196,12 +196,13 @@ t_entity	*get_prefab_data(t_data *data, char *directory)
 	entity->pos = vec(-1, -1);
 	entity->tex[0] = data->wall_tex[0];
 	set_entity_tex(entity, data->wall_tex[0], data->wall_tex[0], data->wall_tex[0]);
-	entity->behavior = ft_nothing;
+	entity->behavior.func = ft_nothing;
 	entity->anim = NULL;
 	try_all_faces(data, entity, directory, "idle");
 	try_all_faces(data, entity, directory, "walk");
 	try_all_faces(data, entity, directory, "melee");
 	try_all_faces(data, entity, directory, "range");
+	try_all_faces(data, entity, directory, "select");
 	try_all_faces(data, entity, directory, "cast");
 	try_all_faces(data, entity, directory, "dead");
 	entity->sheet.portrait = get_resized_free(data, get_portrait(data, directory), data->button_scale_size);

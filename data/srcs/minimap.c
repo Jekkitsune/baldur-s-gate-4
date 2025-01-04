@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 21:33:33 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/12 22:01:51 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/19 22:21:47 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	update_chunk(t_data *data)
 		i_chunk.x = 0;
 		while (i_chunk.x < data->minimap.chunk_size)
 		{
-			if (in_bound(*data->current_map, vec_sum(i_map, i_chunk)))
+			if (in_bound(data->current_map, vec_sum(i_map, i_chunk)))
 				data->minimap.chunk[i_chunk.x][i_chunk.y] = data->current_map->arr[i_map.x + i_chunk.x][i_map.y + i_chunk.y].type;
 			else
 				data->minimap.chunk[i_chunk.x][i_chunk.y] = 0;

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/30 10:49:36 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/03 00:43:48 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	move_possession(t_data *data)
 	t_vectorf	offset;
 
 	possession = data->player.possession;
-	if (possession && possession->possess_control && possession->sheet.alive)
+	if (possession && !possession->anim_no_move && possession->possess_control && possession->sheet.alive)
 	{
 		p = &data->player;
 		offset = possession->offset;
@@ -96,7 +96,7 @@ void	move_possession(t_data *data)
 			angle_add(possession->angle, 0);
 			teleport_entity(data, possession, possession->pos, offset);
 		}
-		else if (possession->current_anim && ft_strcmp(possession->current_anim->name, "idle"))
+		else if (possession->current_anim && !ft_strcmp(possession->current_anim->name, "walk"))
 			change_anim(possession, "idle");
 	}
 }

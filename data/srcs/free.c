@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 23:25:12 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/13 18:33:09 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/03 18:05:12 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,6 @@ void	free_prefab_entity(t_data *data, t_entity *entity)
 		}
 		free(entity->anim);
 	}
-	// entity->anim = NULL;
-	// entity->current_anim = NULL;
 	if (entity->sheet.portrait)
 		free_tex(entity->sheet.portrait);
 	destroy_entity(data, entity);
@@ -171,7 +169,8 @@ void	free_data(t_data *data)
 	free_minimap(data);
 	free_tex_lst(data);
 	free_visible_lst(data);
-	clear_string_put(data);
+	clear_string_put(data, true);
+	ft_lstclear(&data->timer_effect, free);
 	if (data->screen_display)
 		mlx_destroy_image(data->mlx, data->screen_display);
 	i = 0;
