@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doors.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 22:52:00 by gmassoni          #+#    #+#             */
-/*   Updated: 2024/12/21 23:53:48 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/04 19:46:15 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,23 @@ void	update_doors(t_data *data)
 
 void	open_door(t_data *data)
 {
-	int		tmp;
-	t_cell	*c;
+	int			tmp;
+	t_vector	pos;
+	t_cell		*c;
 
 	tmp = data->player.angle / (M_PI / 2);
 	c = NULL;
-	if ((tmp == 0 || tmp == 4) && data->current_map->arr[data->player.pos.x + 1][data->player.pos.y].type == DOOR)
-		c = &data->current_map->arr[data->player.pos.x + 1][data->player.pos.y];
-	else if (tmp == 3 && data->current_map->arr[data->player.pos.x][data->player.pos.y - 1].type == DOOR)
-		c = &data->current_map->arr[data->player.pos.x][data->player.pos.y - 1];
-	else if (tmp == 2 && data->current_map->arr[data->player.pos.x - 1][data->player.pos.y].type == DOOR)
-		c = &data->current_map->arr[data->player.pos.x - 1][data->player.pos.y];
-	else if (tmp == 1 && data->current_map->arr[data->player.pos.x][data->player.pos.y + 1].type == DOOR)
-		c = &data->current_map->arr[data->player.pos.x][data->player.pos.y + 1];
+	pos = data->player.pos;
+	if (data->player.possession)
+		pos = data->player.possession->pos;
+	if ((tmp == 0 || tmp == 4) && data->current_map->arr[pos.x + 1][pos.y].type == DOOR)
+		c = &data->current_map->arr[pos.x + 1][pos.y];
+	else if (tmp == 3 && data->current_map->arr[pos.x][pos.y - 1].type == DOOR)
+		c = &data->current_map->arr[pos.x][pos.y - 1];
+	else if (tmp == 2 && data->current_map->arr[pos.x - 1][pos.y].type == DOOR)
+		c = &data->current_map->arr[pos.x - 1][pos.y];
+	else if (tmp == 1 && data->current_map->arr[pos.x][pos.y + 1].type == DOOR)
+		c = &data->current_map->arr[pos.x][pos.y + 1];
 	if (!c)
 		return ;
 	if (c->status == OPEN)

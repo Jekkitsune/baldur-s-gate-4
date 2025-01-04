@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/21 23:04:19 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/04 19:54:08 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,14 @@ int	key_down_manager(int key, void *param)
 	if (key == 6)
 		data->sky_box = !data->sky_box;
 	if (key == 44)
+	{
+		if (data->player.possession)
+		{
+			t_timer_property	*prop = new_timer_property(melee, data->player.possession);
+			add_timer_property(data, prop, 5, false);
+		}
 		open_door(data);
+	}
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 02:14:21 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/04 20:34:22 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@
 # define NB_BUTTON 20
 # define INVENTORY_SIZE 20
 
-# define NB_RAYS (1600)
+# define NB_RAYS (1600 / 2)
 # define FOV 0.7
-# define HEIGHT (900)
-# define WIDTH (1600)
+# define HEIGHT (900 / 2)
+# define WIDTH (1600 / 2)
 # define HEIGHT_CAP 5000
 # define DEFAULT_FONT "Paul.ttf"
 
@@ -82,13 +82,19 @@ typedef enum e_property
 	finesse = 1,
 	range = 1 << 1,
 	loading = 1 << 2,
+	melee = 1 << 3,
+	poisoned = 1 << 4,
 }	t_property;
 
-// # define FINESSE 0b1
-// # define RANGE 0b10
-// # define LOADING 0b100
+# define NB_PROPERTIES 5
 
-# define NB_PROPERTIES 3
+# define PROPERTIES_TAB ((const char * const[NB_PROPERTIES + 1]) { \
+    "finesse", \
+    "range", \
+    "loading",  \
+	"melee",\
+	"poisoned",\
+})
 
 typedef struct s_vector
 {
@@ -146,6 +152,7 @@ typedef struct s_spellinfo
 	t_entity	*summon;
 	t_dice		dice;
 	int			nb;
+	int			stat;
 	int			range;
 	t_bool		visible_target;
 	char		*anim;
@@ -160,6 +167,15 @@ typedef struct s_timer_effect
 	struct timeval 	start;
 	t_bool			in_round;
 }	t_timer_effect;
+
+typedef struct s_timer_property
+{
+	t_property		property;
+	t_entity		*entity;
+	unsigned long 	duration;
+	struct timeval 	start;
+	t_bool			in_round;
+}	t_timer_property;
 
 typedef struct s_button
 {
@@ -178,7 +194,7 @@ typedef struct s_sheet
 	int			saving[6];
 	int			level;
 	int			pb;
-	int			skills[18];
+//	int			skills[18];
 	int			speed;
 	int			walked;
 	int			ac;
@@ -191,7 +207,6 @@ typedef struct s_sheet
 	int			spell_bonus;
 	int			spell_dc;
 	char		*name;
-	int			size;
 	int			weight;
 	int			carry;
 	t_bool		alive;
@@ -206,6 +221,7 @@ typedef struct s_sheet
 	int			properties : NB_PROPERTIES + 1;
 	int			team;
 	t_bool		in_combat;
+	int			range;
 }	t_sheet;
 
 typedef struct s_path
@@ -247,6 +263,7 @@ typedef struct s_entity
 	int			anim_clock;
 	t_sheet		sheet;
 	float		size_scale;
+	uint32_t	color_filter;
 	t_bool		anim_no_move;
 }	t_entity;
 
@@ -357,6 +374,7 @@ typedef struct s_data
 	t_texture	*sky_box_tex[4];
 	t_list		*string_to_put;
 	t_list		*timer_effect;
+	t_list		*timer_property;
 	t_strput	*screen_info[MAX_SCREEN_INFO];
 } t_data;
 
@@ -480,7 +498,10 @@ int			inventory_hover_index(t_data *data);
 void		refresh_stat(t_entity *entity);
 int			roll(t_dice dice);
 int			roll_one(int dice, int nb);
-t_bool		check_properties(int properties, int check);
+void		set_dice(t_dice to_set, int dice, int nb);
+int			modif(int nb);
+void		copy_dice(t_dice to_set, t_dice copy);
+t_bool		check_properties(t_property properties, t_property check);
 
 t_entity	*cycle_entity_cell(t_data *data, int move);
 void		inventory_swap(t_entity *entity, t_entity *inventory[INVENTORY_SIZE], int index1, int index2);
@@ -493,8 +514,19 @@ void		move_to(t_data *data, t_entity *entity, t_vector pos);
 void		change_anim_next(t_entity *entity, char *anim1, char *anim2);
 
 void		add_timer_effect(t_data *data, t_spellinfo spell, float time, t_bool in_round);
-void		update_all_timer_effects(t_data *data);
+void		update_all_timer_effects(t_data *data, t_bool round);
 void		show_info(t_data *data, char *str, ...);
+void		add_to_str(char **res, char *str);
+
+t_timer_property	*new_timer_property(t_property property, t_entity *entity);
+void				add_timer_property(t_data *data, t_timer_property *tproperty, float time, t_bool in_round);
+void				update_all_timer_properties(t_data *data, t_bool round);
+
+
+void		update_doors(t_data *data);
+void		open_door(t_data *data);
+
+void		init_test(t_data *data);
 
 //spells
 void		action_select(void *data_param, void *entity_param, t_spellinfo spell);
@@ -504,11 +536,11 @@ void		init_fireball_button(t_data *data, t_button *button);
 void		fireball(void *data_param, void *spell_param);
 
 void		init_take_button(t_data *data, t_button *button);
-void		init_inventory_button(t_data *data, t_button *button); 
+void		init_inventory_button(t_data *data, t_button *button);
 
-void		init_test(t_data *data);
+void		init_atk_button(t_data *data, t_button *button, t_entity *entity);
 
-void		update_doors(t_data *data);
-void		open_door(t_data *data);
+void		init_check_button(t_data *data, t_button *button);
+
 
 #endif

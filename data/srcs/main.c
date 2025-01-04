@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 02:16:03 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/04 20:35:18 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ int	loop(void *param)
 	move(data);
 	update_doors(data);
 	update_all_active(data);
-	update_all_timer_effects(data);
+	update_all_timer_effects(data, false);
+	update_all_timer_properties(data, false);
 	update_chunk(data);
 	show_screen(data);
 
@@ -126,6 +127,7 @@ int	main(int argc, char **argv)
 	add_tex(&data, get_resized_free(&data, path_to_tex(&data, "fireball_button.png"), data.button_scale_size), ft_strdup("fireball_button"));
 	add_tex(&data, get_resized_free(&data, path_to_tex(&data, "take_button.png"), data.button_scale_size), ft_strdup("take_button"));
 	add_tex(&data, get_resized_free(&data, path_to_tex(&data, "inventory_button.png"), data.button_scale_size), ft_strdup("inventory_button"));
+	add_tex(&data, get_resized_free(&data, path_to_tex(&data, "check_button.png"), data.button_scale_size), ft_strdup("check_button"));
 
 	init_test(&data);
 	load_spells_prefab(&data);

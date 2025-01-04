@@ -6,11 +6,37 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 15:54:31 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/18 16:54:53 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/04 06:47:33 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	set_dice(t_dice to_set, int dice, int nb)
+{
+	int	i;
+
+	i = 0;
+	while (i < NB_DICE)
+	{
+		to_set[i] = 0;
+		i++;
+	}
+	if (dice > 0 && dice < NB_DICE)
+		to_set[dice] = nb;
+}
+
+void	copy_dice(t_dice to_set, t_dice copy)
+{
+	int	i;
+
+	i = 0;
+	while (i < NB_DICE)
+	{
+		to_set[i] = copy[i];
+		i++;
+	}
+}
 
 void	add_dice(t_dice adder, t_dice added)
 {

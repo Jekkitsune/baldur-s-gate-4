@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 23:37:10 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/03 17:55:59 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/04 20:36:22 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	add_timer_effect(t_data *data, t_spellinfo spell, float time, t_bool in_rou
 	ft_lstadd_front(&data->timer_effect, new);
 }
 
-void	update_all_timer_effects(t_data *data)
+void	update_all_timer_effects(t_data *data, t_bool round)
 {
 	t_list			*lst;
 	t_list			*tmp;
@@ -52,7 +52,9 @@ void	update_all_timer_effects(t_data *data)
 	{
 		current = lst->content;
 		lst = lst->next;
-		if (current && (current->in_round && --current->duration <= 0) || ((tv.tv_sec - current->start.tv_sec) * 1000000 + tv.tv_usec - current->start.tv_usec > current->duration))
+		if (current && (round && current->in_round && --current->duration <= 0)
+			|| (!current->in_round && (tv.tv_sec - current->start.tv_sec)
+			* 1000000 + tv.tv_usec - current->start.tv_usec > current->duration))
 		{
 			current->spell.effect(data, &current->spell);
 			tmp = ft_lstpop(&data->timer_effect, current);

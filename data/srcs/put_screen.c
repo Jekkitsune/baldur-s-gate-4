@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 21:34:36 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/03 20:49:00 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/04 19:26:16 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ t_strput	*strput(char *str, t_vector pos, float size, uint32_t color)
 {
 	t_strput	*to_put;
 
+	if (!str)
+		return (NULL);
 	to_put = ft_calloc(sizeof(t_strput), 1);
 	if (!to_put)
 	{

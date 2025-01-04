@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 19:02:10 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/03 19:27:41 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/04 19:28:37 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	init_test(t_data *data)
 	add_active(data, test2, ft_nothing);
 	possess_control(test2, true);
 	test2->size_scale = 0.9;
-	test2->sheet.buttons[0].func = action_select;
+	test2->sheet.properties |= (finesse | loading | poisoned);
+	init_check_button(data, &test2->sheet.buttons[0]);
 	init_fireball_button(data, &test2->sheet.buttons[1]);
 	init_take_button(data, &test2->sheet.buttons[2]);
 	init_inventory_button(data, &test2->sheet.buttons[NB_BUTTON - 1]);

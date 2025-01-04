@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 20:48:52 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 02:09:23 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/04 04:36:03 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	drop(t_data *data, t_spellinfo *spell)
 
 	if (!spell->caster || !spell->summon)
 		return ;
-	i = spell->radius;
+	i = spell->nb;
 	if (i < 0 || i >= INVENTORY_SIZE)
 		return ;
 	new_lst = ft_lstnew(spell->summon);
@@ -49,6 +49,7 @@ void	throw(void *data_param, void *spell_param)
 	data = data_param;
 	spell = spell_param;
 	drop(data, spell);
+	spell->nb = spell->summon->sheet.weight / 3;
 	if (get_dist(spell->pos, spell->caster->pos) > 2)
 	{
 		damage(data, spell->summon, spell->nb);
@@ -86,7 +87,8 @@ void	set_inventory_button(t_data *data, t_entity *entity, int i)
 	used = entity->sheet.inventory[i];
 	button = &entity->sheet.inventory_button;
 	button->spellinfo.effect = NULL;
-	button->spellinfo.radius = i;
+	button->spellinfo.radius = 0;
+	button->spellinfo.nb = i;
 	if (!used)
 	{
 		button->spellinfo.summon = NULL;
@@ -97,7 +99,7 @@ void	set_inventory_button(t_data *data, t_entity *entity, int i)
 	button->spellinfo.range = ft_max(entity->sheet.stats[STR] / 2, 1);
 	button->spellinfo.visible_target = true;
 	button->spellinfo.summon = used;
-	button->spellinfo.nb = used->sheet.weight / 3;
+	
 	button->func = action_select;
 	if (used->sheet.type != consumable)
 		button->spellinfo.effect = throw;

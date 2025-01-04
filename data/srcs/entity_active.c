@@ -6,11 +6,22 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:24:17 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/19 22:21:50 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/04 19:49:11 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	update_entity_properties(t_data *data, t_entity *entity)
+{
+	if (entity->sheet.properties & melee)
+		entity->color_filter = 0xFF00FF00;
+}
+
+void radius_filter(__attribute__((unused)) void *data, t_entity *target, __attribute__((unused)) t_entity *caster, __attribute__((unused)) int nb)
+{
+	target->color_filter = 0xFFAA0000;
+}
 
 void	update_all_active(t_data *data)
 {
@@ -21,7 +32,13 @@ void	update_all_active(t_data *data)
 	if (data->player.arrow && data->player.active_button)
 	{
 		info = &data->player.active_button->spellinfo;
+		info->pos = data->player.arrow->pos;
+		info->target = cycle_entity_cell(data, 0);
 		check_dist_obstacle(data, data->player.possession, info->range, info->visible_target);
+		if (info->radius)
+			zone_effect(data, *info, radius_filter);
+		else if (info->target)
+			info->target->color_filter = 0xFFAA0000;
 	}
 	i = data->current_map->active_entities;
 	while (i)
@@ -31,6 +48,7 @@ void	update_all_active(t_data *data)
 		current->behavior.func(data, current);
 		if (current->current_anim)
 			continue_anim(data, current);
+		update_entity_properties(data, current);
 	}
 }
 
