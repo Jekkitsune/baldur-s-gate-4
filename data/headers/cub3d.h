@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 01:46:11 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/04 02:14:21 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@
 # define NB_BUTTON 20
 # define INVENTORY_SIZE 20
 
-# define NB_RAYS (1600 / 2)
+# define NB_RAYS (1600)
 # define FOV 0.7
-# define HEIGHT (900 / 2)
-# define WIDTH (1600 / 2)
+# define HEIGHT (900)
+# define WIDTH (1600)
 # define HEIGHT_CAP 5000
 # define DEFAULT_FONT "Paul.ttf"
 
@@ -256,7 +256,7 @@ typedef	struct s_cell
 	t_texture	*tex[4];
 	t_list		*entities;
 	int			status;
-	int			timer;
+	float		timer;
 }	t_cell;
 
 typedef struct s_impact
@@ -507,5 +507,8 @@ void		init_take_button(t_data *data, t_button *button);
 void		init_inventory_button(t_data *data, t_button *button); 
 
 void		init_test(t_data *data);
+
+void		update_doors(t_data *data);
+void		open_door(t_data *data);
 
 #endif

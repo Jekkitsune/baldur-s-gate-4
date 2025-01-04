@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/03 19:24:27 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/04 02:15:16 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,8 @@ SRCS = main.c\
 		properties.c\
 		pathfinding.c\
 		timer_effect.c\
-		printf_to_str.c
+		printf_to_str.c\
+		doors.c\
 
 LIBFT = data/libft/libft.a
 

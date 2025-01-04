@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 21:09:45 by gmassoni          #+#    #+#             */
-/*   Updated: 2024/12/05 19:30:10 by fparis           ###   ########.fr       */
+/*   Updated: 2024/12/21 23:10:57 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,7 +292,10 @@ void	turn_map(t_data *data, char **map, t_map *level)
 				level->arr[x][y].tex[3] = data->wall_tex[3];
 			}
 			if (level->arr[x][y].type == DOOR)
+			{
 				level->arr[x][y].status = CLOSE;
+				level->arr[x][y].timer = 1;
+			}
 		}
 	}
 	ft_free_tab(map);
