@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 19:54:08 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 13:54:01 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,13 @@ int	key_down_manager(int key, void *param)
 	if (key == 26 || key == 4 || key == 22 || key == 7 || (key >= 79 && key <= 82) || (key >= 89 && key <= 90))
 		register_player_movement(data, key, 1);
 	if (key == 225)
-		data->player.is_running = 1;
+		data->player.description_mode = 1;
 	if (key == 8)
 		data->test_key = 1;
 	if (key == 6)
 		data->sky_box = !data->sky_box;
 	if (key == 44)
-	{
-		if (data->player.possession)
-		{
-			t_timer_property	*prop = new_timer_property(melee, data->player.possession);
-			add_timer_property(data, prop, 5, false);
-		}
 		open_door(data);
-	}
 	return (0);
 }
 
@@ -72,7 +65,7 @@ int	key_up_manager(int key, void *param)
 	if (key == 26 || key == 4 || key == 22 || key == 7 || (key >= 79 && key <= 82) || (key >= 89 && key <= 90))
 		register_player_movement(data, key, 0);
 	if (key == 225)
-		data->player.is_running = 0;
+		data->player.description_mode = 0;
 	if (key == 29)
 		cycle_entity_cell(data, -1);
 	else if (key == 27)

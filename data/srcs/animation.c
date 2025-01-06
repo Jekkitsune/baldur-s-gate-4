@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:48:43 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/03 00:42:56 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 08:34:24 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	get_anim_index(t_entity *entity, char *name)
 	return (-1);
 }
 
-void	change_anim(t_entity *entity, char *name)
+void	change_anim(t_entity *entity, char *name, t_bool loop)
 {
 	int	index;
 
@@ -62,6 +62,9 @@ void	change_anim(t_entity *entity, char *name)
 	entity->current_anim = &entity->anim[index];
 	entity->anim_index = 0;
 	entity->anim_clock = entity->current_anim->interval;
+	entity->next_anim = NULL;
+	entity->anim_no_move = false;
+	entity->anim_loop = loop;
 }
 
 void	continue_anim(t_data *data, t_entity *entity)
@@ -71,29 +74,31 @@ void	continue_anim(t_data *data, t_entity *entity)
 	if (!entity->current_anim)
 		return ;
 	current = entity->current_anim;
-	entity->anim_clock--;
+	entity->anim_clock -= data->player.speed;
 	if (entity->anim_clock < 0)
 	{
-		entity->anim_index++;
+		entity->anim_index += 1 + (ft_abs((int)entity->anim_clock) / current->interval);
 		if (entity->anim_index >= current->size)
 		{
-			entity->anim_index = 0;
+			entity->anim_index = entity->anim_index % current->size;
 			if (entity->next_anim)
 			{
-				change_anim(entity, entity->next_anim);
+				change_anim(entity, entity->next_anim, entity->anim_loop);
 				entity->next_anim = NULL;
 				entity->anim_no_move = false;
 			}
+			if (!entity->anim_loop)
+				entity->anim_index = current->size - 1;
 		}
 		entity->anim_clock = current->interval;
 	}
 }
 
-void	change_anim_next(t_entity *entity, char *anim1, char *anim2)
+void	change_anim_next(t_entity *entity, char *anim1, char *anim2, t_bool loop)
 {
 	if (!entity)
 		return ;
-	change_anim(entity, anim1);
+	change_anim(entity, anim1, loop);
 	entity->next_anim = anim2;
 	entity->anim_no_move = true;
 }

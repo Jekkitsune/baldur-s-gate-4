@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 20:34:22 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 14:09:54 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,11 @@
 # define HEIGHT_CAP 5000
 # define DEFAULT_FONT "Paul.ttf"
 
-# define MAX_SCREEN_INFO 6
+# define HITBOX_VALUE 5.0
+
+# define MAX_SCREEN_INFO 10
+
+# define FPS_CAP 60
 
 //Stats
 
@@ -50,7 +54,7 @@
 # define DEX 1
 # define CON 2
 # define INT 3
-# define WID 4
+# define WIS 4
 # define CHA 5
 
 //Doors
@@ -84,6 +88,7 @@ typedef enum e_property
 	loading = 1 << 2,
 	melee = 1 << 3,
 	poisoned = 1 << 4,
+	hit_effect = 1 << 5,
 }	t_property;
 
 # define NB_PROPERTIES 5
@@ -94,6 +99,7 @@ typedef enum e_property
     "loading",  \
 	"melee",\
 	"poisoned",\
+	"hit_effect",\
 })
 
 typedef struct s_vector
@@ -117,11 +123,10 @@ typedef struct s_texture
 
 typedef struct s_animation
 {
-	t_texture	**tab;
-	int			size;
-	char		*name;
-	int			interval;
-	void		(*anim_sound)(int index, int clock);
+	t_texture		**tab;
+	int				size;
+	char			*name;
+	int				interval;
 }	t_animation;
 
 typedef enum e_type
@@ -135,6 +140,12 @@ typedef enum e_type
 	living = 6,
 	object = 7,
 	consumable = 8,
+	offensive = 9,
+	debuff = 10,
+	buff = 11,
+	heal = 12,
+	take_type = 13,
+	move_type = 14,
 }	t_type;
 
 # define NON_EQUIP 6
@@ -153,18 +164,18 @@ typedef struct s_spellinfo
 	t_dice		dice;
 	int			nb;
 	int			stat;
-	int			range;
+	float		range;
 	t_bool		visible_target;
+	t_bool		target_self;
 	char		*anim;
 	float		timer;
-	char		*name;
+	t_type		type;
 }	t_spellinfo;
 
 typedef struct s_timer_effect
 {
 	t_spellinfo		spell;
-	unsigned long 	duration;
-	struct timeval 	start;
+	long 			duration;
 	t_bool			in_round;
 }	t_timer_effect;
 
@@ -172,8 +183,7 @@ typedef struct s_timer_property
 {
 	t_property		property;
 	t_entity		*entity;
-	unsigned long 	duration;
-	struct timeval 	start;
+	long 			duration;
 	t_bool			in_round;
 }	t_timer_property;
 
@@ -185,7 +195,28 @@ typedef struct s_button
 	t_vector	start;
 	t_vector	end;
 	t_spellinfo	spellinfo;
+	char		*description;
+	char		*name;
 }	t_button;
+
+# define LEVEL_NB_BUTTON 4
+# define MAX_LEVEL 5
+
+typedef	struct s_level
+{
+	t_button	buttons[LEVEL_NB_BUTTON];
+	//int			properties : NB_PROPERTIES + 1;
+	t_property	properties;
+	int			add_stats[6];
+	int			add_pv;
+	int			add_pb;
+}	t_level;
+
+typedef struct s_class
+{
+	char	*name;
+	t_level	level[MAX_LEVEL];
+}	t_class;
 
 typedef struct s_sheet
 {
@@ -220,8 +251,11 @@ typedef struct s_sheet
 	t_texture	*portrait;
 	int			properties : NB_PROPERTIES + 1;
 	int			team;
-	t_bool		in_combat;
+	t_bool		in_fight;
 	int			range;
+	char		*description; //Lie au prefab, non personnel a l'entite
+	char		*prefab;
+	t_class		*class;
 }	t_sheet;
 
 typedef struct s_path
@@ -239,6 +273,14 @@ typedef struct s_behavior
 	void			(*next)(void *data, void *entity);
 	t_path			*path;
 }	t_behavior;
+
+typedef struct s_round_manager
+{
+	t_bool	combat;
+	t_list	*party;
+	t_list	*participants;
+}	t_round_manager;
+
 
 typedef struct s_entity
 {
@@ -260,7 +302,8 @@ typedef struct s_entity
 	char		*next_anim;
 	int			nb_anim;
 	int			anim_index;
-	int			anim_clock;
+	double		anim_clock;
+	t_bool		anim_loop;
 	t_sheet		sheet;
 	float		size_scale;
 	uint32_t	color_filter;
@@ -306,7 +349,6 @@ typedef struct s_player
 	int			mouse_button[3];
 	t_vector	mouse_pos;
 	double		speed;
-	int			is_running;
 	t_impact	vision[NB_RAYS];
 	t_vectorf	camera_plane;
 	t_vectorf	direction;
@@ -322,6 +364,7 @@ typedef struct s_player
 	t_entity	*arrow;
 
 	t_list		*visible_entities;
+	t_bool		description_mode;
 }	t_player;
 
 typedef struct minimap
@@ -340,42 +383,44 @@ typedef struct	s_strput
 	t_vector		pos;
 	uint32_t		color;
 	float			size;
-	unsigned long 	duration;
-	struct timeval 	start;
+	long 			duration;
 }	t_strput;
 
 typedef struct s_data
 {
-	void		*mlx;
-	void		*win;
-	t_list		*textures;
-	char		floor_color[9];
-	char		ceiling_color[9];
-	t_vector	win_size;
-	t_list		*map_list;
-	t_map		*current_map;
-	t_minimap	minimap;
-	t_player	player;
-	int			scale;
-	int			render_distance;
-	int			test_key;
-	int			(*check_shape[2])(struct s_data *data, t_vector vec);
-	void		*screen_display;
-	int			on_screen;
-	uint32_t	**screen_buffer;
-	bool		sky_box;
-	int			fps;
-	t_entity	**prefab_tab;
-	int			nb_prefab;
-	int			button_scale_size;
-	t_texture	*ceiling;
-	t_texture	*floor;
-	t_texture	*wall_tex[4];
-	t_texture	*sky_box_tex[4];
-	t_list		*string_to_put;
-	t_list		*timer_effect;
-	t_list		*timer_property;
-	t_strput	*screen_info[MAX_SCREEN_INFO];
+	void			*mlx;
+	void			*win;
+	t_list			*textures;
+	char			floor_color[9];
+	char			ceiling_color[9];
+	t_vector		win_size;
+	t_list			*map_list;
+	t_map			*current_map;
+	t_minimap		minimap;
+	t_player		player;
+	int				scale;
+	int				render_distance;
+	int				test_key;
+	int				(*check_shape[2])(struct s_data *data, t_vector vec);
+	void			*screen_display;
+	int				on_screen;
+	uint32_t		**screen_buffer;
+	bool			sky_box;
+	t_entity		**prefab_tab;
+	int				nb_prefab;
+	int				button_scale_size;
+	t_texture		*ceiling;
+	t_texture		*floor;
+	t_texture		*wall_tex[4];
+	t_texture		*sky_box_tex[4];
+	t_list			*string_to_put;
+	t_list			*timer_effect;
+	t_list			*timer_property;
+	t_strput		*screen_info[MAX_SCREEN_INFO];
+	t_list			*class_lst;
+	unsigned long 	frame_time;
+	struct timeval 	current_time;
+	t_round_manager	round_manager;
 } t_data;
 
 typedef	struct s_linfo
@@ -459,7 +504,7 @@ void		free_visible_lst(t_data *data);
 void		free_data(t_data *data);
 t_texture	*get_correct_tex(t_entity *entity, int face);
 int			get_anim_index(t_entity *entity, char *name);
-void		change_anim(t_entity *entity, char *name);
+void		change_anim(t_entity *entity, char *name, t_bool loop);
 void		init_anim(t_data *data, t_animation *anim, int size, char *path);
 void		continue_anim(t_data *data, t_entity *entity);
 void		free_prefab_entity(t_data *data, t_entity *entity);
@@ -484,7 +529,7 @@ void		death(void *arg_data, void *arg_entity);
 float		get_dist(t_vector p1, t_vector p2);
 t_bool		has_obstacle(t_data *data);
 t_impact	get_simple_impact(t_vector start, t_vectorf direc, t_data *data);
-t_bool		check_dist_obstacle(t_data *data, t_entity *entity, int dist, t_bool visible_target);
+t_bool		check_dist_obstacle(t_data *data, t_entity *entity, float dist, t_bool visible_target);
 void		damage(t_data *data, t_entity *entity, int dmg);
 void		add_tex(t_data *data, t_texture *tex, char *name);
 void		show_health_bar(t_data *data);
@@ -495,7 +540,6 @@ t_strput	*strput(char *str, t_vector pos, float size, uint32_t color);
 t_texture	*get_resized_free(t_data *data, t_texture *texture, int size);
 void		draw_inventory(t_data *data, t_entity *inventory[INVENTORY_SIZE]);
 int			inventory_hover_index(t_data *data);
-void		refresh_stat(t_entity *entity);
 int			roll(t_dice dice);
 int			roll_one(int dice, int nb);
 void		set_dice(t_dice to_set, int dice, int nb);
@@ -504,29 +548,44 @@ void		copy_dice(t_dice to_set, t_dice copy);
 t_bool		check_properties(t_property properties, t_property check);
 
 t_entity	*cycle_entity_cell(t_data *data, int move);
-void		inventory_swap(t_entity *entity, t_entity *inventory[INVENTORY_SIZE], int index1, int index2);
-void		free_path(t_path *path);
+void		inventory_swap(t_data *data, t_entity *entity, int index1, int index2);
+void		free_path(t_path **path);
 void		print_path(t_path *path);
-t_path		*get_path(t_data *data, t_vector start, t_vector goal);
+t_path		*get_path(t_data *data, t_vector start, t_vector goal, t_bool closest);
 t_path		*pop_path(t_path **path);
 void		entity_moving_to(void *arg_data, void *arg_entity);
 void		move_to(t_data *data, t_entity *entity, t_vector pos);
-void		change_anim_next(t_entity *entity, char *anim1, char *anim2);
+void		change_anim_next(t_entity *entity, char *anim1, char *anim2, t_bool loop);
+t_bool		is_empty_cell(t_data *data, t_vector pos);
+t_bool		is_ground(t_data *data, t_vector pos);
 
 void		add_timer_effect(t_data *data, t_spellinfo spell, float time, t_bool in_round);
 void		update_all_timer_effects(t_data *data, t_bool round);
+void		clear_entity_timer_effect(t_data *data, t_entity *entity);
 void		show_info(t_data *data, char *str, ...);
 void		add_to_str(char **res, char *str);
 
 t_timer_property	*new_timer_property(t_property property, t_entity *entity);
 void				add_timer_property(t_data *data, t_timer_property *tproperty, float time, t_bool in_round);
 void				update_all_timer_properties(t_data *data, t_bool round);
+void				clear_entity_timer_prop(t_data *data, t_entity *entity);
+void				set_all_entity_timer_prop(t_data *data, t_entity *entity);
 
 
 void		update_doors(t_data *data);
 void		open_door(t_data *data);
 
 void		init_test(t_data *data);
+
+void		init_all_classes(t_data *data);
+t_class		*get_class(t_list *class_lst, char *name);
+void		refresh_entity_class(t_entity *entity, int level, int *button_nb);
+void		sum_stat_tab(int stats1[6], int stats2[6]);
+void		copy_stat_tab(int stats1[6], int stats2[6]);
+void		refresh_stats(t_data *data, t_entity *entity);
+
+void		free_round_manager(t_data *data);
+void		party_follow(t_data *data);
 
 //spells
 void		action_select(void *data_param, void *entity_param, t_spellinfo spell);
@@ -541,6 +600,7 @@ void		init_inventory_button(t_data *data, t_button *button);
 void		init_atk_button(t_data *data, t_button *button, t_entity *entity);
 
 void		init_check_button(t_data *data, t_button *button);
+void		init_move_button(t_data *data, t_button *button);
 
 
 #endif

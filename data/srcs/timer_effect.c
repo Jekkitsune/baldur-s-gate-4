@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 23:37:10 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 20:36:22 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 06:11:05 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	add_timer_effect(t_data *data, t_spellinfo spell, float time, t_bool in_rou
 {
 	t_timer_effect	*res;
 	t_list			*new;
-	struct timeval 	tv;
 
 	res = ft_calloc(sizeof(t_timer_effect), 1);
 	if (!res)
@@ -31,11 +30,7 @@ void	add_timer_effect(t_data *data, t_spellinfo spell, float time, t_bool in_rou
 	res->spell = spell;
 	res->duration = time;
 	if (!in_round)
-	{
-		gettimeofday(&tv, NULL);
-		res->start = tv;
 		res->duration = (float)time * 1000000.0;
-	}
 	ft_lstadd_front(&data->timer_effect, new);
 }
 
@@ -46,17 +41,37 @@ void	update_all_timer_effects(t_data *data, t_bool round)
 	t_timer_effect	*current;
 	struct timeval 	tv;
 
-	gettimeofday(&tv, NULL);
 	lst = data->timer_effect;
 	while (lst)
 	{
 		current = lst->content;
 		lst = lst->next;
 		if (current && (round && current->in_round && --current->duration <= 0)
-			|| (!current->in_round && (tv.tv_sec - current->start.tv_sec)
-			* 1000000 + tv.tv_usec - current->start.tv_usec > current->duration))
+			|| (!current->in_round && (current->duration -= data->frame_time) <= 0))
 		{
 			current->spell.effect(data, &current->spell);
+			tmp = ft_lstpop(&data->timer_effect, current);
+			free(tmp->content);
+			free(tmp);
+		}
+	}
+}
+
+void	clear_entity_timer_effect(t_data *data, t_entity *entity)
+{
+	t_list			*lst;
+	t_list			*tmp;
+	t_timer_effect	*current;
+
+	lst = data->timer_effect;
+	while (lst)
+	{
+		current = lst->content;
+		lst = lst->next;
+		if (current && (current->spell.caster == entity
+			|| current->spell.target == entity
+			|| current->spell.summon == entity))
+		{
 			tmp = ft_lstpop(&data->timer_effect, current);
 			free(tmp->content);
 			free(tmp);

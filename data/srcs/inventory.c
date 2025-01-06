@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:40:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 01:48:52 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 14:17:13 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,12 @@ t_bool	add_to_inventory(t_data *data, t_entity *taker, t_entity *taken)
 	{
 		if (in_bound(data->current_map, taken->pos))
 			free(ft_lstpop(&data->current_map->arr[taken->pos.x][taken->pos.y].entities, taken));
+		free_path(&taken->behavior.path);
 		taker->sheet.inventory[i] = taken;
+		if (i < NON_EQUIP)
+			refresh_stats(data, taker);
 		return (true);
 	}
-	refresh_stat(taker);
 	return (false);
 }
 
@@ -79,10 +81,12 @@ void	init_take_button(t_data *data, t_button *button)
 	button->spellinfo.radius = 0;
 	button->spellinfo.range = 1;
 	button->spellinfo.visible_target = false;
+	button->spellinfo.type = take_type;
 	button->img = get_tex(data, "take_button");
 	button->func = action_select;
 	button->spellinfo.effect = take;
-	button->spellinfo.name = "Take";
+	button->name = "Take";
+	button->description = "Pick up something if you can carry its weight";
 }
 
 void	open_inventory(void *data_param, void *entity_param, t_spellinfo spell)
@@ -102,6 +106,9 @@ void	init_inventory_button(t_data *data, t_button *button)
 	button->spellinfo.radius = 0;
 	button->spellinfo.range = 0;
 	button->spellinfo.visible_target = false;
+	button->spellinfo.type = 0;
 	button->img = get_tex(data, "inventory_button");
 	button->func = open_inventory;
+	button->name = NULL;
+	button->description = NULL;
 }

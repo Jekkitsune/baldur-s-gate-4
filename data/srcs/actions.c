@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:45:04 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 04:05:02 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 10:33:36 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_entity	*create_selector(t_data *data)
 	data->player.last_angle.x = data->player.angle;
 	data->player.last_angle.y = data->player.focus_dist;
 	res = spawn_entity(data, get_prefab(data, "selector"), data->player.pos, ft_strjoin("selector", ""));
-	change_anim(res, "idle");
+	change_anim(res, "idle", true);
 	if (!res)
 		return (NULL);
 	possess_control(res, true);
@@ -57,7 +57,7 @@ void	remove_selector(t_data *data, t_bool reset_angle)
 	if (data->player.arrow)
 		destroy_entity(data, data->player.arrow);
 	if (data->player.possession && !ft_strcmp(data->player.possession->current_anim->name, "select"))
-		change_anim(data->player.possession, "idle");
+		change_anim(data->player.possession, "idle", true);
 }
 
 void	select_target(t_data *data)
@@ -65,10 +65,10 @@ void	select_target(t_data *data)
 	if (!data->player.arrow && in_bound(data->current_map, data->player.pos))
 		data->player.arrow = create_selector(data);
 	if (data->player.possession && ft_strcmp(data->player.possession->current_anim->name, "select"))
-		change_anim(data->player.possession, "select");
+		change_anim(data->player.possession, "select", true);
 }
 
-t_bool	check_dist_obstacle(t_data *data, t_entity *entity, int dist, t_bool visible_target)
+t_bool	check_dist_obstacle(t_data *data, t_entity *entity, float dist, t_bool visible_target)
 {
 	if (!entity || !data->player.arrow)
 		return (false);
@@ -76,12 +76,12 @@ t_bool	check_dist_obstacle(t_data *data, t_entity *entity, int dist, t_bool visi
 	{
 		if (data->player.arrow->current_anim
 			&& ft_strcmp(data->player.arrow->current_anim->name, "death"))
-				change_anim(data->player.arrow, "dead");
+				change_anim(data->player.arrow, "dead", true);
 		return (false);
 	}
 	else if (data->player.arrow->current_anim
 		&& ft_strcmp(data->player.arrow->current_anim->name, "idle"))
-			change_anim(data->player.arrow, "idle");
+			change_anim(data->player.arrow, "idle", true);
 	return (true);
 }
 
@@ -102,9 +102,12 @@ void	action_select(void *data_param, void *entity_param, t_spellinfo spell)
 	spell.target = cycle_entity_cell(data, 0);
 	spell.nb = roll(spell.dice);
 	spell.caster = entity;
+	if (!spell.target_self && spell.target == spell.caster)
+		return ;
 	remove_selector(data, true);
+	spell.caster->angle = atan2(spell.pos.y - spell.caster->pos.y, spell.pos.x - spell.caster->pos.x);
 	if (spell.anim)
-		change_anim_next(spell.caster, spell.anim, "idle");
+		change_anim_next(spell.caster, spell.anim, "idle", true);
 	if (spell.timer > 0)
 		add_timer_effect(data, spell, spell.timer, false);
 	else

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:27:28 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/14 17:46:19 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 03:18:37 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,12 @@ t_texture	*get_tex(t_data *data, char *name)
 void	add_tex(t_data *data, t_texture *tex, char *name)
 {
 	if (!tex || !data)
+	{
+		ft_putstr_fd("Could not load texture: ", 2);
+		ft_putstr_fd(name, 2);
+		ft_putstr_fd("\n", 2);
 		return ;
+	}
 	tex->name = name;
 	ft_lstadd_front(&data->textures, ft_lstnew(tex));
 }

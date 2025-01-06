@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 21:34:36 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 19:26:16 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 07:11:54 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ t_strput	*strput(char *str, t_vector pos, float size, uint32_t color)
 int	screen_string_put(t_data *data, t_strput *to_put, float time)
 {
 	t_list			*lst;
-	struct timeval 	tv;
 
 	if (!to_put)
 		return (0);
@@ -49,11 +48,7 @@ int	screen_string_put(t_data *data, t_strput *to_put, float time)
 		return (0);
 	}
 	if (time)
-	{
-		gettimeofday(&tv, NULL);
-		to_put->start = tv;
 		to_put->duration = (float)time * 1000000.0;
-	}
 	ft_lstadd_front(&data->string_to_put, lst);
 	return (1);
 }
@@ -78,15 +73,13 @@ void	clear_string_put(t_data *data, t_bool force)
 	t_list			*to_free;
 	t_strput		*current;
 	t_list			*tmp;
-	struct timeval 	tv;
 
-	gettimeofday(&tv, NULL);
 	lst = data->string_to_put;
 	while (lst)
 	{
 		current = lst->content;
 		lst = lst->next;
-		if (force || !current || !current->duration || ((tv.tv_sec - current->start.tv_sec) * 1000000 + tv.tv_usec - current->start.tv_usec > current->duration))
+		if (force || !current || !current->duration || (current->duration -= data->frame_time) <= 0)
 		{
 			remove_screen_info(data->screen_info, current);
 			tmp = ft_lstpop(&data->string_to_put, current);

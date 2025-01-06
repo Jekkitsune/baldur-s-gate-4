@@ -6,23 +6,19 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 20:35:18 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 14:30:09 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-unsigned long	frame = 0;
-unsigned long	starttime;
-unsigned long	newtime;
-
 int	loop(void *param)
 {
-	t_data *data;
-	int		i;
-	int		j;
+	t_data 			*data;
+	struct timeval 	new_time;
 
 	data = (t_data *)param;
+
 	camera_move(data);
 	if (data->player.focus_mode)
 		rotate_focus(data);
@@ -48,9 +44,7 @@ int	loop(void *param)
 		else if (data->current_map->active_entities && data->current_map->active_entities->content)
 		{
 			t_entity *owo = data->current_map->active_entities->content;
-			//printf("%s: %d %d -> %d %d\n", owo->sheet.name, owo->pos.x, owo->pos.y, data->player.pos.x, data->player.pos.y);
 			move_to(data, owo, data->player.pos);
-			//print_path(get_path(data, owo->pos, data->player.pos));
 		}
 	}
 
@@ -64,23 +58,26 @@ int	loop(void *param)
 	update_chunk(data);
 	show_screen(data);
 
-	struct timeval 	tv;
-	gettimeofday(&tv, NULL);
-	newtime = tv.tv_sec;
-	if (newtime > starttime)
+	gettimeofday(&new_time, NULL);
+	data->frame_time = ((new_time.tv_sec - data->current_time.tv_sec)
+		* 1000000) + new_time.tv_usec - data->current_time.tv_usec;
+	
+	static int fps = 0;
+	static unsigned long count = 0;
+	//if (count > 1000000)
+	if (new_time.tv_sec != data->current_time.tv_sec)
 	{
-		//printf("%zu\n", frame);
-		if (frame == 0)
-			frame = 1;
-		data->fps = frame;
-		data->player.speed = (double) 1 / ((double) data->fps / (double) 60);
-		frame = 0;
-		starttime = newtime;
+		data->player.speed = (double) 1 / ((double)fps / (double) FPS_CAP);
+		//printf("%d\n", fps);
+		count = 0;
+		fps = 0;
 	}
-	frame++;
+	if (data->player.speed > 30)
+		data->player.speed = 0;
+	fps++;
+	count += data->frame_time;
+	data->current_time = new_time;
 
-	if (data->current_map->active_entities)
-		return (0);
 	return (0);
 }
 
@@ -98,7 +95,7 @@ int	main(int argc, char **argv)
 
 	create_minimap(&data, 100, 20);
 
-	mlx_set_fps_goal(data.mlx, 60);
+	mlx_set_fps_goal(data.mlx, FPS_CAP);
 	mlx_on_event(data.mlx, data.win, MLX_KEYDOWN, key_down_manager, &data);
 	mlx_on_event(data.mlx, data.win, MLX_KEYUP, key_up_manager, &data);
 	mlx_on_event(data.mlx, data.win, MLX_MOUSEWHEEL, mouse_wheel_manager, &data);
@@ -128,9 +125,14 @@ int	main(int argc, char **argv)
 	add_tex(&data, get_resized_free(&data, path_to_tex(&data, "take_button.png"), data.button_scale_size), ft_strdup("take_button"));
 	add_tex(&data, get_resized_free(&data, path_to_tex(&data, "inventory_button.png"), data.button_scale_size), ft_strdup("inventory_button"));
 	add_tex(&data, get_resized_free(&data, path_to_tex(&data, "check_button.png"), data.button_scale_size), ft_strdup("check_button"));
+	add_tex(&data, get_resized_free(&data, path_to_tex(&data, "move_button.png"), data.button_scale_size), ft_strdup("move_button"));
+	add_tex(&data, get_resized_free(&data, path_to_tex(&data, "melee_button.png"), data.button_scale_size), ft_strdup("melee_button"));
+	add_tex(&data, get_resized_free(&data, path_to_tex(&data, "range_button.png"), data.button_scale_size), ft_strdup("range_button"));
+	add_tex(&data, get_resized_free(&data, path_to_tex(&data, "punch_button.png"), data.button_scale_size), ft_strdup("punch_button"));
 
-	init_test(&data);
 	load_spells_prefab(&data);
+	init_all_classes(&data);
+	init_test(&data);
 
 	mlx_loop(data.mlx);
 	free_data(&data);

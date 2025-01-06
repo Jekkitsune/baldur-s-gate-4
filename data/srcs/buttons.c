@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 20:48:52 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 04:36:03 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 01:25:39 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ t_button	*button_inventory(t_data *data, t_entity *entity)
 	}
 	else if (last >= 0)
 	{
-		inventory_swap(entity, entity->sheet.inventory, last, current);
+		inventory_swap(data, entity, last, current);
 		last = -1;
 	}
 	return (button);
@@ -299,14 +299,21 @@ void	draw_actbutton_name(t_data *data)
 	t_strput	*to_put;
 	int			index;
 	char		*name;
+	char		*description;
 
 	index = get_hover_index(data);
-	name = data->player.possession->sheet.buttons[index].spellinfo.name;
+	name = data->player.possession->sheet.buttons[index].name;
+	description = data->player.possession->sheet.buttons[index].description;
 	if (index < 0 || !name)
 		return ;
 	mlx_mouse_get_pos(data->mlx, &mouse_pos.x, &mouse_pos.y);
 	to_put = strput(ft_strdup(name), vec(mouse_pos.x, mouse_pos.y - 10), 20, 0xFF000000);
 	screen_string_put(data, to_put, 0);
+	if (data->player.description_mode && description)
+	{
+		to_put = strput(ft_strdup(description), vec(mouse_pos.x, mouse_pos.y - 20), 20, 0xFF000000);
+		screen_string_put(data, to_put, 0);
+	}
 }
 
 void	draw_possession_button(t_data *data, t_button *buttons)

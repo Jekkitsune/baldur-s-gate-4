@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 02:17:28 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 10:27:32 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length, t_vectorf
 	impact->cell = &data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y];
 	if (impact->cell->type == DOOR)
 	{
+		add_cell_entities(data, impact);
 		if (ft_absf(length.x) > ft_absf(length.y))
 		{
 			tmp = impact->wall_pos.y;

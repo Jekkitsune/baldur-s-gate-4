@@ -6,11 +6,36 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/03 00:43:48 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 10:06:20 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	move_spell(void *data_param, void *spell_param)
+{
+	t_data		*data;
+	t_spellinfo	*spell;
+
+	data = data_param;
+	spell = spell_param;
+	move_to(data, spell->caster, spell->pos);
+}
+
+void	init_move_button(t_data *data, t_button *button)
+{
+	button->spellinfo.radius = 0;
+	button->spellinfo.range = 20;
+	button->spellinfo.visible_target = false;
+	button->spellinfo.effect = move_spell;
+	button->spellinfo.type = move_type;
+	button->func = action_select;
+	button->img = get_tex(data, "move_button");
+	button->spellinfo.anim = NULL;
+	button->spellinfo.timer = 0;
+	button->name = "Move";
+	button->description = "Move to selected cell";
+}
 
 void	change_pos(t_data *data, t_vectorf *offset, float angle)
 {
@@ -24,6 +49,28 @@ void	change_pos(t_data *data, t_vectorf *offset, float angle)
 	direc.y = sinf(angle);
 	offset->x += direc.x * data->player.speed;
 	offset->y += direc.y * data->player.speed;
+}
+
+void	change_pos_collide(t_data *data, t_vector pos, t_vectorf *offset, float angle)
+{
+	t_vectorf	direc;
+
+	if (angle > 2 * M_PI)
+		angle = angle - (2 * M_PI);
+	if (angle < 0)
+		angle = (2 * M_PI) + angle;
+	direc.x = cosf(angle) * data->player.speed;
+	direc.y = sinf(angle) * data->player.speed;
+	if (offset->x + direc.x + HITBOX_VALUE > data->scale && !is_empty_cell(data, vec(pos.x + 1, pos.y)))
+		direc.x = data->scale - (offset->x + HITBOX_VALUE);
+	else if (offset->x + direc.x - HITBOX_VALUE < -data->scale && !is_empty_cell(data, vec(pos.x - 1, pos.y)))
+		direc.x = -data->scale - (offset->x - HITBOX_VALUE);
+	if (offset->y + direc.y + HITBOX_VALUE > data->scale && !is_empty_cell(data, vec(pos.x, pos.y + 1)))
+		direc.y = data->scale - (offset->y + HITBOX_VALUE);
+	else if (offset->y + direc.y - HITBOX_VALUE < -data->scale && !is_empty_cell(data, vec(pos.x, pos.y - 1)))
+		direc.y = -data->scale - (offset->y - HITBOX_VALUE);
+	offset->x += direc.x;
+	offset->y += direc.y;
 }
 
 void	rotate_focus(t_data *data)
@@ -78,17 +125,17 @@ void	move_possession(t_data *data)
 		p = &data->player;
 		offset = possession->offset;
 		if (p->movement[0])
-			change_pos(data, &offset, p->angle);
+			change_pos_collide(data, possession->pos, &offset, p->angle);
 		if (p->movement[1])
-			change_pos(data, &offset, p->angle - (M_PI / 2));
+			change_pos_collide(data, possession->pos, &offset, p->angle - (M_PI / 2));
 		if (p->movement[2])
-			change_pos(data, &offset, p->angle + M_PI);
+			change_pos_collide(data, possession->pos,&offset, p->angle + M_PI);
 		if (p->movement[3])
-			change_pos(data, &offset, p->angle + (M_PI / 2));
+			change_pos_collide(data, possession->pos,&offset, p->angle + (M_PI / 2));
 		if (p->movement[0] || p->movement[1] || p->movement[2] || p->movement[3])
 		{
 			if (possession->current_anim && ft_strcmp(possession->current_anim->name, "walk"))
-				change_anim(possession, "walk");
+				change_anim(possession, "walk", true);
 			if (p->movement[2])
 				possession->angle = p->angle + (M_PI) * p->movement[2];
 			else
@@ -96,8 +143,8 @@ void	move_possession(t_data *data)
 			angle_add(possession->angle, 0);
 			teleport_entity(data, possession, possession->pos, offset);
 		}
-		else if (possession->current_anim && !ft_strcmp(possession->current_anim->name, "walk"))
-			change_anim(possession, "idle");
+		else if (possession->current_anim && !possession->behavior.path && !ft_strcmp(possession->current_anim->name, "walk"))
+			change_anim(possession, "idle", true);
 	}
 }
 

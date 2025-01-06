@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 19:14:32 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 03:59:06 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 14:11:22 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ void	destroy_entity(t_data *data, t_entity *entity)
 {
 	t_list	*tmp;
 
-//	printf("try to destroy %p\n", entity);
 	if (!entity)
 		return ;
 	if (data->player.possession == entity)
@@ -119,11 +118,11 @@ void	destroy_entity(t_data *data, t_entity *entity)
 			free(tmp);
 	}
 	destroy_inventory(data, entity);
-	free_path(entity->behavior.path);
-	if (entity->sheet.name)
-		free(entity->sheet.name);
+	free_path(&entity->behavior.path);
+	clear_entity_timer_prop(data, entity);
+	clear_entity_timer_effect(data, entity);
+	free(entity->sheet.name);
 	free(entity);
-//	printf("successfully destroyed\n");
 }
 
 float	get_obj_x(t_data *data, t_vectorf pos, t_vectorf p_pos)
@@ -386,8 +385,8 @@ void	move_to(t_data *data, t_entity *entity, t_vector pos)
 	if (!entity)
 		return ;
 	if (entity->behavior.path)
-		free_path(entity->behavior.path);
-	entity->behavior.path = get_path(data, entity->pos, pos);
+		free_path(&entity->behavior.path);
+	entity->behavior.path = get_path(data, entity->pos, pos, false);
 	if (!entity->behavior.path)
 	{
 		printf("%s: \"BAH NON DCP\"\n", entity->sheet.name);

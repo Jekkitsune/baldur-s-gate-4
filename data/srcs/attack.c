@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 05:02:33 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 06:48:13 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 10:35:47 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	atk(void *data_param, void *spell_param)
 
 	data = data_param;
 	spell = spell_param;
+	if (!spell->target || spell->target == spell->caster || !spell->target->sheet.alive)
+		return ;
 	spell->nb = roll(spell->dice) + modif(spell->caster->sheet.stats[spell->stat]);
 	atk = roll_one(20, 1) + spell->caster->sheet.atk_bonus;
 	if (atk >= spell->target->sheet.ac)
@@ -40,6 +42,24 @@ void	init_range(t_data *data, t_button *button, t_entity *entity, t_entity *weap
 	button->spellinfo.range = weapon->sheet.range;
 }
 
+void	init_melee(t_data *data, t_button *button, t_entity *entity, t_entity *weapon)
+{
+	button->spellinfo.anim = "melee";
+	button->spellinfo.stat = STR;
+	if (weapon && weapon->sheet.properties & finesse)
+		button->spellinfo.stat = DEX;
+	if (!weapon)
+	{
+		set_dice(button->spellinfo.dice, D1, 1);
+		button->spellinfo.range = 1.5;
+		button->img = get_tex(data, "punch_button");
+		return ;
+	}
+	button->img = get_tex(data, "melee_button");
+	copy_dice(button->spellinfo.dice, weapon->sheet.dice_dmg);
+	button->spellinfo.range = weapon->sheet.range;
+}
+
 void	init_atk_button(t_data *data, t_button *button, t_entity *entity)
 {
 	t_entity	*weapon;
@@ -48,22 +68,13 @@ void	init_atk_button(t_data *data, t_button *button, t_entity *entity)
 	button->spellinfo.radius = 0;
 	button->spellinfo.visible_target = true;
 	button->spellinfo.effect = atk;
+	button->spellinfo.type = offensive;
 	button->func = action_select;
-	button->spellinfo.timer = 1;
-	button->spellinfo.name = "Attack";
+	button->spellinfo.timer = 0.7;
+	button->name = "Attack";
+	button->description = "Attack selected with the equipped weapon";
 	if (weapon && weapon->sheet.properties & range)
-		return (init_range(data, button, entity, weapon));
-	button->img = get_tex(data, "melee_button");
-	button->spellinfo.anim = "melee";
-	button->spellinfo.stat = STR;
-	if (weapon && weapon->sheet.properties & finesse)
-		button->spellinfo.stat = DEX;
-	if (!weapon)
-	{
-		set_dice(button->spellinfo.dice, D1, 1);
-		button->spellinfo.range = 1;
-		return ;
-	}
-	copy_dice(button->spellinfo.dice, weapon->sheet.dice_dmg);
-	button->spellinfo.range = weapon->sheet.range;
+		init_range(data, button, entity, weapon);
+	else
+		init_melee(data, button, entity, weapon);
 }

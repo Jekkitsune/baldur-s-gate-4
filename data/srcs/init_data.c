@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 16:19:11 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/18 16:32:44 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 07:51:40 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	init_shape_tab(t_data *data)
 
 t_data	*init_data(t_data *data)
 {
-	int	i;
+	int				i;
 
 	ft_bzero(data, sizeof(t_data));
 	data->test_key = 0;

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 03:49:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/03 20:52:28 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 08:37:10 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	apply_cell(t_data *data, t_cell cell, t_spellinfo spell, void (*effect)(voi
 	lst = cell.entities;
 	while (lst)
 	{
-		effect(data, lst->content, spell.caster, spell.nb);
+		if (lst->content && ((t_entity *)lst->content)->sheet.alive)
+			effect(data, lst->content, spell.caster, spell.nb);
 		lst = lst->next;
 	}
 }
@@ -48,13 +49,19 @@ void	zone_effect(t_data *data, t_spellinfo spell, void (*effect)(void *data, t_e
 
 void	damage(t_data *data, t_entity *entity, int dmg)
 {
-	if (entity->sheet.hp <= 0)
+	t_timer_property	*prop;
+
+	if (!entity->sheet.alive)
 		return ;
+	if (dmg < 0)
+		dmg = 0;
 	entity->sheet.hp -= dmg;
 	show_info(data, "%s took %d damage\n", entity->sheet.name, dmg);
+	prop = new_timer_property(hit_effect, entity);
+	add_timer_property(data, prop, 0.3, false);
 	if (entity->sheet.hp <= 0)
 	{
-		change_anim(entity, "dead");
+		change_anim(entity, "dead", false);
 		entity->sheet.alive = false;
 		entity->behavior.func = death;
 	}

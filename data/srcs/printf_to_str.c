@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:45:13 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/03 23:20:24 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 08:56:49 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,18 +78,18 @@ void	add_to_str(char **res, char *str)
 
 int	replace_oldest(t_strput **screen_info, t_list **string_to_put)
 {
-	int				i;
-	int				min_i;
-	unsigned long	min;
-	unsigned long	current;
-	t_list			*to_free;
+	int		i;
+	int		min_i;
+	long	min;
+	long	current;
+	t_list	*to_free;
 
 	i = 1;
 	min_i = 0;
-	min = screen_info[0]->start.tv_sec * 1000000 + screen_info[0]->start.tv_usec;
+	min = screen_info[0]->duration;
 	while (i < MAX_SCREEN_INFO)
 	{
-		current = screen_info[i]->start.tv_sec * 1000000 + screen_info[i]->start.tv_usec;
+		current = screen_info[i]->duration;
 		if (current < min)
 		{
 			min_i = i;
@@ -102,7 +102,7 @@ int	replace_oldest(t_strput **screen_info, t_list **string_to_put)
 	free(to_free->content);
 	free(to_free);
 	screen_info[min_i] = NULL;
-	return (i);
+	return (min_i);
 }
 
 void	put_screen_info(t_data *data, char *str)

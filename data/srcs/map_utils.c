@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 23:22:30 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/19 22:20:21 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 11:48:25 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,38 @@ t_bool	has_obstacle(t_data *data)
 	true_pos2 = true_pos(data, data->player.arrow);
 	ray = get_simple_impact(data->player.possession->pos, vecf(true_pos2.x - true_pos1.x, true_pos2.y - true_pos1.y), data);
 	return (get_dist(data->player.possession->pos, ray.wall_pos) < dist);
+}
+
+t_bool	is_ground(t_data *data, t_vector pos)
+{
+	t_cell		*cell;
+
+	if (!in_bound(data->current_map, pos))
+		return (false);
+	cell = &data->current_map->arr[pos.x][pos.y];
+	if (cell->type == WALL || cell->type == DOOR && cell->status != OPEN)
+		return (false);
+	return (true);
+}
+
+t_bool	is_empty_cell(t_data *data, t_vector pos)
+{
+	t_cell		*cell;
+	t_list		*entities_lst;
+	t_entity	*current;
+
+	if (!in_bound(data->current_map, pos))
+		return (false);
+	cell = &data->current_map->arr[pos.x][pos.y];
+	if (cell->type == WALL || cell->type == DOOR && cell->status != OPEN)
+		return (false);
+	entities_lst = cell->entities;
+	while (entities_lst)
+	{
+		current = entities_lst->content;
+		if (current && current->sheet.alive)
+			return (false);
+		entities_lst = entities_lst->next;
+	}
+	return (true);
 }

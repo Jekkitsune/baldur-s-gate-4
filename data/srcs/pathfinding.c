@@ -6,18 +6,19 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 22:00:32 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/22 02:11:26 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 14:12:33 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	free_path(t_path *path)
+void	free_path(t_path **path)
 {
-	if (!path)
+	if (!path || !*path)
 		return ;
-	free_path(path->next);
-	free(path);
+	free_path(&(*path)->next);
+	free(*path);
+	*path = NULL;
 }
 
 t_path	*pop_path(t_path **path)
@@ -63,7 +64,7 @@ void	add_path(t_vector pos, t_vector from, t_path **path)
 
 t_bool	good_path(t_data *data, t_vector pos, t_path *path)
 {
-	if (!in_bound(data->current_map, pos) || data->current_map->arr[pos.x][pos.y].type == WALL || get_specific_path(path, pos))
+	if (!is_empty_cell(data, pos) || get_specific_path(path, pos))
 		return (false);
 	return (true);
 }
@@ -102,7 +103,6 @@ t_bool	check_goal(t_path **current, t_data *data, t_path *full_path, t_vector go
 		diff.y = -1;
 	else if (diff.y == -1)
 	{
-		diff.x = 1;
 		diff.y = 0;
 		*current = (*current)->next;
 	}
@@ -128,7 +128,14 @@ void	print_path(t_path *path)
 	printf("\n");
 }
 
-t_path	*get_path(t_data *data, t_vector start, t_vector goal)
+t_bool	is_adjacent(t_vector goal, t_vector pos)
+{
+	if (ft_abs(goal.x - pos.x) <= 1 && ft_abs(goal.y - pos.y) <= 1)
+		return (true);
+	return (false);
+}
+
+t_path	*get_path(t_data *data, t_vector start, t_vector goal, t_bool closest)
 {
 	t_path		*path;
 	t_path		*res;
@@ -136,14 +143,15 @@ t_path	*get_path(t_data *data, t_vector start, t_vector goal)
 	int			i;
 
 	i = 0;
-	if (!in_bound(data->current_map, goal) || data->current_map->arr[start.x][start.y].type == WALL
-		|| !in_bound(data->current_map, start) || data->current_map->arr[goal.x][goal.y].type == WALL)
+	if ((!closest && !is_empty_cell(data, goal)))
 		return (NULL);
 	path = NULL;
 	add_path(start, start, &path);
 	current = path;
-	//printf("start: %d %d (%d %d)\n", current->pos.x, current->pos.y, current->from.x, current->from.y);
-	while (current && (current->pos.x != goal.x || current->pos.y != goal.y) && i < 1000)
+	//printf("start: %d %d end: %d %d\n", start.x, start.y, goal.x, goal.y);
+	while (current && i < 1000
+		&& ((!closest && (current->pos.x != goal.x || current->pos.y != goal.y))
+		|| (closest && !is_adjacent(goal, current->pos))))
 	{
 		check_goal(&current, data, path, goal);
 		i++;
@@ -152,8 +160,9 @@ t_path	*get_path(t_data *data, t_vector start, t_vector goal)
 	// print_path(path);
 	// printf("%p\n", current);
 	res = NULL;
-	if (current && current->pos.x == goal.x && current->pos.y == goal.y)
+	if (current && ((!closest && current->pos.x == goal.x && current->pos.y == goal.y)
+		|| (closest && is_adjacent(goal, current->pos))))
 		res = get_good_path(path, current, start);
-	free_path(path);
+	free_path(&path);
 	return (res);
 }

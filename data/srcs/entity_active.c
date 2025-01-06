@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:24:17 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 19:49:11 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 13:54:09 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	update_entity_properties(t_data *data, t_entity *entity)
 {
-	if (entity->sheet.properties & melee)
-		entity->color_filter = 0xFF00FF00;
+	if (entity->sheet.properties & hit_effect)
+		entity->color_filter = 0xFFAA0000;
 }
 
 void radius_filter(__attribute__((unused)) void *data, t_entity *target, __attribute__((unused)) t_entity *caster, __attribute__((unused)) int nb)
@@ -40,6 +40,7 @@ void	update_all_active(t_data *data)
 		else if (info->target)
 			info->target->color_filter = 0xFFAA0000;
 	}
+	party_follow(data);
 	i = data->current_map->active_entities;
 	while (i)
 	{

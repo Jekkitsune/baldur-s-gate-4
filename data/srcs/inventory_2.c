@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:51:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 01:45:29 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 01:28:57 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,13 @@ void	draw_invbutton_name(t_data *data, t_entity *inventory[INVENTORY_SIZE], int 
 	if (index < 0 || !inventory[index] || !inventory[index]->sheet.name)
 		return ;
 	mlx_mouse_get_pos(data->mlx, &mouse_pos.x, &mouse_pos.y);
-	to_put = strput(ft_strdup(inventory[index]->sheet.name), vec(mouse_pos.x, mouse_pos.y - 10), 20, 0xFF000000);
+	to_put = strput(ft_strdup(inventory[index]->sheet.name), vec(mouse_pos.x - 5, mouse_pos.y - 10), 20, 0xFF000000);
 	screen_string_put(data, to_put, 0);
+	if (data->player.description_mode && inventory[index]->sheet.description)
+	{
+		to_put = strput(ft_strdup(inventory[index]->sheet.description), vec(mouse_pos.x - 200, mouse_pos.y - 20), 20, 0xFF000000);
+		screen_string_put(data, to_put, 0);
+	}
 }
 
 void	draw_inventory(t_data *data, t_entity *inventory[INVENTORY_SIZE])
@@ -163,10 +168,12 @@ int	can_move_inventory(t_entity *inventory[INVENTORY_SIZE], t_entity *to_move, i
 	return (pos < INVENTORY_SIZE);
 }
 
-void	inventory_swap(t_entity *entity, t_entity *inventory[INVENTORY_SIZE], int index1, int index2)
+void	inventory_swap(t_data *data, t_entity *entity, int index1, int index2)
 {
 	t_entity	*tmp;
+	t_entity 	**inventory;
 
+	inventory = entity->sheet.inventory;
 	if (!entity || index1 < 0 || index1 >= INVENTORY_SIZE || index2 < 0 || index2 >= INVENTORY_SIZE || index1 == index2)
 		return ;
 	if (can_move_inventory(inventory, inventory[index1], index2) && can_move_inventory(inventory, inventory[index2], index1))
@@ -174,6 +181,7 @@ void	inventory_swap(t_entity *entity, t_entity *inventory[INVENTORY_SIZE], int i
 		tmp = inventory[index1];
 		inventory[index1] = inventory[index2];
 		inventory[index2] = tmp;
+		if (index1 < NON_EQUIP || index2 < NON_EQUIP)
+			refresh_stats(data, entity);
 	}
-	refresh_stat(entity);
 }

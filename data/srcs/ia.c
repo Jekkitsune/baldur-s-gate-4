@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:42:55 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/22 03:07:54 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 14:10:51 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	expire(void *arg_data, void *arg_entity)
 
 	data = arg_data;
 	entity = arg_entity;
+	if (entity->anim_loop)
+		entity->anim_loop = false;
 	if (entity->current_anim
 		&& entity->anim_index == entity->current_anim->size - 1
 			&& entity->anim_clock <= 1)
@@ -78,9 +80,10 @@ void	move_to_center(t_data *data, t_entity *entity)
 	{
 		move_entity(data, entity, vecf(-entity->offset.x, -entity->offset.y));
 		free(pop_path(&entity->behavior.path));
+		entity->sheet.walked -= 1;
 		if (!entity->behavior.path)
 		{
-			change_anim(entity, "idle");
+			change_anim(entity, "idle", true);
 			entity->behavior.func = entity->behavior.next;
 			entity->behavior.next = NULL;
 		}
@@ -101,13 +104,26 @@ void	entity_moving_to(void *arg_data, void *arg_entity)
 	data = arg_data;
 	entity = arg_entity;
 	if (!entity || !entity->behavior.path)
+	{
+		change_anim(entity, "idle", true);
+		entity->behavior.func = entity->behavior.next;
+		entity->behavior.next = NULL;
 		return ;
+	}
 	if (ft_strcmp(entity->current_anim->name, "walk"))
-		change_anim(entity, "walk");
+		change_anim(entity, "walk", true);
 	to_go = entity->behavior.path->pos;
 	if (entity->pos.x == to_go.x
 		&& entity->pos.y == to_go.y)
 		return (move_to_center(data, entity));
+	if (entity->sheet.in_fight && entity->sheet.walked <= 0 || !is_empty_cell(data, to_go))
+	{
+		free_path(&entity->behavior.path);
+		change_anim(entity, "idle", true);
+		entity->behavior.func = entity->behavior.next;
+		entity->behavior.next = NULL;
+		return ;
+	}
 	move.x = (to_go.x - entity->pos.x) * data->player.speed;
 	move.y = (to_go.y - entity->pos.y) * data->player.speed;
 	move_entity(data, entity, move);

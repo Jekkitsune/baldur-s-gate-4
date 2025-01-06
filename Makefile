@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/04 17:19:28 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/06 12:44:51 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,6 +67,9 @@ SRCS = main.c\
 		printf_to_str.c\
 		doors.c\
 		timer_property.c\
+		class.c\
+		attack.c\
+		party.c
 
 LIBFT = data/libft/libft.a
 

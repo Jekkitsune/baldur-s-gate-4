@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:30:20 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/04 01:48:48 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/06 04:59:25 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,13 @@ void	init_fireball_button(t_data *data, t_button *button)
 	button->spellinfo.visible_target = true;
 	button->spellinfo.dice[D6] = 8;
 	button->spellinfo.effect = fireball;
+	button->spellinfo.type = offensive;
 	button->func = action_select;
 	button->img = get_tex(data, "fireball_button");
 	button->spellinfo.anim = "cast";
 	button->spellinfo.timer = 1.5;
-	button->spellinfo.name = "Fireball";
+	button->name = "Fireball";
+	button->description = "8d6 dmg on a huge zone, DEX save";
 }
 
 void	fireball(void *data_param, void *spell_param)
@@ -55,6 +57,8 @@ void	fireball(void *data_param, void *spell_param)
 	data = data_param;
 	spell = spell_param;
 	explosion = spawn_entity(data, get_prefab(data, "explosion"), spell->pos, ft_strjoin("explosion", ""));
+	if (!explosion)
+		return ;
 	add_active(data, explosion, expire);
 	zone_effect(data, *spell, fireball_damage);
 }
