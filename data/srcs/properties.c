@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 19:01:11 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 09:14:01 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/07 07:15:44 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,11 +110,13 @@ void	check_select(void *data_param, void *entity_param, t_spellinfo spell)
 	entity = entity_param;
 	if (!data->player.arrow)
 		select_target(data);
-	if (!check_dist_obstacle(data, entity, spell.range, spell.visible_target))
+	if (!confirm(data->player.active_button)
+		|| !check_dist_obstacle(data, entity, spell.range, spell.visible_target))
 		return ;
 	spell.target = cycle_entity_cell(data, 0);
 	if (!spell.target)
 		return ;
+	confirm(data->player.active_button);
 	show_check_info(data, spell.target);
 }
 

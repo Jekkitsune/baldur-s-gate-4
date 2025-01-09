@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 20:48:52 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 01:25:39 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/08 18:57:39 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,10 @@ void	set_inventory_button(t_data *data, t_entity *entity, int i)
 	{
 		button->spellinfo.summon = NULL;
 		button->func = empty_button;
+		button->spellinfo.cost_attack = 0;
 		return ;
 	}
+	button->spellinfo.cost_attack = 1;
 	button->spellinfo.caster = entity;
 	button->spellinfo.range = ft_max(entity->sheet.stats[STR] / 2, 1);
 	button->spellinfo.visible_target = true;
@@ -151,7 +153,9 @@ t_button	*current_button(t_data *data)
 void	check_button_click(t_data *data)
 {
 	t_button	*button;
+	t_vector	mouse;
 
+	mlx_mouse_get_pos(data->mlx, &mouse.x, &mouse.y);
 	if (data->player.possession && data->player.possession->possess_control)
 	{
 		button = current_button(data);
@@ -176,9 +180,11 @@ void	check_button_click(t_data *data)
 		else if (data->player.arrow && data->player.active_button && data->player.active_button->func)
 			data->player.active_button->func(data, data->player.possession, data->player.active_button->spellinfo);
 	}
+	check_click_party_icon(data, mouse);
+	check_click_participants_icon(data, mouse);
 }
 
-void	draw_button_img(t_data *data, t_button button, t_vector start)
+void	draw_button_img(t_data *data, t_texture *img, t_vector start)
 {
 	t_vector	i;
 
@@ -188,7 +194,7 @@ void	draw_button_img(t_data *data, t_button button, t_vector start)
 		i.y = 1;
 		while (i.y < data->button_scale_size)
 		{
-			ft_pixel_put(data, i.y + start.y, i.x + start.x, button.img->tab[i.x][i.y]);
+			ft_pixel_put(data, i.y + start.y, i.x + start.x, img->tab[i.x][i.y]);
 			i.y++;
 		}
 		i.x++;
@@ -229,7 +235,7 @@ void	draw_button(t_data *data, t_button button, t_vector start)
 	if (button.active)
 		draw_hover(data, start, 0xAA000000);
 	if (button.img)
-		draw_button_img(data, button, start);
+		draw_button_img(data, button.img, start);
 }
 
 int	get_hover_index(t_data *data)
@@ -302,9 +308,13 @@ void	draw_actbutton_name(t_data *data)
 	char		*description;
 
 	index = get_hover_index(data);
+	if (index < 0)
+		return ;
 	name = data->player.possession->sheet.buttons[index].name;
 	description = data->player.possession->sheet.buttons[index].description;
-	if (index < 0 || !name)
+	if (!data->player.active_button)
+		show_action_cost(data, &data->player.possession->sheet.buttons[index].spellinfo);
+	if (!name)
 		return ;
 	mlx_mouse_get_pos(data->mlx, &mouse_pos.x, &mouse_pos.y);
 	to_put = strput(ft_strdup(name), vec(mouse_pos.x, mouse_pos.y - 10), 20, 0xFF000000);
@@ -341,4 +351,6 @@ void	draw_possession_button(t_data *data, t_button *buttons)
 	else
 		draw_hover(data, get_hover_pos(data, margin), 0x44000000);
 	draw_actbutton_name(data);
+	if (data->player.active_button)
+		show_action_cost(data, &data->player.active_button->spellinfo);
 }

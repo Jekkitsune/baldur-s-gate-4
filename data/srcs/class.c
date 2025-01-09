@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 04:46:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 03:02:09 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/07 12:28:07 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,13 @@ void	refresh_entity_class(t_entity *entity, int level, int *button_nb)
 		entity->sheet.pb += class->level[i_level].add_pb;
 		entity->sheet.max_hp += class->level[i_level].add_pv;
 		entity->sheet.properties |= class->level[i_level].properties;
-		sum_stat_tab(entity->sheet.stats, class->level[i_level].add_stats);
+		entity->sheet.nb_attack += class->level[i_level].add_nb_attack;
+		sum_stat_tab(entity->sheet.stats, class->level[i_level].add_stats, 6);
+		sum_stat_tab(entity->sheet.spell_slot, class->level[i_level].add_spell_slot, SPELL_MAX_LV);
 		i_level++;
 	}
+	entity->sheet.spell_bonus = entity->sheet.prefab->sheet.spell_bonus + entity->sheet.pb + modif(entity->sheet.stats[class->cast_stat]);
+	entity->sheet.spell_dc = entity->sheet.prefab->sheet.spell_dc + entity->sheet.pb + modif(entity->sheet.stats[class->cast_stat]);
 }
 
 t_class	*get_class(t_list *class_lst, char *name)

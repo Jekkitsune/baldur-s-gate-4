@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 10:28:08 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/08 18:57:19 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -382,9 +382,12 @@ void	show_screen(t_data *data)
 		i++;
 	}
 	draw_entities(data);
+	show_party_icon(data);
+	show_participants_icon(data);
 	if (data->player.possession && data->player.possession->possess_control)
 	{
 		draw_possession_button(data, data->player.possession->sheet.buttons);
+		draw_all_actions_box(data, data->player.possession);
 		if (data->player.possession->sheet.inventory_open)
 			draw_inventory(data, data->player.possession->sheet.inventory);
 	}

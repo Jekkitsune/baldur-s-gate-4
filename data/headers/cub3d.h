@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 14:09:54 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/09 12:32:40 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define WIDTH (1600 / 2)
 # define HEIGHT_CAP 5000
 # define DEFAULT_FONT "Paul.ttf"
+//# define DEFAULT_FONT "default"
 
 # define HITBOX_VALUE 5.0
 
@@ -170,6 +171,10 @@ typedef struct s_spellinfo
 	char		*anim;
 	float		timer;
 	t_type		type;
+	int			cost_action;
+	int			cost_attack;
+	int			cost_bonus;
+	int			cost_spell_slot;
 }	t_spellinfo;
 
 typedef struct s_timer_effect
@@ -201,6 +206,7 @@ typedef struct s_button
 
 # define LEVEL_NB_BUTTON 4
 # define MAX_LEVEL 5
+# define SPELL_MAX_LV 4
 
 typedef	struct s_level
 {
@@ -210,11 +216,14 @@ typedef	struct s_level
 	int			add_stats[6];
 	int			add_pv;
 	int			add_pb;
+	int			add_nb_attack;
+	int			add_spell_slot[SPELL_MAX_LV];
 }	t_level;
 
 typedef struct s_class
 {
 	char	*name;
+	int		cast_stat;
 	t_level	level[MAX_LEVEL];
 }	t_class;
 
@@ -243,6 +252,9 @@ typedef struct s_sheet
 	t_bool		alive;
 	int			action;
 	int			bonus_action;
+	int			spell_slot[SPELL_MAX_LV];
+	int			nb_attack;
+	int			attack_left;
 	int			reaction;
 	t_entity	*inventory[INVENTORY_SIZE];
 	t_bool		inventory_open;
@@ -252,9 +264,10 @@ typedef struct s_sheet
 	int			properties : NB_PROPERTIES + 1;
 	int			team;
 	t_bool		in_fight;
+	int			initiative;
 	int			range;
 	char		*description; //Lie au prefab, non personnel a l'entite
-	char		*prefab;
+	t_entity	*prefab;
 	t_class		*class;
 }	t_sheet;
 
@@ -280,7 +293,6 @@ typedef struct s_round_manager
 	t_list	*party;
 	t_list	*participants;
 }	t_round_manager;
-
 
 typedef struct s_entity
 {
@@ -308,6 +320,7 @@ typedef struct s_entity
 	float		size_scale;
 	uint32_t	color_filter;
 	t_bool		anim_no_move;
+	t_behavior	default_behavior;
 }	t_entity;
 
 typedef	struct s_cell
@@ -546,6 +559,7 @@ void		set_dice(t_dice to_set, int dice, int nb);
 int			modif(int nb);
 void		copy_dice(t_dice to_set, t_dice copy);
 t_bool		check_properties(t_property properties, t_property check);
+t_bool		confirm(t_button *pushed);
 
 t_entity	*cycle_entity_cell(t_data *data, int move);
 void		inventory_swap(t_data *data, t_entity *entity, int index1, int index2);
@@ -580,12 +594,29 @@ void		init_test(t_data *data);
 void		init_all_classes(t_data *data);
 t_class		*get_class(t_list *class_lst, char *name);
 void		refresh_entity_class(t_entity *entity, int level, int *button_nb);
-void		sum_stat_tab(int stats1[6], int stats2[6]);
-void		copy_stat_tab(int stats1[6], int stats2[6]);
+void		sum_stat_tab(int stats1[6], int stats2[6], int len);
+void		copy_stat_tab(int stats1[6], int stats2[6], int len);
 void		refresh_stats(t_data *data, t_entity *entity);
 
 void		free_round_manager(t_data *data);
 void		party_follow(t_data *data);
+void		draw_all_actions_box(t_data *data, t_entity *entity);
+void		draw_box_points(t_data *data, t_vector pos, int nb_point, uint32_t color);
+void		show_action_cost(t_data *data, t_spellinfo *info);
+t_bool		apply_action_cost(t_spellinfo *spell);
+void		round_refresh_stat(t_entity *entity);
+void		show_party_icon(t_data *data);
+void		check_click_party_icon(t_data *data, t_vector mouse);
+void		show_participants_icon(t_data *data);
+void		check_click_participants_icon(t_data *data, t_vector mouse);
+void		mouse_up(t_data *data, int key);
+void		mouse_down(t_data *data, int key);
+void		leave_combat(t_data *data, t_entity *entity);
+t_bool		is_current_turn(t_data *data, t_entity *entity);
+void		check_combat_end(t_data *data);
+void		party_refresh(t_data *data);
+void		draw_borders(t_data *data, t_vector start);
+void		draw_button_img(t_data *data, t_texture *img, t_vector start);
 
 //spells
 void		action_select(void *data_param, void *entity_param, t_spellinfo spell);

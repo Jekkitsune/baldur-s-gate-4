@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 03:49:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 08:37:10 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/08 18:22:48 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	damage(t_data *data, t_entity *entity, int dmg)
 	add_timer_property(data, prop, 0.3, false);
 	if (entity->sheet.hp <= 0)
 	{
+		leave_combat(data, entity);
 		change_anim(entity, "dead", false);
 		entity->sheet.alive = false;
 		entity->behavior.func = death;

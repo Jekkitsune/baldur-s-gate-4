@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 19:02:10 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 12:42:51 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/07 14:13:18 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,8 @@ void	init_test(t_data *data)
 	possess_control(test2, true);
 	test2->size_scale = 0.9;
 	test2->sheet.properties |= (finesse | loading | poisoned);
-	// init_check_button(data, &test2->sheet.buttons[0]);
-	// init_move_button(data, &test2->sheet.buttons[1]);
-	// init_fireball_button(data, &test2->sheet.buttons[2]);
-	// init_take_button(data, &test2->sheet.buttons[3]);
-	// init_inventory_button(data, &test2->sheet.buttons[NB_BUTTON - 1]);
+
 	refresh_stats(data, test2);
 	ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
+	round_refresh_stat(test2);
 }

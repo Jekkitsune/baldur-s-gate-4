@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/06 12:44:51 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/09 12:31:16 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,11 @@ SRCS = main.c\
 		timer_property.c\
 		class.c\
 		attack.c\
-		party.c
+		party.c\
+		i_hate_dice.c\
+		participant_icon.c\
+		combat.c\
+		round_manager.c
 
 LIBFT = data/libft/libft.a
 

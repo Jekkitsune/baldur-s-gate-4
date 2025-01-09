@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:40:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 14:17:13 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/07 14:17:29 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	take(void *data_param, void *spell_param)
 
 	data = data_param;
 	spell = spell_param;
+	apply_action_cost(spell);
 	if (spell->target && spell->target->visible)
 	{
 		if (add_to_inventory(data, spell->caster, spell->target))
@@ -81,6 +82,7 @@ void	init_take_button(t_data *data, t_button *button)
 	button->spellinfo.radius = 0;
 	button->spellinfo.range = 1;
 	button->spellinfo.visible_target = false;
+	button->spellinfo.cost_action = 1;
 	button->spellinfo.type = take_type;
 	button->img = get_tex(data, "take_button");
 	button->func = action_select;

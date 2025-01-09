@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 13:54:01 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/08 17:23:51 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,7 @@ int	mouse_down_manager(int key, void *param)
 	data = (t_data *)param;
 	if (key >= 1 && key < 4)
 		data->player.mouse_button[key - 1] = 1;
-	if (key == 3)
-	{
-		mlx_mouse_get_pos(data->mlx, &data->player.mouse_pos.x, &data->player.mouse_pos.y);
-		mlx_mouse_hide();
-		mlx_mouse_move(data->mlx, data->win, data->win_size.x / 2, data->win_size.y / 2);
-	}
+	mouse_down(data, key);
 	return (0);
 }
 
@@ -96,11 +91,7 @@ int	mouse_up_manager(int key, void *param)
 	data = (t_data *)param;
 	if (key >= 1 && key < 4)
 		data->player.mouse_button[key - 1] = 0;
-	if (data->player.focus_mode && key == 3)
-	{
-		mlx_mouse_move(data->mlx, data->win, data->player.mouse_pos.x, data->player.mouse_pos.y);
-		mlx_mouse_show();
-	}
+	mouse_up(data, key);
 	if (key == 1)
 		check_button_click(data);
 	return (0);

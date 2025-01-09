@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 05:02:33 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 10:35:47 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/07 13:45:49 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	atk(void *data_param, void *spell_param)
 
 	data = data_param;
 	spell = spell_param;
-	if (!spell->target || spell->target == spell->caster || !spell->target->sheet.alive)
+	if (!spell->target || spell->target == spell->caster || !spell->target->sheet.alive || !apply_action_cost(spell))
 		return ;
 	spell->nb = roll(spell->dice) + modif(spell->caster->sheet.stats[spell->stat]);
 	atk = roll_one(20, 1) + spell->caster->sheet.atk_bonus;
@@ -66,6 +66,8 @@ void	init_atk_button(t_data *data, t_button *button, t_entity *entity)
 
 	weapon = entity->sheet.inventory[weapon_1];
 	button->spellinfo.radius = 0;
+	button->spellinfo.cost_action = 1;
+	button->spellinfo.cost_attack = 1;
 	button->spellinfo.visible_target = true;
 	button->spellinfo.effect = atk;
 	button->spellinfo.type = offensive;

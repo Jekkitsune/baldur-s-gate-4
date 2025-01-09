@@ -6,11 +6,60 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:45:04 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 10:33:36 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/07 14:06:42 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+t_bool	check_action_cost(t_spellinfo *spell)
+{
+	t_sheet		*sheet;
+
+	if (!spell->caster)
+		return (false);
+	sheet = &spell->caster->sheet;
+	if (spell->cost_attack)
+	{
+		if (sheet->attack_left <= 0 && sheet->action <= 0)
+			return (false);
+	}
+	else if (spell->cost_action && sheet->action <= 0)
+		return (false);
+	if (spell->cost_bonus && sheet->bonus_action <= 0)
+		return (false);
+	if (spell->cost_spell_slot > 0 && spell->cost_spell_slot < SPELL_MAX_LV
+		&& sheet->spell_slot[spell->cost_spell_slot - 1] <= 0)
+		return (false);
+	return (true);
+}
+
+t_bool	apply_action_cost(t_spellinfo *spell)
+{
+	t_sheet		*sheet;
+
+	if (!spell->caster)
+		return (false);
+	sheet = &spell->caster->sheet;
+	if (spell->cost_attack)
+	{
+		if (sheet->attack_left <= 0 && sheet->action)
+		{
+			sheet->action--;
+			sheet->attack_left = sheet->nb_attack - 1;
+		}
+		else if (sheet->attack_left-- <= 0)
+			return (false);
+	}
+	else if (spell->cost_action && sheet->action-- <= 0)
+		return (false);
+	if (spell->cost_bonus && sheet->bonus_action-- <= 0)
+		return (false);
+	if (spell->cost_spell_slot > 0 && spell->cost_spell_slot < SPELL_MAX_LV
+		&& sheet->spell_slot[spell->cost_spell_slot - 1]-- <= 0)
+		return (false);
+	return (true);
+}
 
 t_bool	confirm(t_button *pushed)
 {
@@ -102,7 +151,7 @@ void	action_select(void *data_param, void *entity_param, t_spellinfo spell)
 	spell.target = cycle_entity_cell(data, 0);
 	spell.nb = roll(spell.dice);
 	spell.caster = entity;
-	if (!spell.target_self && spell.target == spell.caster)
+	if ((!spell.target_self && spell.target == spell.caster) || !check_action_cost(&spell))
 		return ;
 	remove_selector(data, true);
 	spell.caster->angle = atan2(spell.pos.y - spell.caster->pos.y, spell.pos.x - spell.caster->pos.x);

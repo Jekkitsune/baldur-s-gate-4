@@ -6,30 +6,41 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 23:28:28 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 03:16:00 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/08 19:31:02 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	copy_stat_tab(int stats1[6], int stats2[6])
+void	round_refresh_stat(t_entity *entity)
+{
+	if (!entity)
+		return ;
+	entity->sheet.action = 1;
+	entity->sheet.attack_left = entity->sheet.nb_attack;
+	entity->sheet.bonus_action = 1;
+	entity->sheet.reaction = 1;
+	entity->sheet.walked = entity->sheet.speed;
+}
+
+void	copy_stat_tab(int stats1[6], int stats2[6], int len)
 {
 	int	i;
 
 	i = 0;
-	while (i < 6)
+	while (i < len)
 	{
 		stats1[i] = stats2[i];
 		i++;
 	}
 }
 
-void	sum_stat_tab(int stats1[6], int stats2[6])
+void	sum_stat_tab(int stats1[6], int stats2[6], int len)
 {
 	int	i;
 
 	i = 0;
-	while (i < 6)
+	while (i < len)
 	{
 		stats1[i] += stats2[i];
 		i++;
@@ -70,8 +81,10 @@ void	reset_stats(t_data *data, t_entity *entity, t_entity *prefab, int *button_n
 	entity->sheet.spell_dc = prefab->sheet.spell_dc;
 	entity->sheet.speed = prefab->sheet.speed;
 	entity->sheet.properties = prefab->sheet.properties;
-	copy_stat_tab(entity->sheet.stats, prefab->sheet.stats);
-	copy_stat_tab(entity->sheet.saving, prefab->sheet.saving);
+	entity->sheet.nb_attack = prefab->sheet.nb_attack;
+	copy_stat_tab(entity->sheet.stats, prefab->sheet.stats, 6);
+	copy_stat_tab(entity->sheet.saving, prefab->sheet.saving, 6);
+	copy_stat_tab(entity->sheet.spell_slot, prefab->sheet.spell_slot, 6);
 }
 
 void	add_stat(t_data *data, t_entity *entity, t_entity *item)
@@ -86,8 +99,9 @@ void	add_stat(t_data *data, t_entity *entity, t_entity *item)
 	entity->sheet.spell_dc += item->sheet.spell_dc;
 	entity->sheet.speed += item->sheet.speed;
 	entity->sheet.properties |= item->sheet.properties;
-	sum_stat_tab(entity->sheet.stats, item->sheet.stats);
-	sum_stat_tab(entity->sheet.saving, item->sheet.saving);
+	entity->sheet.nb_attack += item->sheet.nb_attack;
+	sum_stat_tab(entity->sheet.stats, item->sheet.stats, 6);
+	sum_stat_tab(entity->sheet.saving, item->sheet.saving, 6);
 }
 
 void	add_weight(t_entity *entity)
@@ -148,7 +162,7 @@ void	refresh_stats(t_data *data, t_entity *entity)
 
 	if (!entity || !entity->sheet.prefab)
 		return ;
-	prefab = get_prefab(data, entity->sheet.prefab);
+	prefab = entity->sheet.prefab;
 	if (!prefab)
 		return ;
 	button_nb = 0;

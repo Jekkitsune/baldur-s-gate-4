@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 14:30:09 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/09 12:30:10 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int	loop(void *param)
 	update_all_timer_properties(data, false);
 	update_chunk(data);
 	show_screen(data);
+
+	party_refresh(data);
 
 	gettimeofday(&new_time, NULL);
 	data->frame_time = ((new_time.tv_sec - data->current_time.tv_sec)
@@ -133,6 +135,9 @@ int	main(int argc, char **argv)
 	load_spells_prefab(&data);
 	init_all_classes(&data);
 	init_test(&data);
+
+	if (data.round_manager.party)
+		possess(&data, data.round_manager.party->content);
 
 	mlx_loop(data.mlx);
 	free_data(&data);

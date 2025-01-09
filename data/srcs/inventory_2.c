@@ -6,14 +6,13 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:51:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 01:28:57 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/07 08:32:06 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 void	draw_borders(t_data *data, t_vector start);
-void	draw_hover(t_data *data, t_vector start, uint32_t color);
 
 int	inventory_hover_index(t_data *data)
 {
