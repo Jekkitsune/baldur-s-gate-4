@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:24:17 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 13:54:09 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 17:32:49 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	update_entity_properties(t_data *data, t_entity *entity)
 {
+	(void)data;
+
 	if (entity->sheet.properties & hit_effect)
 		entity->color_filter = 0xFFAA0000;
 }
@@ -46,7 +48,10 @@ void	update_all_active(t_data *data)
 	{
 		current = i->content;
 		i = i->next;
-		current->behavior.func(data, current);
+		if (current->behavior.func && is_turn(data, current))
+			current->behavior.func(data, current);
+		else if (data->round_manager.combat && !current->behavior.func && is_turn(data, current))
+			next_turn(data);
 		if (current->current_anim)
 			continue_anim(data, current);
 		update_entity_properties(data, current);

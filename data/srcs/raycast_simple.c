@@ -6,13 +6,13 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 22:03:04 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/19 22:21:45 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:40:54 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_impact	*simple_check_wall(t_impact *impact, t_data *data, t_vectorf length, t_vectorf slope_coeff, t_vector sign)
+t_impact	*simple_check_wall(t_impact *impact, t_data *data, t_vectorf length)
 {
 	if (!in_bound(data->current_map, impact->wall_pos)
 		|| ft_min(ft_absf(length.x), ft_absf(length.y)) > data->render_distance)
@@ -77,14 +77,14 @@ t_impact	simple_raycast(t_vector start, t_vectorf direc, t_data *data, t_vectorf
 		while (ft_absf(length.x) <= ft_absf(length.y))
 		{
 			impact.wall_pos.x += sign.x;
-			if (simple_check_wall(&impact, data, length, slope_coef, sign))
+			if (simple_check_wall(&impact, data, length))
 				return (impact);
 			length.x += slope_coef.x;
 		}
 		while (ft_absf(length.y) <= ft_absf(length.x))
 		{
 			impact.wall_pos.y += sign.y;
-			if (simple_check_wall(&impact, data, length, slope_coef, sign))
+			if (simple_check_wall(&impact, data, length))
 				return (impact);
 			length.y += slope_coef.y;
 		}

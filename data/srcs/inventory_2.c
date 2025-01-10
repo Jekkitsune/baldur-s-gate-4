@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:51:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/07 08:32:06 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:49:35 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ int	can_move_inventory(t_entity *inventory[INVENTORY_SIZE], t_entity *to_move, i
 			return (false);
 		if (pos == weapon_1 && type == weapon_2)
 			return (true);
-		return (pos == type);
+		return (pos == (int)type);
 	}
 	return (pos < INVENTORY_SIZE);
 }

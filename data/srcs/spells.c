@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 03:49:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/08 18:22:48 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:38:26 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	zone_effect(t_data *data, t_spellinfo spell, void (*effect)(void *data, t_e
 {
 	int	i;
 	int	i2;
-	int	line_size;
 
 	i = 0;
 	while (i < spell.radius + 1)
@@ -68,7 +67,7 @@ void	damage(t_data *data, t_entity *entity, int dmg)
 	}
 }
 
-t_entity	*browse_entity_cell(t_list *lst, int index, int size, t_entity *arrow)
+t_entity	*browse_entity_cell(t_list *lst, int index, t_entity *arrow)
 {
 	t_list			*tmp;
 
@@ -111,5 +110,5 @@ t_entity	*cycle_entity_cell(t_data *data, int move)
 	while (index < 0)
 		index += size;
 	return (browse_entity_cell(data->current_map->arr[pos.x][pos.y].entities,
-		index, size, data->player.arrow));
+		index, data->player.arrow));
 }

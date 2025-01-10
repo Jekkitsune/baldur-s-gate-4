@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 20:48:52 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/08 18:57:39 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 17:28:02 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	empty_button(void *data_param, void *entity_param, t_spellinfo spell)
 	return ;
 }
 
-void	set_inventory_button(t_data *data, t_entity *entity, int i)
+void	set_inventory_button(t_entity *entity, int i)
 {
 	t_entity	*used;
 	t_button	*button;
@@ -124,7 +124,7 @@ t_button	*button_inventory(t_data *data, t_entity *entity)
 	{
 		last = current;
 		button->active = current + 1;
-		set_inventory_button(data, entity, current);
+		set_inventory_button(entity, current);
 	}
 	else if (last >= 0)
 	{
@@ -156,7 +156,7 @@ void	check_button_click(t_data *data)
 	t_vector	mouse;
 
 	mlx_mouse_get_pos(data->mlx, &mouse.x, &mouse.y);
-	if (data->player.possession && data->player.possession->possess_control)
+	if (data->player.possession && data->player.possession->possess_control && is_turn(data, data->player.possession))
 	{
 		button = current_button(data);
 		if (button)
@@ -179,6 +179,8 @@ void	check_button_click(t_data *data)
 		}
 		else if (data->player.arrow && data->player.active_button && data->player.active_button->func)
 			data->player.active_button->func(data, data->player.possession, data->player.active_button->spellinfo);
+		else
+			check_click_end_turn(data, mouse);
 	}
 	check_click_party_icon(data, mouse);
 	check_click_participants_icon(data, mouse);

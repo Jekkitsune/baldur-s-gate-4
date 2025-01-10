@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 17:19:04 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 06:11:22 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:56:51 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void	update_all_timer_properties(t_data *data, t_bool round)
 	{
 		current = lst->content;
 		lst = lst->next;
-		if (current && (round && current->in_round && --current->duration <= 0)
-			|| (!current->in_round && (current->duration -= data->frame_time) <= 0))
+		if (current && ((round && current->in_round && --current->duration <= 0)
+			|| (!current->in_round && (current->duration -= data->frame_time) <= 0)))
 		{
 			current->entity->sheet.properties &= ~current->property;
 			tmp = ft_lstpop(&data->timer_property, current);

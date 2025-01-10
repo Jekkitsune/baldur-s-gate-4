@@ -6,11 +6,41 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 10:37:11 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/09 12:32:28 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 19:45:11 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	check_click_end_turn(t_data *data, t_vector mouse)
+{
+	t_vector	pos;
+
+	if (!data->round_manager.combat)
+		return ;
+	pos.x = data->win_size.x / 2 - (data->button_scale_size * (1 + ((NB_BUTTON) / 4)));
+	pos.y = data->win_size.y - (data->button_scale_size * 1.5) - 10;
+	if (mouse.x >= pos.x && mouse.x <= pos.x + data->button_scale_size
+		&& mouse.y >= pos.y && mouse.y <= pos.y + data->button_scale_size)
+		next_turn(data);
+}
+
+void	show_end_turn_button(t_data *data)
+{
+	t_vector	pos;
+	t_vector	mouse;
+
+	if (!data->round_manager.combat)
+		return ;
+	pos.x = data->win_size.x / 2 - (data->button_scale_size * (1 + ((NB_BUTTON) / 4)));
+	pos.y = data->win_size.y - (data->button_scale_size * 1.5) - 10;
+	draw_borders(data, pos);
+	draw_hover(data, pos, 0xDD6B5333);
+	mlx_mouse_get_pos(data->mlx, &mouse.x, &mouse.y);
+	if (mouse.x >= pos.x && mouse.x <= pos.x + data->button_scale_size
+		&& mouse.y >= pos.y && mouse.y <= pos.y + data->button_scale_size)
+		draw_hover(data, pos, 0x44000000);
+}
 
 void	check_click_party_icon(t_data *data, t_vector mouse)
 {
@@ -91,16 +121,7 @@ void	follow_party_member(t_data *data, t_entity *follower, t_entity *to_follow)
 	if (follower == data->player.possession || follower->behavior.path || !follower->active || !follower->sheet.alive)
 		return ;
 	if (get_dist(follower->pos, to_follow->pos) > 2)
-	{
-		follower->behavior.path = get_path(data, follower->pos, to_follow->pos, true);
-		if (!follower->behavior.path)
-		{
-			printf("%s: \"can't follow\"\n", follower->sheet.name);
-			return ;
-		}
-		follower->behavior.next = follower->behavior.func;
-		follower->behavior.func = entity_moving_to;
-	}
+		move_closest_to(data, follower, to_follow);
 }
 
 void	party_follow(t_data *data)

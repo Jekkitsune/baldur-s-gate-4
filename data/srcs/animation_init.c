@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 19:02:10 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/07 14:13:18 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 21:12:06 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	init_anim(t_data *data, t_animation *anim, int size, char *path)
 void	init_test(t_data *data)
 {
 	t_entity	*test2;
-	t_animation	anim;
 
 	add_prefab(data, get_prefab_data(data, "guard"), ft_strjoin("guard", ""));
 	data->prefab_tab[data->nb_prefab - 1]->sheet.hp = 10;
@@ -50,26 +49,35 @@ void	init_test(t_data *data)
 	data->prefab_tab[data->nb_prefab - 1]->sheet.type = living;
 	data->prefab_tab[data->nb_prefab - 1]->sheet.description = ft_strdup("MOI QUAND LE LOUP EST ENSTEIN");
 	test2 = spawn_entity(data, get_prefab(data, "guard"), vec(25, 10), ft_strjoin("john", ""));
-	spawn_entity(data, get_prefab(data, "guard"), vec(26, 10), ft_strjoin("genshin", ""));
 	add_active(data, test2, ft_nothing);
-	possess_control(test2, true);
-	ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
 
 	add_prefab(data, get_prefab_data(data, "omen"), ft_strjoin("omen", ""));
-	data->prefab_tab[data->nb_prefab - 1]->sheet.class = get_class(data->class_lst, "wizard");
-	data->prefab_tab[data->nb_prefab - 1]->sheet.hp = 10;
-	data->prefab_tab[data->nb_prefab - 1]->sheet.max_hp = 10;
-	data->prefab_tab[data->nb_prefab - 1]->sheet.type = living;
-	data->prefab_tab[data->nb_prefab - 1]->sheet.description = ft_strdup("SIgma boyy");
-	data->prefab_tab[data->nb_prefab - 1]->sheet.level = 1;
-	data->prefab_tab[data->nb_prefab - 1]->sheet.stats[CHA] = 10;
-	test2 = spawn_entity(data, get_prefab(data, "omen"), vec(25, 9), ft_strjoin("omen", ""));
+	add_prefab(data, get_prefab_data(data, "wizard"), ft_strjoin("wizard", ""));
+
+	test2 = spawn_entity(data, get_prefab(data, "omen"), vec(20, 3), ft_strjoin("omen", ""));
+	test2->sheet.wander_ia = base_aggro;
+	test2->sheet.team = 1;
+	test2->sheet.fight_ia = martial_ia;
+	add_active(data, test2, test2->sheet.wander_ia);
+	test2->size_scale = 0.9; 
+
+	test2 = spawn_entity(data, get_prefab(data, "omen"), vec(20, 2), ft_strjoin("omen", ""));
+	test2->sheet.wander_ia = base_aggro;
+	test2->sheet.team = 1;
+	test2->sheet.fight_ia = martial_ia;
+	add_active(data, test2, test2->sheet.wander_ia);
+	test2->size_scale = 0.9; 
+
+	test2 = spawn_entity(data, get_prefab(data, "omen"), vec(20, 4), ft_strjoin("omen", ""));
+	test2->sheet.wander_ia = base_aggro;
+	test2->sheet.team = 1;
+	test2->sheet.fight_ia = martial_ia;
+	add_active(data, test2, test2->sheet.wander_ia);
+	test2->size_scale = 0.9; 
+
+	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
 	add_active(data, test2, ft_nothing);
 	possess_control(test2, true);
-	test2->size_scale = 0.9;
-	test2->sheet.properties |= (finesse | loading | poisoned);
-
-	refresh_stats(data, test2);
 	ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
-	round_refresh_stat(test2);
+	test2->size_scale = 0.9;
 }

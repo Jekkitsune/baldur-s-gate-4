@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 02:10:07 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/07 12:24:14 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 14:03:17 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ t_entity	*spawn_entity(t_data *data, t_entity *prefab, t_vector pos, char *name)
 	entity->sheet.name = name;
 	entity->sheet.prefab = prefab;
 	change_anim(entity, "idle", true);
+	refresh_stats(data, entity);
+	round_refresh_stat(entity);
 	return (entity);
 }
 

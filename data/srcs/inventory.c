@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:40:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/07 14:17:29 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:46:31 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void	open_inventory(void *data_param, void *entity_param, t_spellinfo spell)
 	t_data		*data;
 	t_entity	*entity;
 
+	(void)spell;
 	data = data_param;
 	entity = entity_param;
 	data->player.active_button->active = 0;

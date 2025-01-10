@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 19:14:32 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/08 18:20:41 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 20:08:10 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -398,6 +398,20 @@ void	move_to(t_data *data, t_entity *entity, t_vector pos)
 		add_active(data, entity, entity_moving_to);
 	else
 		entity->behavior.func = entity_moving_to;
+}
+
+void	move_closest_to(t_data *data, t_entity *entity, t_entity *target)
+{
+	if (entity->behavior.path)
+		free_path(&entity->behavior.path);
+	entity->behavior.path = get_path(data, entity->pos, target->pos, true);
+	if (!entity->behavior.path)
+	{
+		printf("%s: \"can't go near\"\n", entity->sheet.name);
+		return ;
+	}
+	entity->behavior.next = entity->behavior.func;
+	entity->behavior.func = entity_moving_to;
 }
 
 void	teleport_entity(t_data *data, t_entity *entity, t_vector pos, t_vectorf offset)

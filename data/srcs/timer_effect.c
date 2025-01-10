@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 23:37:10 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 06:11:05 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:56:01 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,14 @@ void	update_all_timer_effects(t_data *data, t_bool round)
 	t_list			*lst;
 	t_list			*tmp;
 	t_timer_effect	*current;
-	struct timeval 	tv;
 
 	lst = data->timer_effect;
 	while (lst)
 	{
 		current = lst->content;
 		lst = lst->next;
-		if (current && (round && current->in_round && --current->duration <= 0)
-			|| (!current->in_round && (current->duration -= data->frame_time) <= 0))
+		if (current && ((round && current->in_round && --current->duration <= 0)
+			|| (!current->in_round && (current->duration -= data->frame_time) <= 0)))
 		{
 			current->spell.effect(data, &current->spell);
 			tmp = ft_lstpop(&data->timer_effect, current);

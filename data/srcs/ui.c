@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 22:55:51 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/08 17:37:58 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 20:41:20 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	draw_rectangle(t_data *data, t_vector start, t_vector end, uint32_t color)
 
 void	draw_action_box(t_data *data, int nb, t_vector pos, uint32_t color)
 {
-	t_strput	*to_put;
-
 	draw_hover(data, pos, 0xDD8f6f45);
 	draw_box_points(data, pos, ft_min(nb, 6), color);
 }
@@ -45,7 +43,7 @@ void	show_health_nb(t_data *data, t_vector hp, t_vector pos, float scale)
 	char		*tmp2;
 	t_strput	*to_put;
 
-	tmp1 = ft_itoa(hp.x);	
+	tmp1 = ft_itoa(ft_max(hp.x, 0));	
 	tmp2 = ft_itoa(hp.y);
 	str = ft_vajoin(tmp1, " / ", tmp2, NULL);
 	free(tmp1);

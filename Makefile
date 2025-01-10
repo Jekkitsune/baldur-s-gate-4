@@ -6,13 +6,13 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/09 12:31:16 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/10 15:30:03 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 CC = cc
-CFLAGS = -g3 -Ofast #-Wextra -Werror -Wall -g
+CFLAGS = -g3 -Ofast -Wextra -Wall ##-Werror -g
 NAME = bg4
 HEADER = data/headers
 
@@ -73,7 +73,9 @@ SRCS = main.c\
 		i_hate_dice.c\
 		participant_icon.c\
 		combat.c\
-		round_manager.c
+		round_manager.c\
+		get_prefab_stats.c\
+		ia_fight.c
 
 LIBFT = data/libft/libft.a
 

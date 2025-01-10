@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 21:34:36 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/07 09:52:10 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:47:45 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	remove_screen_info(t_strput **screen_info, t_strput *to_remove)
 void	clear_string_put(t_data *data, t_bool force)
 {
 	t_list			*lst;
-	t_list			*to_free;
 	t_strput		*current;
 	t_list			*tmp;
 

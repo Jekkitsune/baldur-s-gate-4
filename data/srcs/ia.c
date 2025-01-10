@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:42:55 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 14:10:51 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 17:11:19 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,12 @@ void	move_to_center(t_data *data, t_entity *entity)
 		move_entity(data, entity, vecf(-entity->offset.x, -entity->offset.y));
 		free(pop_path(&entity->behavior.path));
 		entity->sheet.walked -= 1;
+		if (entity->behavior.next)
+			entity->behavior.next(data, entity);
 		if (!entity->behavior.path)
 		{
-			change_anim(entity, "idle", true);
+			if (!ft_strcmp(entity->current_anim->name, "walk"))
+				change_anim(entity, "idle", true);
 			entity->behavior.func = entity->behavior.next;
 			entity->behavior.next = NULL;
 		}
@@ -116,7 +119,7 @@ void	entity_moving_to(void *arg_data, void *arg_entity)
 	if (entity->pos.x == to_go.x
 		&& entity->pos.y == to_go.y)
 		return (move_to_center(data, entity));
-	if (entity->sheet.in_fight && entity->sheet.walked <= 0 || !is_empty_cell(data, to_go))
+	if ((entity->sheet.in_fight && entity->sheet.walked <= 0) || !is_empty_cell(data, to_go))
 	{
 		free_path(&entity->behavior.path);
 		change_anim(entity, "idle", true);

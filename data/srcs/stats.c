@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 23:28:28 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/08 19:31:02 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 15:03:37 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ void	round_refresh_stat(t_entity *entity)
 	if (!entity)
 		return ;
 	entity->sheet.action = 1;
-	entity->sheet.attack_left = entity->sheet.nb_attack;
+	entity->sheet.attack_left = 0;
 	entity->sheet.bonus_action = 1;
 	entity->sheet.reaction = 1;
 	entity->sheet.walked = entity->sheet.speed;
 }
 
-void	copy_stat_tab(int stats1[6], int stats2[6], int len)
+void	copy_stat_tab(int *stats1, int *stats2, int len)
 {
 	int	i;
 
@@ -35,7 +35,7 @@ void	copy_stat_tab(int stats1[6], int stats2[6], int len)
 	}
 }
 
-void	sum_stat_tab(int stats1[6], int stats2[6], int len)
+void	sum_stat_tab(int *stats1, int *stats2, int len)
 {
 	int	i;
 
@@ -53,11 +53,11 @@ int	modif(int nb)
 
 	res = ((float)nb - 10.0) / 2;
 	if (res < 0)
-		return ((int)res - 1);
+		return ((int)(res - 0.5));
 	return ((int)res);
 }
 
-void	reset_stats(t_data *data, t_entity *entity, t_entity *prefab, int *button_nb)
+void	reset_stats(t_entity *entity, t_entity *prefab, int *button_nb)
 {
 	int	i;
 
@@ -87,7 +87,7 @@ void	reset_stats(t_data *data, t_entity *entity, t_entity *prefab, int *button_n
 	copy_stat_tab(entity->sheet.spell_slot, prefab->sheet.spell_slot, 6);
 }
 
-void	add_stat(t_data *data, t_entity *entity, t_entity *item)
+void	add_stat(t_entity *entity, t_entity *item)
 {
 	entity->sheet.max_hp += item->sheet.max_hp;
 	entity->sheet.pb += item->sheet.pb;
@@ -118,7 +118,7 @@ void	add_weight(t_entity *entity)
 	}
 }
 
-void	check_inventory_stats(t_data *data, t_entity *entity, int *button_nb)
+void	check_inventory_stats(t_entity *entity, int *button_nb)
 {
 	int			i;
 	int			i2;
@@ -135,7 +135,7 @@ void	check_inventory_stats(t_data *data, t_entity *entity, int *button_nb)
 			{
 				if (*button_nb < NB_BUTTON - 1 && current->sheet.buttons[i2].func)
 					entity->sheet.buttons[(*button_nb)++] = current->sheet.buttons[i2++];
-				add_stat(data, entity, current);
+				add_stat(entity, current);
 			}
 		}
 	}
@@ -150,7 +150,7 @@ void	set_save_pb(t_entity *entity)
 	while (i < 6)
 	{
 		if (entity->sheet.saving[i])
-			entity->sheet.saving[i] += entity->sheet.pb;
+			entity->sheet.saving[i] += entity->sheet.pb + modif(entity->sheet.stats[i]);
 		i++;
 	}
 }
@@ -166,7 +166,7 @@ void	refresh_stats(t_data *data, t_entity *entity)
 	if (!prefab)
 		return ;
 	button_nb = 0;
-	reset_stats(data, entity, prefab, &button_nb);
+	reset_stats(entity, prefab, &button_nb);
 	if (button_nb < NB_BUTTON - 1)
 		init_check_button(data, &entity->sheet.buttons[button_nb++]);
 	if (button_nb < NB_BUTTON - 1)
@@ -178,6 +178,6 @@ void	refresh_stats(t_data *data, t_entity *entity)
 	refresh_entity_class(entity, entity->sheet.level, &button_nb);
 	init_inventory_button(data, &entity->sheet.buttons[NB_BUTTON - 1]);
 	set_save_pb(entity);
-	check_inventory_stats(data, entity, &button_nb);
+	check_inventory_stats(entity, &button_nb);
 	set_all_entity_timer_prop(data, entity);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 21:09:45 by gmassoni          #+#    #+#             */
-/*   Updated: 2024/12/21 23:10:57 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/10 11:25:40 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ char	**get_map(t_data *data, int fd, t_map *level)
 		return (NULL);
 	i = -1;
 	while (++i < level->size.y)
-		if (ft_strlen(map[i]) > level->size.x)
+		if ((int)ft_strlen(map[i]) > level->size.x)
 			level->size.x = ft_strlen(map[i]);
 	return (map);
 }
@@ -280,7 +280,7 @@ void	turn_map(t_data *data, char **map, t_map *level)
 		y = -1;
 		while (++y < level->size.y)
 		{
-			if (x >= ft_strlen(map[y]))
+			if (x >= (int)ft_strlen(map[y]))
 				level->arr[x][y].type = VOID;
 			else
 				level->arr[x][y].type = map[y][x];

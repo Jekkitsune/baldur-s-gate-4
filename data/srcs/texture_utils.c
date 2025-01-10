@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:27:28 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 03:18:37 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:29:19 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void	add_tex(t_data *data, t_texture *tex, char *name)
 	ft_lstadd_front(&data->textures, ft_lstnew(tex));
 }
 
-t_texture	*get_resized_free(t_data *data, t_texture *texture, int size)
+t_texture	*get_resized_free(t_texture *texture, int size)
 {
 	t_texture	*resized;
 

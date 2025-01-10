@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/08 17:23:51 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 15:36:59 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,19 @@ int	key_down_manager(int key, void *param)
 	if (key == 6)
 		data->sky_box = !data->sky_box;
 	if (key == 44)
+	{
 		open_door(data);
+		if (data->round_manager.participants)
+		{
+			t_list *lst = data->round_manager.participants;
+			while (lst)
+			{
+				printf("%s -> ", ((t_entity *)lst->content)->sheet.name);
+				lst = lst->next;
+			}
+			printf("\n");
+		}
+	}
 	return (0);
 }
 

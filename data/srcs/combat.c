@@ -6,11 +6,50 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 18:10:49 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/09 12:33:15 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 21:22:22 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	leave_party_combat(t_data *data)
+{
+	t_list		*lst;
+
+	lst = data->round_manager.party;
+	while (lst)
+	{
+		leave_combat(data, lst->content);
+		lst = lst->next;
+	}
+}
+
+void	check_combat_end(t_data *data)
+{
+	t_list		*list;
+	t_entity	*current;
+	int			team;
+
+	list = data->round_manager.participants;
+	if (!list)
+		return ;
+	current = list->content;
+	team = current->sheet.team;
+	list = list->next;
+	if (!list)
+	{
+		leave_party_combat(data);
+		return ;
+	}
+	while (list)
+	{
+		current = list->content;
+		if (current->sheet.team != team)
+			return ;
+		list = list->next;
+	}
+	leave_party_combat(data);
+}
 
 void	leave_combat(t_data *data, t_entity *entity)
 {
@@ -19,11 +58,16 @@ void	leave_combat(t_data *data, t_entity *entity)
 	if (!entity)
 		return ;
 	entity->sheet.in_fight = false;
+	if (entity->sheet.alive)
+		entity->behavior.func = entity->sheet.wander_ia;
 	lst = ft_lstpop(&data->round_manager.participants, entity);
 	if (lst)
 		free(lst);
 	if (!data->round_manager.participants)
 		data->round_manager.combat = false;
+	if (data->round_manager.party
+		&& ((t_entity *)(data->round_manager.party->content))->sheet.team != entity->sheet.team)
+		check_combat_end(data);
 }
 
 void	insert_in_combat(t_data *data, t_list *new, int initiative)
@@ -45,6 +89,8 @@ void	insert_in_combat(t_data *data, t_list *new, int initiative)
 	}
 	if (last_lst)
 		last_lst->next = new;
+	else
+		data->round_manager.participants = new;
 	new->next = i_lst;
 }
 
@@ -54,7 +100,7 @@ void	roll_initiative(t_data *data, t_entity *entity)
 
 	round_refresh_stat(entity);
 	entity->sheet.in_fight = true;
-	initiative = roll_one(D20, 1) + modif(entity->sheet.stats[DEX]);
+	initiative = roll_one(20, 1) + modif(entity->sheet.stats[DEX]);
 	show_info(data, "%s rolled %d to initiative.", entity->sheet.name, initiative);
 	entity->sheet.initiative = initiative;
 }
@@ -69,6 +115,7 @@ void	get_party_combat(t_data *data)
 	while (lst && lst->content)
 	{
 		current = lst->content;
+		change_anim(current, "idle", true);
 		roll_initiative(data, current);
 		new = ft_lstnew(current);
 		if (!new)
@@ -78,20 +125,41 @@ void	get_party_combat(t_data *data)
 	}
 }
 
-void	get_in_combat(t_data *data, t_entity *entity)
+void join_ally_fight(void *data, t_entity *target, t_entity *caster, __attribute__((unused)) int nb)
+{
+	if (target && !target->sheet.in_fight && caster && target->sheet.team == caster->sheet.team)
+		enter_combat(data, target);
+}
+
+void	call_allies(t_data *data, t_entity *entity)
+{
+	t_spellinfo	info;
+
+	info.radius = 4;
+	info.pos = entity->pos;
+	info.caster = entity;
+	info.nb = entity->sheet.team;
+	zone_effect(data, info, join_ally_fight);
+}
+
+void	enter_combat(t_data *data, t_entity *entity)
 {
 	t_list	*new;
 
-	if (!entity || !data->round_manager.party)
+	if (!entity || !data->round_manager.party || !entity->sheet.alive || entity->sheet.in_fight)
 		return ;
 	if (!data->round_manager.combat)
 	{
 		data->round_manager.combat = true;
+		show_info(data, "Enter Combat:\n");
 		get_party_combat(data);
 	}
+	change_anim(entity, "idle", true);
 	roll_initiative(data, entity);
 	new = ft_lstnew(entity);
 	if (!new)
 		return ;
 	insert_in_combat(data, new, entity->sheet.initiative);
+	entity->behavior.func = entity->sheet.fight_ia;
+	call_allies(data, entity);
 }

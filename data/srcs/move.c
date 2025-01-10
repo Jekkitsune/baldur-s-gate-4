@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 10:06:20 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 12:56:35 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	move_possession(t_data *data)
 	t_vectorf	offset;
 
 	possession = data->player.possession;
-	if (possession && !possession->anim_no_move && possession->possess_control && possession->sheet.alive)
+	if (!data->round_manager.combat && possession && !possession->anim_no_move && possession->possess_control && possession->sheet.alive)
 	{
 		p = &data->player;
 		offset = possession->offset;
@@ -188,14 +188,14 @@ void	move(t_data *data)
 		p->height = -HEIGHT_CAP;
 
 
-		if (p->angle > 2 * M_PI)
-			p->angle = p->angle - (2 * M_PI);
-		if (p->angle < 0)
-			p->angle = (2 * M_PI) + p->angle;
-		data->player.camera_plane.x = cosf(angle_add(data->player.angle, M_PI / 2));
-		data->player.camera_plane.y = sinf(angle_add(data->player.angle, M_PI / 2));
-		data->player.direction.x = cosf(data->player.angle);
-		data->player.direction.y = sinf(data->player.angle);
+	if (p->angle > 2 * M_PI)
+		p->angle = p->angle - (2 * M_PI);
+	if (p->angle < 0)
+		p->angle = (2 * M_PI) + p->angle;
+	data->player.camera_plane.x = cosf(angle_add(data->player.angle, M_PI / 2));
+	data->player.camera_plane.y = sinf(angle_add(data->player.angle, M_PI / 2));
+	data->player.direction.x = cosf(data->player.angle);
+	data->player.direction.y = sinf(data->player.angle);
 
 	if (p->pitch > 1000)
 		p->pitch = 1000;

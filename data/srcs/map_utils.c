@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 23:22:30 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 11:48:25 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 19:13:55 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,20 @@ t_vectorf	true_pos(t_data *data, t_entity *entity)
 	return (res);
 }
 
-t_bool	has_obstacle(t_data *data)
+t_bool	has_obstacle(t_data *data, t_entity *from, t_entity *target)
 {
 	float		dist;
 	t_impact	ray;
 	t_vectorf	true_pos1;
 	t_vectorf	true_pos2;
 
-	if (!data->player.possession || !data->player.arrow)
+	if (!from || !target)
 		return (true);
-	dist = get_dist(data->player.possession->pos, data->player.arrow->pos);
-	true_pos1 = true_pos(data, data->player.possession);
-	true_pos2 = true_pos(data, data->player.arrow);
-	ray = get_simple_impact(data->player.possession->pos, vecf(true_pos2.x - true_pos1.x, true_pos2.y - true_pos1.y), data);
-	return (get_dist(data->player.possession->pos, ray.wall_pos) < dist);
+	dist = get_dist(from->pos, target->pos);
+	true_pos1 = true_pos(data, from);
+	true_pos2 = true_pos(data, target);
+	ray = get_simple_impact(from->pos, vecf(true_pos2.x - true_pos1.x, true_pos2.y - true_pos1.y), data);
+	return (get_dist(from->pos, ray.wall_pos) < dist);
 }
 
 t_bool	is_ground(t_data *data, t_vector pos)
@@ -61,7 +61,7 @@ t_bool	is_ground(t_data *data, t_vector pos)
 	if (!in_bound(data->current_map, pos))
 		return (false);
 	cell = &data->current_map->arr[pos.x][pos.y];
-	if (cell->type == WALL || cell->type == DOOR && cell->status != OPEN)
+	if (cell->type == WALL || (cell->type == DOOR && cell->status != OPEN))
 		return (false);
 	return (true);
 }
@@ -75,7 +75,7 @@ t_bool	is_empty_cell(t_data *data, t_vector pos)
 	if (!in_bound(data->current_map, pos))
 		return (false);
 	cell = &data->current_map->arr[pos.x][pos.y];
-	if (cell->type == WALL || cell->type == DOOR && cell->status != OPEN)
+	if (cell->type == WALL || (cell->type == DOOR && cell->status != OPEN))
 		return (false);
 	entities_lst = cell->entities;
 	while (entities_lst)

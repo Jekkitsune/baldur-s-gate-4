@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:22:10 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/02 18:45:56 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:35:34 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ t_animation	*add_anim(t_animation **tab, t_animation *new, int *nb_anim)
 
 int	get_anim_size(char *path)
 {
-	int		res;
 	char	*str;
 	int		fd;
 	int		i;
@@ -100,7 +99,6 @@ int	try_format(char **str, char *format)
 
 int	check_anim_existence(char **str)
 {
-	char	*test;
 	int		anim_size;
 
 	anim_size = try_format(str, ".png");
@@ -205,6 +203,7 @@ t_entity	*get_prefab_data(t_data *data, char *directory)
 	try_all_faces(data, entity, directory, "select");
 	try_all_faces(data, entity, directory, "cast");
 	try_all_faces(data, entity, directory, "dead");
-	entity->sheet.portrait = get_resized_free(data, get_portrait(data, directory), data->button_scale_size);
+	entity->sheet.portrait = get_resized_free(get_portrait(data, directory), data->button_scale_size);
+	get_prefab_stat(data, entity, directory);
 	return (entity);
 }

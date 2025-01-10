@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 10:27:32 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:23:14 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	sort_entity(t_data *data, t_entity *entity)
 {
 	t_list		*i;
 	t_list		*new;
-	t_entity	compare;
 
 	new = ft_lstnew(entity);
 	if (!new)

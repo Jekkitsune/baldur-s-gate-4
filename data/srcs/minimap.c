@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 21:33:33 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/19 22:21:47 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:21:40 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	draw_player_vision(t_data *data)
 {
 	t_vector	center_map;
 	t_vector	p_delta_posx;
-	t_vector	p_delta_posx2;
+	//t_vector	p_delta_posx2;
 	int			i;
 
 	center_map = vec(data->minimap.UI_size / 2 + data->minimap.pos.x, data->minimap.UI_size / 2 + data->minimap.pos.y);

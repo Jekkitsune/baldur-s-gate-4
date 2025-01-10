@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/09 12:32:40 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 20:34:52 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define DOOR '2'
 # define NB_BUTTON 20
 # define INVENTORY_SIZE 20
+# define MAX_PARTIC_ICON 8
 
 # define NB_RAYS (1600 / 2)
 # define FOV 0.7
@@ -78,7 +79,7 @@
 
 # define NB_DICE 8
 
-typedef int t_dice[7];
+typedef int t_dice[NB_DICE];
 
 //Properties
 
@@ -94,7 +95,7 @@ typedef enum e_property
 
 # define NB_PROPERTIES 5
 
-# define PROPERTIES_TAB ((const char * const[NB_PROPERTIES + 1]) { \
+# define PROPERTIES_TAB ((char * const[NB_PROPERTIES + 1]) { \
     "finesse", \
     "range", \
     "loading",  \
@@ -141,15 +142,20 @@ typedef enum e_type
 	living = 6,
 	object = 7,
 	consumable = 8,
-	offensive = 9,
-	debuff = 10,
-	buff = 11,
-	heal = 12,
-	take_type = 13,
-	move_type = 14,
 }	t_type;
 
 # define NON_EQUIP 6
+
+typedef enum e_spelltype
+{
+	offensive = 0,
+	debuff = 1,
+	buff = 2,
+	heal = 3,
+	take_type = 4,
+	move_type = 5,
+	check_type = 6,
+}	t_spelltype;
 
 typedef struct s_entity t_entity;
 
@@ -170,7 +176,7 @@ typedef struct s_spellinfo
 	t_bool		target_self;
 	char		*anim;
 	float		timer;
-	t_type		type;
+	t_spelltype	type;
 	int			cost_action;
 	int			cost_attack;
 	int			cost_bonus;
@@ -234,7 +240,6 @@ typedef struct s_sheet
 	int			saving[6];
 	int			level;
 	int			pb;
-//	int			skills[18];
 	int			speed;
 	int			walked;
 	int			ac;
@@ -269,6 +274,8 @@ typedef struct s_sheet
 	char		*description; //Lie au prefab, non personnel a l'entite
 	t_entity	*prefab;
 	t_class		*class;
+	void		(*wander_ia)(void *data, void *entity);
+	void		(*fight_ia)(void *data, void *entity);
 }	t_sheet;
 
 typedef struct s_path
@@ -285,6 +292,7 @@ typedef struct s_behavior
 	t_vector		pos;
 	void			(*next)(void *data, void *entity);
 	t_path			*path;
+	t_entity		*target;
 }	t_behavior;
 
 typedef struct s_round_manager
@@ -320,7 +328,6 @@ typedef struct s_entity
 	float		size_scale;
 	uint32_t	color_filter;
 	t_bool		anim_no_move;
-	t_behavior	default_behavior;
 }	t_entity;
 
 typedef	struct s_cell
@@ -434,7 +441,8 @@ typedef struct s_data
 	unsigned long 	frame_time;
 	struct timeval 	current_time;
 	t_round_manager	round_manager;
-} t_data;
+	char 			**properties_tab;
+}	t_data;
 
 typedef	struct s_linfo
 {
@@ -540,7 +548,7 @@ void		select_target(t_data *data);
 t_bool		confirm(t_button *pushed);
 void		death(void *arg_data, void *arg_entity);
 float		get_dist(t_vector p1, t_vector p2);
-t_bool		has_obstacle(t_data *data);
+t_bool		has_obstacle(t_data *data, t_entity *from, t_entity *target);
 t_impact	get_simple_impact(t_vector start, t_vectorf direc, t_data *data);
 t_bool		check_dist_obstacle(t_data *data, t_entity *entity, float dist, t_bool visible_target);
 void		damage(t_data *data, t_entity *entity, int dmg);
@@ -550,7 +558,7 @@ void		put_screen(t_data *data);
 void		clear_string_put(t_data *data, t_bool force);
 int			screen_string_put(t_data *data, t_strput *to_put, float time);
 t_strput	*strput(char *str, t_vector pos, float size, uint32_t color);
-t_texture	*get_resized_free(t_data *data, t_texture *texture, int size);
+t_texture	*get_resized_free(t_texture *texture, int size);
 void		draw_inventory(t_data *data, t_entity *inventory[INVENTORY_SIZE]);
 int			inventory_hover_index(t_data *data);
 int			roll(t_dice dice);
@@ -595,7 +603,7 @@ void		init_all_classes(t_data *data);
 t_class		*get_class(t_list *class_lst, char *name);
 void		refresh_entity_class(t_entity *entity, int level, int *button_nb);
 void		sum_stat_tab(int stats1[6], int stats2[6], int len);
-void		copy_stat_tab(int stats1[6], int stats2[6], int len);
+void		copy_stat_tab(int *stats1, int *stats2, int len);
 void		refresh_stats(t_data *data, t_entity *entity);
 
 void		free_round_manager(t_data *data);
@@ -612,11 +620,28 @@ void		check_click_participants_icon(t_data *data, t_vector mouse);
 void		mouse_up(t_data *data, int key);
 void		mouse_down(t_data *data, int key);
 void		leave_combat(t_data *data, t_entity *entity);
-t_bool		is_current_turn(t_data *data, t_entity *entity);
+t_bool		is_turn(t_data *data, t_entity *entity);
 void		check_combat_end(t_data *data);
 void		party_refresh(t_data *data);
 void		draw_borders(t_data *data, t_vector start);
 void		draw_button_img(t_data *data, t_texture *img, t_vector start);
+void		finish_gnl(int fd);
+int			dice_i(int dice);
+int			index_dice(int i);
+void		get_prefab_stat(t_data *data, t_entity *prefab, char *directory);
+t_bool		has_dice(t_dice dice);
+t_property	get_property(t_data *data, char *name);
+void		next_turn(t_data *data);
+void		enter_combat(t_data *data, t_entity *entity);
+void		show_end_turn_button(t_data *data);
+void		check_click_end_turn(t_data *data, t_vector mouse);
+int			get_dice_average(t_dice dice);
+t_bool		check_action_cost(t_spellinfo *spell);
+void		move_closest_to(t_data *data, t_entity *entity, t_entity *target);
+
+//ia
+void		base_aggro(void *data_param, void *entity_param);
+void		martial_ia(void *data_param, void *entity_param);
 
 //spells
 void		action_select(void *data_param, void *entity_param, t_spellinfo spell);

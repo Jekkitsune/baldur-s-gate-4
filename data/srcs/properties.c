@@ -6,11 +6,26 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 19:01:11 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/07 07:15:44 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/10 20:35:15 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+t_property	get_property(t_data *data, char *name)
+{
+	int	i;
+
+	(void)data; //a changer!!
+	i = 0;	
+	while (i < NB_PROPERTIES)
+	{
+		if (!ft_strcmp(PROPERTIES_TAB[i], name))
+			return (1 << i);
+		i++;
+	}
+	return (0);
+}
 
 char	*stat_name_nb(char *name, int nb)
 {
@@ -36,7 +51,7 @@ void	show_check_properties(t_data *data, t_entity *entity, t_vector pos)
 	while (i < NB_PROPERTIES)
 	{
 		if (entity->sheet.properties & (1 << i))
-			add_to_str(&info, ft_strjoin((char *)PROPERTIES_TAB[i], "  "));
+			add_to_str(&info, ft_strjoin(PROPERTIES_TAB[i], "  "));
 		i++;
 	}
 	pos.x = data->win_size.x / 8;
@@ -59,10 +74,11 @@ void	show_check_stats(t_data *data, t_entity *entity, t_vector pos)
 
 	info = NULL;
 	add_to_str(&info, stat_name_nb("STR", entity->sheet.stats[STR]));
-	add_to_str(&info, stat_name_nb("STR", entity->sheet.stats[DEX]));
-	add_to_str(&info, stat_name_nb("STR", entity->sheet.stats[CON]));
-	add_to_str(&info, stat_name_nb("STR", entity->sheet.stats[WIS]));
-	add_to_str(&info, stat_name_nb("STR", entity->sheet.stats[CHA]));
+	add_to_str(&info, stat_name_nb("DEX", entity->sheet.stats[DEX]));
+	add_to_str(&info, stat_name_nb("CON", entity->sheet.stats[CON]));
+	add_to_str(&info, stat_name_nb("INT", entity->sheet.stats[INT]));
+	add_to_str(&info, stat_name_nb("WIS", entity->sheet.stats[WIS]));
+	add_to_str(&info, stat_name_nb("CHA", entity->sheet.stats[CHA]));
 	pos.x = data->win_size.x / 8;
 	pos.y += data->button_scale_size;
 	to_put = strput(info, pos, (float)data->button_scale_size / 1.5, 0xFFFFFFFF);
@@ -128,7 +144,7 @@ void	init_check_button(t_data *data, t_button *button)
 	button->spellinfo.timer = 0;
 	button->spellinfo.visible_target = false;
 	button->spellinfo.target_self = true;
-	button->spellinfo.type = 0;
+	button->spellinfo.type = check_type;
 	button->img = get_tex(data, "check_button");
 	button->func = check_select;
 	button->spellinfo.effect = NULL;
