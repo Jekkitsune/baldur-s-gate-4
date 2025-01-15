@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 10:37:11 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 19:45:11 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 00:20:09 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,8 @@ void	party_follow(t_data *data)
 {
 	t_list	*party;
 
+	if (data->round_manager.combat)
+		return ;
 	party = data->round_manager.party;
 	while (party)
 	{

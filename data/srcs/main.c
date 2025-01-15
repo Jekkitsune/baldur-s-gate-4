@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 11:29:42 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 01:16:57 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	main(int argc, char **argv)
 
 	init_data(&data);
 	if (!parsing(argc, argv, &data))
-		return (false);
+		exit_free(&data, "Parsing error");
 	if (!check_textures(data.wall_tex))
 		exit_free(&data, "Cannot create texture");
 
@@ -109,28 +109,28 @@ int	main(int argc, char **argv)
 	//print_map(data.current_map);
 	mlx_loop_hook(data.mlx, loop, &data);
 
-	add_tex(&data, path_to_tex(&data, "hutao.png"), ft_strdup("test"));
-	add_tex(&data, path_to_tex(&data, "postal.png"), NULL);
-	add_tex(&data, path_to_tex(&data, "s1.png"), ft_strdup("skybox1"));
-	add_tex(&data, path_to_tex(&data, "s2.png"), ft_strdup("skybox2"));
-	add_tex(&data, path_to_tex(&data, "s3.png"), ft_strdup("skybox3"));
-	add_tex(&data, path_to_tex(&data, "s4.png"), ft_strdup("skybox4"));
+	add_tex(&data, path_to_tex(&data, "textures/hutao.png"), ft_strdup("test"));
+	add_tex(&data, path_to_tex(&data, "textures/postal.png"), NULL);
+	add_tex(&data, path_to_tex(&data, "textures/s1.png"), ft_strdup("skybox1"));
+	add_tex(&data, path_to_tex(&data, "textures/s2.png"), ft_strdup("skybox2"));
+	add_tex(&data, path_to_tex(&data, "textures/s3.png"), ft_strdup("skybox3"));
+	add_tex(&data, path_to_tex(&data, "textures/s4.png"), ft_strdup("skybox4"));
 	data.sky_box_tex[0] = get_tex(&data, "skybox1");
 	data.sky_box_tex[1] = get_tex(&data, "skybox2");
 	data.sky_box_tex[2] = get_tex(&data, "skybox3");
 	data.sky_box_tex[3] = get_tex(&data, "skybox4");
-	add_tex(&data, path_to_tex(&data, "brickwall.png"), ft_strdup("ceiling"));
-	add_tex(&data, path_to_tex(&data, "woodwall.png"), ft_strdup("floor"));
+	add_tex(&data, path_to_tex(&data, "textures/brickwall.png"), ft_strdup("ceiling"));
+	add_tex(&data, path_to_tex(&data, "textures/woodwall.png"), ft_strdup("floor"));
 	data.ceiling = get_tex(&data, "ceiling");
 	data.floor = get_tex(&data, "floor");
-	add_tex(&data, get_resized_free(path_to_tex(&data, "fireball_button.png"), data.button_scale_size), ft_strdup("fireball_button"));
-	add_tex(&data, get_resized_free(path_to_tex(&data, "take_button.png"), data.button_scale_size), ft_strdup("take_button"));
-	add_tex(&data, get_resized_free(path_to_tex(&data, "inventory_button.png"), data.button_scale_size), ft_strdup("inventory_button"));
-	add_tex(&data, get_resized_free(path_to_tex(&data, "check_button.png"), data.button_scale_size), ft_strdup("check_button"));
-	add_tex(&data, get_resized_free(path_to_tex(&data, "move_button.png"), data.button_scale_size), ft_strdup("move_button"));
-	add_tex(&data, get_resized_free(path_to_tex(&data, "melee_button.png"), data.button_scale_size), ft_strdup("melee_button"));
-	add_tex(&data, get_resized_free(path_to_tex(&data, "range_button.png"), data.button_scale_size), ft_strdup("range_button"));
-	add_tex(&data, get_resized_free(path_to_tex(&data, "punch_button.png"), data.button_scale_size), ft_strdup("punch_button"));
+	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/fireball_button.png"), data.button_scale_size), ft_strdup("fireball_button"));
+	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/take_button.png"), data.button_scale_size), ft_strdup("take_button"));
+	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/inventory_button.png"), data.button_scale_size), ft_strdup("inventory_button"));
+	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/check_button.png"), data.button_scale_size), ft_strdup("check_button"));
+	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/move_button.png"), data.button_scale_size), ft_strdup("move_button"));
+	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/melee_button.png"), data.button_scale_size), ft_strdup("melee_button"));
+	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/range_button.png"), data.button_scale_size), ft_strdup("range_button"));
+	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/punch_button.png"), data.button_scale_size), ft_strdup("punch_button"));
 
 	load_spells_prefab(&data);
 	init_all_classes(&data);

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 15:36:59 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 02:20:23 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,14 @@ int	key_down_manager(int key, void *param)
 		data->player.description_mode = 1;
 	if (key == 8)
 		data->test_key = 1;
-	if (key == 6)
+	if (key == 6 && data->sky_box_tex[0] && data->sky_box_tex[1]
+		&& data->sky_box_tex[2] && data->sky_box_tex[3])
 		data->sky_box = !data->sky_box;
 	if (key == 44)
 	{
 		open_door(data);
-		if (data->round_manager.participants)
-		{
-			t_list *lst = data->round_manager.participants;
-			while (lst)
-			{
-				printf("%s -> ", ((t_entity *)lst->content)->sheet.name);
-				lst = lst->next;
-			}
-			printf("\n");
-		}
+		// if (in_bound(data->current_map, data->player.pos))
+		// 	data->current_map->arr[data->player.pos.x][data->player.pos.y].fog_color = 0xAA13e80c;
 	}
 	return (0);
 }

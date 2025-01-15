@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/10 15:30:03 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/14 22:29:33 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,8 @@ SRCS = main.c\
 		combat.c\
 		round_manager.c\
 		get_prefab_stats.c\
-		ia_fight.c
+		ia_fight.c\
+		check_radius_team.c
 
 LIBFT = data/libft/libft.a
 

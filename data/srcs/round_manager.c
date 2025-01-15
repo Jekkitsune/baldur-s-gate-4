@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:04:23 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 20:36:46 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 00:02:17 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	next_turn(t_data *data)
 
 t_bool	is_turn(t_data *data, t_entity *entity)
 {
-	if (!data->round_manager.combat || !data->round_manager.participants
+	if (!entity->sheet.alive || !data->round_manager.combat || !data->round_manager.participants
 		|| entity == data->round_manager.participants->content)
 		return (true);
 	return (false);

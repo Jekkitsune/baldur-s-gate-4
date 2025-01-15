@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 11:23:14 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 01:53:06 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,21 @@ void	add_cell_entities(t_data *data, t_impact *ray)
 	}
 }
 
+void	check_fog(t_impact *impact, t_data *data, t_vectorf length)
+{
+	t_cell	*cell;
+
+	cell = &data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y];
+	if (!impact->fog_color && cell->fog_color)
+	{
+		impact->fog_color = cell->fog_color;
+		if (ft_absf(length.x) <= ft_absf(length.y))
+			impact->fog_length = ft_absf(length.x);
+		else
+			impact->fog_length = ft_absf(length.y);
+	}
+}
+
 t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length, t_vectorf slope_coeff, t_vector sign)
 {
 	int	tmp;
@@ -60,16 +75,14 @@ t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length, t_vectorf
 			return (impact);
 	if (!length.x || !length.y)
 		return (NULL);
+	add_cell_entities(data, impact);
+	check_fog(impact, data, length);
 	if (data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type != WALL
 		&& data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type != DOOR)
-	{
-		add_cell_entities(data, impact);
 		return (NULL);
-	}
 	impact->cell = &data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y];
 	if (impact->cell->type == DOOR)
 	{
-		add_cell_entities(data, impact);
 		if (ft_absf(length.x) > ft_absf(length.y))
 		{
 			tmp = impact->wall_pos.y;
@@ -140,6 +153,8 @@ t_impact	raycast(t_vector start, t_vectorf direc, t_data *data, t_vectorf slope_
 	//free_visible_lst(data);
 	impact.face = 0;
 	impact.length = 0;
+	impact.fog_length = 0;
+	impact.fog_color = 0;
 	impact.direc.x = direc.x;
 	impact.direc.y = direc.y;
 	if (direc.x < 0)

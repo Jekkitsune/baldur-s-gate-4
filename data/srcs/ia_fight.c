@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:59:31 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 21:13:42 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/14 23:34:28 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_entity	*get_closest_target(t_data *data, t_entity *entity)
 	return (closest);
 }
 
-void	compare_buttons(t_button **current_best, t_button *compare)
+void	compare_buttons(t_data *data, t_button **current_best, t_button *compare, t_entity *entity)
 {
 	int	current_average;
 	int	compare_average;
@@ -72,11 +72,11 @@ void	compare_buttons(t_button **current_best, t_button *compare)
 	}
 	current_average = get_dice_average((*current_best)->spellinfo.dice);
 	compare_average = get_dice_average(compare->spellinfo.dice);
-	if (compare_average > current_average)
+	if (compare_average > current_average && get_best_spell_pos(data, &compare->spellinfo, entity))
 		*current_best = compare;
 }
 
-t_button	*get_best_action(t_entity *entity, int min_range, t_spelltype type)
+t_button	*get_best_action(t_data *data, t_entity *entity, int min_range, t_spelltype type)
 {
 	t_button	*best;
 	t_button	*current;
@@ -92,7 +92,7 @@ t_button	*get_best_action(t_entity *entity, int min_range, t_spelltype type)
 			current->spellinfo.caster = entity;
 			if (current->spellinfo.type == type
 				&& current->spellinfo.range >= min_range && check_action_cost(&current->spellinfo))
-				compare_buttons(&best, current);
+				compare_buttons(data, &best, current, entity);
 		}
 		i++;
 	}
@@ -104,11 +104,14 @@ t_bool	try_ia_action(t_data *data, t_entity *entity, t_entity *target, t_spellin
 	if (get_dist(entity->pos, target->pos) > spell.range
 		|| has_obstacle(data, entity, target))
 		return (false);
-	spell.pos = target->pos;
-	spell.pos_offset = target->offset;
-	spell.target = target;
-	spell.nb = roll(spell.dice);
 	spell.caster = entity;
+	spell.target = target;
+	if (spell.radius < 2)
+	{
+		spell.pos = target->pos;
+		spell.pos_offset = target->offset;
+	}
+	spell.nb = roll(spell.dice);
 	if ((!spell.target_self && spell.target == spell.caster) || !check_action_cost(&spell))
 		return (false);
 	spell.caster->angle = atan2(spell.pos.y - spell.caster->pos.y, spell.pos.x - spell.caster->pos.x);
@@ -145,7 +148,7 @@ void	martial_try_attacks(t_data *data, t_entity *entity, t_button *best_button)
 			reset_behavior(data, entity, true);
 		return ;
 	}
-	best_button = get_best_action(entity, get_dist(entity->pos, entity->behavior.target->pos), offensive);
+	best_button = get_best_action(data, entity, get_dist(entity->pos, entity->behavior.target->pos), offensive);
 	if (best_button && try_ia_action(data, entity, entity->behavior.target, best_button->spellinfo))
 	{
 		reset_behavior(data, entity, false);
@@ -166,7 +169,7 @@ void	martial_ia(void *data_param, void *entity_param)
 		return ;
 	if (!entity->behavior.target)
 		entity->behavior.target = get_closest_target(data, entity);
-	best_button = get_best_action(entity, 1, offensive);
+	best_button = get_best_action(data, entity, 1, offensive);
 	if (!entity->behavior.target || !best_button)
 	{
 		reset_behavior(data, entity, true);
@@ -188,7 +191,8 @@ void	base_aggro(void *data_param, void *entity_param)
 		return ;
 	while (lst)
 	{
-		if (get_dist(entity->pos, ((t_entity *)lst->content)->pos) < 4)
+		if (lst->content && ((t_entity *)lst->content)->sheet.alive
+			&& get_dist(entity->pos, ((t_entity *)lst->content)->pos) < 4)
 		{
 			enter_combat(data, entity);
 			return ;

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:30:20 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/07 13:44:36 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/14 17:01:09 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	fireball_damage(void *data, t_entity *target, t_entity *caster, int nb)
 void	init_fireball_button(t_data *data, t_button *button)
 {
 	button->spellinfo.radius = 4;
-	button->spellinfo.range = 12;
+	button->spellinfo.range = 9;
 	button->spellinfo.visible_target = true;
 	button->spellinfo.dice[D6] = 8;
 	button->spellinfo.effect = fireball;
@@ -61,6 +61,7 @@ void	fireball(void *data_param, void *spell_param)
 	if (!apply_action_cost(spell))
 		return ;
 	explosion = spawn_entity(data, get_prefab(data, "explosion"), spell->pos, ft_strjoin("explosion", ""));
+	explosion->sheet.alive = false;
 	if (!explosion)
 		return ;
 	add_active(data, explosion, expire);

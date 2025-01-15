@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 19:02:10 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 21:12:06 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 02:22:07 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	init_test(t_data *data)
 {
 	t_entity	*test2;
 
-	add_prefab(data, get_prefab_data(data, "guard"), ft_strjoin("guard", ""));
+	add_prefab(data, get_prefab_data(data, "prefabs/guard"), ft_strjoin("guard", ""));
 	data->prefab_tab[data->nb_prefab - 1]->sheet.hp = 10;
 	data->prefab_tab[data->nb_prefab - 1]->sheet.max_hp = 10;
 	data->prefab_tab[data->nb_prefab - 1]->sheet.type = living;
@@ -51,8 +51,8 @@ void	init_test(t_data *data)
 	test2 = spawn_entity(data, get_prefab(data, "guard"), vec(25, 10), ft_strjoin("john", ""));
 	add_active(data, test2, ft_nothing);
 
-	add_prefab(data, get_prefab_data(data, "omen"), ft_strjoin("omen", ""));
-	add_prefab(data, get_prefab_data(data, "wizard"), ft_strjoin("wizard", ""));
+	add_prefab(data, get_prefab_data(data, "prefabs/omen"), ft_strjoin("omen", ""));
+	add_prefab(data, get_prefab_data(data, "prefabs/wizard"), ft_strjoin("wizard", ""));
 
 	test2 = spawn_entity(data, get_prefab(data, "omen"), vec(20, 3), ft_strjoin("omen", ""));
 	test2->sheet.wander_ia = base_aggro;
@@ -74,6 +74,18 @@ void	init_test(t_data *data)
 	test2->sheet.fight_ia = martial_ia;
 	add_active(data, test2, test2->sheet.wander_ia);
 	test2->size_scale = 0.9; 
+
+	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
+	add_active(data, test2, ft_nothing);
+	possess_control(test2, true);
+	ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
+	test2->size_scale = 0.9;
+
+	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
+	add_active(data, test2, ft_nothing);
+	possess_control(test2, true);
+	ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
+	test2->size_scale = 0.9;
 
 	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
 	add_active(data, test2, ft_nothing);

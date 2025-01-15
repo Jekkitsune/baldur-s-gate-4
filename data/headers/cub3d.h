@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 20:34:52 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 01:39:16 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,12 +337,15 @@ typedef	struct s_cell
 	t_list		*entities;
 	int			status;
 	float		timer;
+	uint32_t	fog_color;
 }	t_cell;
 
 typedef struct s_impact
 {
 	t_vector	wall_pos;
 	float		length;
+	float		fog_length;
+	uint32_t	fog_color;
 	int			face;
 	t_vectorf	direc;
 	float		angle;
@@ -638,6 +641,8 @@ void		check_click_end_turn(t_data *data, t_vector mouse);
 int			get_dice_average(t_dice dice);
 t_bool		check_action_cost(t_spellinfo *spell);
 void		move_closest_to(t_data *data, t_entity *entity, t_entity *target);
+t_bool		get_best_spell_pos(t_data *data, t_spellinfo *spell, t_entity *caster);
+t_bool		has_obstacle_pos(t_data *data, t_vector from, t_vector to);
 
 //ia
 void		base_aggro(void *data_param, void *entity_param);

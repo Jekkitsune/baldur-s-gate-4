@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:22:10 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 11:35:34 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 01:11:35 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ t_entity	*try_all_faces(t_data *data, t_entity *entity, char *directory, char *n
 {
 	char		*base_str;
 
-	base_str = ft_vajoin(directory, "/", name, NULL);
+	base_str = ft_vajoin(directory, "/anim/", name, NULL);
 	if (try_one_face(data, entity, base_str, ""))
 		set_anim_info(&entity->anim[entity->nb_anim - 1], ft_strjoin(name, ""), 10);
 	if (try_one_face(data, entity, base_str, "_sidel"))
@@ -205,5 +205,11 @@ t_entity	*get_prefab_data(t_data *data, char *directory)
 	try_all_faces(data, entity, directory, "dead");
 	entity->sheet.portrait = get_resized_free(get_portrait(data, directory), data->button_scale_size);
 	get_prefab_stat(data, entity, directory);
+	if (!entity->anim)
+	{
+		free_prefab_entity(data, entity);
+		ft_putstr_fd(directory, 2);
+		exit_free(data, "Prefab does not have any anim");
+	}
 	return (entity);
 }

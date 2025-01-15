@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 20:48:52 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 17:28:02 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/14 23:37:17 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void	check_button_click(t_data *data)
 	t_vector	mouse;
 
 	mlx_mouse_get_pos(data->mlx, &mouse.x, &mouse.y);
-	if (data->player.possession && data->player.possession->possess_control && is_turn(data, data->player.possession))
+	if (data->player.possession && data->player.possession->possess_control && data->player.possession->sheet.alive && is_turn(data, data->player.possession))
 	{
 		button = current_button(data);
 		if (button)

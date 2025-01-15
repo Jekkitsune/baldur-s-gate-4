@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 17:25:20 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 02:18:20 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,13 @@ void	draw_wall(t_data *data, int x, t_vector pos, t_impact *ray)
 	if ((ray->face == 1 || ray->face == 4))
 		tex_column = tex->size - tex_column - 1;
 	i = 0;
-	// while (i < pos.x && i < data->win_size.y)
-	// {
-	// 	data->screen_buffer[i][x] = 0xFF0000BB;
-	// 	i++;
-	// }
 	i = ft_max(pos.x, i);
 	while (i < pos.y && i < data->win_size.y)
 	{
-		//mlx_set_image_pixel(data->mlx, data->screen_display, x, i, tex->tab[tex_column][(int)((ft_abs(pos.x - i)) * divided)]);
 		if (i >= 0)
 			data->screen_buffer[i][x] = tex->tab[tex_column][(int)((ft_abs(pos.x - i)) * divided)];
 		i++;
 	}
-	// while (i < data->win_size.y)
-	// {
-	// 	data->screen_buffer[i][x] = 0xFF00BB00;
-	// 	i++;
-	// }
 }
 
 void	get_all_rays_old(t_data *data)
@@ -108,11 +97,43 @@ float	fix_fisheye(t_data *data, t_impact ray, float size)
 	return (size);
 }
 
+void	draw_fog_wall(t_data *data, int x, t_vector pos, uint32_t color)
+{
+	int	i;
+
+	i = 0;
+	i = ft_max(pos.x, i);
+	while (i < pos.y && i < data->win_size.y)
+	{
+		if (i >= 0)
+			ft_pixel_put(data, i, x, color);
+		i++;
+	}
+}
+
+void	draw_fog(t_data *data, float diff, t_impact *ray, int i)
+{
+	int			i2;
+	int			size;
+	t_vector	posy;
+
+	if (ray->fog_length <= 0)
+		return ;
+	size = (data->win_size.y / (ray->fog_length / (data->scale * 2)));
+	posy.x = (data->win_size.y - size) / 2;
+	posy.y = (data->win_size.y + size) / 2;
+	i2 = 0;
+	while (i2 < diff)
+	{
+		draw_fog_wall(data, i * diff + i2, vec(posy.x + data->player.pitch + (data->player.height / ray->fog_length), posy.y + data->player.pitch + (data->player.height / ray->fog_length)), ray->fog_color);
+		i2++;
+	}
+}
+
 void	draw_ray(t_data *data, float diff, t_impact *ray, int i)
 {
 	int			i2;
 	int			size;
-	int			color;
 	t_vector	posy;
 
 	if (ray->face == 0)
@@ -121,17 +142,12 @@ void	draw_ray(t_data *data, float diff, t_impact *ray, int i)
 		size = 0;
 	else
 		size = (data->win_size.y / (ray->length / (data->scale * 2)));
-	if (ray->face == 1 || ray->face == 3)
-		color = 0xFF349CEB;
-	else
-		color = 0xFF3172A3;
 	posy.x = (data->win_size.y - size) / 2;
 	posy.y = (data->win_size.y + size) / 2;
 	i2 = 0;
 	while (i2 < diff)
 	{
-		draw_wall(data, i * diff + i2, vec(posy.x + data->player.pitch + (data->player.height / ray->length), posy.y + data->player.pitch + (data->player.height / ray->length)), ray);
-		//draw_line_raycast(data, i * diff + i2, posy.x + data->player.pitch + (data->player.height / ray.length), posy.y + data->player.pitch + (data->player.height / ray.length), color, &ray);
+		draw_wall(data, i * diff + i2, vec(posy.x + data->player.pitch + (data->player.height / ray->length), posy.y + data->player.pitch + (data->player.height / ray->length)), ray);		
 		i2++;
 	}
 }
@@ -368,9 +384,9 @@ void	show_screen(t_data *data)
 	int			i;
 	float		diff;
 
-	if (data->player.height >= -5000)
+	if (data->floor && data->player.height >= -5000)
 		show_floor(data);
-	if (data->player.height <= 5000)
+	if (data->ceiling && data->player.height <= 5000)
 		show_ceiling(data);
 	i = 0;
 	diff = (float)data->win_size.x / (float)NB_RAYS;
@@ -380,6 +396,12 @@ void	show_screen(t_data *data)
 		i++;
 	}
 	draw_entities(data);
+	i = 0;
+	while (i < NB_RAYS)
+	{
+		draw_fog(data, diff, &data->player.vision[i], i);
+		i++;
+	}
 	show_party_icon(data);
 	show_participants_icon(data);
 	if (data->player.possession && data->player.possession->possess_control && is_turn(data, data->player.possession))

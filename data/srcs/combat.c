@@ -6,22 +6,35 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 18:10:49 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 21:22:22 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 00:18:20 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	leave_party_combat(t_data *data)
+void	end_combat(t_data *data)
 {
 	t_list		*lst;
+	t_list		*to_free;
+	t_entity	*entity;
 
-	lst = data->round_manager.party;
+	lst = data->round_manager.participants;
 	while (lst)
 	{
-		leave_combat(data, lst->content);
+		entity = lst->content;
+		if (entity)
+		{
+			entity->sheet.in_fight = false;
+			if (entity->sheet.alive)
+				entity->behavior.func = entity->sheet.wander_ia;
+		}
 		lst = lst->next;
+		to_free = ft_lstpop(&data->round_manager.participants, entity);
+		if (to_free)
+			free(to_free);
 	}
+	if (!data->round_manager.participants)
+		data->round_manager.combat = false;
 }
 
 void	check_combat_end(t_data *data)
@@ -38,7 +51,7 @@ void	check_combat_end(t_data *data)
 	list = list->next;
 	if (!list)
 	{
-		leave_party_combat(data);
+		end_combat(data);
 		return ;
 	}
 	while (list)
@@ -48,7 +61,7 @@ void	check_combat_end(t_data *data)
 			return ;
 		list = list->next;
 	}
-	leave_party_combat(data);
+	end_combat(data);
 }
 
 void	leave_combat(t_data *data, t_entity *entity)
@@ -65,9 +78,7 @@ void	leave_combat(t_data *data, t_entity *entity)
 		free(lst);
 	if (!data->round_manager.participants)
 		data->round_manager.combat = false;
-	if (data->round_manager.party
-		&& ((t_entity *)(data->round_manager.party->content))->sheet.team != entity->sheet.team)
-		check_combat_end(data);
+	check_combat_end(data);
 }
 
 void	insert_in_combat(t_data *data, t_list *new, int initiative)
@@ -160,6 +171,7 @@ void	enter_combat(t_data *data, t_entity *entity)
 	if (!new)
 		return ;
 	insert_in_combat(data, new, entity->sheet.initiative);
+	free_path(&entity->behavior.path);
 	entity->behavior.func = entity->sheet.fight_ia;
 	call_allies(data, entity);
 }
