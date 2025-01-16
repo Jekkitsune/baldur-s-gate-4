@@ -6,13 +6,14 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 02:10:07 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 00:54:16 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 23:27:53 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_entity	*spawn_entity(t_data *data, t_entity *prefab, t_vector pos, char *name)
+t_entity	*spawn_entity(t_data *data, t_entity *prefab, t_vector pos,
+	char *name)
 {
 	t_entity	*entity;
 	t_list		*new_lst;

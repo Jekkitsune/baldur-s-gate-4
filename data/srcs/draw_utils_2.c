@@ -6,13 +6,14 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:54:47 by fparis            #+#    #+#             */
-/*   Updated: 2024/09/19 19:33:00 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 01:02:19 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "draw_utils.h"
 
-void	reverse_draw_vertical_line(t_data *data, t_vector p1, t_vector p2, t_linfo info)
+void	reverse_draw_vertical_line(t_data *data, t_vector p1, t_vector p2,
+	t_linfo info)
 {
 	t_vector	i;
 
@@ -25,7 +26,8 @@ void	reverse_draw_vertical_line(t_data *data, t_vector p1, t_vector p2, t_linfo 
 	}
 }
 
-void	reverse_draw_shallow(t_data *data, t_vector p1, t_vector p2, t_linfo info)
+void	reverse_draw_shallow(t_data *data, t_vector p1, t_vector p2,
+	t_linfo info)
 {
 	int			y_diff;
 	t_vector	delta;
@@ -39,7 +41,7 @@ void	reverse_draw_shallow(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 	delta.y = ft_abs(p2.y - p1.y);
 	i.x = p1.x;
 	i.y = p1.y;
-	checker = (2 * delta.y) - delta.x; 
+	checker = (2 * delta.y) - delta.x;
 	while (i.x >= p2.x && info.check(data, i))
 	{
 		draw_square(data, i, info);
@@ -81,4 +83,10 @@ void	reverse_draw_deep(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 			checker += 2 * delta.x;
 		i.y--;
 	}
+}
+
+void	draw_inventory_img(t_data *data, t_entity *entity, t_vector start)
+{
+	if (entity && entity->sheet.portrait)
+		show_tex(data, entity->sheet.portrait, start);
 }

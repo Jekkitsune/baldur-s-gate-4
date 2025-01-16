@@ -6,13 +6,14 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 03:49:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/14 16:49:51 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 23:29:36 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	apply_cell(t_data *data, t_cell cell, t_spellinfo spell, void (*effect)(void *data, t_entity *target, t_entity *caster, int nb))
+void	apply_cell(t_data *data, t_cell cell, t_spellinfo spell,
+	void (*effect)(void *data, t_entity *target, t_entity *caster, int nb))
 {
 	t_list	*lst;
 
@@ -25,7 +26,8 @@ void	apply_cell(t_data *data, t_cell cell, t_spellinfo spell, void (*effect)(voi
 	}
 }
 
-void	zone_effect(t_data *data, t_spellinfo spell, void (*effect)(void *data, t_entity *target, t_entity *caster, int nb))
+void	zone_effect(t_data *data, t_spellinfo spell,
+	void (*effect)(void *data, t_entity *target, t_entity *caster, int nb))
 {
 	int	i;
 	int	i2;
@@ -37,9 +39,11 @@ void	zone_effect(t_data *data, t_spellinfo spell, void (*effect)(void *data, t_e
 		while (i2 < spell.pos.x + (spell.radius - i))
 		{
 			if (in_bound(data->current_map, vec(i2, spell.pos.y + i)))
-				apply_cell(data, data->current_map->arr[i2][spell.pos.y + i], spell, effect);
+				apply_cell(data, data->current_map->arr[i2][spell.pos.y + i],
+					spell, effect);
 			if (i != 0 && in_bound(data->current_map, vec(i2, spell.pos.y - i)))
-				apply_cell(data, data->current_map->arr[i2][spell.pos.y - i], spell, effect);
+				apply_cell(data, data->current_map->arr[i2][spell.pos.y - i],
+					spell, effect);
 			i2++;
 		}
 		i++;

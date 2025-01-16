@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 01:18:56 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/04 18:29:46 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 01:08:24 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	possess_control(t_entity *entity, t_bool value)
 
 void	possess(t_data *data, t_entity *entity)
 {
-	if (!entity)
+	if (!entity || !in_bound(data->current_map, entity->pos))
 		return ;
 	mlx_mouse_show();
 	data->player.focus_mode = 1;

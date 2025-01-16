@@ -6,67 +6,21 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 01:16:57 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 02:02:01 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	loop(void *param)
+void	update_data_time(t_data *data)
 {
-	t_data 			*data;
-	struct timeval 	new_time;
-
-	data = (t_data *)param;
-
-	camera_move(data);
-	if (data->player.focus_mode)
-		rotate_focus(data);
-
-	if (data->test_key)
-	{
-		// if (data->current_map->active_entities)
-		//  	remove_active(data, data->current_map->active_entities->content);
-
-		data->test_key = 0;
-		t_entity	*entitest;
-
-		entitest = NULL;
-		if (in_bound(data->current_map, data->player.pos) && data->current_map->arr[data->player.pos.x][data->player.pos.y].entities)
-			entitest = data->current_map->arr[data->player.pos.x][data->player.pos.y].entities->content;
-		if (!data->player.focus_mode && entitest)
-			possess(data, entitest);
-		else if (data->player.focus_mode)
-		{
-			unpossess(data);
-			remove_selector(data, false);
-		}
-		else if (data->current_map->active_entities && data->current_map->active_entities->content)
-		{
-			t_entity *owo = data->current_map->active_entities->content;
-			move_to(data, owo, data->player.pos);
-		}
-	}
-
-	//printf("%p\n", data->player.active_button);
-
-	move(data);
-	update_doors(data);
-	update_all_active(data);
-	update_all_timer_effects(data, false);
-	update_all_timer_properties(data, false);
-	update_chunk(data);
-	show_screen(data);
-
-	party_refresh(data);
+	struct timeval	new_time;
 
 	gettimeofday(&new_time, NULL);
 	data->frame_time = ((new_time.tv_sec - data->current_time.tv_sec)
 		* 1000000) + new_time.tv_usec - data->current_time.tv_usec;
-	
 	static int fps = 0;
 	static unsigned long count = 0;
-	//if (count > 1000000)
 	if (new_time.tv_sec != data->current_time.tv_sec)
 	{
 		data->player.speed = (double) 1 / ((double)fps / (double) FPS_CAP);
@@ -79,8 +33,81 @@ int	loop(void *param)
 	fps++;
 	count += data->frame_time;
 	data->current_time = new_time;
+}
 
+int	loop(void *param)
+{
+	t_data	*data;
+
+	data = (t_data *)param;
+	camera_move(data);
+	if (data->player.focus_mode)
+		rotate_focus(data);
+	move(data);
+	update_doors(data);
+	update_all_active(data);
+	update_all_timer_effects(data, false);
+	update_all_timer_properties(data, false);
+	update_chunk(data);
+	show_screen(data);
+	party_refresh(data);
+	update_data_time(data);
 	return (0);
+}
+
+void	init_test(t_data *data)
+{
+	t_entity	*test2;
+
+	add_prefab(data, get_prefab_data(data, "prefabs/guard"), ft_strjoin("guard", ""));
+	data->prefab_tab[data->nb_prefab - 1]->sheet.hp = 10;
+	data->prefab_tab[data->nb_prefab - 1]->sheet.max_hp = 10;
+	data->prefab_tab[data->nb_prefab - 1]->sheet.type = living;
+	data->prefab_tab[data->nb_prefab - 1]->sheet.description = ft_strdup("MOI QUAND LE LOUP EST ENSTEIN");
+	test2 = spawn_entity(data, get_prefab(data, "guard"), vec(25, 10), ft_strjoin("john", ""));
+	add_active(data, test2, NULL);
+
+	add_prefab(data, get_prefab_data(data, "prefabs/omen"), ft_strjoin("omen", ""));
+	add_prefab(data, get_prefab_data(data, "prefabs/wizard"), ft_strjoin("wizard", ""));
+
+	test2 = spawn_entity(data, get_prefab(data, "omen"), vec(20, 3), ft_strjoin("omen", ""));
+	test2->sheet.wander_ia = base_aggro;
+	test2->sheet.team = 1;
+	test2->sheet.fight_ia = martial_ia;
+	add_active(data, test2, test2->sheet.wander_ia);
+	test2->size_scale = 0.9; 
+
+	test2 = spawn_entity(data, get_prefab(data, "omen"), vec(20, 2), ft_strjoin("omen", ""));
+	test2->sheet.wander_ia = base_aggro;
+	test2->sheet.team = 1;
+	test2->sheet.fight_ia = martial_ia;
+	add_active(data, test2, test2->sheet.wander_ia);
+	test2->size_scale = 0.9; 
+
+	test2 = spawn_entity(data, get_prefab(data, "omen"), vec(20, 4), ft_strjoin("omen", ""));
+	test2->sheet.wander_ia = base_aggro;
+	test2->sheet.team = 1;
+	test2->sheet.fight_ia = martial_ia;
+	add_active(data, test2, test2->sheet.wander_ia);
+	test2->size_scale = 0.9; 
+
+	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
+	add_active(data, test2, NULL);
+	possess_control(test2, true);
+	ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
+	test2->size_scale = 0.9;
+
+	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
+	add_active(data, test2, NULL);
+	possess_control(test2, true);
+	ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
+	test2->size_scale = 0.9;
+
+	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
+	add_active(data, test2, NULL);
+	possess_control(test2, true);
+	ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
+	test2->size_scale = 0.9;
 }
 
 int	main(int argc, char **argv)
@@ -92,53 +119,18 @@ int	main(int argc, char **argv)
 		exit_free(&data, "Parsing error");
 	if (!check_textures(data.wall_tex))
 		exit_free(&data, "Cannot create texture");
-
 	init_player(&data);
-
 	create_minimap(&data, 100, 20);
-
 	mlx_set_fps_goal(data.mlx, FPS_CAP);
-	mlx_on_event(data.mlx, data.win, MLX_KEYDOWN, key_down_manager, &data);
-	mlx_on_event(data.mlx, data.win, MLX_KEYUP, key_up_manager, &data);
-	mlx_on_event(data.mlx, data.win, MLX_MOUSEWHEEL, mouse_wheel_manager, &data);
-	mlx_on_event(data.mlx, data.win, MLX_WINDOW_EVENT, window_manager, &data);
-	mlx_on_event(data.mlx, data.win, MLX_MOUSEDOWN, mouse_down_manager, &data);
-	mlx_on_event(data.mlx, data.win, MLX_MOUSEUP, mouse_up_manager, &data);
-	
+	init_mlx_events(&data);
 	update_chunk(&data);
-	//print_map(data.current_map);
 	mlx_loop_hook(data.mlx, loop, &data);
-
-	add_tex(&data, path_to_tex(&data, "textures/hutao.png"), ft_strdup("test"));
-	add_tex(&data, path_to_tex(&data, "textures/postal.png"), NULL);
-	add_tex(&data, path_to_tex(&data, "textures/s1.png"), ft_strdup("skybox1"));
-	add_tex(&data, path_to_tex(&data, "textures/s2.png"), ft_strdup("skybox2"));
-	add_tex(&data, path_to_tex(&data, "textures/s3.png"), ft_strdup("skybox3"));
-	add_tex(&data, path_to_tex(&data, "textures/s4.png"), ft_strdup("skybox4"));
-	data.sky_box_tex[0] = get_tex(&data, "skybox1");
-	data.sky_box_tex[1] = get_tex(&data, "skybox2");
-	data.sky_box_tex[2] = get_tex(&data, "skybox3");
-	data.sky_box_tex[3] = get_tex(&data, "skybox4");
-	add_tex(&data, path_to_tex(&data, "textures/brickwall.png"), ft_strdup("ceiling"));
-	add_tex(&data, path_to_tex(&data, "textures/woodwall.png"), ft_strdup("floor"));
-	data.ceiling = get_tex(&data, "ceiling");
-	data.floor = get_tex(&data, "floor");
-	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/fireball_button.png"), data.button_scale_size), ft_strdup("fireball_button"));
-	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/take_button.png"), data.button_scale_size), ft_strdup("take_button"));
-	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/inventory_button.png"), data.button_scale_size), ft_strdup("inventory_button"));
-	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/check_button.png"), data.button_scale_size), ft_strdup("check_button"));
-	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/move_button.png"), data.button_scale_size), ft_strdup("move_button"));
-	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/melee_button.png"), data.button_scale_size), ft_strdup("melee_button"));
-	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/range_button.png"), data.button_scale_size), ft_strdup("range_button"));
-	add_tex(&data, get_resized_free(path_to_tex(&data, "textures/punch_button.png"), data.button_scale_size), ft_strdup("punch_button"));
-
+	init_textures(&data);
 	load_spells_prefab(&data);
 	init_all_classes(&data);
 	init_test(&data);
-
 	if (data.round_manager.party)
 		possess(&data, data.round_manager.party->content);
-
 	mlx_loop(data.mlx);
 	free_data(&data);
 	mlx_destroy_window(data.mlx, data.win);

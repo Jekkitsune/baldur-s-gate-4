@@ -6,117 +6,18 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:36:56 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 14:32:06 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 17:24:54 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_type	get_type(char *type)
-{
-	if (!ft_strcmp(type, "weapon_1"))
-		return (weapon_1);
-	if (!ft_strcmp(type, "weapon_2"))
-		return (weapon_2);
-	if (!ft_strcmp(type, "head"))
-		return (head);
-	if (!ft_strcmp(type, "body"))
-		return (body);
-	if (!ft_strcmp(type, "hands"))
-		return (hands);
-	if (!ft_strcmp(type, "feet"))
-		return (feet);
-	if (!ft_strcmp(type, "living"))
-		return (living);
-	if (!ft_strcmp(type, "object"))
-		return (object);
-	if (!ft_strcmp(type, "consumable"))
-		return (consumable);
-	return (object);
-}
-
-void	finish_gnl(int fd)
-{
-	char	*line;
-
-	line = get_next_line(fd);
-	while (line)
-	{
-		free(line);
-		line = get_next_line(fd);
-	}
-}
-
-char	**get_next_stat(int fd)
-{
-	char	*line;
-	char	**splited;
-
-	line = get_next_line(fd);
-	if (!line)
-		return (NULL);
-	splited = ft_split(line, ':');
-	free(line);
-	if (!splited || !splited[0] || !splited[1])
-	{
-		ft_free_tab(splited);
-		finish_gnl(fd);
-		return (NULL);
-	}
-	return (splited);
-}
-
-t_bool	set_stat(int *stat, char *compare, char **splited)
-{
-	if (!splited || !splited[0] || !splited[1])
-		return (false);
-	if (!ft_strncmp(splited[0], compare, ft_strlen(compare)))
-	{
-		*stat = ft_atoi(splited[1]);
-		return (true);
-	}
-	return (false);
-}
-
-t_bool	set_multiple(t_sheet *s, char **splited)
-{
-	int	i;
-
-	if (!ft_strncmp(splited[0], "DICE", ft_strlen("DICE")) && splited[2])
-	{
-		i = dice_i(ft_atoi(splited[1]));
-		if (i != -1)
-			s->dice_dmg[i] = ft_atoi(splited[2]);
-		return (true);
-	}
-	else if (!ft_strncmp(splited[0], "SPELLSLOT", ft_strlen("SPELLSLOT")) && splited[2])
-	{
-		i = ft_atoi(splited[1]) - 1;
-		if (i >= 0 && i < SPELL_MAX_LV)
-			s->spell_slot[i] = ft_atoi(splited[2]);
-		return (true);
-	}
-	return (false);
-}
-
-void	remove_endl(char **splited)
-{
-	int	i;
-	int	i2;
-
-	if (!splited || !splited[0] || !splited[1])
-		return ;
-	i = 0;
-	while (splited[i + 1])
-		i++;
-	i2 = 0;
-	while (splited[i][i2])
-	{
-		if (splited[i][i2] == '\n')
-			splited[i][i2] = '\0';
-		i2++;
-	}
-}
+void	remove_endl(char **splited);
+t_bool	set_multiple(t_sheet *s, char **splited);
+t_bool	set_stat(int *stat, char *compare, char **splited);
+char	**get_next_stat(int fd);
+t_type	get_type(char *type);
+void	finish_gnl(int fd);
 
 t_bool	set_specific(t_data *data, t_sheet *s, char **splited)
 {
@@ -202,7 +103,8 @@ t_bool	set_properties(t_data *data, t_sheet *s, char **splited)
 {
 	int	i;
 
-	if (!splited || !splited[0] || !splited[1] || ft_strncmp(splited[0], "PROPERTIES", ft_strlen("PROPERTIES")))
+	if (!splited || !splited[0] || !splited[1]
+		|| ft_strncmp(splited[0], "PROPERTIES", ft_strlen("PROPERTIES")))
 		return (false);
 	remove_endl(splited);
 	i = 1;
@@ -230,7 +132,8 @@ void	get_prefab_stat(t_data *data, t_entity *prefab, char *directory)
 	splited = get_next_stat(fd);
 	while (splited)
 	{
-		if (!set_basic_stats(s, splited) && !set_game_stat(s, splited) && !set_specific(data, s, splited))
+		if (!set_basic_stats(s, splited) && !set_game_stat(s, splited)
+			&& !set_specific(data, s, splited))
 			set_properties(data, s, splited);
 		ft_free_tab(splited);
 		splited = get_next_stat(fd);

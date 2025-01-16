@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 01:39:16 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 01:48:00 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -504,8 +504,7 @@ void		draw_entities(t_data *data);
 t_entity	*create_entity(t_data *data, t_vector pos, t_texture *tex);
 void		calculate_entity_info(t_data *data, t_entity *entity);
 void		move_entity(t_data *data, t_entity *entity, t_vectorf move);
-void		follow_player(void *arg_data, void *arg_entity);
-void		ft_nothing(void *data, void *entity);
+//void		follow_player(void *arg_data, void *arg_entity);
 t_list		*ft_lstpop(t_list **lst_start, void *check);
 void		destroy_active(t_data *data, t_entity *entity);
 t_bool		check_activity(t_data *data, t_entity *entity);
@@ -570,7 +569,6 @@ void		set_dice(t_dice to_set, int dice, int nb);
 int			modif(int nb);
 void		copy_dice(t_dice to_set, t_dice copy);
 t_bool		check_properties(t_property properties, t_property check);
-t_bool		confirm(t_button *pushed);
 
 t_entity	*cycle_entity_cell(t_data *data, int move);
 void		inventory_swap(t_data *data, t_entity *entity, int index1, int index2);
@@ -599,8 +597,6 @@ void				set_all_entity_timer_prop(t_data *data, t_entity *entity);
 
 void		update_doors(t_data *data);
 void		open_door(t_data *data);
-
-void		init_test(t_data *data);
 
 void		init_all_classes(t_data *data);
 t_class		*get_class(t_list *class_lst, char *name);
@@ -643,6 +639,13 @@ t_bool		check_action_cost(t_spellinfo *spell);
 void		move_closest_to(t_data *data, t_entity *entity, t_entity *target);
 t_bool		get_best_spell_pos(t_data *data, t_spellinfo *spell, t_entity *caster);
 t_bool		has_obstacle_pos(t_data *data, t_vector from, t_vector to);
+t_entity	*get_closest_target(t_data *data, t_entity *entity);
+void		compare_buttons(t_data *data, t_button **current_best,
+			t_button *compare, t_entity *entity);
+t_button	*get_best_action(t_data *data, t_entity *entity, int min_range,
+			t_spelltype type);
+void		init_textures(t_data *data);
+void		init_mlx_events(t_data *data);
 
 //ia
 void		base_aggro(void *data_param, void *entity_param);

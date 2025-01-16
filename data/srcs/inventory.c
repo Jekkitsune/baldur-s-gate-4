@@ -6,35 +6,13 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:40:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 11:46:31 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 01:08:44 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	can_be_taken(t_entity *taker, t_entity *taken)
-{
-	int	i;
-
-	if (taker->sheet.weight + taken->sheet.weight > taker->sheet.carry
-		|| taker == taken)
-		return (-1);
-	if (taken->sheet.type < NON_EQUIP)
-	{
-		if (taken->sheet.type == weapon_2 && !taker->sheet.inventory[weapon_1])
-			return (weapon_1);
-		else if (!taker->sheet.inventory[taken->sheet.type])
-			return (taken->sheet.type);
-	}
-	i = NON_EQUIP;
-	while (i < INVENTORY_SIZE)
-	{
-		if (!taker->sheet.inventory[i])
-			return (i);
-		i++;
-	}
-	return (-1);
-}
+int	can_be_taken(t_entity *taker, t_entity *taken);
 
 t_bool	add_to_inventory(t_data *data, t_entity *taker, t_entity *taken)
 {
@@ -48,8 +26,10 @@ t_bool	add_to_inventory(t_data *data, t_entity *taker, t_entity *taken)
 	if (i != -1 && i < INVENTORY_SIZE && !taker->sheet.inventory[i])
 	{
 		if (in_bound(data->current_map, taken->pos))
-			free(ft_lstpop(&data->current_map->arr[taken->pos.x][taken->pos.y].entities, taken));
+			free(ft_lstpop(&data->current_map->arr[taken->pos.x][taken->pos.y].\
+			entities, taken));
 		free_path(&taken->behavior.path);
+		taken->pos.x = -1;
 		taker->sheet.inventory[i] = taken;
 		if (i < NON_EQUIP)
 			refresh_stats(data, taker);
@@ -70,10 +50,12 @@ void	take(void *data_param, void *spell_param)
 	{
 		if (add_to_inventory(data, spell->caster, spell->target))
 		{
-			show_info(data, "%s picked up %s.\n", spell->caster->sheet.name, spell->target->sheet.name);
+			show_info(data, "%s picked up %s.\n", spell->caster->sheet.name,
+				spell->target->sheet.name);
 			return ;
 		}
-		show_info(data, "%s tried to pick up %s, but couldn't.\n", spell->caster->sheet.name, spell->target->sheet.name);
+		show_info(data, "%s tried to pick up %s, but couldn't.\n",
+			spell->caster->sheet.name, spell->target->sheet.name);
 	}
 }
 

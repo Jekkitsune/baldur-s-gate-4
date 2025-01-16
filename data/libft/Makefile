@@ -72,7 +72,8 @@ SRCS = ft_bzero.c \
 		ft_tablen.c\
 		ft_inset.c\
 		ft_add_element_tab.c\
-		ft_tabcpy.c
+		ft_tabcpy.c\
+		ft_lstpop.c
 
 OBJS = ${SRCS:.c=.o}
 

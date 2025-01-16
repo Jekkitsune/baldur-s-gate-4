@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 11:05:18 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/07 11:49:09 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 23:40:02 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,12 @@ void	draw_one_point(t_data *data, t_vector pos, uint32_t color)
 
 	size = data->button_scale_size / 3;
 	row_diff = (data->button_scale_size - size) / 2;
-	draw_point(data, vec(pos.x + (data->button_scale_size / 2) - (size / 2), pos.y + row_diff), color, size);
+	draw_point(data, vec(pos.x + (data->button_scale_size / 2)
+			- (size / 2), pos.y + row_diff), color, size);
 }
 
-void	draw_box_points(t_data *data, t_vector pos, int nb_point, uint32_t color)
+void	draw_box_points(t_data *data, t_vector pos, int nb_point,
+	uint32_t color)
 {
 	int			row;
 	int			row_diff;
@@ -99,7 +101,7 @@ void	draw_box_points(t_data *data, t_vector pos, int nb_point, uint32_t color)
 	if (!size)
 		size = 1;
 	row_diff = (data->button_scale_size - (size * row)) / (row + 1);
-	get_good_tab(tab, nb_point); 
+	get_good_tab(tab, nb_point);
 	i = 0;
 	while (tab[i] && i < 3)
 	{

@@ -6,17 +6,27 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 18:51:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 15:17:01 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 00:11:11 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+t_bool	curr_poss(t_data *data, t_entity *current)
+{
+	if (!current)
+		return (false);
+	if (current == data->player.possession)
+		unpossess(data);
+	else
+		possess(data, current);
+	return (true);
+}
+
 void	check_click_participants_icon(t_data *data, t_vector mouse)
 {
 	t_vector	pos;
 	t_list		*participants;
-	t_entity	*current;
 	int			i;
 
 	i = 0;
@@ -29,15 +39,8 @@ void	check_click_participants_icon(t_data *data, t_vector mouse)
 	{
 		if (mouse.x >= pos.x && mouse.x <= pos.x + data->button_scale_size
 			&& mouse.y >= pos.y && mouse.y <= pos.y + data->button_scale_size
-			&& i++ < MAX_PARTIC_ICON)
-		{
-			current = participants->content;
-			if (current && current == data->player.possession)
-				unpossess(data);
-			else if (current)
-				possess(data, current);
+			&& i++ < MAX_PARTIC_ICON && curr_poss(data, participants->content))
 			return ;
-		}
 		participants = participants->next;
 		pos.x += data->button_scale_size;
 	}

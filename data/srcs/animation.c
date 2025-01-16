@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 23:48:43 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 20:12:42 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 17:35:12 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ void	continue_anim(t_data *data, t_entity *entity)
 	entity->anim_clock -= data->player.speed;
 	if (entity->anim_clock < 0)
 	{
-		entity->anim_index += 1 + (ft_abs((int)entity->anim_clock) / current->interval);
+		entity->anim_index += 1 + (ft_abs((int)entity->anim_clock)
+				/ current->interval);
 		if (entity->anim_index >= current->size)
 		{
 			entity->anim_index = entity->anim_index % current->size;
@@ -94,7 +95,8 @@ void	continue_anim(t_data *data, t_entity *entity)
 	}
 }
 
-void	change_anim_next(t_entity *entity, char *anim1, char *anim2, t_bool loop)
+void	change_anim_next(t_entity *entity, char *anim1,
+	char *anim2, t_bool loop)
 {
 	if (!entity)
 		return ;

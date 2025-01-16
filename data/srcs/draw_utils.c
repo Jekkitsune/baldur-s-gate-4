@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 00:42:04 by fparis            #+#    #+#             */
-/*   Updated: 2024/12/12 21:54:34 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 20:16:36 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	draw_square(t_data *data, t_vector pos, t_linfo info)
 		while (i.x < info.width)
 		{
 			ft_pixel_put(data, i.y + offset.y, i.x + offset.x, info.color);
-			//mlx_pixel_put(data->mlx, data->win, i.x + offset.x, i.y + offset.y, info.color);
 			i.x++;
 		}
 		i.y++;
@@ -67,7 +66,7 @@ void	draw_shallow(t_data *data, t_vector p1, t_vector p2, t_linfo info)
 	delta.y = ft_abs(p2.y - p1.y);
 	i.x = p1.x;
 	i.y = p1.y;
-	checker = (2 * delta.y) - delta.x; 
+	checker = (2 * delta.y) - delta.x;
 	while (i.x <= p2.x && info.check(data, i))
 	{
 		draw_square(data, i, info);

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:30:20 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/14 17:01:09 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 23:15:01 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,16 @@ void	fireball_damage(void *data, t_entity *target, t_entity *caster, int nb)
 		result = roll_one(20, 1) + target->sheet.saving[DEX];
 		if (result < caster->sheet.spell_dc)
 		{
-			show_info(data, "%s failed a DEX saving (%d) throw against %s's fireball (%d)\n", target->sheet.name, result, caster->sheet.name, caster->sheet.spell_dc);
+			show_info(data, "%s failed a DEX saving (%d) throw against %s's \
+fireball (%d)\n", target->sheet.name, result, caster->sheet.name,
+				caster->sheet.spell_dc);
 			damage(data, target, nb);
 		}
 		else
 		{
-			show_info(data, "%s succeeded a DEX saving (%d) throw against %s's fireball (%d)\n", target->sheet.name, result, caster->sheet.name, caster->sheet.spell_dc);
+			show_info(data, "%s succeeded a DEX saving (%d) throw against %s's \
+fireball (%d)\n", target->sheet.name, result, caster->sheet.name,
+				caster->sheet.spell_dc);
 			damage(data, target, nb / 2);
 		}
 	}
@@ -60,7 +64,8 @@ void	fireball(void *data_param, void *spell_param)
 	spell = spell_param;
 	if (!apply_action_cost(spell))
 		return ;
-	explosion = spawn_entity(data, get_prefab(data, "explosion"), spell->pos, ft_strjoin("explosion", ""));
+	explosion = spawn_entity(data, get_prefab(data, "explosion"), spell->pos,
+			ft_strjoin("explosion", ""));
 	explosion->sheet.alive = false;
 	if (!explosion)
 		return ;

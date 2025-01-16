@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_add_element_tab.c                               :+:      :+:    :+:   */
+/*   finish_gnl.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/12 22:15:29 by gmassoni          #+#    #+#             */
-/*   Updated: 2025/01/15 17:15:04 by fparis           ###   ########.fr       */
+/*   Created: 2025/01/15 17:30:41 by fparis            #+#    #+#             */
+/*   Updated: 2025/01/15 17:32:44 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3d.h"
 
-char	**ft_add_element_tab(char **tab, char *str)
+void	finish_gnl(int fd)
 {
-	int		len;
-	char	**res;
+	char	*line;
 
-	len = ft_tablen(tab);
-	res = ft_calloc(len + 2, sizeof(char *));
-	if (res == NULL)
+	line = get_next_line(fd);
+	while (line)
 	{
-		free(tab);
-		return (NULL);
+		free(line);
+		line = get_next_line(fd);
 	}
-	ft_tabcpy(res, tab);
-	free(tab);
-	res[len] = str;
-	res[len + 1] = NULL;
-	return (res);
 }

@@ -6,11 +6,14 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 23:25:12 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 11:13:16 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 23:13:03 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	free_tex_lst(t_data *data);
+void	free_all_maps(t_data *data);
 
 void	free_tex(t_texture *tex)
 {
@@ -32,44 +35,6 @@ void	free_tex(t_texture *tex)
 		free(tex->tab);
 	}
 	free(tex);
-}
-
-void	free_map(t_data *data, t_map *map)
-{
-	int		x;
-	int		y;
-	t_list	*lst;
-	t_list	*tmp;
-
-	x = 0;
-	lst = map->active_entities;
-	while (lst)
-	{
-		tmp = lst;
-		lst = lst->next;
-		destroy_entity(data, tmp->content);
-	}
-	while (x < map->size.x)
-	{
-		y = 0;
-		while (y < map->size.y)
-		{
-			lst = map->arr[x][y].entities;
-			while (lst)
-			{
-				tmp = lst;
-				lst = lst->next;
-				destroy_entity(data, tmp->content);
-			}
-			y++;
-		}
-		free(map->arr[x]);
-		x++;
-	}
-	free(map->arr);
-	if (map->path)
-		free(map->path);
-	free(map);
 }
 
 void	free_minimap(t_data *data)
@@ -103,70 +68,12 @@ void	free_prefab_tab(t_data *data)
 	data->prefab_tab = NULL;
 }
 
-void	free_prefab_entity(t_data *data, t_entity *entity)
-{
-	int	i;
-	int	i2;
-
-	if (entity->anim)
-	{
-		i = 0;
-		while (i < entity->nb_anim)
-		{
-			if (entity->anim[i].name)
-				free(entity->anim[i].name);
-			i2 = 0;
-			while (i2 < entity->anim[i].size)
-			{
-				free_tex(entity->anim[i].tab[i2]);
-				i2++;
-			}
-			free(entity->anim[i].tab);
-			i++;
-		}
-		free(entity->anim);
-	}
-	if (entity->sheet.portrait)
-		free_tex(entity->sheet.portrait);
-	free(entity->sheet.description);
-	destroy_entity(data, entity);
-}
-
-void	free_tex_lst(t_data *data)
-{
-	t_list		*lst_i;
-	t_list		*tmp;
-
-	lst_i = data->textures;
-	while (lst_i)
-	{
-		if (lst_i->content)
-			free_tex(lst_i->content);
-		tmp = lst_i;
-		lst_i = lst_i->next;
-		free(tmp);
-	}
-	free_tex(data->wall_tex[0]);
-	free_tex(data->wall_tex[1]);
-	free_tex(data->wall_tex[2]);
-	free_tex(data->wall_tex[3]);
-}
-
 void	free_data(t_data *data)
 {
 	int		i;
-	t_list	*lst;
-	t_list	*to_free;
 
+	free_all_maps(data);
 	free_prefab_tab(data);
-	lst = data->map_list;
-	while (lst)
-	{
-		free_map(data, lst->content);
-		to_free = lst;
-		lst = lst->next;
-		free(to_free);
-	}
 	free_minimap(data);
 	free_tex_lst(data);
 	free_visible_lst(data);

@@ -1,32 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_add_element_tab.c                               :+:      :+:    :+:   */
+/*   ft_lstpop.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/12 22:15:29 by gmassoni          #+#    #+#             */
-/*   Updated: 2025/01/15 17:15:04 by fparis           ###   ########.fr       */
+/*   Created: 2025/01/15 20:43:30 by fparis            #+#    #+#             */
+/*   Updated: 2025/01/15 20:43:57 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	**ft_add_element_tab(char **tab, char *str)
+t_list	*ft_lstpop(t_list **lst_start, void *check)
 {
-	int		len;
-	char	**res;
+	t_list	*i;
+	t_list	*tmp;
 
-	len = ft_tablen(tab);
-	res = ft_calloc(len + 2, sizeof(char *));
-	if (res == NULL)
-	{
-		free(tab);
+	if (!lst_start || !*lst_start)
 		return (NULL);
+	i = *lst_start;
+	if (i->content == check)
+	{
+		*lst_start = i->next;
+		return (i);
 	}
-	ft_tabcpy(res, tab);
-	free(tab);
-	res[len] = str;
-	res[len + 1] = NULL;
-	return (res);
+	while (i->next && i->next->content != check)
+		i = i->next;
+	tmp = i;
+	i = i->next;
+	if (!i)
+		return (NULL);
+	tmp->next = i->next;
+	return (i);
 }

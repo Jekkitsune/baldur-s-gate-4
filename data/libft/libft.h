@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 13:26:57 by mbico             #+#    #+#             */
-/*   Updated: 2024/10/11 02:43:27 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 20:45:02 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ int		ft_inset(char c, char *set);
 char	**ft_add_element_tab(char **tab, char *elt);
 void	ft_tabcpy(char **dst, char **src);
 void	ft_tablcpy(char **dst, char **src, size_t size);
+t_list	*ft_lstpop(t_list **lst_start, void *check);
 
 #endif

@@ -6,11 +6,14 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:22:10 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 01:11:35 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/15 23:53:27 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+t_bool	try_one_face(t_data *data, t_entity *entity, char *base_str,
+			char *face);
 
 // void	*ft_memjoin_free(void *m1, void *m2, size_t size1, size_t size2)
 // {
@@ -30,109 +33,6 @@
 // 	return (res);
 // }
 
-t_animation	*add_anim(t_animation **tab, t_animation *new, int *nb_anim)
-{
-	t_animation	*res;
-
-	if (!tab)
-	{
-		*tab = new;
-		return (new);
-	}
-	if (!new)
-		return (*tab);
-	res = ft_calloc(*nb_anim + 1, sizeof(t_animation));
-	ft_memcpy(res, *tab, *nb_anim * sizeof(t_animation));
-	ft_memcpy(&(res[*nb_anim]), new, sizeof(t_animation));
-	if (!res)
-		return (*tab);
-	free(*tab);
-	*nb_anim += 1;
-	*tab = res;
-	return (res);
-}
-
-int	get_anim_size(char *path)
-{
-	char	*str;
-	int		fd;
-	int		i;
-	int		nb_frame;
-
-	str = ft_calloc((ft_strlen(path) + 1), sizeof(char));
-	if (!str)
-		return (0);
-	ft_strlcpy(str, path, ft_strlen(path) + 1);
-	nb_frame = ft_strlen(path) - 6;
-	i = 1;
-	fd = open(str, O_RDONLY);
-	while (fd != -1)
-	{
-		i++;
-		close(fd);
-		if (i >= 100 && i % 100 == 0)
-			str[nb_frame - 1] = '0' + i % 1000 / 100;
-		str[nb_frame] = '0' + (i % 100 / 10);
-		str[nb_frame + 1] = '0' + i % 10;
-		fd = open(str, O_RDONLY);
-	}
-	free(str);
-	return (i - 1);
-}
-
-int	try_format(char **str, char *format)
-{
-	char	*test;
-	int		anim_size;
-
-	test = ft_strjoin(*str, format);
-	anim_size = get_anim_size(test);
-	if (anim_size)
-	{
-		free(*str);
-		*str = test;
-		return (anim_size);
-	}
-	free(test);
-	return (0);
-}
-
-int	check_anim_existence(char **str)
-{
-	int		anim_size;
-
-	anim_size = try_format(str, ".png");
-	if (anim_size)
-		return (anim_size);
-	anim_size = try_format(str, ".jpg");
-	if (anim_size)
-		return (anim_size);
-	anim_size = try_format(str, ".bmp");
-	if (anim_size)
-		return (anim_size);
-	return (0);
-}
-
-t_bool	try_one_face(t_data *data, t_entity *entity, char *base_str, char *face)
-{
-	int			anim_size;
-	char		*str;
-	t_animation	anim;
-
-	str = NULL;
-	str = ft_vajoin(base_str, face, "01", NULL);
-	anim_size = check_anim_existence(&str);
-	if (anim_size)
-	{
-		init_anim(data, &anim, anim_size, str);
-		free(str);
-		add_anim(&entity->anim, &anim, &entity->nb_anim);
-		return (true);
-	}
-	free(str);
-	return (false);
-}
-
 void	set_anim_info(t_animation *anim, char *name, int interval)
 {
 	if (!anim)
@@ -141,19 +41,24 @@ void	set_anim_info(t_animation *anim, char *name, int interval)
 	anim->interval = interval;
 }
 
-t_entity	*try_all_faces(t_data *data, t_entity *entity, char *directory, char *name)
+t_entity	*try_all_faces(t_data *data, t_entity *entity, char *directory,
+	char *name)
 {
 	char		*base_str;
 
 	base_str = ft_vajoin(directory, "/anim/", name, NULL);
 	if (try_one_face(data, entity, base_str, ""))
-		set_anim_info(&entity->anim[entity->nb_anim - 1], ft_strjoin(name, ""), 10);
+		set_anim_info(&entity->anim[entity->nb_anim - 1],
+			ft_strjoin(name, ""), 10);
 	if (try_one_face(data, entity, base_str, "_sidel"))
-		set_anim_info(&entity->anim[entity->nb_anim - 1], ft_strjoin(name, "_sidel"), 10);
+		set_anim_info(&entity->anim[entity->nb_anim - 1],
+			ft_strjoin(name, "_sidel"), 10);
 	if (try_one_face(data, entity, base_str, "_back"))
-		set_anim_info(&entity->anim[entity->nb_anim - 1], ft_strjoin(name, "_back"), 10);
+		set_anim_info(&entity->anim[entity->nb_anim - 1],
+			ft_strjoin(name, "_back"), 10);
 	if (try_one_face(data, entity, base_str, "_sider"))
-		set_anim_info(&entity->anim[entity->nb_anim - 1], ft_strjoin(name, "_sider"), 10);
+		set_anim_info(&entity->anim[entity->nb_anim - 1],
+			ft_strjoin(name, "_sider"), 10);
 	free(base_str);
 	return (entity);
 }
@@ -181,6 +86,24 @@ t_texture	*get_portrait(t_data *data, char *directory)
 	return (NULL);
 }
 
+void	get_all_anim(t_data *data, t_entity *entity, char *directory)
+{
+	entity->anim = NULL;
+	try_all_faces(data, entity, directory, "idle");
+	try_all_faces(data, entity, directory, "walk");
+	try_all_faces(data, entity, directory, "melee");
+	try_all_faces(data, entity, directory, "range");
+	try_all_faces(data, entity, directory, "select");
+	try_all_faces(data, entity, directory, "cast");
+	try_all_faces(data, entity, directory, "dead");
+	if (!entity->anim)
+	{
+		free_prefab_entity(data, entity);
+		ft_putstr_fd(directory, 2);
+		exit_free(data, " prefab does not have any anim");
+	}
+}
+
 t_entity	*get_prefab_data(t_data *data, char *directory)
 {
 	t_entity	*entity;
@@ -193,23 +116,11 @@ t_entity	*get_prefab_data(t_data *data, char *directory)
 	entity->offset = vecf(0, 0);
 	entity->pos = vec(-1, -1);
 	entity->tex[0] = data->wall_tex[0];
-	set_entity_tex(entity, data->wall_tex[0], data->wall_tex[0], data->wall_tex[0]);
-	entity->behavior.func = ft_nothing;
-	entity->anim = NULL;
-	try_all_faces(data, entity, directory, "idle");
-	try_all_faces(data, entity, directory, "walk");
-	try_all_faces(data, entity, directory, "melee");
-	try_all_faces(data, entity, directory, "range");
-	try_all_faces(data, entity, directory, "select");
-	try_all_faces(data, entity, directory, "cast");
-	try_all_faces(data, entity, directory, "dead");
-	entity->sheet.portrait = get_resized_free(get_portrait(data, directory), data->button_scale_size);
+	set_entity_tex(entity, data->wall_tex[0], data->wall_tex[0],
+		data->wall_tex[0]);
+	get_all_anim(data, entity, directory);
+	entity->sheet.portrait = get_resized_free(get_portrait(data, directory),
+			data->button_scale_size);
 	get_prefab_stat(data, entity, directory);
-	if (!entity->anim)
-	{
-		free_prefab_entity(data, entity);
-		ft_putstr_fd(directory, 2);
-		exit_free(data, "Prefab does not have any anim");
-	}
 	return (entity);
 }
