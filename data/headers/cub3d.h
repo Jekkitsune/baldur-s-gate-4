@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 01:48:00 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 16:27:01 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,6 +350,7 @@ typedef struct s_impact
 	t_vectorf	direc;
 	float		angle;
 	t_cell		*cell;
+	t_vectorf	slope_coef;
 }	t_impact;
 
 typedef	struct s_map

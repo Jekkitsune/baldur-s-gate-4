@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_data->c                                        :+:      :+:    :+:   */
+/*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/05 16:19:11 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 01:47:18 by fparis           ###   ########.fr       */
+/*   Created: 2025/01/16 16:13:43 by fparis            #+#    #+#             */
+/*   Updated: 2025/01/16 16:14:00 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	init_mlx_events(t_data *data)
 {
 	mlx_on_event(data->mlx, data->win, MLX_KEYDOWN, key_down_manager, data);
 	mlx_on_event(data->mlx, data->win, MLX_KEYUP, key_up_manager, data);
-	mlx_on_event(data->mlx, data->win, MLX_MOUSEWHEEL, mouse_wheel_manager, data);
+	mlx_on_event(data->mlx, data->win, MLX_MOUSEWHEEL, mouse_wheel_manager,
+		data);
 	mlx_on_event(data->mlx, data->win, MLX_WINDOW_EVENT, window_manager, data);
 	mlx_on_event(data->mlx, data->win, MLX_MOUSEDOWN, mouse_down_manager, data);
 	mlx_on_event(data->mlx, data->win, MLX_MOUSEUP, mouse_up_manager, data);
