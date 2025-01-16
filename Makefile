@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/16 23:46:03 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/16 23:51:00 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -114,7 +114,7 @@ OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) $^ -o $(NAME) $(LIBFT) data/MacroLibX/libmlx.so -lSDL2 -I $(HEADER) -lm
+	@$(CC) $(CFLAGS) $^ -o $(NAME) $(LIBFT) data/macroLibX/libmlx.so -lSDL2 -I $(HEADER) -lm
 	 @echo "$(NAME) compilation successful !"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c

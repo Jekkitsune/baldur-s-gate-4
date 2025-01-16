@@ -6,14 +6,14 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 19:53:35 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 23:51:28 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "../MacroLibX/includes/mlx.h"
+# include "../macroLibX/includes/mlx.h"
 # include "../libft/libft.h"
 
 # define M_PI 0
