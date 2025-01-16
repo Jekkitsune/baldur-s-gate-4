@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/16 02:04:57 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/16 23:46:03 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,19 +29,25 @@ SRCS = main.c\
 		command.c\
 		command_2.c\
 		move.c\
+		move_utils.c\
+		move_possession.c\
 		draw_utils.c\
 		draw_utils_2.c\
 		raycast.c\
+		raycast_2.c\
+		raycast_3.c\
+		raycast_simple.c\
 		player_vision.c\
+		doors.c\
 		shape_func.c\
 		init_data.c\
 		trigo_utils.c\
 		parsing.c\
 		mouse.c\
-		move_utils.c\
 		resize.c\
 		init_textures.c\
 		texture_utils.c\
+		texture_utils_2.c\
 		vectorf_utils.c\
 		free.c\
 		free_2.c\
@@ -56,11 +62,13 @@ SRCS = main.c\
 		entity_active.c\
 		entity_possess.c\
 		entity_move.c\
+		pathfinding.c\
+		pathfinding_2.c\
 		animation.c\
 		animation_init.c\
+		prefab.c\
 		load_prefab.c\
 		load_prefab_utils.c\
-		prefab.c\
 		buttons.c\
 		buttons_draw.c\
 		buttons_draw_2.c\
@@ -72,19 +80,19 @@ SRCS = main.c\
 		actions_2.c\
 		spells_init.c\
 		spells.c\
-		raycast_simple.c\
 		fireball.c\
 		ui.c\
 		put_screen.c\
 		stats.c\
 		dice.c\
 		dice_2.c\
+		check.c\
+		check_2.c\
 		properties.c\
-		pathfinding.c\
 		timer_effect.c\
-		printf_to_str.c\
-		doors.c\
 		timer_property.c\
+		printf_to_str.c\
+		printf_to_str_utils.c\
 		class.c\
 		class_init.c\
 		attack.c\

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 20:11:38 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 20:11:51 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 22:17:01 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,16 @@ int	mouse_wheel_manager(int key, void *param)
 	data = (t_data *)param;
 	data->player.mouse_wheel = key;
 	return (0);
+}
+
+int	window_manager(int event, void *param)
+{
+	t_data	*data;
+
+	data = param;
+	if (event == 7)
+		data->on_screen = 0;
+	if (event == 5)
+		data->on_screen = 1;
+	return (1);
 }

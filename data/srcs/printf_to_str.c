@@ -6,45 +6,14 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:45:13 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/06 08:56:49 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 19:25:07 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-char	*ft_strndup(char *s, int n)
-{
-	char	*res;
-	int		size;
-	int		i;
-
-	size = ft_strlen(s);
-	if (!size || n <= 0)
-		return (NULL);
-	if (size > n)
-		size = n;
-	res = ft_calloc(sizeof(char), size + 1);
-	if (!res)
-		return (res);
-	i = 0;
-	while (i < size)
-	{
-		res[i] = s[i];
-		i++;
-	}
-	return (res);
-}
-
-char	*ft_ctos(char c)
-{
-	char	*res;
-
-	res = ft_calloc(sizeof(char), 2);
-	if (!res)
-		return (res);
-	res[0] = c;
-	return (res);
-}
+char	*ft_strndup(char *s, int n);
+char	*ft_ctos(char c);
 
 char	*get_added(char c, va_list args)
 {
@@ -118,7 +87,8 @@ void	put_screen_info(t_data *data, char *str)
 	if (i >= MAX_SCREEN_INFO)
 		i = replace_oldest(data->screen_info, &data->string_to_put);
 	pos.x = data->minimap.pos.x;
-	pos.y = data->minimap.pos.y * 2 + data->minimap.UI_size + (data->button_scale_size / 2 * i);
+	pos.y = data->minimap.pos.y * 2 + data->minimap.UI_size
+		+ (data->button_scale_size / 2 * i);
 	to_put = strput(str, pos, (float)data->button_scale_size / 2.0, 0xFF000000);
 	if (screen_string_put(data, to_put, 20))
 		data->screen_info[i] = to_put;

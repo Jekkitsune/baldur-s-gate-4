@@ -6,13 +6,14 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 23:37:10 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 11:56:01 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 20:16:59 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	add_timer_effect(t_data *data, t_spellinfo spell, float time, t_bool in_round)
+void	add_timer_effect(t_data *data, t_spellinfo spell, float time,
+	t_bool in_round)
 {
 	t_timer_effect	*res;
 	t_list			*new;
@@ -45,8 +46,9 @@ void	update_all_timer_effects(t_data *data, t_bool round)
 	{
 		current = lst->content;
 		lst = lst->next;
-		if (current && ((round && current->in_round && --current->duration <= 0)
-			|| (!current->in_round && (current->duration -= data->frame_time) <= 0)))
+		current->duration -= data->frame_time;
+		if ((round && current->in_round && --current->duration <= 0)
+			|| (!current->in_round && current->duration <= 0))
 		{
 			current->spell.effect(data, &current->spell);
 			tmp = ft_lstpop(&data->timer_effect, current);
@@ -68,8 +70,8 @@ void	clear_entity_timer_effect(t_data *data, t_entity *entity)
 		current = lst->content;
 		lst = lst->next;
 		if (current && (current->spell.caster == entity
-			|| current->spell.target == entity
-			|| current->spell.summon == entity))
+				|| current->spell.target == entity
+				|| current->spell.summon == entity))
 		{
 			tmp = ft_lstpop(&data->timer_effect, current);
 			free(tmp->content);

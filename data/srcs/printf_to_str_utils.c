@@ -1,47 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   maps.c                                             :+:      :+:    :+:   */
+/*   printf_to_str_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/23 19:58:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 23:45:21 by fparis           ###   ########.fr       */
+/*   Created: 2025/01/16 19:24:24 by fparis            #+#    #+#             */
+/*   Updated: 2025/01/16 19:24:40 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	print_map(t_map *map)
+char	*ft_strndup(char *s, int n)
 {
-	int	x;
-	int	y;
+	char	*res;
+	int		size;
+	int		i;
 
-	y = 0;
-	while (y < map->size.y)
+	size = ft_strlen(s);
+	if (!size || n <= 0)
+		return (NULL);
+	if (size > n)
+		size = n;
+	res = ft_calloc(sizeof(char), size + 1);
+	if (!res)
+		return (res);
+	i = 0;
+	while (i < size)
 	{
-		x = 0;
-		while (x < map->size.x)
-		{
-			if (map->arr[x][y].type)
-				printf("%c", map->arr[x][y].type);
-			else
-				printf(" ");
-			x++;
-		}
-		printf("\n");
-		y++;
+		res[i] = s[i];
+		i++;
 	}
+	return (res);
 }
 
-void	print_path(t_path *path)
+char	*ft_ctos(char c)
 {
-	if (!path)
-		printf("NONE");
-	while (path)
-	{
-		printf("%d %d -> ", path->pos.x, path->pos.y);
-		path = path->next;
-	}
-	printf("\n");
+	char	*res;
+
+	res = ft_calloc(sizeof(char), 2);
+	if (!res)
+		return (res);
+	res[0] = c;
+	return (res);
 }

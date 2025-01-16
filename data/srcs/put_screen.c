@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 21:34:36 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 11:47:45 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 20:24:32 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ void	clear_string_put(t_data *data, t_bool force)
 	{
 		current = lst->content;
 		lst = lst->next;
-		if (force || !current || !current->duration || (current->duration -= data->frame_time) <= 0)
+		current->duration -= data->frame_time;
+		if (force || !current->duration || current->duration <= 0)
 		{
 			remove_screen_info(data->screen_info, current);
 			tmp = ft_lstpop(&data->string_to_put, current);

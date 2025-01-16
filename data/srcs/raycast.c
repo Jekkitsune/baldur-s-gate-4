@@ -6,149 +6,37 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 17:34:19 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 19:07:49 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	sort_entity(t_data *data, t_entity *entity)
+void		add_cell_entities(t_data *data, t_impact *ray);
+t_impact	*check_door(t_impact *impact, t_data *data, t_vectorf length,
+				t_vector sign);
+void		check_fog(t_impact *impact, t_data *data, t_vectorf length);
+
+t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length,
+	t_vector sign)
 {
-	t_list		*i;
-	t_list		*new;
-
-	new = ft_lstnew(entity);
-	if (!new)
-		return ;
-	calculate_entity_info(data, entity);
-	entity->nb_impact++;
-	i = data->player.visible_entities;
-	if (!i || ((t_entity *)i->content)->distance <= entity->distance)
-	{
-		ft_lstadd_front(&data->player.visible_entities, new);
-		return ;
-	}
-	while (i->next && ((t_entity *)i->next->content)->distance
-		> entity->distance)
-		i = i->next;
-	new->next = i->next;
-	i->next = new;
-}
-
-void	add_cell_entities(t_data *data, t_impact *ray)
-{
-	t_list		*cell_lst;
-	t_entity	*current_entity;
-
-	cell_lst = data->current_map->arr[ray->wall_pos.x][ray->wall_pos.y].\
-	entities;
-	while (cell_lst)
-	{
-		current_entity = cell_lst->content;
-		if (current_entity->nb_impact > 0)
-			return ;
-		if (current_entity->visible)
-			sort_entity(data, current_entity);
-		cell_lst = cell_lst->next;
-	}
-}
-
-void	check_fog(t_impact *impact, t_data *data, t_vectorf length)
-{
-	t_cell	*cell;
-
-	cell = &data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y];
-	if (!impact->fog_color && cell->fog_color)
-	{
-		impact->fog_color = cell->fog_color;
-		if (ft_absf(length.x) <= ft_absf(length.y))
-			impact->fog_length = ft_absf(length.x);
-		else
-			impact->fog_length = ft_absf(length.y);
-	}
-}
-
-t_impact	*found_wall(t_impact *impact, t_vectorf length)
-{
-	if (ft_absf(length.x) <= ft_absf(length.y))
-	{
-		impact->face = 2;
-		if (length.x < 0)
-			impact->face = 4;
-		impact->length = ft_absf(length.x);
-	}
-	else
-	{
-		impact->face = 1;
-		if (length.y < 0)
-			impact->face = 3;
-		impact->length = ft_absf(length.y);
-	}
-	return (impact);
-}
-
-t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length, t_vector sign)
-{
-	int	tmp;
-
 	if (!in_bound(data->current_map, impact->wall_pos)
 		|| ft_min(ft_absf(length.x), ft_absf(length.y)) > data->render_distance)
-			return (impact);
+		return (impact);
 	if (!length.x || !length.y)
 		return (NULL);
 	add_cell_entities(data, impact);
 	check_fog(impact, data, length);
-	if (data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type != WALL
-		&& data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type != DOOR)
+	if (data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type
+		!= WALL
+		&& data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type
+		!= DOOR)
 		return (NULL);
-	impact->cell = &data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y];
+	impact->cell
+		= &data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y];
 	if (impact->cell->type == DOOR)
-	{
-		if (ft_absf(length.x) > ft_absf(length.y))
-		{
-			tmp = impact->wall_pos.y;
-			length.y += 0.5 * impact->slope_coef.y;
-			if (length.y / impact->slope_coef.y != impact->wall_pos.y)
-				impact->wall_pos.y += sign.y;
-			if ((data->player.pos.x * (data->scale * 2) + data->player.offset.x + data->scale + (impact->direc.x * ft_absf(length.y))) / (data->scale * 2) - impact->wall_pos.x
-				> data->current_map->arr[impact->wall_pos.x][tmp].timer)
-			{
-				impact->wall_pos.y = tmp;
-				return (NULL);
-			}
-		}
-		else
-		{
-			tmp = impact->wall_pos.x;
-			length.x += 0.5 * impact->slope_coef.x;
-			if (length.x / impact->slope_coef.x != impact->wall_pos.x)
-				impact->wall_pos.x += sign.x;
-			if ((data->player.pos.y * (data->scale * 2) + data->player.offset.y + data->scale + (impact->direc.y * ft_absf(length.x))) / (data->scale * 2) - impact->wall_pos.y
-				> data->current_map->arr[tmp][impact->wall_pos.y].timer)
-			{
-				impact->wall_pos.x = tmp;
-				return (NULL);
-			}
-		}
-	}
+		return (check_door(impact, data, length, sign));
 	return (found_wall(impact, length));
-}
-
-void		free_visible_lst(t_data *data)
-{
-	t_list	*i;
-	t_list	*to_free;
-
-	if (!data->player.visible_entities)
-		return ;
-	i = data->player.visible_entities;
-	while (i)
-	{
-		to_free = i;
-		i = i->next;
-		free(to_free);
-	}
-	data->player.visible_entities = NULL;
 }
 
 t_vectorf	starting_length(t_data *data, t_vectorf direc, t_vector *sign,
@@ -159,27 +47,28 @@ t_vectorf	starting_length(t_data *data, t_vectorf direc, t_vector *sign,
 	sign->x = -1;
 	if (direc.x < 0)
 		length.x = (float)((data->player.offset.x + data->scale)
-			/ (float)(data->scale * 2)) * impact->slope_coef.x * sign->x;
+				/ (float)(data->scale * 2)) *impact->slope_coef.x * sign->x;
 	else
 	{
 		sign->x = 1;
 		length.x = ((float)(1 - ((float)(data->player.offset.x + data->scale))
-			/ (float)(data->scale * 2))) * impact->slope_coef.x;
+					/ (float)(data->scale * 2))) * impact->slope_coef.x;
 	}
 	sign->y = -1;
 	if (direc.y < 0)
 		length.y = (float)((data->player.offset.y + data->scale)
-			/ (float)(data->scale * 2)) * impact->slope_coef.y * sign->y;
+				/ (float)(data->scale * 2)) *impact->slope_coef.y * sign->y;
 	else
 	{
 		sign->y = 1;
 		length.y = ((float)(1 - ((float)(data->player.offset.y + data->scale))
-			/ (float)(data->scale * 2))) * impact->slope_coef.y;
+					/ (float)(data->scale * 2))) * impact->slope_coef.y;
 	}
 	return (length);
 }
 
-t_bool	raycast_loop(t_data *data, t_impact *impact, t_vectorf length, t_vector sign)
+t_bool	raycast_loop(t_data *data, t_impact *impact, t_vectorf length,
+	t_vector sign)
 {
 	while (ft_absf(length.x) < data->render_distance
 		|| ft_absf(length.y) < data->render_distance)
@@ -202,7 +91,8 @@ t_bool	raycast_loop(t_data *data, t_impact *impact, t_vectorf length, t_vector s
 	return (false);
 }
 
-t_impact	raycast(t_vector start, t_vectorf direc, t_data *data, t_vectorf slope_coef)
+t_impact	raycast(t_vector start, t_vectorf direc, t_data *data,
+	t_vectorf slope_coef)
 {
 	t_vector	sign;
 	t_vectorf	length;

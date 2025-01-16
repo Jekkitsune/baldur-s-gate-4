@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:27:28 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 00:37:44 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 19:22:20 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,6 @@ void	print_col(uint32_t col)
 	green = ((col & 0x0000FF00) >> 8);
 	blue = (col & 0x000000FF);
 	printf("%X-> A:%x, R:%x, G:%x, B:%x\n", col, alpha, red, green, blue);
-}
-
-uint32_t	RGBA_to_ARGB(uint32_t col) //ne sert a rien enft
-{
-	uint32_t	tmp;
-
-	tmp = col << 24;
-	col = col >> 8;
-	return (tmp | col);
 }
 
 t_texture	*img_to_tex(t_data *data, void *img, t_vector size)
@@ -128,48 +119,4 @@ void	show_tex(t_data *data, t_texture *tex, t_vector pos)
 		}
 		i.y++;
 	}
-}
-
-t_texture	*get_tex(t_data *data, char *name)
-{
-	t_list		*i;
-	t_texture	*current_tex;
-
-	i = data->textures;
-	while (i)
-	{
-		if (i->content)
-		{
-			current_tex = i->content;
-			if (!ft_strcmp(name, current_tex->name))
-				return (current_tex);
-		}
-		i = i->next;
-	}
-	return (NULL);
-}
-
-void	add_tex(t_data *data, t_texture *tex, char *name)
-{
-	if (!tex || !data)
-	{
-		ft_putstr_fd("Could not load texture: ", 2);
-		ft_putstr_fd(name, 2);
-		ft_putstr_fd("\n", 2);
-		free(name);
-		return ;
-	}
-	tex->name = name;
-	ft_lstadd_front(&data->textures, ft_lstnew(tex));
-}
-
-t_texture	*get_resized_free(t_texture *texture, int size)
-{
-	t_texture	*resized;
-
-	if (!texture)
-		return (NULL);
-	resized = resize(texture, size);
-	free_tex(texture);
-	return (resized);
 }

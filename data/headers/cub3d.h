@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 16:27:01 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 19:53:35 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -647,6 +647,10 @@ t_button	*get_best_action(t_data *data, t_entity *entity, int min_range,
 			t_spelltype type);
 void		init_textures(t_data *data);
 void		init_mlx_events(t_data *data);
+t_impact	*found_wall(t_impact *impact, t_vectorf length);
+void		change_pos(t_data *data, t_vectorf *offset, float angle);
+void		change_pos_collide(t_data *data, t_vector pos, t_vectorf *offset,
+				float angle);
 
 //ia
 void		base_aggro(void *data_param, void *entity_param);

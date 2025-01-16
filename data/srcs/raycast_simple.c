@@ -6,39 +6,56 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 22:03:04 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 11:40:54 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/16 19:16:21 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+t_vectorf	starting_length(t_data *data, t_vectorf direc, t_vector *sign,
+				t_impact *impact);
 
 t_impact	*simple_check_wall(t_impact *impact, t_data *data, t_vectorf length)
 {
 	if (!in_bound(data->current_map, impact->wall_pos)
 		|| ft_min(ft_absf(length.x), ft_absf(length.y)) > data->render_distance)
 		return (impact);
-	if (data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type != WALL
-		&& data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type != DOOR)
+	if (data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type
+		!= WALL
+		&& data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type
+		!= DOOR)
 		return (NULL);
-	impact->cell = &data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y];
-	if (ft_absf(length.x) <= ft_absf(length.y))
-	{
-		impact->face = 2;
-		if (length.x < 0)
-			impact->face = 4;
-		impact->length = ft_absf(length.x);
-	}
-	else
-	{
-		impact->face = 1;
-		if (length.y < 0)
-			impact->face = 3;
-		impact->length = ft_absf(length.y);
-	}
-	return (impact);
+	impact->cell
+		= &data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y];
+	return (found_wall(impact, length));
 }
 
-t_impact	simple_raycast(t_vector start, t_vectorf direc, t_data *data, t_vectorf slope_coef)
+t_bool	simple_ray_loop(t_data *data, t_impact *impact, t_vectorf length,
+	t_vector sign)
+{
+	while (ft_absf(length.x) < data->render_distance
+		|| ft_absf(length.y) < data->render_distance)
+	{
+		while (ft_absf(length.x) <= ft_absf(length.y))
+		{
+			impact->wall_pos.x += sign.x;
+			if (simple_check_wall(impact, data, length))
+				return (true);
+			length.x += impact->slope_coef.x;
+		}
+		while (ft_absf(length.y) <= ft_absf(length.x))
+		{
+			impact->wall_pos.y += sign.y;
+			if (simple_check_wall(impact, data, length))
+				return (true);
+			length.y += impact->slope_coef.y;
+		}
+	}
+	return (false);
+}
+
+t_impact	simple_raycast(t_vector start, t_vectorf direc, t_data *data,
+	t_vectorf slope_coef)
 {
 	t_vector	sign;
 	t_vectorf	length;
@@ -48,47 +65,15 @@ t_impact	simple_raycast(t_vector start, t_vectorf direc, t_data *data, t_vectorf
 	impact.length = 0;
 	impact.direc.x = direc.x;
 	impact.direc.y = direc.y;
-	if (direc.x < 0)
-	{
-		sign.x = -1;
-		length.x = (float)((data->player.offset.x + data->scale) / (float)(data->scale * 2)) * slope_coef.x * sign.x;
-	}
-	else
-	{
-		sign.x = 1;
-		length.x = ((float)(1 - ((float)(data->player.offset.x + data->scale)) / (float)(data->scale * 2))) * slope_coef.x;
-	}
-	if (direc.y < 0)
-	{
-		sign.y = -1;
-		length.y = (float)((data->player.offset.y + data->scale) / (float)(data->scale * 2)) * slope_coef.y * sign.y;
-	}
-	else
-	{
-		sign.y = 1;
-		length.y = ((float)(1 - ((float)(data->player.offset.y + data->scale)) / (float)(data->scale * 2))) * slope_coef.y;
-	}
+	impact.slope_coef.x = slope_coef.x;
+	impact.slope_coef.y = slope_coef.y;
+	length = starting_length(data, direc, &sign, &impact);
 	slope_coef.x *= sign.x;
 	slope_coef.y *= sign.y;
 	impact.wall_pos.x = start.x;
 	impact.wall_pos.y = start.y;
-	while (ft_absf(length.x) < data->render_distance || ft_absf(length.y) < data->render_distance)
-	{
-		while (ft_absf(length.x) <= ft_absf(length.y))
-		{
-			impact.wall_pos.x += sign.x;
-			if (simple_check_wall(&impact, data, length))
-				return (impact);
-			length.x += slope_coef.x;
-		}
-		while (ft_absf(length.y) <= ft_absf(length.x))
-		{
-			impact.wall_pos.y += sign.y;
-			if (simple_check_wall(&impact, data, length))
-				return (impact);
-			length.y += slope_coef.y;
-		}
-	}
+	if (simple_ray_loop(data, &impact, length, sign))
+		return (impact);
 	impact.face = 0;
 	impact.length = data->render_distance;
 	return (impact);
