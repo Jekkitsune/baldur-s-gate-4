@@ -6,25 +6,34 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 02:18:20 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/17 02:03:29 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+int	get_tex_column(t_data *data, t_texture *tex, t_impact *ray)
+{
+	if (ray->face % 2)
+		return (fmod(data->player.pos.x * (data->scale * 2) \
+		+ data->player.offset.x + data->scale + (ray->direc.x * ray->length), \
+		(data->scale * 2)) * tex->size / (data->scale * 2));
+	else
+		return (fmod(data->player.pos.y * (data->scale * 2) \
+		+ data->player.offset.y + data->scale + (ray->direc.y * ray->length), \
+		(data->scale * 2)) * tex->size / (data->scale * 2));
+}
+
 void	draw_wall(t_data *data, int x, t_vector pos, t_impact *ray)
 {
-	int 		tex_column;
+	int			tex_column;
 	int			i;
 	double		divided;
 	t_texture	*tex;
 
 	tex = ray->cell->tex[ray->face - 1];
 	divided = (double)tex->size / (double)(pos.y - pos.x);
-	if (ray->face % 2)
-		tex_column = fmod(data->player.pos.x * (data->scale * 2) + data->player.offset.x + data->scale + (ray->direc.x * ray->length), (data->scale * 2)) * tex->size / (data->scale * 2);
-	else
-		tex_column = fmod(data->player.pos.y * (data->scale * 2) + data->player.offset.y + data->scale + (ray->direc.y * ray->length), (data->scale * 2)) * tex->size / (data->scale * 2);
+	tex_column = get_tex_column(data, tex, ray);
 	if ((ray->face == 1 || ray->face == 4))
 		tex_column = tex->size - tex_column - 1;
 	i = 0;
@@ -32,7 +41,8 @@ void	draw_wall(t_data *data, int x, t_vector pos, t_impact *ray)
 	while (i < pos.y && i < data->win_size.y)
 	{
 		if (i >= 0)
-			data->screen_buffer[i][x] = tex->tab[tex_column][(int)((ft_abs(pos.x - i)) * divided)];
+			data->screen_buffer[i][x]
+				= tex->tab[tex_column][(int)((ft_abs(pos.x - i)) * divided)];
 		i++;
 	}
 }
@@ -66,15 +76,16 @@ void	get_all_rays(t_data *data)
 {
 	double		camera;
 	int			i;
-	//float		diff;
 	t_vectorf	direc;
 
 	i = 0;
 	while (i < NB_RAYS)
 	{
 		camera = (2 * i / (double) NB_RAYS) - 1;
-		direc.x = data->player.direction.x + data->player.camera_plane.x * camera;
-		direc.y = data->player.direction.y + data->player.camera_plane.y * camera;
+		direc.x = data->player.direction.x + data->player.camera_plane.x
+			* camera;
+		direc.y = data->player.direction.y + data->player.camera_plane.y
+			* camera;
 		data->player.vision[i] = get_impact(data->player.pos, direc, data);
 		i++;
 	}
@@ -125,7 +136,9 @@ void	draw_fog(t_data *data, float diff, t_impact *ray, int i)
 	i2 = 0;
 	while (i2 < diff)
 	{
-		draw_fog_wall(data, i * diff + i2, vec(posy.x + data->player.pitch + (data->player.height / ray->fog_length), posy.y + data->player.pitch + (data->player.height / ray->fog_length)), ray->fog_color);
+		draw_fog_wall(data, i * diff + i2, vec(posy.x + data->player.pitch \
+		+ (data->player.height / ray->fog_length), posy.y + data->player.pitch \
+		+ (data->player.height / ray->fog_length)), ray->fog_color);
 		i2++;
 	}
 }
@@ -147,7 +160,9 @@ void	draw_ray(t_data *data, float diff, t_impact *ray, int i)
 	i2 = 0;
 	while (i2 < diff)
 	{
-		draw_wall(data, i * diff + i2, vec(posy.x + data->player.pitch + (data->player.height / ray->length), posy.y + data->player.pitch + (data->player.height / ray->length)), ray);		
+		draw_wall(data, i * diff + i2, vec(posy.x + data->player.pitch \
+		+ (data->player.height / ray->length), posy.y + data->player.pitch \
+		+ (data->player.height / ray->length)), ray);
 		i2++;
 	}
 }
@@ -379,10 +394,10 @@ void	show_ceiling(t_data *data)
 	}
 }
 
-void	show_screen(t_data *data)
+void	show_environment(t_data *data)
 {
-	int			i;
 	float		diff;
+	int			i;
 
 	if (data->floor && data->player.height >= -5000)
 		show_floor(data);
@@ -402,9 +417,15 @@ void	show_screen(t_data *data)
 		draw_fog(data, diff, &data->player.vision[i], i);
 		i++;
 	}
+}
+
+void	show_screen(t_data *data)
+{
+	show_environment(data);
 	show_party_icon(data);
 	show_participants_icon(data);
-	if (data->player.possession && data->player.possession->possess_control && is_turn(data, data->player.possession))
+	if (data->player.possession && data->player.possession->possess_control
+		&& is_turn(data, data->player.possession))
 	{
 		draw_possession_button(data, data->player.possession->sheet.buttons);
 		draw_all_actions_box(data, data->player.possession);

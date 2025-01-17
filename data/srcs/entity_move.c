@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 20:45:40 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 20:46:17 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/17 01:46:54 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	teleport_entity(t_data *data, t_entity *entity, t_vector pos,
 				arr[entity->pos.x][entity->pos.y].entities, entity_lst);
 				return ;
 			}
+			free(entity_lst);
 		}
 		destroy_entity(data, entity);
 	}

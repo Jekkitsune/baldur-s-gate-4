@@ -6,52 +6,11 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 21:34:36 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 20:24:32 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/17 00:28:40 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
-
-t_strput	*strput(char *str, t_vector pos, float size, uint32_t color)
-{
-	t_strput	*to_put;
-
-	if (!str)
-		return (NULL);
-	to_put = ft_calloc(sizeof(t_strput), 1);
-	if (!to_put)
-	{
-		if (str)
-			free(str);
-		return (NULL);
-	}
-	to_put->str = str;
-	to_put->pos.x = pos.x;
-	to_put->pos.y = pos.y;
-	to_put->size = size;
-	to_put->color = color;
-	return(to_put);
-}
-
-int	screen_string_put(t_data *data, t_strput *to_put, float time)
-{
-	t_list			*lst;
-
-	if (!to_put)
-		return (0);
-	lst = ft_lstnew(to_put);
-	if (!lst)
-	{
-		if (to_put->str)
-			free(to_put->str);
-		free(to_put);
-		return (0);
-	}
-	if (time)
-		to_put->duration = (float)time * 1000000.0;
-	ft_lstadd_front(&data->string_to_put, lst);
-	return (1);
-}
 
 void	remove_screen_info(t_strput **screen_info, t_strput *to_remove)
 {
@@ -92,14 +51,14 @@ void	clear_string_put(t_data *data, t_bool force)
 
 void	put_all_strings(t_data *data)
 {
-	t_list		*lst;
-	t_strput	*current_str;
+	t_list			*lst;
+	t_strput		*current_str;
 	static float	size = 0;
 
 	lst = data->string_to_put;
 	while (lst)
 	{
-		current_str = lst->content; 
+		current_str = lst->content;
 		if (current_str->size != size)
 		{
 			size = current_str->size;
@@ -118,15 +77,16 @@ void	put_screen(t_data *data)
 	int	j;
 
 	if (!data->screen_display)
-		data->screen_display = mlx_new_image(data->mlx, data->win_size.x, data->win_size.y);
+		data->screen_display = mlx_new_image(data->mlx, data->win_size.x, \
+		data->win_size.y);
 	i = 0;
 	while (i < data->win_size.y)
 	{
 		j = 0;
 		while (j < data->win_size.x)
 		{
-			mlx_set_image_pixel(data->mlx, data->screen_display, j, i, data->screen_buffer[i][j]);
-//			mlx_pixel_put(data->mlx, data->win, j, i, data->screen_buffer[i][j]); //ca empeche les str ;/
+			mlx_set_image_pixel(data->mlx, data->screen_display, j, i,
+				data->screen_buffer[i][j]);
 			j++;
 		}
 		i++;

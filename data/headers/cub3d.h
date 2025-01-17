@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 23:51:28 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/17 01:51:27 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -602,11 +602,10 @@ void		open_door(t_data *data);
 void		init_all_classes(t_data *data);
 t_class		*get_class(t_list *class_lst, char *name);
 void		refresh_entity_class(t_entity *entity, int level, int *button_nb);
-void		sum_stat_tab(int stats1[6], int stats2[6], int len);
+void		sum_stat_tab(int *stats1, int *stats2, int len);
 void		copy_stat_tab(int *stats1, int *stats2, int len);
 void		refresh_stats(t_data *data, t_entity *entity);
 
-void		free_round_manager(t_data *data);
 void		party_follow(t_data *data);
 void		draw_all_actions_box(t_data *data, t_entity *entity);
 void		draw_box_points(t_data *data, t_vector pos, int nb_point, uint32_t color);
@@ -651,6 +650,9 @@ t_impact	*found_wall(t_impact *impact, t_vectorf length);
 void		change_pos(t_data *data, t_vectorf *offset, float angle);
 void		change_pos_collide(t_data *data, t_vector pos, t_vectorf *offset,
 				float angle);
+void		draw_rectangle(t_data *data, t_vector start, t_vector end,
+			uint32_t color);
+void		leave_party(t_data *data, t_entity *entity);
 
 //ia
 void		base_aggro(void *data_param, void *entity_param);

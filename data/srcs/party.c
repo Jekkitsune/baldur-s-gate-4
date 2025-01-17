@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 10:37:11 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 00:20:09 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/17 01:52:39 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	check_click_end_turn(t_data *data, t_vector mouse)
 
 	if (!data->round_manager.combat)
 		return ;
-	pos.x = data->win_size.x / 2 - (data->button_scale_size * (1 + ((NB_BUTTON) / 4)));
+	pos.x = data->win_size.x / 2 - (data->button_scale_size
+			* (1 + ((NB_BUTTON) / 4)));
 	pos.y = data->win_size.y - (data->button_scale_size * 1.5) - 10;
 	if (mouse.x >= pos.x && mouse.x <= pos.x + data->button_scale_size
 		&& mouse.y >= pos.y && mouse.y <= pos.y + data->button_scale_size)
@@ -32,7 +33,8 @@ void	show_end_turn_button(t_data *data)
 
 	if (!data->round_manager.combat)
 		return ;
-	pos.x = data->win_size.x / 2 - (data->button_scale_size * (1 + ((NB_BUTTON) / 4)));
+	pos.x = data->win_size.x / 2 - (data->button_scale_size
+			* (1 + ((NB_BUTTON) / 4)));
 	pos.y = data->win_size.y - (data->button_scale_size * 1.5) - 10;
 	draw_borders(data, pos);
 	draw_hover(data, pos, 0xDD6B5333);
@@ -51,7 +53,8 @@ void	check_click_party_icon(t_data *data, t_vector mouse)
 	party = data->round_manager.party;
 	if (!party)
 		return ;
-	pos.x = data->win_size.x / 2 + (data->button_scale_size * (NB_BUTTON / 4 + 1.5));
+	pos.x = data->win_size.x / 2 + (data->button_scale_size
+			* (NB_BUTTON / 4 + 1.5));
 	pos.y = data->win_size.y - (data->button_scale_size * 1.5) - 10;
 	while (party)
 	{
@@ -80,7 +83,8 @@ void	check_party_hover(t_data *data)
 	party = data->round_manager.party;
 	if (!party)
 		return ;
-	pos.x = data->win_size.x / 2 + (data->button_scale_size * (NB_BUTTON / 4 + 1.5));
+	pos.x = data->win_size.x / 2 + (data->button_scale_size
+			* (NB_BUTTON / 4 + 1.5));
 	pos.y = data->win_size.y - (data->button_scale_size * 1.5) - 10;
 	while (party)
 	{
@@ -101,7 +105,8 @@ void	show_party_icon(t_data *data)
 	party = data->round_manager.party;
 	if (!party)
 		return ;
-	pos.x = data->win_size.x / 2 + (data->button_scale_size * (NB_BUTTON / 4 + 1.5));
+	pos.x = data->win_size.x / 2 + (data->button_scale_size
+			* (NB_BUTTON / 4 + 1.5));
 	pos.y = data->win_size.y - (data->button_scale_size * 1.5) - 10;
 	while (party)
 	{
@@ -114,43 +119,4 @@ void	show_party_icon(t_data *data)
 		party = party->next;
 	}
 	check_party_hover(data);
-}
-
-void	follow_party_member(t_data *data, t_entity *follower, t_entity *to_follow)
-{
-	if (follower == data->player.possession || follower->behavior.path || !follower->active || !follower->sheet.alive)
-		return ;
-	if (get_dist(follower->pos, to_follow->pos) > 2)
-		move_closest_to(data, follower, to_follow);
-}
-
-void	party_follow(t_data *data)
-{
-	t_list	*party;
-
-	if (data->round_manager.combat)
-		return ;
-	party = data->round_manager.party;
-	while (party)
-	{
-		if (!party->next)
-			follow_party_member(data, party->content, data->round_manager.party->content);
-		else
-			follow_party_member(data, party->content, party->next->content);
-		party = party->next;
-	}
-}
-
-void	free_round_manager(t_data *data)
-{
-	t_list	*lst;
-	t_list	*to_free;
-
-	lst = data->round_manager.party;
-	while (lst)
-	{
-		to_free = lst;
-		lst = lst->next;
-		free(to_free);
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 23:25:12 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 23:13:03 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/17 01:41:37 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void	free_data(t_data *data)
 	ft_lstclear(&data->timer_effect, free);
 	ft_lstclear(&data->timer_property, free);
 	ft_lstclear(&data->class_lst, free);
-	free_round_manager(data);
 	if (data->screen_display)
 		mlx_destroy_image(data->mlx, data->screen_display);
 	i = 0;

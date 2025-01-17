@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:45:04 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 19:43:29 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/17 00:46:57 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	execute_action(t_data *data, t_spellinfo *spell)
 {
 	remove_selector(data, true);
 	spell->caster->angle = atan2(spell->pos.y - spell->caster->pos.y,
-		spell->pos.x - spell->caster->pos.x);
+			spell->pos.x - spell->caster->pos.x);
 	if (spell->anim)
 		change_anim_next(spell->caster, spell->anim, "idle", true);
 	if (spell->timer > 0)

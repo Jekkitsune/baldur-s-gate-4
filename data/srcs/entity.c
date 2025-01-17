@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 19:14:32 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 23:53:20 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/17 01:47:10 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	destroy_entity(t_data *data, t_entity *entity)
 	destroy_inventory(data, entity);
 	free_path(&entity->behavior.path);
 	leave_combat(data, entity);
+	leave_party(data, entity);
 	clear_entity_timer_prop(data, entity);
 	clear_entity_timer_effect(data, entity);
 	free(entity->sheet.name);

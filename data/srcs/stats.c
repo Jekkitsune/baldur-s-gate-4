@@ -6,56 +6,13 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 23:28:28 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/10 15:03:37 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/17 00:25:04 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	round_refresh_stat(t_entity *entity)
-{
-	if (!entity)
-		return ;
-	entity->sheet.action = 1;
-	entity->sheet.attack_left = 0;
-	entity->sheet.bonus_action = 1;
-	entity->sheet.reaction = 1;
-	entity->sheet.walked = entity->sheet.speed;
-}
-
-void	copy_stat_tab(int *stats1, int *stats2, int len)
-{
-	int	i;
-
-	i = 0;
-	while (i < len)
-	{
-		stats1[i] = stats2[i];
-		i++;
-	}
-}
-
-void	sum_stat_tab(int *stats1, int *stats2, int len)
-{
-	int	i;
-
-	i = 0;
-	while (i < len)
-	{
-		stats1[i] += stats2[i];
-		i++;
-	}
-}
-
-int	modif(int nb)
-{
-	float	res;
-
-	res = ((float)nb - 10.0) / 2;
-	if (res < 0)
-		return ((int)(res - 0.5));
-	return ((int)res);
-}
+void	set_save_pb(t_entity *entity);
 
 void	reset_stats(t_entity *entity, t_entity *prefab, int *button_nb)
 {
@@ -64,12 +21,11 @@ void	reset_stats(t_entity *entity, t_entity *prefab, int *button_nb)
 	i = 0;
 	while (i < NB_BUTTON)
 		ft_bzero(&entity->sheet.buttons[i++], sizeof(t_button));
-	i = 0;
-	while (i < NB_BUTTON && *button_nb < NB_BUTTON - 1)
+	i = -1;
+	while (++i < NB_BUTTON && *button_nb < NB_BUTTON - 1)
 	{
 		if (prefab->sheet.buttons[i].func)
 			entity->sheet.buttons[(*button_nb)++] = prefab->sheet.buttons[i];
-		i++;
 	}
 	entity->sheet.max_hp = prefab->sheet.max_hp;
 	entity->sheet.pb = prefab->sheet.pb;
@@ -112,7 +68,7 @@ void	add_weight(t_entity *entity)
 	i = NON_EQUIP;
 	while (i < INVENTORY_SIZE)
 	{
-		current = entity->sheet.inventory[i++]; 
+		current = entity->sheet.inventory[i++];
 		if (current)
 			entity->sheet.weight += current->sheet.weight;
 	}
@@ -127,32 +83,21 @@ void	check_inventory_stats(t_entity *entity, int *button_nb)
 	i = 0;
 	while (i < NON_EQUIP)
 	{
-		current = entity->sheet.inventory[i++]; 
+		current = entity->sheet.inventory[i++];
 		if (current)
 		{
 			while (i2 < NB_BUTTON)
-			i2 = 0;
+				i2 = 0;
 			{
-				if (*button_nb < NB_BUTTON - 1 && current->sheet.buttons[i2].func)
-					entity->sheet.buttons[(*button_nb)++] = current->sheet.buttons[i2++];
+				if (*button_nb < NB_BUTTON - 1
+					&& current->sheet.buttons[i2].func)
+					entity->sheet.buttons[(*button_nb)++]
+						= current->sheet.buttons[i2++];
 				add_stat(entity, current);
 			}
 		}
 	}
 	add_weight(entity);
-}
-
-void	set_save_pb(t_entity *entity)
-{
-	int	i;
-
-	i = 0;
-	while (i < 6)
-	{
-		if (entity->sheet.saving[i])
-			entity->sheet.saving[i] += entity->sheet.pb + modif(entity->sheet.stats[i]);
-		i++;
-	}
 }
 
 void	refresh_stats(t_data *data, t_entity *entity)

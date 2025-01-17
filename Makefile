@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/16 23:51:00 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/17 01:52:51 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRCS = main.c\
 		map_utils.c\
 		map_utils_2.c\
 		minimap.c\
+		minimap_2.c\
 		vector_utils.c\
 		player.c\
 		command.c\
@@ -69,6 +70,8 @@ SRCS = main.c\
 		prefab.c\
 		load_prefab.c\
 		load_prefab_utils.c\
+		get_prefab_stats.c\
+		get_prefab_stats_utils.c\
 		buttons.c\
 		buttons_draw.c\
 		buttons_draw_2.c\
@@ -82,8 +85,11 @@ SRCS = main.c\
 		spells.c\
 		fireball.c\
 		ui.c\
+		ui_2.c\
 		put_screen.c\
+		strput.c\
 		stats.c\
+		stats_2.c\
 		dice.c\
 		dice_2.c\
 		check.c\
@@ -97,14 +103,13 @@ SRCS = main.c\
 		class_init.c\
 		attack.c\
 		party.c\
+		party_2.c\
 		i_hate_dice.c\
 		participant_icon.c\
 		combat.c\
 		combat_2.c\
 		round_manager.c\
-		get_prefab_stats.c\
 		check_radius_team.c\
-		get_prefab_stats_utils.c\
 		finish_gnl.c\
 
 LIBFT = data/libft/libft.a
