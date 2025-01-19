@@ -89,12 +89,12 @@ void	teleport_entity(t_data *data, t_entity *entity, t_vector pos,
 		if (in_bound(data->current_map, l_pos))
 		{
 			entity_lst = ft_lstpop(&data->current_map->arr[l_pos.x][l_pos.y].\
-			entities, entity);
+				entities, entity);
 			if (entity_lst && in_bound(data->current_map, entity->pos))
 			{
 				entity_lst->next = NULL;
 				ft_lstadd_back(&data->current_map->\
-				arr[entity->pos.x][entity->pos.y].entities, entity_lst);
+					arr[entity->pos.x][entity->pos.y].entities, entity_lst);
 				return ;
 			}
 			free(entity_lst);

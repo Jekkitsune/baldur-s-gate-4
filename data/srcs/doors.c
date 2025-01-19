@@ -12,35 +12,36 @@
 
 #include "cub3d.h"
 
+void	change_state(t_cell	*door)
+{
+	if (door->type == DOOR)
+	{
+		if (door->status == OPENING)
+		{
+			door->timer -= 0.1;
+			if (door->timer <= 0)
+				door->status = OPEN;
+		}
+		if (door->status == CLOSING)
+		{
+			door->timer += 0.1;
+			if (door->timer >= 1)
+				door->status = CLOSE;
+		}
+	}
+}
+
 void	update_doors(t_data *data)
 {
 	int	i;
 	int	j;
 
-	i = 0;
-	while (i < data->current_map->size.x)
+	i = -1;
+	while (++i < data->current_map->size.x)
 	{
-		j = 0;
-		while (j < data->current_map->size.y)
-		{
-			if (data->current_map->arr[i][j].type == DOOR)
-			{
-				if (data->current_map->arr[i][j].status == OPENING)
-				{
-					data->current_map->arr[i][j].timer -= 0.1;
-					if (data->current_map->arr[i][j].timer <= 0)
-						data->current_map->arr[i][j].status = OPEN;
-				}
-				if (data->current_map->arr[i][j].status == CLOSING)
-				{
-					data->current_map->arr[i][j].timer += 0.1;
-					if (data->current_map->arr[i][j].timer >= 1)
-						data->current_map->arr[i][j].status = CLOSE;
-				}
-			}
-			j++;
-		}
-		i++;
+		j = -1;
+		while (++j < data->current_map->size.y)
+			change_state(&data->current_map->arr[i][j]);
 	}
 }
 
@@ -55,7 +56,8 @@ void	open_door(t_data *data)
 	pos = data->player.pos;
 	if (data->player.possession)
 		pos = data->player.possession->pos;
-	if ((tmp == 0 || tmp == 4) && data->current_map->arr[pos.x + 1][pos.y].type == DOOR)
+	if ((tmp == 0 || tmp == 4)
+		&& data->current_map->arr[pos.x + 1][pos.y].type == DOOR)
 		c = &data->current_map->arr[pos.x + 1][pos.y];
 	else if (tmp == 3 && data->current_map->arr[pos.x][pos.y - 1].type == DOOR)
 		c = &data->current_map->arr[pos.x][pos.y - 1];

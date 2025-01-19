@@ -39,11 +39,19 @@ SRCS = main.c\
 		raycast_3.c\
 		raycast_simple.c\
 		player_vision.c\
+		player_vision2.c\
+		floor.c\
+		ceiling.c\
+		skybox.c\
 		doors.c\
 		shape_func.c\
 		init_data.c\
 		trigo_utils.c\
 		parsing.c\
+		parsing2.c\
+		parsing3.c\
+		parsing4.c\
+		parsing5.c\
 		mouse.c\
 		resize.c\
 		init_textures.c\

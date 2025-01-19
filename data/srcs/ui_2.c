@@ -91,7 +91,7 @@ void	draw_all_actions_box(t_data *data, t_entity *entity)
 	{
 		pos.x += data->button_scale_size;
 		if (entity->sheet.spell_slot[i])
-			draw_action_box(data, entity->sheet.spell_slot[i], pos, 0xFF109FE6);
+		 	draw_action_box(data, entity->sheet.spell_slot[i], pos, 0xFF109FE6);
 		i++;
 	}
 }

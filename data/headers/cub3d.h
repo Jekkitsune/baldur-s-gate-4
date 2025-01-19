@@ -36,10 +36,10 @@
 # define INVENTORY_SIZE 20
 # define MAX_PARTIC_ICON 8
 
-# define NB_RAYS (1600 / 2)
+# define NB_RAYS (1600)
 # define FOV 0.7
-# define HEIGHT (900 / 2)
-# define WIDTH (1600 / 2)
+# define HEIGHT (900)
+# define WIDTH (1600)
 # define HEIGHT_CAP 5000
 # define DEFAULT_FONT "Paul.ttf"
 //# define DEFAULT_FONT "default"
@@ -301,6 +301,49 @@ typedef struct s_round_manager
 	t_list	*party;
 	t_list	*participants;
 }	t_round_manager;
+
+typedef struct s_floor
+{
+	t_vectorf	ray_dir_0;
+	t_vectorf	ray_dir_1;
+	float		row_distance;
+	t_vectorf	floor_step;
+	t_vectorf	floor;
+	t_vector	cell;
+	t_vector	t;
+	float		cam_z;
+	int			horizon;
+}	t_floor;
+
+typedef struct s_skybox
+{
+	float		tiniest_gap;
+	float		closest_card;
+	int			pixel_length;
+	t_vector	left_seg;
+	t_vector	right_seg;
+	int			index;
+	t_texture	*left_tex;
+	t_texture	*right_tex;
+}	t_skybox;
+
+typedef struct s_ceiling
+{
+	t_vectorf	ray_dir_0;
+	t_vectorf	ray_dir_1;
+	float		row_distance;
+	t_vectorf	floor_step;
+	t_vectorf	floor;
+	t_vector	cell;
+	t_vector	t;
+	int			st;
+	int			pli;
+	int			horizon;
+	int			lim;
+	float		cam_z;
+	t_skybox	*s;
+	uint32_t	color;
+}	t_ceiling;
 
 typedef struct s_entity
 {
@@ -653,6 +696,20 @@ void		change_pos_collide(t_data *data, t_vector pos, t_vectorf *offset,
 void		draw_rectangle(t_data *data, t_vector start, t_vector end,
 			uint32_t color);
 void		leave_party(t_data *data, t_entity *entity);
+bool		prep_map(t_data *data, int fd, t_map *level);
+bool		format_test(char *name);
+bool		create_color(char color[9], char *code);
+bool		process_first_infos(t_data *data, char *lines[7]);
+bool		is_map_closed(char **map);
+bool		check_char(char **map, int i, int j, t_data *data);
+char		**get_map_infos(t_data *data, int fd, t_map *level);
+void		set_up_data(t_data *data, t_cell *cell, t_vector it, char **map);
+bool		special_atoi(char *str, int *res);
+void		get_hexa(char hexa[2], int value);
+void		draw_wall(t_data *data, int x, t_vector pos, t_impact *ray);
+void		show_floor(t_data *data);
+void		show_ceiling(t_data *data);
+void		skybox(t_data *data, t_skybox *s);
 
 //ia
 void		base_aggro(void *data_param, void *entity_param);
