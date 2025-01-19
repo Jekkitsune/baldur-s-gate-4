@@ -43,16 +43,21 @@ void	handle_skybox2(t_data *data, t_ceiling c, t_skybox s, t_vector it)
 void	handle_skybox(t_data *data, t_ceiling c, int x, int y)
 {
 	t_skybox	s;
+	bool		ceiling;
 
 	s = *c.s;
-	if (!data->sky_box || (c.floor.x == 31 && c.floor.y ==  1))
+	ceiling = c.cell.x >= 0 && c.cell.y >= 0
+		&& c.cell.x < data->current_map->size.x
+		&& c.cell.y < data->current_map->size.y
+		&& data->current_map->arr[c.cell.x][c.cell.y].ceiling;
+	if (data->sky_box && !ceiling)
+		handle_skybox2(data, c, s, vec(x, y));
+	else
 	{
 		c.color = data->ceiling->tab[c.t.x][c.t.y];
 		if (data->win_size.y - y - 1 < c.lim)
 			data->screen_buffer[data->win_size.y - y - 1][x] = c.color;
 	}
-	else
-		handle_skybox2(data, c, s, vec(x, y));
 }
 
 void	calculate_ceiling(t_data *data, t_ceiling c, int y)

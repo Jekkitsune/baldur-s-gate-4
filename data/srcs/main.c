@@ -117,6 +117,26 @@ int	main(int argc, char **argv)
 	init_data(&data);
 	if (!parsing(argc, argv, &data))
 		exit_free(&data, "Parsing error");
+	bool	e = true;
+	for (int i = 0; i < data.current_map->size.x; i++)
+	{
+		for (int j = 0; j < data.current_map->size.y; j++)
+		{
+			if (data.current_map->arr[i][j].type == GROUND)
+			{
+				if (e)
+				{
+					data.current_map->arr[i][j].ceiling = false;
+					e = false;
+				}
+				else
+				{
+					data.current_map->arr[i][j].ceiling = true;
+					e = true;
+				}
+			}
+		}
+	}
 	if (!check_textures(data.wall_tex))
 		exit_free(&data, "Cannot create texture");
 	init_player(&data);

@@ -381,6 +381,7 @@ typedef	struct s_cell
 	int			status;
 	float		timer;
 	uint32_t	fog_color;
+	bool		ceiling;
 }	t_cell;
 
 typedef struct s_impact
