@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 23:25:12 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/17 01:41:37 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/22 04:46:46 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	free_data(t_data *data)
 {
 	int		i;
 
+	free_button_lst(data);
 	free_all_maps(data);
 	free_prefab_tab(data);
 	free_minimap(data);
@@ -79,7 +80,6 @@ void	free_data(t_data *data)
 	free_visible_lst(data);
 	clear_string_put(data, true);
 	ft_lstclear(&data->timer_effect, free);
-	ft_lstclear(&data->timer_property, free);
 	ft_lstclear(&data->class_lst, free);
 	if (data->screen_display)
 		mlx_destroy_image(data->mlx, data->screen_display);

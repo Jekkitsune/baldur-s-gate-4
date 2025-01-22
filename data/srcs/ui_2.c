@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 00:19:30 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/17 00:29:55 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/21 18:37:49 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	draw_all_actions_box(t_data *data, t_entity *entity)
 	{
 		pos.x += data->button_scale_size;
 		if (entity->sheet.spell_slot[i])
-		 	draw_action_box(data, entity->sheet.spell_slot[i], pos, 0xFF109FE6);
+			draw_action_box(data, entity->sheet.spell_slot[i], pos, 0xFF109FE6);
 		i++;
 	}
 }

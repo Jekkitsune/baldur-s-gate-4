@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 20:26:39 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/22 07:31:07 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	update_data_time(t_data *data)
 	if (new_time.tv_sec != data->current_time.tv_sec)
 	{
 		data->player.speed = (double) 1 / ((double)fps / (double) FPS_CAP);
-		//printf("%d\n", fps);
 		count = 0;
 		fps = 0;
 	}
@@ -47,10 +46,8 @@ int	loop(void *param)
 	update_doors(data);
 	update_all_active(data);
 	update_all_timer_effects(data, false);
-	update_all_timer_properties(data, false);
 	update_chunk(data);
 	show_screen(data);
-	party_refresh(data);
 	update_data_time(data);
 	return (0);
 }
@@ -95,19 +92,16 @@ void	init_test(t_data *data)
 	add_active(data, test2, NULL);
 	possess_control(test2, true);
 	ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
-	test2->size_scale = 0.9;
 
-	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
-	add_active(data, test2, NULL);
-	possess_control(test2, true);
-	ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
-	test2->size_scale = 0.9;
+	// test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
+	// add_active(data, test2, NULL);
+	// possess_control(test2, true);
+	// ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
 
-	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
-	add_active(data, test2, NULL);
-	possess_control(test2, true);
-	ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
-	test2->size_scale = 0.9;
+	// test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
+	// add_active(data, test2, NULL);
+	// possess_control(test2, true);
+	// ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
 }
 
 int	main(int argc, char **argv)
@@ -117,24 +111,15 @@ int	main(int argc, char **argv)
 	init_data(&data);
 	if (!parsing(argc, argv, &data))
 		exit_free(&data, "Parsing error");
-	bool	e = true;
-	for (int i = 0; i < data.current_map->size.x; i++)
+
+	for (int i = 24; i < 29; i++)
 	{
-		for (int j = 0; j < data.current_map->size.y; j++)
+		for (int j = 5; j < data.current_map->size.y; j++)
 		{
-			if (data.current_map->arr[i][j].type == GROUND)
-			{
-				if (e)
-				{
-					data.current_map->arr[i][j].ceiling = false;
-					e = false;
-				}
-				else
-				{
-					data.current_map->arr[i][j].ceiling = true;
-					e = true;
-				}
-			}
+				data.current_map->arr[i][j].ceiling = true;
+
+			if (data.current_map->arr[i][j].type == WALL || data.current_map->arr[i][j].type == DOOR)
+				data.current_map->arr[i][j].upper_wall = data.wall_tex[0];
 		}
 	}
 	if (!check_textures(data.wall_tex))
@@ -147,6 +132,7 @@ int	main(int argc, char **argv)
 	mlx_loop_hook(data.mlx, loop, &data);
 	init_textures(&data);
 	load_spells_prefab(&data);
+	init_button_lst(&data);
 	init_all_classes(&data);
 	init_test(&data);
 	if (data.round_manager.party)

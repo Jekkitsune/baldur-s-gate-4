@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:18:24 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 17:31:58 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/21 21:46:36 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_bool	set_stat(int *stat, char *compare, char **splited)
 {
 	if (!splited || !splited[0] || !splited[1])
 		return (false);
-	if (!ft_strncmp(splited[0], compare, ft_strlen(compare)))
+	if (!ft_strcmp(splited[0], compare))
 	{
 		*stat = ft_atoi(splited[1]);
 		return (true);

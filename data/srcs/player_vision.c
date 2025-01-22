@@ -6,11 +6,13 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/17 02:03:29 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/22 02:25:04 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	draw_upper_walls(t_data *data, float diff, t_impact *ray, int i);
 
 void	draw_fog_wall(t_data *data, int x, t_vector pos, uint32_t color)
 {
@@ -69,6 +71,7 @@ void	draw_ray(t_data *data, float diff, t_impact *ray, int i)
 		+ (data->player.height / ray->length)), ray);
 		i2++;
 	}
+	draw_upper_walls(data, diff, ray, i);
 }
 
 void	show_environment(t_data *data)

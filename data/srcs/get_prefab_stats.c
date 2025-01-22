@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:36:56 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 17:24:54 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/22 01:17:51 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_bool	set_stat(int *stat, char *compare, char **splited);
 char	**get_next_stat(int fd);
 t_type	get_type(char *type);
 void	finish_gnl(int fd);
+t_bool	set_default_actions(t_data *data, t_sheet *s, char **splited);
+t_bool	prefab_size(t_entity *entity, char **splited);
 
 t_bool	set_specific(t_data *data, t_sheet *s, char **splited)
 {
@@ -133,7 +135,8 @@ void	get_prefab_stat(t_data *data, t_entity *prefab, char *directory)
 	while (splited)
 	{
 		if (!set_basic_stats(s, splited) && !set_game_stat(s, splited)
-			&& !set_specific(data, s, splited))
+			&& !set_specific(data, s, splited) && !prefab_size(prefab, splited)
+			&& !set_default_actions(data, s, splited))
 			set_properties(data, s, splited);
 		ft_free_tab(splited);
 		splited = get_next_stat(fd);

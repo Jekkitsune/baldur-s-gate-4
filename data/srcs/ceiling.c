@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/17 02:03:29 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/21 18:37:18 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ void	calculate_ceiling(t_data *data, t_ceiling c, int y)
 	{
 		c.cell.x = (int) c.floor.x;
 		c.cell.y = (int) c.floor.y;
-		c.t.y = ((int) (data->ceiling->size * (c.floor.y - c.cell.y)) %\
+		c.t.y = ((int)(data->ceiling->size * (c.floor.y - c.cell.y)) % \
 			(data->ceiling->size - 1));
-		c.t.x = ((int) (data->ceiling->size * (c.floor.x - c.cell.x)) %\
+		c.t.x = ((int)(data->ceiling->size * (c.floor.x - c.cell.x)) % \
 			(data->ceiling->size - 1));
 		if (c.t.x < 0)
 			c.t.x = 0;
@@ -93,16 +93,16 @@ void	show_ceiling2(t_data *data, t_ceiling *c, int y)
 	c->ray_dir_1.y = data->player.direction.y + data->player.camera_plane.y;
 	p = y - c->horizon;
 	c->cam_z = ((data->player.height * (data->win_size.y / 2)) / HEIGHT_CAP);
-	c->cam_z = (data->win_size.y / 2) - ((c->cam_z * HEIGHT_CAP /\
+	c->cam_z = (data->win_size.y / 2) - ((c->cam_z * HEIGHT_CAP / \
 		(data->scale * 2)) / (data->win_size.y / 2));
 	c->row_distance = c->cam_z / p;
-	c->floor_step.x = c->row_distance * (c->ray_dir_1.x - c->ray_dir_0.x)\
+	c->floor_step.x = c->row_distance * (c->ray_dir_1.x - c->ray_dir_0.x) \
 		/ data->win_size.x;
-	c->floor_step.y = c->row_distance * (c->ray_dir_1.y - c->ray_dir_0.y)\
+	c->floor_step.y = c->row_distance * (c->ray_dir_1.y - c->ray_dir_0.y) \
 		/ data->win_size.x;
-	c->floor.x = (data->player.pos.x + (5 + data->player.offset.x / 2) / 10)\
+	c->floor.x = (data->player.pos.x + (5 + data->player.offset.x / 2) / 10) \
 		+ c->row_distance * c->ray_dir_0.x;
-	c->floor.y = (data->player.pos.y + (5 + data->player.offset.y / 2) / 10)\
+	c->floor.y = (data->player.pos.y + (5 + data->player.offset.y / 2) / 10) \
 		+ c->row_distance * c->ray_dir_0.y;
 }
 

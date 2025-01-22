@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 03:49:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 23:29:36 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/22 07:26:07 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ void	damage(t_data *data, t_entity *entity, int dmg)
 		dmg = 0;
 	entity->sheet.hp -= dmg;
 	show_info(data, "%s took %d damage\n", entity->sheet.name, dmg);
-	prop = new_timer_property(hit_effect, entity);
-	add_timer_property(data, prop, 0.3, false);
+	prop = new_timer_property(hit_effect, entity, NULL, NULL);
+	add_timer_property(prop, 0.3, false);
 	if (entity->sheet.hp <= 0)
 	{
 		leave_combat(data, entity);

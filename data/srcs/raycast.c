@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 19:07:49 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/22 02:35:46 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void		add_cell_entities(t_data *data, t_impact *ray);
 t_impact	*check_door(t_impact *impact, t_data *data, t_vectorf length,
 				t_vector sign);
 void		check_fog(t_impact *impact, t_data *data, t_vectorf length);
+void		check_upper_wall(t_impact *impact, t_data *data, t_vectorf length);
 
 t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length,
 	t_vector sign)
@@ -27,6 +28,7 @@ t_impact	*check_wall(t_impact *impact, t_data *data, t_vectorf length,
 		return (NULL);
 	add_cell_entities(data, impact);
 	check_fog(impact, data, length);
+	check_upper_wall(impact, data, length);
 	if (data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type
 		!= WALL
 		&& data->current_map->arr[impact->wall_pos.x][impact->wall_pos.y].type
@@ -98,10 +100,7 @@ t_impact	raycast(t_vector start, t_vectorf direc, t_data *data,
 	t_vectorf	length;
 	t_impact	impact;
 
-	impact.face = 0;
-	impact.length = 0;
-	impact.fog_length = 0;
-	impact.fog_color = 0;
+	ft_bzero(&impact, sizeof(impact));
 	impact.direc.x = direc.x;
 	impact.direc.y = direc.y;
 	impact.slope_coef.x = slope_coef.x;

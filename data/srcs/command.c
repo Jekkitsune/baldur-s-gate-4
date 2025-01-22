@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 20:13:11 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/22 09:19:59 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ int	key_down_manager(int key, void *param)
 	if (key == 44)
 	{
 		open_door(data);
+
+			t_timer_property	*prop;
+			
+			prop = new_timer_property(poisoned, NULL, data->player.possession, &data->current_map->arr[data->player.possession->pos.x][data->player.possession->pos.y]);
+			add_timer_property(prop, 3, true);	
 	}
 	return (0);
 }

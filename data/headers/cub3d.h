@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/17 01:51:27 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/22 09:06:25 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@
 # define INVENTORY_SIZE 20
 # define MAX_PARTIC_ICON 8
 
-# define NB_RAYS (1600)
+# define NB_RAYS (1600 / 2)
 # define FOV 0.7
-# define HEIGHT (900)
-# define WIDTH (1600)
+# define HEIGHT (900 / 2)
+# define WIDTH (1600 / 2)
 # define HEIGHT_CAP 5000
 # define DEFAULT_FONT "Paul.ttf"
 //# define DEFAULT_FONT "default"
@@ -123,6 +123,19 @@ typedef struct s_texture
 	char		*name;
 }	t_texture;
 
+typedef	struct s_cell
+{
+	char		type;
+	t_texture	*tex[4];
+	t_list		*entities;
+	t_list		*timer_property;
+	int			status;
+	float		timer;
+	uint32_t	fog_color;
+	bool		ceiling;
+	t_texture	*upper_wall;
+}	t_cell;
+
 typedef struct s_animation
 {
 	t_texture		**tab;
@@ -181,6 +194,7 @@ typedef struct s_spellinfo
 	int			cost_attack;
 	int			cost_bonus;
 	int			cost_spell_slot;
+	t_bool		concentration;
 }	t_spellinfo;
 
 typedef struct s_timer_effect
@@ -193,9 +207,12 @@ typedef struct s_timer_effect
 typedef struct s_timer_property
 {
 	t_property		property;
+	t_entity		*caster;
 	t_entity		*entity;
+	t_cell			*cell;
 	long 			duration;
 	t_bool			in_round;
+	int				id_concentration;
 }	t_timer_property;
 
 typedef struct s_button
@@ -276,6 +293,8 @@ typedef struct s_sheet
 	t_class		*class;
 	void		(*wander_ia)(void *data, void *entity);
 	void		(*fight_ia)(void *data, void *entity);
+	t_list		*timer_property;
+	t_list		*timer_concentration;
 }	t_sheet;
 
 typedef struct s_path
@@ -373,24 +392,16 @@ typedef struct s_entity
 	t_bool		anim_no_move;
 }	t_entity;
 
-typedef	struct s_cell
-{
-	char		type;
-	t_texture	*tex[4];
-	t_list		*entities;
-	int			status;
-	float		timer;
-	uint32_t	fog_color;
-	bool		ceiling;
-}	t_cell;
-
 typedef struct s_impact
 {
 	t_vector	wall_pos;
 	float		length;
 	float		fog_length;
 	uint32_t	fog_color;
+	float		upper_wall_length;
+	t_cell		*upper_wall_cell;
 	int			face;
+	int			upper_wall_face;
 	t_vectorf	direc;
 	float		angle;
 	t_cell		*cell;
@@ -454,6 +465,8 @@ typedef struct	s_strput
 	long 			duration;
 }	t_strput;
 
+typedef struct s_button_lst t_button_lst;
+
 typedef struct s_data
 {
 	void			*mlx;
@@ -483,14 +496,21 @@ typedef struct s_data
 	t_texture		*sky_box_tex[4];
 	t_list			*string_to_put;
 	t_list			*timer_effect;
-	t_list			*timer_property;
 	t_strput		*screen_info[MAX_SCREEN_INFO];
 	t_list			*class_lst;
 	unsigned long 	frame_time;
 	struct timeval 	current_time;
 	t_round_manager	round_manager;
 	char 			**properties_tab;
+	t_button_lst	*button_lst;
 }	t_data;
+
+typedef struct s_button_lst
+{
+	char				*name;
+	void				(*button_init)(t_data *data, t_button *button);
+	struct s_button_lst	*next;
+}	t_button_lst;
 
 typedef	struct s_linfo
 {
@@ -529,7 +549,6 @@ float		angle_add(float angle, float add);
 bool		parsing(int argc, char *argv[], t_data *data);
 bool		vec_cmp(t_vector vec1, t_vector vec2);
 
-void		get_all_rays_old(t_data *data);
 void		camera_move(t_data *data);
 void		correct_pos(t_data *data, t_vector *pos, t_vectorf *offset);
 void		rotate_focus(t_data *data);
@@ -633,9 +652,10 @@ void		clear_entity_timer_effect(t_data *data, t_entity *entity);
 void		show_info(t_data *data, char *str, ...);
 void		add_to_str(char **res, char *str);
 
-t_timer_property	*new_timer_property(t_property property, t_entity *entity);
-void				add_timer_property(t_data *data, t_timer_property *tproperty, float time, t_bool in_round);
-void				update_all_timer_properties(t_data *data, t_bool round);
+t_timer_property	*new_timer_property(t_property property, t_entity *entity,
+	t_entity *caster, t_cell *cell);
+void				add_timer_property(t_timer_property *tproperty, float time, t_bool in_round);
+void				update_entity_properties(t_data *data, t_entity *entity, t_bool round);
 void				clear_entity_timer_prop(t_data *data, t_entity *entity);
 void				set_all_entity_timer_prop(t_data *data, t_entity *entity);
 
@@ -711,12 +731,20 @@ void		draw_wall(t_data *data, int x, t_vector pos, t_impact *ray);
 void		show_floor(t_data *data);
 void		show_ceiling(t_data *data);
 void		skybox(t_data *data, t_skybox *s);
+void		free_button_lst(t_data *data);
+void		pop_free_property(t_data *data, t_timer_property *prop);
+void		break_concentration(t_data *data, t_entity *entity, int id_concentration);
+void		add_cell_property_entity(t_data *data, t_entity *entity);
 
 //ia
 void		base_aggro(void *data_param, void *entity_param);
 void		martial_ia(void *data_param, void *entity_param);
 
 //spells
+void		init_button_lst(t_data *data);
+void		(*get_button(t_data *data, char *name))(t_data *data, t_button *button);
+
+
 void		action_select(void *data_param, void *entity_param, t_spellinfo spell);
 void		zone_effect(t_data *data, t_spellinfo spell, void (*effect)(void *data, t_entity *target, t_entity *caster, int nb));
 

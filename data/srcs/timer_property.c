@@ -6,88 +6,92 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 17:19:04 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 20:22:54 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/22 09:40:40 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_timer_property	*new_timer_property(t_property property, t_entity *entity)
+void	timer_prop_lst_add(t_timer_property *tproperty);
+void	add_cell_property(t_timer_property *prop);
+
+t_timer_property	*new_timer_property(t_property property, t_entity *entity,
+	t_entity *caster, t_cell *cell)
 {
 	t_timer_property	*res;
 
+	if (!entity && (cell && !caster))
+		return (NULL);
 	res = ft_calloc(sizeof(t_timer_property), 1);
 	if (!res)
 		return (NULL);
 	res->property = property;
 	res->entity = entity;
-	entity->sheet.properties = entity->sheet.properties | property;
+	res->caster = caster;
+	res->cell = cell;
 	return (res);
 }
 
-void	add_timer_property(t_data *data, t_timer_property *tproperty,
-	float time, t_bool in_round)
+void	add_timer_property(t_timer_property *tproperty, float time,
+	t_bool in_round)
 {
-	t_list			*new;
-
 	if (!tproperty)
 		return ;
-	new = ft_lstnew(tproperty);
-	if (!new)
-	{
-		tproperty->entity->sheet.properties &= ~tproperty->property;
-		free(tproperty);
-		return ;
-	}
+	if (tproperty->entity)
+		tproperty->entity->sheet.properties |= tproperty->property;
+	if (tproperty->cell && !tproperty->id_concentration)
+		tproperty->id_concentration = -1;
 	tproperty->in_round = in_round;
 	tproperty->duration = time;
 	if (!in_round)
 		tproperty->duration = (float)time * 1000000.0;
-	ft_lstadd_front(&data->timer_property, new);
+	timer_prop_lst_add(tproperty);
+	if (tproperty->cell)
+		add_cell_property(tproperty);
 }
 
-void	update_all_timer_properties(t_data *data, t_bool round)
+void	update_entity_properties(t_data *data, t_entity *entity, t_bool round)
 {
 	t_list				*lst;
-	t_list				*tmp;
 	t_timer_property	*current;
 
-	lst = data->timer_property;
+	lst = entity->sheet.timer_property;
 	while (lst)
 	{
 		current = lst->content;
 		lst = lst->next;
-		current->duration -= data->frame_time;
-		if ((round && current->in_round && --current->duration <= 0)
-			|| (!current->in_round && current->duration <= 0))
-		{
-			current->entity->sheet.properties &= ~current->property;
-			tmp = ft_lstpop(&data->timer_property, current);
-			free(tmp->content);
-			free(tmp);
-		}
+		if (!current->in_round && !round)
+			current->duration -= data->frame_time;
+		else if (!current->id_concentration && current->in_round && round)
+			current->duration--;
+		if (current->duration <= 0)
+			pop_free_property(data, current);
+	}
+	lst = entity->sheet.timer_concentration;
+	while (lst && round)
+	{
+		current = lst->content;
+		lst = lst->next;
+		current->duration--;
+		if (current->duration <= 0)
+			pop_free_property(data, current);
 	}
 }
 
 void	clear_entity_timer_prop(t_data *data, t_entity *entity)
 {
 	t_list				*lst;
-	t_list				*tmp;
 	t_timer_property	*current;
 
-	lst = data->timer_property;
+	lst = entity->sheet.timer_property;
 	while (lst)
 	{
 		current = lst->content;
 		lst = lst->next;
-		if (current && current->entity == entity)
-		{
-			current->entity->sheet.properties &= ~current->property;
-			tmp = ft_lstpop(&data->timer_property, current);
-			free(tmp->content);
-			free(tmp);
-		}
+		if (current)
+			pop_free_property(data, current);
 	}
+	break_concentration(data, entity, 0);
 }
 
 void	set_all_entity_timer_prop(t_data *data, t_entity *entity)
@@ -95,12 +99,12 @@ void	set_all_entity_timer_prop(t_data *data, t_entity *entity)
 	t_list				*lst;
 	t_timer_property	*current;
 
-	lst = data->timer_property;
+	lst = entity->sheet.timer_property;
 	while (lst)
 	{
 		current = lst->content;
-		if (current && current->entity == entity)
-			current->entity->sheet.properties |= current->property;
+		entity->sheet.properties |= current->property;
 		lst = lst->next;
 	}
+	add_cell_property_entity(data, entity);
 }

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 23:09:43 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 20:08:10 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/22 04:54:44 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,31 @@ void	free_map_actives(t_data *data, t_map *map)
 	}
 }
 
+void	free_cell(t_data *data, t_cell *cell)
+{
+	t_list	*lst;
+	t_list	*tmp;
+
+	lst = cell->entities;
+	while (lst)
+	{
+		tmp = lst;
+		lst = lst->next;
+		destroy_entity(data, tmp->content);
+	}
+	lst = cell->timer_property;
+	while (lst)
+	{
+		tmp = lst;
+		lst = lst->next;
+		free(tmp);
+	}
+}
+
 void	free_map(t_data *data, t_map *map)
 {
 	int		x;
 	int		y;
-	t_list	*lst;
-	t_list	*tmp;
 
 	free_map_actives(data, map);
 	x = -1;
@@ -39,15 +58,7 @@ void	free_map(t_data *data, t_map *map)
 	{
 		y = -1;
 		while (++y < map->size.y)
-		{
-			lst = map->arr[x][y].entities;
-			while (lst)
-			{
-				tmp = lst;
-				lst = lst->next;
-				destroy_entity(data, tmp->content);
-			}
-		}
+			free_cell(data, &map->arr[x][y]);
 		free(map->arr[x]);
 	}
 	free(map->arr);

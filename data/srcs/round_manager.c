@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:04:23 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 20:08:29 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/22 09:24:59 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ void	next_turn(t_data *data)
 		data->round_manager.participants = first->next;
 		first->next = NULL;
 		lst->next = first;
-		round_refresh_stat(lst->content);
+		round_refresh_stat(data->round_manager.participants->content);
+		update_entity_properties(data,
+			data->round_manager.participants->content, true);
 	}
 }
 
@@ -51,10 +53,11 @@ void	party_refresh(t_data *data)
 	if (!data->round_manager.combat && last_sec < data->current_time.tv_sec)
 	{
 		last_sec = data->current_time.tv_sec + 6;
-		lst = data->round_manager.party;
+		lst = data->current_map->active_entities;
 		while (lst)
 		{
 			round_refresh_stat(lst->content);
+			update_entity_properties(data, lst->content, true);
 			lst = lst->next;
 		}
 	}

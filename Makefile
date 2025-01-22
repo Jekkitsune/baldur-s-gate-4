@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/17 01:52:51 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/22 08:39:25 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,13 +39,15 @@ SRCS = main.c\
 		raycast_3.c\
 		raycast_simple.c\
 		player_vision.c\
-		player_vision2.c\
+		player_vision_2.c\
+		player_vision_3.c\
 		floor.c\
 		ceiling.c\
 		skybox.c\
 		doors.c\
 		shape_func.c\
 		init_data.c\
+		init_button_lst.c\
 		trigo_utils.c\
 		parsing.c\
 		parsing2.c\
@@ -80,6 +82,7 @@ SRCS = main.c\
 		load_prefab_utils.c\
 		get_prefab_stats.c\
 		get_prefab_stats_utils.c\
+		get_prefab_stats_utils_2.c\
 		buttons.c\
 		buttons_draw.c\
 		buttons_draw_2.c\
@@ -105,6 +108,8 @@ SRCS = main.c\
 		properties.c\
 		timer_effect.c\
 		timer_property.c\
+		timer_property_2.c\
+		timer_property_3.c\
 		printf_to_str.c\
 		printf_to_str_utils.c\
 		class.c\

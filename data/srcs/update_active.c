@@ -6,17 +6,19 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 20:25:04 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 01:56:17 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/22 09:21:59 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	update_entity_properties(t_data *data, t_entity *entity)
+void	entity_properties_effect(t_data *data, t_entity *entity)
 {
 	(void)data;
 	if (entity->sheet.properties & hit_effect)
 		entity->color_filter = 0xFFAA0000;
+	if (entity->sheet.properties & poisoned)
+		entity->color_filter = 0xFF00AA00;
 }
 
 void	radius_filter(__attribute__((unused)) void *data, t_entity *target,
@@ -48,6 +50,7 @@ void	update_all_active(t_data *data)
 	t_list		*i;
 	t_entity	*current;
 
+	party_refresh(data);
 	update_arrow(data);
 	party_follow(data);
 	i = data->current_map->active_entities;
@@ -62,6 +65,7 @@ void	update_all_active(t_data *data)
 			next_turn(data);
 		if (current->current_anim)
 			continue_anim(data, current);
-		update_entity_properties(data, current);
+		update_entity_properties(data, current, false);
+		entity_properties_effect(data, current);
 	}
 }

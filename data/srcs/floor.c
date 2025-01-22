@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/17 02:03:29 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/21 18:36:32 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	calculate_floor(t_data *data, t_floor *f, int y)
 	{
 		f->cell.x = (int) f->floor.x;
 		f->cell.y = (int) f->floor.y;
-		f->t.y = ((int) (data->floor->size * (f->floor.y - f->cell.y))\
+		f->t.y = ((int)(data->floor->size * (f->floor.y - f->cell.y)) \
 			% (data->floor->size - 1));
-		f->t.x = ((int) (data->floor->size * (f->floor.x - f->cell.x))\
+		f->t.x = ((int)(data->floor->size * (f->floor.x - f->cell.x)) \
 			% (data->floor->size - 1));
 		if (f->t.x < 0)
 			f->t.x = 0;

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/17 02:03:29 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/21 18:32:52 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	skybox2(t_data *data, t_skybox *s, float tmp)
 	}
 	else
 	{
-		s->right_seg = vec(data->win_size.x - 1 - s->pixel_length,\
+		s->right_seg = vec(data->win_size.x - 1 - s->pixel_length, \
 			data->win_size.x - 1);
 		s->left_seg = vec(0, s->right_seg.x - 1);
 	}
