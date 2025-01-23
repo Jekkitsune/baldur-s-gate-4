@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:51:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 01:04:39 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 08:26:16 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	draw_borders(t_data *data, t_vector start);
 
-int	can_be_taken(t_entity *taker, t_entity *taken)
+int	can_be_taken(t_entity *taker, t_entity *taken, t_bool no_equip)
 {
 	int	i;
 
 	if (taker->sheet.weight + taken->sheet.weight > taker->sheet.carry
 		|| taker == taken)
 		return (-1);
-	if (taken->sheet.type < NON_EQUIP)
+	if (taken->sheet.type < NON_EQUIP && !no_equip)
 	{
 		if (taken->sheet.type == weapon_2 && !taker->sheet.inventory[weapon_1])
 			return (weapon_1);

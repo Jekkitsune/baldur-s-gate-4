@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:52:38 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 20:00:52 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 08:02:42 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	drop(t_data *data, t_spellinfo *spell)
 	if (drop->active)
 		add_active(data, drop, drop->behavior.func);
 	spell->caster->sheet.inventory[i] = NULL;
+	refresh_stats(data, spell->caster);
 	return ;
 }
 
@@ -110,7 +111,7 @@ t_button	*button_inventory(t_data *data, t_entity *entity)
 	t_button	*button;
 
 	current = inventory_hover_index(data);
-	if (current == -1)
+	if (current == -1 || data->shown_other_inventory)
 	{
 		last = -1;
 		return (NULL);

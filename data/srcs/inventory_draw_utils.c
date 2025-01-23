@@ -6,13 +6,15 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:55:19 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 01:02:55 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 10:59:35 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 void	draw_inventory_img(t_data *data, t_entity *entity, t_vector start);
+void	show_price(t_data *data, int price, t_vector pos);
+void	draw_gold_button(t_data *data, t_vector inventory_start);
 
 void	draw_equip(t_data *data, t_entity *inventory[INVENTORY_SIZE],
 	t_vector start, int hover_index)
@@ -71,20 +73,27 @@ void	draw_invbutton_name(t_data *data, t_entity *inventory[INVENTORY_SIZE],
 	int index)
 {
 	t_vector	mouse_pos;
+	t_vector	pos;
 	t_strput	*to_put;
 
 	if (index < 0 || !inventory[index] || !inventory[index]->sheet.name)
 		return ;
 	mlx_mouse_get_pos(data->mlx, &mouse_pos.x, &mouse_pos.y);
+	pos = vec(mouse_pos.x - 5, mouse_pos.y - 10);
 	to_put = strput(ft_strdup(inventory[index]->sheet.name),
-			vec(mouse_pos.x - 5, mouse_pos.y - 10), 20, 0xFF000000);
+			pos, 20, 0xFF000000);
 	screen_string_put(data, to_put, 0);
 	if (data->player.description_mode && inventory[index]->sheet.description)
 	{
+		pos.y -= 10;
 		to_put = strput(ft_strdup(inventory[index]->sheet.description),
-				vec(mouse_pos.x - 200, mouse_pos.y - 20), 20, 0xFF000000);
+				pos, 20, 0xFF000000);
 		screen_string_put(data, to_put, 0);
 	}
+	if (!data->player.shop_mode)
+		return ;
+	pos.y -= 10;
+	show_price(data, inventory[index]->sheet.price, pos);
 }
 
 void	draw_active_inventory(t_data *data, t_vector start)
@@ -121,4 +130,6 @@ void	draw_inventory(t_data *data, t_entity *inventory[INVENTORY_SIZE])
 	draw_unequip(data, inventory, start, hover_index);
 	draw_active_inventory(data, start);
 	draw_invbutton_name(data, inventory, hover_index);
+	show_other_inventory(data);
+	draw_gold_button(data, start);
 }

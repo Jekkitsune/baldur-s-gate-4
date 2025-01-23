@@ -6,21 +6,28 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:40:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 01:08:44 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 10:20:22 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	can_be_taken(t_entity *taker, t_entity *taken);
+int		can_be_taken(t_entity *taker, t_entity *taken, t_bool no_equip);
+void	add_gold(t_data *data, t_entity *to_add);
 
-t_bool	add_to_inventory(t_data *data, t_entity *taker, t_entity *taken)
+t_bool	add_to_inventory(t_data *data, t_entity *taker, t_entity *taken,
+		t_bool no_equip)
 {
 	int	i;
 
 	if (!taker || !taken)
 		return (false);
-	i = can_be_taken(taker, taken);
+	if (taken->sheet.type == gold)
+	{
+		add_gold(data, taken);
+		return (true);
+	}
+	i = can_be_taken(taker, taken, no_equip);
 	if (i != -1 && taken->active)
 		free(ft_lstpop(&data->current_map->active_entities, taken));
 	if (i != -1 && i < INVENTORY_SIZE && !taker->sheet.inventory[i])
@@ -48,7 +55,7 @@ void	take(void *data_param, void *spell_param)
 	apply_action_cost(spell);
 	if (spell->target && spell->target->visible)
 	{
-		if (add_to_inventory(data, spell->caster, spell->target))
+		if (add_to_inventory(data, spell->caster, spell->target, false))
 		{
 			show_info(data, "%s picked up %s.\n", spell->caster->sheet.name,
 				spell->target->sheet.name);
@@ -57,20 +64,6 @@ void	take(void *data_param, void *spell_param)
 		show_info(data, "%s tried to pick up %s, but couldn't.\n",
 			spell->caster->sheet.name, spell->target->sheet.name);
 	}
-}
-
-void	init_take_button(t_data *data, t_button *button)
-{
-	button->spellinfo.radius = 0;
-	button->spellinfo.range = 1;
-	button->spellinfo.visible_target = false;
-	button->spellinfo.cost_action = 1;
-	button->spellinfo.type = take_type;
-	button->img = get_tex(data, "take_button");
-	button->func = action_select;
-	button->spellinfo.effect = take;
-	button->name = "Take";
-	button->description = "Pick up something if you can carry its weight";
 }
 
 void	open_inventory(void *data_param, void *entity_param, t_spellinfo spell)

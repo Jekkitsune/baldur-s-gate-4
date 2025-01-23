@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 19:14:32 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/17 01:47:10 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 00:03:02 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ void	destroy_entity(t_data *data, t_entity *entity)
 		unpossess(data);
 	if (data->player.arrow == entity)
 		data->player.arrow = NULL;
-	if (entity->active)
-		destroy_active(data, entity);
+	destroy_active(data, entity);
 	if (in_bound(data->current_map, entity->pos))
 	{
 		tmp = ft_lstpop(&data->current_map->arr[entity->pos.x][entity->pos.y].\
@@ -102,5 +101,6 @@ void	destroy_entity(t_data *data, t_entity *entity)
 	clear_entity_timer_prop(data, entity);
 	clear_entity_timer_effect(data, entity);
 	free(entity->sheet.name);
+	ft_free_tab(entity->dialog.dialog_tab);
 	free(entity);
 }

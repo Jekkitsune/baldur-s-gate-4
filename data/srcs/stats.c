@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 23:28:28 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/21 19:29:58 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 07:39:59 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,16 @@ void	check_inventory_stats(t_entity *entity, int *button_nb)
 		current = entity->sheet.inventory[i++];
 		if (current)
 		{
+			i2 = 0;
 			while (i2 < NB_BUTTON)
-				i2 = 0;
 			{
 				if (*button_nb < NB_BUTTON - 1
 					&& current->sheet.buttons[i2].func)
 					entity->sheet.buttons[(*button_nb)++]
-						= current->sheet.buttons[i2++];
-				add_stat(entity, current);
+						= current->sheet.buttons[i2];
+				i2++;
 			}
+			add_stat(entity, current);
 		}
 	}
 	add_weight(entity);
@@ -105,7 +106,7 @@ void	refresh_stats(t_data *data, t_entity *entity)
 	t_entity	*prefab;
 	int			button_nb;
 
-	if (!entity || !entity->sheet.prefab)
+	if (!entity || !entity->sheet.prefab || entity->sheet.type != living)
 		return ;
 	prefab = entity->sheet.prefab;
 	if (!prefab)
@@ -117,7 +118,7 @@ void	refresh_stats(t_data *data, t_entity *entity)
 	if (button_nb < NB_BUTTON - 1)
 		init_move_button(data, &entity->sheet.buttons[button_nb++]);
 	if (button_nb < NB_BUTTON - 1)
-		init_take_button(data, &entity->sheet.buttons[button_nb++]);
+		init_interact_button(data, &entity->sheet.buttons[button_nb++]);
 	if (button_nb < NB_BUTTON - 1)
 		init_atk_button(data, &entity->sheet.buttons[button_nb++], entity);
 	refresh_entity_class(entity, entity->sheet.level, &button_nb);

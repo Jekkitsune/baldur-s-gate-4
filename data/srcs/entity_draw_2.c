@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:41:58 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 21:43:13 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 01:49:18 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,37 @@ void	calculate_entity_info(t_data *data, t_entity *entity)
 		* entity->size_scale;
 	entity->draw_x.x = entity->draw_x.x - (entity->draw_x.y / 2);
 	entity->draw_x.y = entity->draw_x.x + entity->draw_x.y;
+}
+
+int	entity_face(t_data *data, t_entity *entity)
+{
+	int			face;
+	float		angle_diff;
+
+	face = 0;
+	angle_diff = get_angle_diff(data->player.angle, entity->angle);
+	if (angle_diff >= -(M_PI / 4) && angle_diff < M_PI / 4)
+		face = 2;
+	else if (angle_diff >= M_PI / 4 && angle_diff < (3 * M_PI) / 4)
+		face = 1;
+	else if (angle_diff >= (3 * M_PI) / 4 || angle_diff < -((3 * M_PI) / 4))
+		face = 0;
+	else if (angle_diff >= -((3 * M_PI) / 4) && angle_diff < -(M_PI / 4))
+		face = 3;
+	return (face);
+}
+
+void	draw_entity_dialog(t_data *data, t_entity *entity)
+{
+	t_strput	*to_put;
+	char		*str;
+
+	if (entity && entity->dialog.is_talking && entity->dialog.dialog_i
+		< entity->dialog.dialog_size)
+	{
+		str = entity->dialog.dialog_tab[entity->dialog.dialog_i];
+		to_put = strput(ft_strdup(str), vec(entity->draw_x.x, entity->draw_y.x),
+				30, 0xFF000000);
+		screen_string_put(data, to_put, 0);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 09:19:59 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 09:47:42 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,9 @@ int	key_down_manager(int key, void *param)
 		register_player_movement(data, key, 1);
 	if (key == 225)
 		data->player.description_mode = 1;
-	if (key == 8)
-		data->test_key = 1;
 	if (key == 6 && data->sky_box_tex[0] && data->sky_box_tex[1]
 		&& data->sky_box_tex[2] && data->sky_box_tex[3])
 		data->sky_box = !data->sky_box;
-	if (key == 44)
-	{
-		open_door(data);
-
-			t_timer_property	*prop;
-			
-			prop = new_timer_property(poisoned, NULL, data->player.possession, &data->current_map->arr[data->player.possession->pos.x][data->player.possession->pos.y]);
-			add_timer_property(prop, 3, true);	
-	}
 	return (0);
 }
 

@@ -6,11 +6,14 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 20:26:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 21:43:16 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 01:10:27 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int		entity_face(t_data *data, t_entity *entity);
+void	draw_entity_dialog(t_data *data, t_entity *entity);
 
 uint32_t	average_filter(uint32_t color1, uint32_t color2)
 {
@@ -82,20 +85,11 @@ void	draw_entity_tex(t_data *data, t_entity *entity, t_texture *tex)
 void	draw_entity(t_data *data, t_entity *entity)
 {
 	int			face;
-	float		angle_diff;
 	t_texture	*filtered;
 
 	if (entity->draw_x.x == data->win_size.x)
 		return ;
-	angle_diff = get_angle_diff(data->player.angle, entity->angle);
-	if (angle_diff >= -(M_PI / 4) && angle_diff < M_PI / 4)
-		face = 2;
-	else if (angle_diff >= M_PI / 4 && angle_diff < (3 * M_PI) / 4)
-		face = 1;
-	else if (angle_diff >= (3 * M_PI) / 4 || angle_diff < -((3 * M_PI) / 4))
-		face = 0;
-	else if (angle_diff >= -((3 * M_PI) / 4) && angle_diff < -(M_PI / 4))
-		face = 3;
+	face = entity_face(data, entity);
 	if (!entity->color_filter)
 		draw_entity_tex(data, entity, get_correct_tex(entity, face));
 	else
@@ -106,6 +100,7 @@ void	draw_entity(t_data *data, t_entity *entity)
 		free_tex(filtered);
 		entity->color_filter = 0;
 	}
+	draw_entity_dialog(data, entity);
 }
 
 void	draw_entities(t_data *data)

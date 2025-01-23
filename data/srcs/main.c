@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 07:31:07 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 08:18:04 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	init_test(t_data *data)
 	add_prefab(data, get_prefab_data(data, "prefabs/guard"), ft_strjoin("guard", ""));
 	data->prefab_tab[data->nb_prefab - 1]->sheet.hp = 10;
 	data->prefab_tab[data->nb_prefab - 1]->sheet.max_hp = 10;
+	data->prefab_tab[data->nb_prefab - 1]->sheet.carry = 100;
 	data->prefab_tab[data->nb_prefab - 1]->sheet.type = living;
 	data->prefab_tab[data->nb_prefab - 1]->sheet.description = ft_strdup("MOI QUAND LE LOUP EST ENSTEIN");
 	test2 = spawn_entity(data, get_prefab(data, "guard"), vec(25, 10), ft_strjoin("john", ""));
@@ -72,21 +73,18 @@ void	init_test(t_data *data)
 	test2->sheet.team = 1;
 	test2->sheet.fight_ia = martial_ia;
 	add_active(data, test2, test2->sheet.wander_ia);
-	test2->size_scale = 0.9; 
 
 	test2 = spawn_entity(data, get_prefab(data, "omen"), vec(20, 2), ft_strjoin("omen", ""));
 	test2->sheet.wander_ia = base_aggro;
 	test2->sheet.team = 1;
 	test2->sheet.fight_ia = martial_ia;
 	add_active(data, test2, test2->sheet.wander_ia);
-	test2->size_scale = 0.9; 
 
 	test2 = spawn_entity(data, get_prefab(data, "omen"), vec(20, 4), ft_strjoin("omen", ""));
 	test2->sheet.wander_ia = base_aggro;
 	test2->sheet.team = 1;
 	test2->sheet.fight_ia = martial_ia;
 	add_active(data, test2, test2->sheet.wander_ia);
-	test2->size_scale = 0.9; 
 
 	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
 	add_active(data, test2, NULL);
@@ -102,6 +100,13 @@ void	init_test(t_data *data)
 	// add_active(data, test2, NULL);
 	// possess_control(test2, true);
 	// ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
+
+	test2 = spawn_entity(data, get_prefab(data, "omen"), vec(29, 3), ft_strjoin("genshin", ""));
+	set_entity_dialog(test2, "Salut mec\\Comment ca va\\J'ai plein de chose a dire\\genre\\feur\\ou\\coubeh\\allez salut");
+	add_active(data, test2, NULL);
+
+	add_prefab(data, get_prefab_data(data, "prefabs/sword"), ft_strdup("sword"));
+	test2 = spawn_entity(data, get_prefab(data, "sword"), vec(25, 9), ft_strjoin("sword", ""));
 }
 
 int	main(int argc, char **argv)

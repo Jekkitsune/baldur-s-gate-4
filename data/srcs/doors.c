@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 22:52:00 by gmassoni          #+#    #+#             */
-/*   Updated: 2025/01/15 20:14:45 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 09:44:30 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,22 @@ void	update_doors(t_data *data)
 		j = -1;
 		while (++j < data->current_map->size.y)
 			change_state(&data->current_map->arr[i][j]);
+	}
+}
+
+void	open_door_pos(t_data *data, t_vector pos)
+{
+	t_cell	*cell;
+
+	if (!in_bound(data->current_map, pos))
+		return ;
+	cell = &data->current_map->arr[pos.x][pos.y];
+	if (cell->type == DOOR)
+	{
+		if (cell->status == OPEN)
+			cell->status = CLOSING;
+		else if (cell->status == CLOSE)
+			cell->status = OPENING;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 12:36:56 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 01:17:51 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 07:30:41 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ char	**get_next_stat(int fd);
 t_type	get_type(char *type);
 void	finish_gnl(int fd);
 t_bool	set_default_actions(t_data *data, t_sheet *s, char **splited);
-t_bool	prefab_size(t_entity *entity, char **splited);
+t_bool	float_stat(float *stat, char *compare, char **splited);
 
-t_bool	set_specific(t_data *data, t_sheet *s, char **splited)
+t_bool	set_specific(t_data *data, t_sheet *s, char **splited, float *size)
 {
 	if (!splited || !splited[0] || !splited[1])
 		return (false);
@@ -43,6 +43,8 @@ t_bool	set_specific(t_data *data, t_sheet *s, char **splited)
 		s->type = get_type(splited[1]);
 		return (true);
 	}
+	else if (float_stat(size, "SIZE", splited))
+		return (true);
 	else
 		return (set_multiple(s, splited));
 }
@@ -78,9 +80,7 @@ t_bool	set_basic_stats(t_sheet *s, char **splited)
 
 t_bool	set_game_stat(t_sheet *s, char **splited)
 {
-	if (set_stat(&s->max_hp, "HP", splited))
-		return (true);
-	if (set_stat(&s->pb, "PB", splited))
+	if (set_stat(&s->max_hp, "HP", splited) || set_stat(&s->pb, "PB", splited))
 		return (true);
 	if (set_stat(&s->ac, "AC", splited))
 		return (true);
@@ -97,6 +97,10 @@ t_bool	set_game_stat(t_sheet *s, char **splited)
 	if (set_stat(&s->carry, "CARRY", splited))
 		return (true);
 	if (set_stat(&s->speed, "SPEED", splited))
+		return (true);
+	if (set_stat(&s->price, "PRICE", splited))
+		return (true);
+	if (float_stat(&s->range, "RANGE", splited))
 		return (true);
 	return (false);
 }
@@ -135,7 +139,7 @@ void	get_prefab_stat(t_data *data, t_entity *prefab, char *directory)
 	while (splited)
 	{
 		if (!set_basic_stats(s, splited) && !set_game_stat(s, splited)
-			&& !set_specific(data, s, splited) && !prefab_size(prefab, splited)
+			&& !set_specific(data, s, splited, &prefab->size_scale)
 			&& !set_default_actions(data, s, splited))
 			set_properties(data, s, splited);
 		ft_free_tab(splited);

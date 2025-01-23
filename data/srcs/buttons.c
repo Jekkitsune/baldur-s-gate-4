@@ -6,13 +6,28 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 20:48:52 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 19:19:41 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 08:12:23 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 t_button	*button_inventory(t_data *data, t_entity *entity);
+void		check_click_other_inventory(t_data *data);
+
+t_button	*get_button_pointer(t_button *tab, char *name)
+{
+	int	i;
+
+	i = 0;
+	while (i < NB_BUTTON)
+	{
+		if (!ft_strcmp(tab[i].name, name))
+			return (&tab[i]);
+		i++;
+	}
+	return (NULL);
+}
 
 t_button	*current_button(t_data *data)
 {
@@ -70,4 +85,5 @@ void	check_button_click(t_data *data)
 	}
 	check_click_party_icon(data, mouse);
 	check_click_participants_icon(data, mouse);
+	check_click_other_inventory(data);
 }

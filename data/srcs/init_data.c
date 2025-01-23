@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:13:43 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/21 19:47:02 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 02:11:27 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	init_mlx_events(t_data *data)
 t_data	*init_data(t_data *data)
 {
 	ft_bzero(data, sizeof(t_data));
-	data->test_key = 0;
 	data->win_size.x = WIDTH;
 	data->win_size.y = HEIGHT;
 	data->mlx = mlx_init();

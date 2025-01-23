@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 09:06:25 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 11:17:42 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,17 +91,19 @@ typedef enum e_property
 	melee = 1 << 3,
 	poisoned = 1 << 4,
 	hit_effect = 1 << 5,
+	shop_keeper = 1 << 6
 }	t_property;
 
-# define NB_PROPERTIES 5
+# define NB_PROPERTIES 7
 
-# define PROPERTIES_TAB ((char * const[NB_PROPERTIES + 1]) { \
+# define PROPERTIES_TAB ((char * const[NB_PROPERTIES]) { \
     "finesse", \
     "range", \
     "loading",  \
 	"melee",\
 	"poisoned",\
 	"hit_effect",\
+	"shop_keeper",\
 })
 
 typedef struct s_vector
@@ -155,6 +157,7 @@ typedef enum e_type
 	living = 6,
 	object = 7,
 	consumable = 8,
+	gold = 9,
 }	t_type;
 
 # define NON_EQUIP 6
@@ -287,7 +290,7 @@ typedef struct s_sheet
 	int			team;
 	t_bool		in_fight;
 	int			initiative;
-	int			range;
+	float		range;
 	char		*description; //Lie au prefab, non personnel a l'entite
 	t_entity	*prefab;
 	t_class		*class;
@@ -295,6 +298,7 @@ typedef struct s_sheet
 	void		(*fight_ia)(void *data, void *entity);
 	t_list		*timer_property;
 	t_list		*timer_concentration;
+	int			price;
 }	t_sheet;
 
 typedef struct s_path
@@ -364,6 +368,14 @@ typedef struct s_ceiling
 	uint32_t	color;
 }	t_ceiling;
 
+typedef struct s_dialog
+{
+	t_bool	is_talking;
+	char	**dialog_tab;
+	int		dialog_size;
+	int		dialog_i;
+}	t_dialog;
+
 typedef struct s_entity
 {
 	t_bool		visible;
@@ -390,6 +402,7 @@ typedef struct s_entity
 	float		size_scale;
 	uint32_t	color_filter;
 	t_bool		anim_no_move;
+	t_dialog	dialog;
 }	t_entity;
 
 typedef struct s_impact
@@ -435,15 +448,14 @@ typedef struct s_player
 	int			height;
 	int			focus_mode;
 	float		focus_dist;
-
 	t_vectorf	last_angle;
-
 	t_entity	*possession;
 	t_button	*active_button;
 	t_entity	*arrow;
-
 	t_list		*visible_entities;
 	t_bool		description_mode;
+	t_bool		shop_mode;
+	int			gold;
 }	t_player;
 
 typedef struct minimap
@@ -481,7 +493,6 @@ typedef struct s_data
 	t_player		player;
 	int				scale;
 	int				render_distance;
-	int				test_key;
 	int				(*check_shape[2])(struct s_data *data, t_vector vec);
 	void			*screen_display;
 	int				on_screen;
@@ -503,6 +514,7 @@ typedef struct s_data
 	t_round_manager	round_manager;
 	char 			**properties_tab;
 	t_button_lst	*button_lst;
+	t_bool			shown_other_inventory;
 }	t_data;
 
 typedef struct s_button_lst
@@ -735,6 +747,12 @@ void		free_button_lst(t_data *data);
 void		pop_free_property(t_data *data, t_timer_property *prop);
 void		break_concentration(t_data *data, t_entity *entity, int id_concentration);
 void		add_cell_property_entity(t_data *data, t_entity *entity);
+void		set_entity_dialog(t_entity *entity, char *str);
+t_button	*get_button_pointer(t_button *tab, char *name);
+void		draw_other_inventory(t_data *data, t_entity *inventory[INVENTORY_SIZE]);
+void		show_other_inventory(t_data *data);
+void		open_door_pos(t_data *data, t_vector pos);
+t_bool		in_party(t_data *data, t_entity *entity);
 
 //ia
 void		base_aggro(void *data_param, void *entity_param);
@@ -751,7 +769,10 @@ void		zone_effect(t_data *data, t_spellinfo spell, void (*effect)(void *data, t_
 void		init_fireball_button(t_data *data, t_button *button);
 void		fireball(void *data_param, void *spell_param);
 
-void		init_take_button(t_data *data, t_button *button);
+void		init_interact_button(t_data *data, t_button *button);
+void		take(void *data_param, void *spell_param);
+void		talk(void *data_param, void *spell_param);
+
 void		init_inventory_button(t_data *data, t_button *button);
 
 void		init_atk_button(t_data *data, t_button *button, t_entity *entity);

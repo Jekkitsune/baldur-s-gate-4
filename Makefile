@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/22 08:39:25 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/23 11:00:03 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -124,6 +124,10 @@ SRCS = main.c\
 		round_manager.c\
 		check_radius_team.c\
 		finish_gnl.c\
+		interact.c\
+		talk.c\
+		loot.c\
+		gold.c\
 
 LIBFT = data/libft/libft.a
 

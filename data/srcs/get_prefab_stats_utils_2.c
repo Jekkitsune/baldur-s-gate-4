@@ -6,20 +6,21 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 19:48:47 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 01:19:32 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 07:27:43 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_bool	prefab_size(t_entity *entity, char **splited)
+void	remove_endl(char **splited);
+
+t_bool	float_stat(float *stat, char *compare, char **splited)
 {
 	char	**splited_number;
 	float	res;
 	float	tmp;
 
-	if (!ft_strncmp(splited[0], "SIZE",
-			ft_strlen("SIZE")))
+	if (!ft_strncmp(splited[0], compare, ft_strlen(compare)))
 	{
 		splited_number = ft_split(splited[1], '.');
 		if (splited_number && splited_number[0] && splited_number[1])
@@ -29,7 +30,7 @@ t_bool	prefab_size(t_entity *entity, char **splited)
 			while (tmp > 1)
 				tmp /= 10.0;
 			res += tmp;
-			entity->size_scale = res;
+			*stat = res;
 		}
 		ft_free_tab(splited_number);
 		return (true);
@@ -44,6 +45,7 @@ t_bool	set_default_actions(t_data *data, t_sheet *s, char **splited)
 
 	if (!ft_strncmp(splited[0], "ACTION", ft_strlen("ACTION")))
 	{
+		remove_endl(splited);
 		i = 0;
 		while (i < NB_BUTTON && splited[i + 1] && ft_strcmp(splited[i + 1], \
 "\n"))

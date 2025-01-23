@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 01:52:01 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/17 01:52:36 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/23 11:17:32 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,18 @@ void	leave_party(t_data *data, t_entity *entity)
 	lst = NULL;
 	lst = ft_lstpop(&data->round_manager.party, entity);
 	free(lst);
+}
+
+t_bool	in_party(t_data *data, t_entity *entity)
+{
+	t_list	*lst;
+
+	lst = data->round_manager.party;
+	while (lst)
+	{
+		if (lst->content == entity)
+			return (true);
+		lst = lst->next;
+	}
+	return (false);
 }
