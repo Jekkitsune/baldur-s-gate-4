@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 21:09:45 by gmassoni          #+#    #+#             */
-/*   Updated: 2025/01/10 11:25:40 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 12:45:01 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ bool	process_line(t_data *data, char **split)
 		return (false);
 	if (ft_strlen(split[0]) == 1)
 	{
-		if (split[0][0] == 'F' && data->floor_color[0] == 0)
+		if (split[0][0] == 'F')
 		{
 			if (!create_color(data->floor_color, split[1]))
 				return (false);
 		}
-		else if (split[0][0] == 'C' && data->ceiling_color[0] == 0)
+		else if (split[0][0] == 'C')
 		{
 			if (!create_color(data->ceiling_color, split[1]))
 				return (false);
@@ -97,20 +97,23 @@ bool	is_map_closed(char **map)
 	return (true);
 }
 
-bool	check_char(char **map, int i, int j, t_data *data)
+bool	check_char(char **map, t_vector i, t_data *data, t_map *level)
 {
-	if (!ft_inset(map[i][j], "012 NSEW"))
+	if (!ft_inset(map[i.x][i.y], "012 NSEW"))
 		return (false);
-	if (ft_inset(map[i][j], "NSEW"))
+	if (ft_inset(map[i.x][i.y], "NSEW"))
 	{
-		if (!vec_cmp(data->player.pos, vec(-1, -1)))
+		if (!vec_cmp(level->start, vec(-1, -1)))
 			return (false);
-		data->player.pos = vec(j, i);
-		if (map[i][j] == 'N')
+		level->start = vec(i.y, i.x);
+		if (!vec_cmp(data->player.pos, vec(-1, -1)))
+			return (true);
+		data->player.pos = vec(i.y, i.x);
+		if (map[i.x][i.y] == 'N')
 			data->player.angle = M_PI + (M_PI / 2);
-		else if (map[i][j] == 'S')
+		else if (map[i.x][i.y] == 'S')
 			data->player.angle = M_PI / 2;
-		else if (map[i][j] == 'E')
+		else if (map[i.x][i.y] == 'E')
 			data->player.angle = 0;
 		else
 			data->player.angle = M_PI;

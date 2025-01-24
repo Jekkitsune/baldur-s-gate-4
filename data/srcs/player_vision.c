@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 02:25:04 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 10:12:39 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	show_environment(t_data *data)
 
 void	show_screen(t_data *data)
 {
+	get_all_rays(data);
 	show_environment(data);
 	show_party_icon(data);
 	show_participants_icon(data);

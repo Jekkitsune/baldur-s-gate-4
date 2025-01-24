@@ -6,11 +6,13 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 22:52:00 by gmassoni          #+#    #+#             */
-/*   Updated: 2025/01/23 09:44:30 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 11:45:36 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+t_bool	travel(t_data *data, t_map *new_map);
 
 void	change_state(t_cell	*door)
 {
@@ -52,6 +54,8 @@ void	open_door_pos(t_data *data, t_vector pos)
 	if (!in_bound(data->current_map, pos))
 		return ;
 	cell = &data->current_map->arr[pos.x][pos.y];
+	if (cell->travel && travel(data, cell->travel))
+		return ;
 	if (cell->type == DOOR)
 	{
 		if (cell->status == OPEN)

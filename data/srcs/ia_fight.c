@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:59:31 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 00:07:59 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 06:55:28 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void	base_aggro(void *data_param, void *entity_param)
 	while (lst)
 	{
 		if (lst->content && ((t_entity *)lst->content)->sheet.alive
+			&& ((t_entity *)lst->content)->sheet.team != entity->sheet.team
 			&& get_dist(entity->pos, ((t_entity *)lst->content)->pos) < 4)
 		{
 			enter_combat(data, entity);

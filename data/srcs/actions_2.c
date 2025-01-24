@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:43:48 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 07:42:47 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 09:32:10 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_entity	*create_selector(t_data *data)
 	data->player.last_angle.x = data->player.angle;
 	data->player.last_angle.y = data->player.focus_dist;
 	res = spawn_entity(data, get_prefab(data, "selector"),
-			data->player.pos, ft_strjoin("selector", ""));
+			data->player.pos, ft_strdup("selector"));
 	change_anim(res, "idle", true);
 	if (!res)
 		return (NULL);

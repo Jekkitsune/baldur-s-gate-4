@@ -6,14 +6,14 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/23 11:00:03 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/24 11:14:40 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 CC = cc
-CFLAGS = -g3 -Ofast -Wextra -Wall ##-Werror -g
-NAME = bg4
+CFLAGS = -g3 -Ofast -Wextra -Wall ##-Werror
+NAME = cub3D
 HEADER = data/headers
 
 SRC_DIR = data/srcs
@@ -64,9 +64,11 @@ SRCS = main.c\
 		free_2.c\
 		free_map.c\
 		ia.c\
+		ia_2.c\
 		ia_fight.c\
 		ia_fights_utils.c\
 		update_active.c\
+		update_active_2.c\
 		entity.c\
 		entity_draw.c\
 		entity_draw_2.c\
@@ -128,6 +130,11 @@ SRCS = main.c\
 		talk.c\
 		loot.c\
 		gold.c\
+		init_game.c\
+		get_map_data.c\
+		get_map_data_2.c\
+		get_map_data_3.c\
+		travel.c\
 
 LIBFT = data/libft/libft.a
 

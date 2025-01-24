@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:22:10 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 23:53:27 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 06:58:45 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ t_entity	*get_prefab_data(t_data *data, char *directory)
 	if (!entity)
 		return (NULL);
 	entity->size_scale = 1;
-	entity->sheet.alive = true;
 	entity->offset = vecf(0, 0);
 	entity->pos = vec(-1, -1);
 	entity->tex[0] = data->wall_tex[0];
@@ -122,5 +121,7 @@ t_entity	*get_prefab_data(t_data *data, char *directory)
 	entity->sheet.portrait = get_resized_free(get_portrait(data, directory),
 			data->button_scale_size);
 	get_prefab_stat(data, entity, directory);
+	if (entity->sheet.type == living)
+		entity->sheet.alive = true;
 	return (entity);
 }

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:24:17 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 00:00:27 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 11:36:14 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,10 @@ void	destroy_active(t_data *data, t_entity *entity)
 {
 	t_list	*to_free;
 
-	if (!entity->active)
+	if (!entity || !entity->active)
 		return ;
+	entity->active = false;
+	free_path(&entity->behavior.path);
 	to_free = ft_lstpop(&data->current_map->active_entities, entity);
 	if (to_free)
 		free(to_free);

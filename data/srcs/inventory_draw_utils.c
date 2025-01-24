@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:55:19 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 10:59:35 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 07:38:59 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,17 @@ void	draw_invbutton_name(t_data *data, t_entity *inventory[INVENTORY_SIZE],
 	t_vector	mouse_pos;
 	t_vector	pos;
 	t_strput	*to_put;
+	char		*name;
 
 	if (index < 0 || !inventory[index] || !inventory[index]->sheet.name)
 		return ;
 	mlx_mouse_get_pos(data->mlx, &mouse_pos.x, &mouse_pos.y);
 	pos = vec(mouse_pos.x - 5, mouse_pos.y - 10);
-	to_put = strput(ft_strdup(inventory[index]->sheet.name),
-			pos, 20, 0xFF000000);
+	if (inventory[index]->sheet.type == gold)
+		name = ft_itoa(inventory[index]->sheet.price);
+	else
+		name = ft_strdup(inventory[index]->sheet.name);
+	to_put = strput(name, pos, 20, 0xFF000000);
 	screen_string_put(data, to_put, 0);
 	if (data->player.description_mode && inventory[index]->sheet.description)
 	{
@@ -90,10 +94,9 @@ void	draw_invbutton_name(t_data *data, t_entity *inventory[INVENTORY_SIZE],
 				pos, 20, 0xFF000000);
 		screen_string_put(data, to_put, 0);
 	}
-	if (!data->player.shop_mode)
-		return ;
 	pos.y -= 10;
-	show_price(data, inventory[index]->sheet.price, pos);
+	if (data->player.shop_mode)
+		show_price(data, inventory[index]->sheet.price, pos);
 }
 
 void	draw_active_inventory(t_data *data, t_vector start)

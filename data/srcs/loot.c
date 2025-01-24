@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 06:14:08 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 11:23:59 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 07:12:54 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,11 @@ void	basic_loot(t_data *data, t_entity *caster, t_entity *target)
 		return ;
 	}
 	index = other_inventory_hover_index(data);
-	if (index >= NON_EQUIP && index < INVENTORY_SIZE)
+	if (index >= 0 && index < INVENTORY_SIZE)
 	{
 		exchange_item(data, index, target, caster);
+		if (index < NON_EQUIP)
+			refresh_stats(data, target);
 		return ;
 	}
 }

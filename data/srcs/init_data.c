@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:13:43 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 02:11:27 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 01:09:00 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,13 @@ t_data	*init_data(t_data *data)
 	data->button_scale_size = 75 * data->win_size.x / 1920;
 	data->scale = 10;
 	data->render_distance = 500;
-	data->sky_box = false;
+	data->sky_box = true;
 	init_screen_buffer(data);
 	init_shape_tab(data);
 	mlx_mouse_hide();
 	mlx_mouse_move(data->mlx, data->win, data->win_size.x / 2,
 		data->win_size.y / 2);
 	srand(time(NULL));
+	mlx_set_fps_goal(data->mlx, FPS_CAP);
 	return (data);
 }

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 23:09:43 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 04:54:44 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 13:53:31 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	free_map(t_data *data, t_map *map)
 	int		x;
 	int		y;
 
+	data->current_map = map;
 	free_map_actives(data, map);
 	x = -1;
 	while (++x < map->size.x)

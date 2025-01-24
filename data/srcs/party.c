@@ -6,11 +6,14 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 10:37:11 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/17 01:52:39 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 11:05:18 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	hover_character_button(t_data *data, t_vector pos, t_entity *entity,
+		t_vector mouse_pos);
 
 void	check_click_end_turn(t_data *data, t_vector mouse)
 {
@@ -65,7 +68,7 @@ void	check_click_party_icon(t_data *data, t_vector mouse)
 			if (current && current == data->player.possession)
 				unpossess(data);
 			else if (current)
-				possess(data, current);
+				smooth_possess(data, current);
 			return ;
 		}
 		party = party->next;
@@ -90,7 +93,7 @@ void	check_party_hover(t_data *data)
 	{
 		if (mouse.x >= pos.x && mouse.x <= pos.x + data->button_scale_size
 			&& mouse.y >= pos.y && mouse.y <= pos.y + data->button_scale_size)
-			draw_hover(data, pos, 0x44000000);
+			hover_character_button(data, pos, party->content, mouse);
 		party = party->next;
 		pos.x += data->button_scale_size;
 	}

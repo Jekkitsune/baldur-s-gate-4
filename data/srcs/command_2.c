@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 20:11:38 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 22:17:01 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 11:10:21 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	window_manager(int event, void *param)
 	t_data	*data;
 
 	data = param;
+	if (event == 0)
+		mlx_loop_end(data->mlx);
 	if (event == 7)
 		data->on_screen = 0;
 	if (event == 5)

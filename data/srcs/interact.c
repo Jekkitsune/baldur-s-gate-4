@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 23:54:44 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 10:27:27 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 11:45:07 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	interact(void *data_param, void *spell_param)
 	if (spell->target && spell->target->sheet.type == living
 		&& spell->target->sheet.alive)
 		talk(data_param, spell_param);
-	else if (spell->target && spell->target->sheet.type == living
+	if (spell->target && spell->target->sheet.type == living
 		&& (!spell->target->sheet.alive
 		|| check_properties(spell->target->sheet.properties, shop_keeper)))
 		open_other_inventory(data,

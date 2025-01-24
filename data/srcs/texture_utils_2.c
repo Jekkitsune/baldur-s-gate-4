@@ -6,17 +6,35 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 19:22:09 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 19:22:22 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 05:17:24 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+t_texture	*get_default_tex(t_data *data, char *name)
+{
+	if (!ft_strcmp(name, "NO"))
+		return (data->wall_tex[0]);
+	if (!ft_strcmp(name, "SO"))
+		return (data->wall_tex[1]);
+	if (!ft_strcmp(name, "WE"))
+		return (data->wall_tex[2]);
+	if (!ft_strcmp(name, "EA"))
+		return (data->wall_tex[3]);
+	return (NULL);
+}
 
 t_texture	*get_tex(t_data *data, char *name)
 {
 	t_list		*i;
 	t_texture	*current_tex;
 
+	if (!name)
+		return (NULL);
+	if (!ft_strcmp(name, "NO") || !ft_strcmp(name, "SO")
+		|| !ft_strcmp(name, "WE") || !ft_strcmp(name, "EA"))
+		return (get_default_tex(data, name));
 	i = data->textures;
 	while (i)
 	{

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 21:09:45 by gmassoni          #+#    #+#             */
-/*   Updated: 2025/01/10 11:25:40 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 12:30:59 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,12 @@ bool	init_level(t_map *level)
 
 bool	prep_map(t_data *data, int fd, t_map *level)
 {
-	t_list	*new_lst;
 	char	**map;
 
 	map = get_map_infos(data, fd, level);
 	if (!map)
 	{
+		finish_gnl(fd);
 		close(fd);
 		ft_putstr_fd("Error\nThe file does not meet the requirements\n", 2);
 		return (false);
@@ -107,9 +107,5 @@ bool	prep_map(t_data *data, int fd, t_map *level)
 	turn_map(data, map, level);
 	if (!data->current_map)
 		data->current_map = level;
-	new_lst = ft_lstnew(level);
-	if (!new_lst)
-		exit_free(data, "Parsing malloc error");
-	ft_lstadd_back(&data->map_list, new_lst);
 	return (true);
 }

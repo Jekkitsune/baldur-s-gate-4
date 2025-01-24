@@ -6,13 +6,13 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 21:09:45 by gmassoni          #+#    #+#             */
-/*   Updated: 2025/01/10 11:25:40 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 12:31:53 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-bool	check_map(t_data *data, char **map)
+bool	check_map(t_data *data, char **map, t_map *level)
 {
 	int	i;
 	int	j;
@@ -27,7 +27,7 @@ bool	check_map(t_data *data, char **map)
 		j = -1;
 		while (map[i][++j])
 		{
-			if (!check_char(map, i, j, data))
+			if (!check_char(map, vec(i, j), data, level))
 				return (false);
 		}
 	}
@@ -58,7 +58,7 @@ char	**get_map(t_data *data, int fd, t_map *level)
 		map = ft_add_element_tab(map, line);
 		line = get_next_line(fd);
 	}
-	if (!map || !check_map(data, map))
+	if (!map || !check_map(data, map, level))
 		return (NULL);
 	i = -1;
 	while (++i < level->size.y)
@@ -95,17 +95,20 @@ char	**get_map_infos(t_data *data, int fd, t_map *level)
 	char	*lines[7];
 	int		i;
 	char	**map;
+	bool	check;
 
 	data->player.pos = vec(-1, -1);
+	level->start = vec(-1, -1);
 	i = -1;
 	while (++i < 7)
 		lines[i] = NULL;
 	get_lines(fd, lines);
-	if (!process_first_infos(data, lines))
-		return (NULL);
+	check = process_first_infos(data, lines);
 	i = -1;
 	while (++i < 6)
 		free(lines[i]);
+	if (!check)
+		return (NULL);
 	map = get_map(data, fd, level);
 	if (!map)
 		return (NULL);

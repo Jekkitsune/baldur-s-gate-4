@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 11:17:42 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 12:25:13 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,9 @@ typedef struct s_texture
 	char		*name;
 }	t_texture;
 
+typedef	struct s_map t_map;
+typedef struct s_entity t_entity;
+
 typedef	struct s_cell
 {
 	char		type;
@@ -136,6 +139,8 @@ typedef	struct s_cell
 	uint32_t	fog_color;
 	bool		ceiling;
 	t_texture	*upper_wall;
+	t_entity	*key;
+	t_map		*travel;
 }	t_cell;
 
 typedef struct s_animation
@@ -172,8 +177,6 @@ typedef enum e_spelltype
 	move_type = 5,
 	check_type = 6,
 }	t_spelltype;
-
-typedef struct s_entity t_entity;
 
 typedef struct s_spellinfo
 {
@@ -316,6 +319,7 @@ typedef struct s_behavior
 	void			(*next)(void *data, void *entity);
 	t_path			*path;
 	t_entity		*target;
+	t_spellinfo		spell;
 }	t_behavior;
 
 typedef struct s_round_manager
@@ -428,6 +432,7 @@ typedef	struct s_map
 	t_cell		**arr;
 	t_list		*active_entities;
 	char		*path;
+	t_vector	start;
 }	t_map;
 
 typedef struct s_player
@@ -734,7 +739,7 @@ bool		format_test(char *name);
 bool		create_color(char color[9], char *code);
 bool		process_first_infos(t_data *data, char *lines[7]);
 bool		is_map_closed(char **map);
-bool		check_char(char **map, int i, int j, t_data *data);
+bool		check_char(char **map, t_vector i, t_data *data, t_map *level);
 char		**get_map_infos(t_data *data, int fd, t_map *level);
 void		set_up_data(t_data *data, t_cell *cell, t_vector it, char **map);
 bool		special_atoi(char *str, int *res);
@@ -753,10 +758,17 @@ void		draw_other_inventory(t_data *data, t_entity *inventory[INVENTORY_SIZE]);
 void		show_other_inventory(t_data *data);
 void		open_door_pos(t_data *data, t_vector pos);
 t_bool		in_party(t_data *data, t_entity *entity);
+void		init_game(t_data *data);
+t_map		*get_map_pointer(t_data *data, char *name);
+uint32_t	average_filter(uint32_t color1, uint32_t color2);
+void		entity_filter(t_entity *entity, uint32_t color);
+float		get_distf(t_vectorf p1, t_vectorf p2);
+void		smooth_possess(t_data *data, t_entity *entity);
 
 //ia
 void		base_aggro(void *data_param, void *entity_param);
 void		martial_ia(void *data_param, void *entity_param);
+void		projectile_ia(void *data_param, void *entity_param);
 
 //spells
 void		init_button_lst(t_data *data);

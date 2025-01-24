@@ -1,7 +1,7 @@
-NO ./pd.jpg
-SO ./pd.png
-EA ./pd.jpg
-WE ./pd.png
+NO textures/pd.jpg
+SO textures/pd.png
+EA textures/pd.jpg
+WE textures/pd.png
 
 C 100,100,100
 F 100,100,100

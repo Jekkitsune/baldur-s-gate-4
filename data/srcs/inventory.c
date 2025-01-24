@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:40:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 10:20:22 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 07:32:31 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_bool	add_to_inventory(t_data *data, t_entity *taker, t_entity *taken,
 
 	if (!taker || !taken)
 		return (false);
-	if (taken->sheet.type == gold)
+	if (taken->sheet.type == gold && in_party(data, taker))
 	{
 		add_gold(data, taken);
 		return (true);

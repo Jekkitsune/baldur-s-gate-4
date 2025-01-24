@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 02:04:15 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 07:00:24 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 09:10:48 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,25 @@ t_bool	is_empty_cell(t_data *data, t_vector pos)
 		entities_lst = entities_lst->next;
 	}
 	return (true);
+}
+
+t_map	*get_map_pointer(t_data *data, char *name)
+{
+	t_list	*lst;
+	t_map	*current;
+
+	lst = data->map_list;
+	while (lst)
+	{
+		current = lst->content;
+		if (current && !ft_strcmp(current->path, name))
+			return (current);
+		lst = lst->next;
+	}
+	return (NULL);
+}
+
+float	get_distf(t_vectorf p1, t_vectorf p2)
+{
+	return (sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2)));
 }

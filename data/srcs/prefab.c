@@ -6,40 +6,55 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 02:10:07 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 23:27:53 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 04:26:04 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_entity	*spawn_entity(t_data *data, t_entity *prefab, t_vector pos,
-	char *name)
+t_entity	*refresh_spawned(t_data *data, t_entity *entity, char *name)
 {
-	t_entity	*entity;
 	t_list		*new_lst;
+	t_vector	pos;
 
-	if (!prefab || pos.x < 0 || pos.x >= data->current_map->size.x || pos.y < 0
-		|| pos.y >= data->current_map->size.y)
-		return (NULL);
-	entity = ft_calloc(sizeof(t_entity), 1);
-	if (!entity)
-		return (NULL);
-	ft_memcpy(entity, prefab, sizeof(t_entity));
+	pos = entity->pos;
 	new_lst = ft_lstnew(entity);
 	if (!new_lst)
 	{
 		free(entity);
+		free(name);
 		return (NULL);
 	}
-	entity->pos = pos;
 	entity->visible = true;
 	ft_lstadd_front(&data->current_map->arr[pos.x][pos.y].entities, new_lst);
 	entity->sheet.name = name;
-	entity->sheet.prefab = prefab;
 	change_anim(entity, "idle", true);
 	refresh_stats(data, entity);
 	round_refresh_stat(entity);
 	return (entity);
+}
+
+t_entity	*spawn_entity(t_data *data, t_entity *prefab, t_vector pos,
+	char *name)
+{
+	t_entity	*entity;
+
+	if (!prefab || pos.x < 0 || pos.x >= data->current_map->size.x || pos.y < 0
+		|| pos.y >= data->current_map->size.y)
+	{
+		free(name);
+		return (NULL);
+	}
+	entity = ft_calloc(sizeof(t_entity), 1);
+	if (!entity)
+	{
+		free(name);
+		return (NULL);
+	}
+	ft_memcpy(entity, prefab, sizeof(t_entity));
+	entity->pos = pos;
+	entity->sheet.prefab = prefab;
+	return (refresh_spawned(data, entity, name));
 }
 
 void	add_prefab(t_data *data, t_entity *prefab, char *name)
@@ -76,6 +91,8 @@ t_entity	*get_prefab(t_data *data, char *name)
 	int	i;
 
 	i = 0;
+	if (!name)
+		return (NULL);
 	while (i < data->nb_prefab)
 	{
 		if (!ft_strcmp(data->prefab_tab[i]->sheet.name, name))

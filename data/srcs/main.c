@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 08:18:04 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 11:55:27 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,57 +56,23 @@ void	init_test(t_data *data)
 {
 	t_entity	*test2;
 
-	add_prefab(data, get_prefab_data(data, "prefabs/guard"), ft_strjoin("guard", ""));
-	data->prefab_tab[data->nb_prefab - 1]->sheet.hp = 10;
-	data->prefab_tab[data->nb_prefab - 1]->sheet.max_hp = 10;
-	data->prefab_tab[data->nb_prefab - 1]->sheet.carry = 100;
-	data->prefab_tab[data->nb_prefab - 1]->sheet.type = living;
-	data->prefab_tab[data->nb_prefab - 1]->sheet.description = ft_strdup("MOI QUAND LE LOUP EST ENSTEIN");
-	test2 = spawn_entity(data, get_prefab(data, "guard"), vec(25, 10), ft_strjoin("john", ""));
+	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
 	add_active(data, test2, NULL);
-
-	add_prefab(data, get_prefab_data(data, "prefabs/omen"), ft_strjoin("omen", ""));
-	add_prefab(data, get_prefab_data(data, "prefabs/wizard"), ft_strjoin("wizard", ""));
-
-	test2 = spawn_entity(data, get_prefab(data, "omen"), vec(20, 3), ft_strjoin("omen", ""));
-	test2->sheet.wander_ia = base_aggro;
-	test2->sheet.team = 1;
-	test2->sheet.fight_ia = martial_ia;
-	add_active(data, test2, test2->sheet.wander_ia);
-
-	test2 = spawn_entity(data, get_prefab(data, "omen"), vec(20, 2), ft_strjoin("omen", ""));
-	test2->sheet.wander_ia = base_aggro;
-	test2->sheet.team = 1;
-	test2->sheet.fight_ia = martial_ia;
-	add_active(data, test2, test2->sheet.wander_ia);
-
-	test2 = spawn_entity(data, get_prefab(data, "omen"), vec(20, 4), ft_strjoin("omen", ""));
-	test2->sheet.wander_ia = base_aggro;
-	test2->sheet.team = 1;
-	test2->sheet.fight_ia = martial_ia;
-	add_active(data, test2, test2->sheet.wander_ia);
+	possess_control(test2, true);
+	if (test2)
+		ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
 
 	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
 	add_active(data, test2, NULL);
 	possess_control(test2, true);
-	ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
+	if (test2)
+		ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
 
-	// test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
-	// add_active(data, test2, NULL);
-	// possess_control(test2, true);
-	// ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
-
-	// test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
-	// add_active(data, test2, NULL);
-	// possess_control(test2, true);
-	// ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
-
-	test2 = spawn_entity(data, get_prefab(data, "omen"), vec(29, 3), ft_strjoin("genshin", ""));
-	set_entity_dialog(test2, "Salut mec\\Comment ca va\\J'ai plein de chose a dire\\genre\\feur\\ou\\coubeh\\allez salut");
+	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
 	add_active(data, test2, NULL);
-
-	add_prefab(data, get_prefab_data(data, "prefabs/sword"), ft_strdup("sword"));
-	test2 = spawn_entity(data, get_prefab(data, "sword"), vec(25, 9), ft_strjoin("sword", ""));
+	possess_control(test2, true);
+	if (test2)
+		ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
 }
 
 int	main(int argc, char **argv)
@@ -116,32 +82,17 @@ int	main(int argc, char **argv)
 	init_data(&data);
 	if (!parsing(argc, argv, &data))
 		exit_free(&data, "Parsing error");
-
-	for (int i = 24; i < 29; i++)
-	{
-		for (int j = 5; j < data.current_map->size.y; j++)
-		{
-				data.current_map->arr[i][j].ceiling = true;
-
-			if (data.current_map->arr[i][j].type == WALL || data.current_map->arr[i][j].type == DOOR)
-				data.current_map->arr[i][j].upper_wall = data.wall_tex[0];
-		}
-	}
 	if (!check_textures(data.wall_tex))
 		exit_free(&data, "Cannot create texture");
-	init_player(&data);
-	create_minimap(&data, 100, 20);
-	mlx_set_fps_goal(data.mlx, FPS_CAP);
-	init_mlx_events(&data);
-	update_chunk(&data);
-	mlx_loop_hook(data.mlx, loop, &data);
-	init_textures(&data);
-	load_spells_prefab(&data);
-	init_button_lst(&data);
-	init_all_classes(&data);
+
+	init_game(&data);
+
 	init_test(&data);
+
 	if (data.round_manager.party)
 		possess(&data, data.round_manager.party->content);
+	init_mlx_events(&data);
+	mlx_loop_hook(data.mlx, loop, &data);
 	mlx_loop(data.mlx);
 	free_data(&data);
 	mlx_destroy_window(data.mlx, data.win);

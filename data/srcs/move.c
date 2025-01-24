@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:35:40 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 20:25:33 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/24 10:13:52 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,4 @@ void	move(t_data *data)
 		p->pitch = 1000;
 	else if (p->pitch < -1000)
 		p->pitch = -1000;
-	get_all_rays(data);
 }
