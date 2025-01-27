@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/24 11:14:40 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/27 04:58:41 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,6 +72,7 @@ SRCS = main.c\
 		entity.c\
 		entity_draw.c\
 		entity_draw_2.c\
+		entity_draw_3.c\
 		entity_active.c\
 		entity_possess.c\
 		entity_move.c\
@@ -94,8 +95,10 @@ SRCS = main.c\
 		inventory_draw_utils.c\
 		actions.c\
 		actions_2.c\
+		actions_3.c\
 		spells_init.c\
 		spells.c\
+		spells_2.c\
 		fireball.c\
 		ui.c\
 		ui_2.c\
@@ -103,6 +106,8 @@ SRCS = main.c\
 		strput.c\
 		stats.c\
 		stats_2.c\
+		stats_3.c\
+		stats_4.c\
 		dice.c\
 		dice_2.c\
 		check.c\
@@ -117,8 +122,10 @@ SRCS = main.c\
 		class.c\
 		class_init.c\
 		attack.c\
+		attack_2.c\
 		party.c\
 		party_2.c\
+		party_3.c\
 		i_hate_dice.c\
 		participant_icon.c\
 		combat.c\
@@ -135,6 +142,26 @@ SRCS = main.c\
 		get_map_data_2.c\
 		get_map_data_3.c\
 		travel.c\
+		barbarian.c\
+		barbarian_init.c\
+		man_throw.c\
+		warlock.c\
+		warlock_init.c\
+		hellish_rebuke.c\
+		acid_puddle.c\
+		fog.c\
+		darkness.c\
+		misty_step_shadow_sword.c\
+		hunger_of_hadar.c\
+		banishment.c\
+		wizard_init.c\
+		wizard.c\
+		web.c\
+		hold_person.c\
+		dimension_trapdoor.c\
+		group_invisibility.c\
+		hypnotic_pattern.c\
+		dominate.c\
 
 LIBFT = data/libft/libft.a
 

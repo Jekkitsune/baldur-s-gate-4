@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:45:04 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/17 00:46:57 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/26 18:38:58 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ t_bool	check_dist_obstacle(t_data *data, t_entity *entity,
 
 void	execute_action(t_data *data, t_spellinfo *spell)
 {
+	if (spell->caster->sheet.properties & invisible)
+		remove_specific_prop(data, spell->caster, invisible);
 	remove_selector(data, true);
 	spell->caster->angle = atan2(spell->pos.y - spell->caster->pos.y,
 			spell->pos.x - spell->caster->pos.x);
@@ -64,9 +66,8 @@ void	action_select(void *data_param, void *entity_param, t_spellinfo spell)
 	entity = entity_param;
 	if (!data->player.arrow)
 		select_target(data);
-	if (!confirm(data->player.active_button) || !spell.effect
-		|| !check_dist_obstacle(data, entity, spell.range,
-			spell.visible_target))
+	if (!spell.effect || !check_dist_obstacle(data, entity, spell.range,
+			spell.visible_target) || !confirm(data->player.active_button))
 		return ;
 	spell.pos = data->player.arrow->pos;
 	spell.pos_offset = data->player.offset;

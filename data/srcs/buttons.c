@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 20:48:52 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 08:12:23 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/25 09:53:56 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ void	click_action_button(t_data *data, t_button *button)
 	if (!button->func)
 		return ;
 	if (data->player.active_button)
+	{
+		reset_active_button(data);
 		data->player.active_button->active = 0;
+	}
 	if (data->player.active_button == button)
 	{
 		remove_selector(data, false);

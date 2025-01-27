@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:06:02 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 00:08:02 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/26 22:21:01 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,21 @@ int	get_path_size(t_data *data, t_vector start, t_vector end)
 	return (res);
 }
 
+t_bool	targetable(t_entity *caster, t_entity *target)
+{
+	float	distance;
+
+	if (!caster || !target)
+		return (false);
+	distance = get_dist(caster->pos, target->pos);
+	if (target->sheet.properties & banished)
+		return (false);
+	if (target->sheet.properties & invisible && distance >= 2
+		&& !(caster->sheet.properties & true_sight))
+		return (false);
+	return (true);
+}
+
 t_entity	*get_closest_target(t_data *data, t_entity *entity)
 {
 	t_entity	*closest;
@@ -46,7 +61,8 @@ t_entity	*get_closest_target(t_data *data, t_entity *entity)
 	while (lst)
 	{
 		current = lst->content;
-		if (current != entity && current->sheet.team != entity->sheet.team)
+		if (current && current != entity && current->sheet.team
+			!= entity->sheet.team && targetable(entity, current))
 		{
 			cur_dist = get_path_size(data, entity->pos, current->pos);
 			if (cur_dist != -1 && (min_dist == -1 || cur_dist < min_dist))

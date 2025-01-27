@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 11:55:27 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/27 03:37:16 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ int	main(int argc, char **argv)
 	init_game(&data);
 
 	init_test(&data);
-
 	if (data.round_manager.party)
 		possess(&data, data.round_manager.party->content);
 	init_mlx_events(&data);

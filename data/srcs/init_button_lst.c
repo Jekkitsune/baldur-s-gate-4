@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:50:43 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 23:53:09 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/25 12:56:28 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	(*get_button(t_data *data, char *name))(t_data *data, t_button *button)
 	lst = data->button_lst;
 	while (lst)
 	{
-		printf(":%s: and :%s:\n", lst->name, name);
 		if (!ft_strcmp(lst->name, name))
 			return (lst->button_init);
 		lst = lst->next;
@@ -67,4 +66,5 @@ void	init_button_lst(t_data *data)
 	add_button_lst(data, "Interact", init_interact_button);
 	add_button_lst(data, "Inventory", init_inventory_button);
 	add_button_lst(data, "Fireball", init_fireball_button);
+	add_button_lst(data, "Rage", init_rage_button);
 }

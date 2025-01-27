@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 23:40:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 07:32:31 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/26 17:01:56 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	take(void *data_param, void *spell_param)
 
 	data = data_param;
 	spell = spell_param;
-	apply_action_cost(spell);
+	apply_action_cost(data, spell);
 	if (spell->target && spell->target->visible)
 	{
 		if (add_to_inventory(data, spell->caster, spell->target, false))

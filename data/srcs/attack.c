@@ -6,11 +6,26 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 05:02:33 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 17:46:31 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/26 19:51:11 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	init_shadow_sword_atk(t_data *data, t_button *button, t_entity *entity);
+
+void	properties_atk(t_data *data, t_button *button, t_entity *entity,
+	t_entity *weapon)
+{
+	if (!data)
+		return ;
+	if (entity->sheet.properties & giant
+		&& (!weapon || !(weapon->sheet.properties & range)))
+	{
+		button->spellinfo.range += 1;
+		button->spellinfo.dice[D8] += 1;
+	}
+}
 
 void	atk(void *data_param, void *spell_param)
 {
@@ -22,22 +37,14 @@ void	atk(void *data_param, void *spell_param)
 	data = data_param;
 	spell = spell_param;
 	if (!spell->target || spell->target == spell->caster
-		|| !spell->target->sheet.alive || !apply_action_cost(spell))
+		|| !spell->target->sheet.alive || !apply_action_cost(data, spell))
 		return ;
 	rand_res = roll(spell->dice);
 	spell->nb = rand_res + modif(spell->caster->sheet.stats[spell->stat]);
-	atk = roll_one(20, 1) + spell->caster->sheet.atk_bonus;
-	if (atk >= spell->target->sheet.ac)
-	{
-		show_info(data, "%s hit (%d) %s (%d)", spell->caster->sheet.name, atk,
-			spell->target->sheet.name, spell->target->sheet.ac);
-		printf("dmg: %d + %d\n", rand_res,
-			modif(spell->caster->sheet.stats[spell->stat]));
-		damage(data, spell->target, spell->nb);
-	}
-	else
-		show_info(data, "%s missed (%d) %s (%d)", spell->caster->sheet.name,
-			atk, spell->target->sheet.name, spell->target->sheet.ac);
+	if (spell->caster->sheet.properties & enraged)
+		spell->nb += class_bonus_dmg(spell->caster);
+	atk = roll_atk(data, spell, spell->caster->sheet.atk_bonus);
+	atk_dmg(data, spell, atk, rand_res);
 }
 
 void	init_range(t_data *data, t_button *button, t_entity *weapon)
@@ -86,8 +93,11 @@ void	init_atk_button(t_data *data, t_button *button, t_entity *entity)
 	button->spellinfo.timer = 0.7;
 	button->name = "Attack";
 	button->description = "Attack selected with the equipped weapon";
-	if (weapon && weapon->sheet.properties & range)
+	if (entity->sheet.properties & shadow_sword_prop)
+		init_shadow_sword_atk(data, button, entity);
+	else if (weapon && weapon->sheet.properties & range)
 		init_range(data, button, weapon);
 	else
 		init_melee(data, button, entity, weapon);
+	properties_atk(data, button, entity, weapon);
 }

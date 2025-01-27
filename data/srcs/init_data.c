@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:13:43 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 01:09:00 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/25 06:07:52 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,6 @@ t_data	*init_data(t_data *data)
 		data->win_size.y / 2);
 	srand(time(NULL));
 	mlx_set_fps_goal(data->mlx, FPS_CAP);
+	data->round_manager.party_lvl = 1;
 	return (data);
 }

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 20:08:50 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 20:09:56 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/26 19:00:49 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	end_combat(t_data *data)
 	}
 	if (!data->round_manager.participants)
 		data->round_manager.combat = false;
+	if (data->round_manager.party)
+		smooth_possess(data, data->round_manager.party->content);
 }
 
 void	check_combat_end(t_data *data)

@@ -6,27 +6,19 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 23:28:28 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 07:39:59 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/27 04:15:20 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 void	set_save_pb(t_entity *entity);
+void	set_properties_stat(t_entity *entity, t_property prop);
+void	init_all_buttons(t_data *data, t_entity *entity);
+void	check_was_dominated(t_data *data, t_entity *entity);
 
-void	reset_stats(t_entity *entity, t_entity *prefab, int *button_nb)
+void	reset_stats(t_entity *entity, t_entity *prefab)
 {
-	int	i;
-
-	i = 0;
-	while (i < NB_BUTTON)
-		ft_bzero(&entity->sheet.buttons[i++], sizeof(t_button));
-	i = -1;
-	while (++i < NB_BUTTON && *button_nb < NB_BUTTON - 1)
-	{
-		if (prefab->sheet.buttons[i].func)
-			entity->sheet.buttons[(*button_nb)++] = prefab->sheet.buttons[i];
-	}
 	entity->sheet.max_hp = prefab->sheet.max_hp;
 	entity->sheet.pb = prefab->sheet.pb;
 	entity->sheet.ac = prefab->sheet.ac;
@@ -38,9 +30,9 @@ void	reset_stats(t_entity *entity, t_entity *prefab, int *button_nb)
 	entity->sheet.speed = prefab->sheet.speed;
 	entity->sheet.properties = prefab->sheet.properties;
 	entity->sheet.nb_attack = prefab->sheet.nb_attack;
+	entity->size_scale = prefab->size_scale;
 	copy_stat_tab(entity->sheet.stats, prefab->sheet.stats, 6);
 	copy_stat_tab(entity->sheet.saving, prefab->sheet.saving, 6);
-	copy_stat_tab(entity->sheet.spell_slot, prefab->sheet.spell_slot, 6);
 }
 
 void	add_stat(t_entity *entity, t_entity *item)
@@ -74,10 +66,9 @@ void	add_weight(t_entity *entity)
 	}
 }
 
-void	check_inventory_stats(t_entity *entity, int *button_nb)
+void	check_inventory_stats(t_entity *entity)
 {
 	int			i;
-	int			i2;
 	t_entity	*current;
 
 	i = 0;
@@ -85,18 +76,7 @@ void	check_inventory_stats(t_entity *entity, int *button_nb)
 	{
 		current = entity->sheet.inventory[i++];
 		if (current)
-		{
-			i2 = 0;
-			while (i2 < NB_BUTTON)
-			{
-				if (*button_nb < NB_BUTTON - 1
-					&& current->sheet.buttons[i2].func)
-					entity->sheet.buttons[(*button_nb)++]
-						= current->sheet.buttons[i2];
-				i2++;
-			}
 			add_stat(entity, current);
-		}
 	}
 	add_weight(entity);
 }
@@ -104,26 +84,16 @@ void	check_inventory_stats(t_entity *entity, int *button_nb)
 void	refresh_stats(t_data *data, t_entity *entity)
 {
 	t_entity	*prefab;
-	int			button_nb;
 
 	if (!entity || !entity->sheet.prefab || entity->sheet.type != living)
 		return ;
 	prefab = entity->sheet.prefab;
-	if (!prefab)
-		return ;
-	button_nb = 0;
-	reset_stats(entity, prefab, &button_nb);
-	if (button_nb < NB_BUTTON - 1)
-		init_check_button(data, &entity->sheet.buttons[button_nb++]);
-	if (button_nb < NB_BUTTON - 1)
-		init_move_button(data, &entity->sheet.buttons[button_nb++]);
-	if (button_nb < NB_BUTTON - 1)
-		init_interact_button(data, &entity->sheet.buttons[button_nb++]);
-	if (button_nb < NB_BUTTON - 1)
-		init_atk_button(data, &entity->sheet.buttons[button_nb++], entity);
-	refresh_entity_class(entity, entity->sheet.level, &button_nb);
-	init_inventory_button(data, &entity->sheet.buttons[NB_BUTTON - 1]);
-	set_save_pb(entity);
-	check_inventory_stats(entity, &button_nb);
+	reset_stats(entity, prefab);
+	refresh_entity_class(entity, entity->sheet.level);
+	check_inventory_stats(entity);
 	set_all_entity_timer_prop(data, entity);
+	set_properties_stat(entity, entity->sheet.properties);
+	set_save_pb(entity);
+	init_all_buttons(data, entity);
+	check_was_dominated(data, entity);
 }

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:30:20 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 23:15:01 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/26 17:15:12 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,14 @@ void	fireball(void *data_param, void *spell_param)
 
 	data = data_param;
 	spell = spell_param;
-	if (!apply_action_cost(spell))
+	if (!apply_action_cost(data, spell))
 		return ;
 	explosion = spawn_entity(data, get_prefab(data, "explosion"), spell->pos,
 			ft_strjoin("explosion", ""));
 	explosion->sheet.alive = false;
 	if (!explosion)
 		return ;
+	explosion->sheet.type = effect;
 	add_active(data, explosion, expire);
 	zone_effect(data, *spell, fireball_damage);
 }

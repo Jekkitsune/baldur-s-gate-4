@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 03:49:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 07:26:07 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/27 03:27:58 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,17 @@ void	damage(t_data *data, t_entity *entity, int dmg)
 		return ;
 	if (dmg < 0)
 		dmg = 0;
+	if (entity->sheet.properties & enraged)
+		dmg /= 2;
 	entity->sheet.hp -= dmg;
 	show_info(data, "%s took %d damage\n", entity->sheet.name, dmg);
 	prop = new_timer_property(hit_effect, entity, NULL, NULL);
-	add_timer_property(prop, 0.3, false);
+	add_timer_property(data, prop, 0.3, false);
+	if (entity->sheet.properties & hypnotized)
+		remove_specific_prop(data, entity, hypnotized);
+	if (entity->sheet.hp <= 0
+		|| !saving_throw(data, entity, CON, ft_max(10, dmg / 2)))
+		break_concentration(data, entity, 0);
 	if (entity->sheet.hp <= 0)
 	{
 		leave_combat(data, entity);
@@ -71,7 +78,7 @@ void	damage(t_data *data, t_entity *entity, int dmg)
 	}
 }
 
-t_entity	*browse_entity_cell(t_list *lst, int index, t_entity *arrow)
+t_entity	*browse_entity_cell(t_data *data, t_list *lst, int index, t_entity *arrow)
 {
 	t_list			*tmp;
 
@@ -83,7 +90,7 @@ t_entity	*browse_entity_cell(t_list *lst, int index, t_entity *arrow)
 	}
 	if (!lst)
 		return (NULL);
-	if (lst->content == arrow)
+	if (lst->content == arrow || dont_draw(data, lst->content))
 		return (NULL);
 	return (lst->content);
 }
@@ -113,6 +120,6 @@ t_entity	*cycle_entity_cell(t_data *data, int move)
 		index -= size;
 	while (index < 0)
 		index += size;
-	return (browse_entity_cell(data->current_map->arr[pos.x][pos.y].entities,
-		index, data->player.arrow));
+	return (browse_entity_cell(data,\
+	data->current_map->arr[pos.x][pos.y].entities, index, data->player.arrow));
 }

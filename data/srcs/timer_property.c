@@ -6,14 +6,16 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 17:19:04 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 09:40:40 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/26 16:46:46 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 void	timer_prop_lst_add(t_timer_property *tproperty);
-void	add_cell_property(t_timer_property *prop);
+void	add_cell_property(t_data *data, t_timer_property *prop);
+void	update_entity_concentration(t_data *data, t_entity *entity,
+	t_bool round);
 
 t_timer_property	*new_timer_property(t_property property, t_entity *entity,
 	t_entity *caster, t_cell *cell)
@@ -32,13 +34,11 @@ t_timer_property	*new_timer_property(t_property property, t_entity *entity,
 	return (res);
 }
 
-void	add_timer_property(t_timer_property *tproperty, float time,
-	t_bool in_round)
+void	add_timer_property(t_data *data, t_timer_property *tproperty,
+	float time, t_bool in_round)
 {
 	if (!tproperty)
 		return ;
-	if (tproperty->entity)
-		tproperty->entity->sheet.properties |= tproperty->property;
 	if (tproperty->cell && !tproperty->id_concentration)
 		tproperty->id_concentration = -1;
 	tproperty->in_round = in_round;
@@ -47,7 +47,9 @@ void	add_timer_property(t_timer_property *tproperty, float time,
 		tproperty->duration = (float)time * 1000000.0;
 	timer_prop_lst_add(tproperty);
 	if (tproperty->cell)
-		add_cell_property(tproperty);
+		add_cell_property(data, tproperty);
+	if (tproperty->entity)
+		add_prop_refresh(data, tproperty->entity, tproperty->property);
 }
 
 void	update_entity_properties(t_data *data, t_entity *entity, t_bool round)
@@ -67,15 +69,7 @@ void	update_entity_properties(t_data *data, t_entity *entity, t_bool round)
 		if (current->duration <= 0)
 			pop_free_property(data, current);
 	}
-	lst = entity->sheet.timer_concentration;
-	while (lst && round)
-	{
-		current = lst->content;
-		lst = lst->next;
-		current->duration--;
-		if (current->duration <= 0)
-			pop_free_property(data, current);
-	}
+	update_entity_concentration(data, entity, round);
 }
 
 void	clear_entity_timer_prop(t_data *data, t_entity *entity)
@@ -106,5 +100,12 @@ void	set_all_entity_timer_prop(t_data *data, t_entity *entity)
 		entity->sheet.properties |= current->property;
 		lst = lst->next;
 	}
-	add_cell_property_entity(data, entity);
+	lst = data->current_map->arr[entity->pos.x][entity->pos.y].timer_property;
+	while (lst)
+	{
+		current = lst->content;
+		lst = lst->next;
+		if (current)
+			entity->sheet.properties |= current->property;
+	}
 }

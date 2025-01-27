@@ -6,11 +6,54 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 19:01:11 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 20:58:57 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/27 05:19:20 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	check_was_dominated(t_data *data, t_entity *entity)
+{
+	if (entity->behavior.was_dominated
+		&& !(entity->sheet.properties & dominated))
+	{
+		entity->behavior.was_dominated = false;
+		entity->sheet.team = entity->sheet.default_team;
+		if (!entity->behavior.dominated_player)
+		{
+			leave_party(data, entity);
+			entity->possess_control = false;
+		}
+		else if (entity->behavior.dominated_player)
+			entity->possess_control = true;
+	}
+	if (!(entity->sheet.properties & dominated))
+		entity->sheet.team = entity->sheet.default_team;
+}
+
+void	set_properties_stat(t_entity *entity, t_property prop)
+{
+	if (prop & unarmored_defense)
+		entity->sheet.ac += modif(entity->sheet.stats[CON]);
+	if (prop & giant)
+	{
+		entity->sheet.stats[STR] += 2;
+		entity->sheet.ac += 2;
+		entity->size_scale = 1.5;
+	}
+	if (prop & shadow_sword_prop)
+		entity->sheet.atk_bonus = entity->sheet.spell_bonus;
+	if (prop & difficult_terrain)
+		entity->sheet.speed /= 2;
+	if (prop & (restrained))
+		entity->sheet.speed = 0;
+}
+
+void	add_prop_refresh(t_data *data, t_entity *entity, t_property prop)
+{
+	entity->sheet.properties |= prop;
+	refresh_stats(data, entity);
+}
 
 t_property	get_property(t_data *data, char *name)
 {

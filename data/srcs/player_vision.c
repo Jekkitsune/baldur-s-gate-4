@@ -6,48 +6,13 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 10:12:39 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/26 13:21:29 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 void	draw_upper_walls(t_data *data, float diff, t_impact *ray, int i);
-
-void	draw_fog_wall(t_data *data, int x, t_vector pos, uint32_t color)
-{
-	int	i;
-
-	i = 0;
-	i = ft_max(pos.x, i);
-	while (i < pos.y && i < data->win_size.y)
-	{
-		if (i >= 0)
-			ft_pixel_put(data, i, x, color);
-		i++;
-	}
-}
-
-void	draw_fog(t_data *data, float diff, t_impact *ray, int i)
-{
-	int			i2;
-	int			size;
-	t_vector	posy;
-
-	if (ray->fog_length <= 0)
-		return ;
-	size = (data->win_size.y / (ray->fog_length / (data->scale * 2)));
-	posy.x = (data->win_size.y - size) / 2;
-	posy.y = (data->win_size.y + size) / 2;
-	i2 = 0;
-	while (i2 < diff)
-	{
-		draw_fog_wall(data, i * diff + i2, vec(posy.x + data->player.pitch \
-		+ (data->player.height / ray->fog_length), posy.y + data->player.pitch \
-		+ (data->player.height / ray->fog_length)), ray->fog_color);
-		i2++;
-	}
-}
 
 void	draw_ray(t_data *data, float diff, t_impact *ray, int i)
 {
@@ -90,13 +55,7 @@ void	show_environment(t_data *data)
 		draw_ray(data, diff, &data->player.vision[i], i);
 		i++;
 	}
-	draw_entities(data);
-	i = 0;
-	while (i < NB_RAYS)
-	{
-		draw_fog(data, diff, &data->player.vision[i], i);
-		i++;
-	}
+	draw_entities_fog(data, diff);
 }
 
 void	show_screen(t_data *data)

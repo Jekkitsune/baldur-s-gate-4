@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 02:45:59 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 07:31:35 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/27 04:39:54 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	set_entity_map_data(t_data *data, char **splited, t_entity *prefab,
 		entity->sheet.level = ft_atoi(current);
 	current = map_param(splited, "TEAM");
 	if (current)
-		entity->sheet.team = ft_atoi(current);
+		entity->sheet.default_team = ft_atoi(current);
 	add_entity_map_behavior(data, entity, splited);
 	current = map_param(splited, "PROPERTIES");
 	if (current)

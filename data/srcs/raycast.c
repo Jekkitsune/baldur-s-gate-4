@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 01:33:20 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 02:35:46 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/26 12:18:48 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,42 +93,40 @@ t_bool	raycast_loop(t_data *data, t_impact *impact, t_vectorf length,
 	return (false);
 }
 
-t_impact	raycast(t_vector start, t_vectorf direc, t_data *data,
-	t_vectorf slope_coef)
+t_impact	*raycast(t_impact *impact, t_data *data)
 {
 	t_vector	sign;
 	t_vectorf	length;
-	t_impact	impact;
 
-	ft_bzero(&impact, sizeof(impact));
-	impact.direc.x = direc.x;
-	impact.direc.y = direc.y;
-	impact.slope_coef.x = slope_coef.x;
-	impact.slope_coef.y = slope_coef.y;
-	length = starting_length(data, direc, &sign, &impact);
-	impact.slope_coef.x *= sign.x;
-	impact.slope_coef.y *= sign.y;
-	impact.wall_pos.x = start.x;
-	impact.wall_pos.y = start.y;
-	if (raycast_loop(data, &impact, length, sign))
+	length = starting_length(data, impact->direc, &sign, impact);
+	impact->slope_coef.x *= sign.x;
+	impact->slope_coef.y *= sign.y;
+	if (raycast_loop(data, impact, length, sign))
 		return (impact);
-	impact.face = 0;
-	impact.length = data->render_distance;
+	impact->face = 0;
+	impact->length = data->render_distance;
 	return (impact);
 }
 
-t_impact	get_impact(t_vector start, t_vectorf direc, t_data *data)
+t_impact	get_impact(t_vector start, t_vectorf direc, t_data *data, int i)
 {
 	t_vectorf	delta;
-	t_vectorf	slope_coef;
+	t_impact	impact;
 
+	ft_bzero(&impact, sizeof(impact));
+	impact.i = i;
+	impact.direc.x = direc.x;
+	impact.direc.y = direc.y;
+	impact.wall_pos.x = start.x;
+	impact.wall_pos.y = start.y;
 	delta.x = ft_absf(direc.x * 100);
 	delta.y = ft_absf(direc.y * 100);
-	slope_coef.x = data->scale * 2;
-	slope_coef.y = data->scale * 2;
+	impact.slope_coef.x = data->scale * 2;
+	impact.slope_coef.y = data->scale * 2;
 	if (delta.x != 0)
-		slope_coef.x = fabs((double)(data->scale * 2) / direc.x);
+		impact.slope_coef.x = fabs((double)(data->scale * 2) / direc.x);
 	if (delta.y != 0)
-		slope_coef.y = fabs((double)(data->scale * 2) / direc.y);
-	return (raycast(start, direc, data, slope_coef));
+		impact.slope_coef.y = fabs((double)(data->scale * 2) / direc.y);
+	raycast(&impact, data);
+	return (impact);
 }

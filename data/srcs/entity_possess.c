@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 01:18:56 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 10:22:49 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/25 08:48:20 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	possess_control(t_entity *entity, t_bool value)
 
 void	possess(t_data *data, t_entity *entity)
 {
+	remove_selector(data, false);
 	if (!entity || !in_bound(data->current_map, entity->pos))
 		return ;
 	mlx_mouse_show();
@@ -35,6 +36,7 @@ void	possess(t_data *data, t_entity *entity)
 
 void	unpossess(t_data *data)
 {
+	remove_selector(data, false);
 	mlx_mouse_hide();
 	data->player.focus_mode = 0;
 	data->player.height = 0;
@@ -63,6 +65,7 @@ void	smooth_possess(t_data *data, t_entity *entity)
 {
 	t_entity	*mover;
 
+	remove_selector(data, false);
 	if (!data->player.possession)
 	{
 		possess(data, entity);

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 19:00:57 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 19:05:14 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/26 13:32:13 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void	free_visible_lst(t_data *data)
 {
 	t_list	*i;
 	t_list	*to_free;
+	t_fog	*fog_i;
+	t_fog	*fog_free;
 
-	if (!data->player.visible_entities)
-		return ;
 	i = data->player.visible_entities;
 	while (i)
 	{
@@ -72,6 +72,14 @@ void	free_visible_lst(t_data *data)
 		free(to_free);
 	}
 	data->player.visible_entities = NULL;
+	fog_i = data->player.visible_fog;
+	while (i)
+	{
+		fog_free = fog_i;
+		fog_i = fog_i->next;
+		free(fog_free);
+	}
+	data->player.visible_fog = NULL;
 }
 
 void	sort_entity(t_data *data, t_entity *entity)

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 23:54:44 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 11:45:07 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/25 02:48:55 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	init_interact_button(t_data *data, t_button *button)
 	button->spellinfo.radius = 0;
 	button->spellinfo.range = 2;
 	button->spellinfo.visible_target = false;
-	button->spellinfo.cost_action = 1;
+	button->spellinfo.cost_action = 0;
 	button->spellinfo.type = take_type;
 	button->img = get_tex(data, "take_button");
 	button->func = action_select;

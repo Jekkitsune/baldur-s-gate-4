@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 02:24:21 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/26 12:18:07 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	get_all_rays(t_data *data)
 			* camera;
 		direc.y = data->player.direction.y + data->player.camera_plane.y
 			* camera;
-		data->player.vision[i] = get_impact(data->player.pos, direc, data);
+		data->player.vision[i] = get_impact(data->player.pos, direc, data, i);
 		i++;
 	}
 }

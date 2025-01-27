@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 19:04:23 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 09:24:59 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/27 03:38:11 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,13 @@ void	next_turn(t_data *data)
 		data->round_manager.participants = first->next;
 		first->next = NULL;
 		lst->next = first;
+		if (!data->round_manager.participants->content)
+			return ;
 		round_refresh_stat(data->round_manager.participants->content);
+		start_turn_effect(data, data->round_manager.participants->content);
 		update_entity_properties(data,
 			data->round_manager.participants->content, true);
+		smooth_possess(data, data->round_manager.participants->content);
 	}
 }
 
@@ -57,6 +61,7 @@ void	party_refresh(t_data *data)
 		while (lst)
 		{
 			round_refresh_stat(lst->content);
+			start_turn_effect(data, lst->content);
 			update_entity_properties(data, lst->content, true);
 			lst = lst->next;
 		}

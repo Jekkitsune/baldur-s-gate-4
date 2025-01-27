@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 00:24:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/17 00:25:08 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/27 03:54:26 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ void	round_refresh_stat(t_entity *entity)
 	entity->sheet.bonus_action = 1;
 	entity->sheet.reaction = 1;
 	entity->sheet.walked = entity->sheet.speed;
+	if (entity->sheet.properties & (banished | paralyzed | hypnotized))
+	{
+		entity->sheet.walked = 0;
+		entity->sheet.action = 0;
+		entity->sheet.bonus_action = 0;
+	}
 }
 
 void	copy_stat_tab(int *stats1, int *stats2, int len)
@@ -65,8 +71,10 @@ void	set_save_pb(t_entity *entity)
 	while (i < 6)
 	{
 		if (entity->sheet.saving[i])
-			entity->sheet.saving[i] += entity->sheet.pb
-				+ modif(entity->sheet.stats[i]);
+			entity->sheet.saving[i] += entity->sheet.pb;
+		entity->sheet.saving[i] += modif(entity->sheet.stats[i]);
 		i++;
 	}
+	entity->sheet.ac += modif(entity->sheet.stats[DEX]);
+	entity->sheet.atk_bonus += entity->sheet.pb;
 }

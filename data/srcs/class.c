@@ -6,32 +6,25 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 04:46:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 20:06:50 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/25 12:50:39 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	refresh_level_buttons(t_entity *entity, int i_level, int *button_nb)
+int		class_bonus_dmg(t_entity *entity)
 {
-	int		i;
 	t_class	*class;
+	int		level;
 
-	i = 0;
 	class = entity->sheet.class;
-	while (*button_nb < NB_BUTTON - 1 && i < LEVEL_NB_BUTTON)
-	{
-		if (class->level[i_level].buttons[i].func)
-		{
-			entity->sheet.buttons[*button_nb] = \
-			class->level[i_level].buttons[i];
-			*button_nb += 1;
-		}
-		i++;
-	}
+	if (!class)
+		return (0);
+	level = ft_min(entity->sheet.level - 1, MAX_LEVEL - 1);
+	return(roll(class->level[level].current_bonus_dice));
 }
 
-void	refresh_entity_class(t_entity *entity, int level, int *button_nb)
+void	refresh_entity_class(t_entity *entity, int level)
 {
 	int		i_level;
 	t_class	*class;
@@ -42,14 +35,11 @@ void	refresh_entity_class(t_entity *entity, int level, int *button_nb)
 	i_level = 0;
 	while (i_level < level && i_level < MAX_LEVEL)
 	{
-		refresh_level_buttons(entity, i_level, button_nb);
 		entity->sheet.pb += class->level[i_level].add_pb;
 		entity->sheet.max_hp += class->level[i_level].add_pv;
 		entity->sheet.properties |= class->level[i_level].properties;
 		entity->sheet.nb_attack += class->level[i_level].add_nb_attack;
 		sum_stat_tab(entity->sheet.stats, class->level[i_level].add_stats, 6);
-		sum_stat_tab(entity->sheet.spell_slot,
-			class->level[i_level].add_spell_slot, SPELL_MAX_LV);
 		i_level++;
 	}
 	entity->sheet.spell_bonus = entity->sheet.prefab->sheet.spell_bonus

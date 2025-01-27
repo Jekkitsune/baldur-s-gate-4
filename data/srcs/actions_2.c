@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:43:48 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 09:32:10 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/26 22:53:04 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ t_bool	check_action_cost(t_spellinfo *spell)
 		return (false);
 	if (spell->cost_bonus && sheet->bonus_action <= 0)
 		return (false);
-	if (spell->cost_spell_slot > 0 && spell->cost_spell_slot < SPELL_MAX_LV
+	if (spell->cost_spell_slot > 0 && spell->cost_spell_slot - 1 < SPELL_MAX_LV
 		&& sheet->spell_slot[spell->cost_spell_slot - 1] <= 0)
 		return (false);
 	return (true);
 }
 
-t_bool	apply_action_cost(t_spellinfo *spell)
+t_bool	apply_action_cost(t_data *data, t_spellinfo *spell)
 {
 	t_sheet		*sheet;
 
@@ -55,9 +55,11 @@ t_bool	apply_action_cost(t_spellinfo *spell)
 		return (false);
 	if (spell->cost_bonus && sheet->bonus_action-- <= 0)
 		return (false);
-	if (spell->cost_spell_slot > 0 && spell->cost_spell_slot < SPELL_MAX_LV
+	if (spell->cost_spell_slot > 0 && spell->cost_spell_slot - 1 < SPELL_MAX_LV
 		&& sheet->spell_slot[spell->cost_spell_slot - 1]-- <= 0)
 		return (false);
+	if (spell->concentration)
+		spell->concentration = add_concentration(data, spell->caster);
 	return (true);
 }
 
@@ -68,9 +70,11 @@ t_bool	confirm(t_button *pushed)
 	if (pushed && pushed == check)
 	{
 		check = NULL;
+		//printf("c'est bon\n\n");
 		return (true);
 	}
 	check = pushed;
+	//printf("attendons la prochaine\n\n");
 	return (false);
 }
 
@@ -85,6 +89,7 @@ t_entity	*create_selector(t_data *data)
 	change_anim(res, "idle", true);
 	if (!res)
 		return (NULL);
+	res->sheet.type = effect;
 	possess_control(res, true);
 	if (data->player.possession)
 		teleport_entity(data, res, data->player.possession->pos,
@@ -100,6 +105,7 @@ void	remove_selector(t_data *data, t_bool reset_angle)
 		data->player.focus_dist = data->player.last_angle.y;
 	}
 	confirm(NULL);
+	reset_active_button(data);
 	if (data->player.active_button)
 	{
 		data->player.active_button->active = false;

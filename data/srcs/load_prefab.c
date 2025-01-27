@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:22:10 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 06:58:45 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/25 07:03:49 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ t_entity	*get_prefab_data(t_data *data, char *directory)
 	get_all_anim(data, entity, directory);
 	entity->sheet.portrait = get_resized_free(get_portrait(data, directory),
 			data->button_scale_size);
+	entity->sheet.nb_attack = 1;
 	get_prefab_stat(data, entity, directory);
 	if (entity->sheet.type == living)
 		entity->sheet.alive = true;

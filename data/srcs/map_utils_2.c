@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 02:04:15 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 09:10:48 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/26 22:19:32 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,9 @@ t_bool	is_empty_cell(t_data *data, t_vector pos)
 	while (entities_lst)
 	{
 		current = entities_lst->content;
-		if (current && current->sheet.alive
-			&& (current->sheet.type == living || current->sheet.type == object))
+		if (current && current->sheet.alive && !(current->sheet.properties
+			& banished) && (current->sheet.type == living
+			|| current->sheet.type == object))
 			return (false);
 		entities_lst = entities_lst->next;
 	}

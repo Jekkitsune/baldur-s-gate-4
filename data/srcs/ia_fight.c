@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:59:31 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 06:55:28 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/27 05:17:16 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	base_aggro(void *data_param, void *entity_param)
 	t_entity	*entity;
 	t_data		*data;
 	t_list		*lst;
+	t_entity	*current;
 
 	data = data_param;
 	entity = entity_param;
@@ -111,9 +112,13 @@ void	base_aggro(void *data_param, void *entity_param)
 		return ;
 	while (lst)
 	{
-		if (lst->content && ((t_entity *)lst->content)->sheet.alive
-			&& ((t_entity *)lst->content)->sheet.team != entity->sheet.team
-			&& get_dist(entity->pos, ((t_entity *)lst->content)->pos) < 4)
+		current = lst->content;
+		if (current && current->sheet.alive && current->sheet.team
+			!= entity->sheet.team && get_dist(entity->pos, current->pos) < 4
+			&& !(current->sheet.properties & invisible)
+			&& (!(entity->sheet.properties & blinded)
+			|| (entity->sheet.properties & true_sight))
+			&& !(entity->sheet.properties & (hypnotized)))
 		{
 			enter_combat(data, entity);
 			return ;

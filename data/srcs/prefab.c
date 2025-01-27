@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 02:10:07 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 04:26:04 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/25 04:04:00 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_entity	*refresh_spawned(t_data *data, t_entity *entity, char *name)
 	ft_lstadd_front(&data->current_map->arr[pos.x][pos.y].entities, new_lst);
 	entity->sheet.name = name;
 	change_anim(entity, "idle", true);
-	refresh_stats(data, entity);
+	long_rest(data, entity);
 	round_refresh_stat(entity);
 	return (entity);
 }

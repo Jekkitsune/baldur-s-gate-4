@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 04:23:13 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 09:42:16 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/26 17:04:21 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	break_concentration(t_data *data, t_entity *entity,
 				== id_concentration))
 			pop_free_property(data, current);
 	}
+	entity->sheet.concentration = 0;
 }
 
 void	remove_cell_property(t_data *data, t_timer_property *prop)
@@ -58,6 +59,7 @@ void	pop_free_property(t_data *data, t_timer_property *prop)
 		lst = &prop->entity->sheet.timer_property;
 		tmp = ft_lstpop(lst, prop);
 		free(tmp);
+		refresh_stats(data, prop->entity);
 	}
 	if (prop->cell)
 		remove_cell_property(data, prop);
@@ -78,6 +80,8 @@ void	add_cell_property_entity(t_data *data, t_entity *entity)
 	if (!in_bound(data->current_map, entity->pos))
 		return ;
 	lst = data->current_map->arr[entity->pos.x][entity->pos.y].timer_property;
+	if (!lst)
+		return ;
 	while (lst)
 	{
 		current = lst->content;
@@ -85,6 +89,7 @@ void	add_cell_property_entity(t_data *data, t_entity *entity)
 		if (current)
 			entity->sheet.properties |= current->property;
 	}
+	refresh_stats(data, entity);
 }
 
 void	remove_cell_property_entity(t_data *data, t_entity *entity,

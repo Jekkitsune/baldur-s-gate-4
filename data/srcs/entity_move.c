@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 20:45:40 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 09:42:31 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/26 20:50:30 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,7 @@ void	move_closest_to(t_data *data, t_entity *entity, t_entity *target)
 		free_path(&entity->behavior.path);
 	entity->behavior.path = get_path(data, entity->pos, target->pos, true);
 	if (!entity->behavior.path)
-	{
-		printf("%s: \"can't go near\"\n", entity->sheet.name);
 		return ;
-	}
 	entity->behavior.next = entity->behavior.func;
 	entity->behavior.func = entity_moving_to;
 }
