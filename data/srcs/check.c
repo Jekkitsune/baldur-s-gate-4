@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 20:58:27 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 21:22:19 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 16:08:00 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ void	show_check_properties(t_data *data, t_entity *entity, t_vector pos)
 {
 	t_strput	*to_put;
 	char		*info;
-	int			i;
+	t_property	i;
 
 	info = NULL;
 	i = 0;
 	while (i < NB_PROPERTIES)
 	{
-		if (entity->sheet.properties & (1 << i))
+		if ((long)entity->sheet.properties & (long)((long)1 << i))
 			add_to_str(&info, ft_strjoin(PROPERTIES_TAB[i], "  "));
 		i++;
 	}
@@ -72,6 +72,7 @@ void	show_check_info(t_data *data, t_entity *entity)
 	pos.x = data->win_size.x / 8;
 	pos.y += data->button_scale_size;
 	show_check_properties(data, entity, pos);
+	printf("%s: menaced %d\n", sheet->name, is_menaced(data, entity, data->player.possession));
 }
 
 void	check_select(void *data_param, void *entity_param, t_spellinfo spell)

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 15:05:20 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 17:01:02 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:28:34 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,5 @@ void	init_acid_puddle_button(t_data *data, t_button *button)
 	button->spellinfo.timer = 1.5;
 	button->name = "Acid puddle";
 	button->description = "2d6 on a small zone which stay 3 turns, DEX save";
+	button->spellinfo.can_be_silenced = true;
 }

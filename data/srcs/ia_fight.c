@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:59:31 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 05:17:16 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 12:58:03 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	martial_ia(void *data_param, void *entity_param)
 
 	data = data_param;
 	entity = entity_param;
-	if (entity->anim_no_move)
+	if (entity->anim_no_move || entity->possess_control)
 		return ;
 	if (!entity->behavior.target)
 		entity->behavior.target = get_closest_target(data, entity);

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 14:52:07 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 17:01:52 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:28:22 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,5 @@ void	init_hellish_rebuke_button(t_data *data, t_button *button)
 	button->spellinfo.dice[D10] = 2;
 	button->description = "When hit by an opponent, impose a DEX saving, for \
 2d10 damage or half on success";
+	button->spellinfo.can_be_silenced = true;
 }

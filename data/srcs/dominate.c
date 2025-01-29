@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 04:17:30 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 05:36:25 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:31:03 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,5 @@ void	init_dominate_button(t_data *data, t_button *button)
 	button->name = "Dominate";
 	button->description = "Impose a WIS save throw, on failure, entity is an \
 ally for 10 turns";
+	button->spellinfo.can_be_silenced = true;
 }

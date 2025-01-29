@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 03:53:16 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 23:21:32 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 13:40:19 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,8 @@ void	init_all_buttons(t_data *data, t_entity *entity)
 		init_check_button(data, &entity->sheet.buttons[button_nb++]);
 	if (button_nb < NB_BUTTON - 1)
 		init_move_button(data, &entity->sheet.buttons[button_nb++]);
+	if (button_nb < NB_BUTTON - 1)
+		init_dash_button(data, &entity->sheet.buttons[button_nb++]);
 	if (button_nb < NB_BUTTON - 1)
 		init_interact_button(data, &entity->sheet.buttons[button_nb++]);
 	if (button_nb < NB_BUTTON - 1)

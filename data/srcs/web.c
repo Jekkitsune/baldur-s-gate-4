@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 23:54:00 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 02:56:05 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:30:13 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,5 @@ void	init_web_button(t_data *data, t_button *button)
 	button->name = "Web";
 	button->description = "Create a zone for 4 turns of difficult terrain, \
 DEX save DD13 every turn to not get stuck, requires concentration";
+	button->spellinfo.can_be_silenced = true;
 }

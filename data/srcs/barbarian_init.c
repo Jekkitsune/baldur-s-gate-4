@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 13:04:44 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/25 13:06:04 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 13:51:27 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	init_barbarian_class_2(t_data *data, t_class *class)
 	class->level[2].add_pv = 10;
 	class->level[2].add_stats[DEX] = 1;
 	class->level[2].add_nb_attack = 1;
+	class->level[3].current_bonus_dice[D1] = 3;
 	class->level[3].add_stats[STR] = 2;
 	class->level[3].add_stats[CON] = 2;
 	class->level[3].add_spell_slot[0] = 1;

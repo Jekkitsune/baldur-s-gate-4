@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 19:01:11 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 05:19:20 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/29 12:22:07 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	set_properties_stat(t_entity *entity, t_property prop)
 {
 	if (prop & unarmored_defense)
 		entity->sheet.ac += modif(entity->sheet.stats[CON]);
+	if (prop & spiritual_defense)
+		entity->sheet.ac += modif(entity->sheet.stats[WIS]);
 	if (prop & giant)
 	{
 		entity->sheet.stats[STR] += 2;
@@ -47,6 +49,12 @@ void	set_properties_stat(t_entity *entity, t_property prop)
 		entity->sheet.speed /= 2;
 	if (prop & (restrained))
 		entity->sheet.speed = 0;
+	if (check_properties(prop, range | master_archer))
+		entity->sheet.atk_bonus += 2;
+	if (prop & acid)
+		entity->sheet.ac -= 2;
+	if (prop & marked_ac)
+		entity->sheet.ac -= 2;
 }
 
 void	add_prop_refresh(t_data *data, t_entity *entity, t_property prop)

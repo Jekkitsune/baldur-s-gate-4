@@ -6,13 +6,13 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/27 04:58:41 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/29 12:20:03 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 CC = cc
-CFLAGS = -g3 -Ofast -Wextra -Wall ##-Werror
+CFLAGS = -g3 -Ofast -fno-short-enums -Wextra -Wall ##-Werror
 NAME = cub3D
 HEADER = data/headers
 
@@ -99,6 +99,7 @@ SRCS = main.c\
 		spells_init.c\
 		spells.c\
 		spells_2.c\
+		spells_3.c\
 		fireball.c\
 		ui.c\
 		ui_2.c\
@@ -162,6 +163,22 @@ SRCS = main.c\
 		group_invisibility.c\
 		hypnotic_pattern.c\
 		dominate.c\
+		rogue_init.c\
+		steal.c\
+		sneak_attack.c\
+		menaced.c\
+		dash.c\
+		monk_init.c\
+		monk.c\
+		flurry_of_blows.c\
+		step_of_the_wind.c\
+		stunning_strike.c\
+		init_ranger.c\
+		hunter_mark.c\
+		special_arrow.c\
+		special_arrow_2.c\
+		sharp_shooter.c\
+		arrow_rain.c\
 
 LIBFT = data/libft/libft.a
 

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 13:23:43 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 23:31:31 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:29:28 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	init_blight_button(t_data *data, t_button *button)
 	button->spellinfo.dice[D8] = 8;
 	button->description = "Impose a CON save throw to get 8d8 damage or half \
 on a success";
+	button->spellinfo.can_be_silenced = true;
 }
 
 void	eldritch_blast(void *data_param, void *spell_param)
@@ -80,14 +81,13 @@ void	init_eldritch_blast_button(t_data *data, t_button *button)
 	button->name = "Eldritch blast";
 	button->spellinfo.dice[D10] = 1;
 	button->description = "1d10 spell attack";
-	if (!button->user)
-		return ;
-	if (button->user->sheet.properties & agonizing_blast)
+	button->spellinfo.can_be_silenced = true;
+	if (button->user && button->user->sheet.properties & agonizing_blast)
 	{
 		button->spellinfo.dice[D1] += modif(button->user->sheet.stats[CHA]);
 		button->description = "1d10 + CHA spell attack";
 	}
-	if (button->user->sheet.properties & seasoned_spellcaster)
+	if (button->user && button->user->sheet.properties & seasoned_spellcaster)
 	{
 		button->spellinfo.dice[D1] += modif(button->user->sheet.stats[CHA]);
 		button->spellinfo.dice[D10] += 1;

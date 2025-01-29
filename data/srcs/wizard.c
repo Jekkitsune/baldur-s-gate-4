@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 23:29:59 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 04:19:18 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:29:46 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,5 @@ void	init_fire_bolt_button(t_data *data, t_button *button)
 		button->spellinfo.dice[D10] += 1;
 		button->description = "2d10 + CHA spell attack";
 	}
+	button->spellinfo.can_be_silenced = true;
 }

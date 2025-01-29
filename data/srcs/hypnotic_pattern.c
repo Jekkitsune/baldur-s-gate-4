@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 02:29:55 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 03:15:59 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:30:57 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,5 @@ void	init_hypnotic_button(t_data *data, t_button *button)
 	button->name = "Hypnotic pattern";
 	button->description = "WIS saving throw on a huge zone, if failed, cannot \
 play or see until end of spell or upon taking damage";
+	button->spellinfo.can_be_silenced = true;
 }

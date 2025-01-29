@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 00:29:49 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 02:56:46 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:30:30 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,5 @@ void	init_hold_person_button(t_data *data, t_button *button)
 	button->name = "Hold person";
 	button->description = "Impose a WIS save throw to not get paralyze for \
 5 turns, a successful melee attack on paralyzed entity crits";
+	button->spellinfo.can_be_silenced = true;
 }

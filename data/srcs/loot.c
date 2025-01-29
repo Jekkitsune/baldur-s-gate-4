@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 06:14:08 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 07:12:54 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 10:03:48 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int		get_inv_index(int button_size, t_vector pos, t_vector mouse);
 t_bool	add_to_inventory(t_data *data, t_entity *taker, t_entity *taken,
 			t_bool no_equip);
 void	shop(t_data *data, t_entity *caster, t_entity *target);
+void	steal(t_data *data, t_entity *caster, t_entity *target);
 
 int	other_inventory_hover_index(t_data *data)
 {
@@ -98,6 +99,8 @@ void	check_click_other_inventory(t_data *data)
 		basic_loot(data, button->spellinfo.caster, button->spellinfo.target);
 	else if (!ft_strcmp(button->name, "Interact") && data->player.shop_mode)
 		shop(data, button->spellinfo.caster, button->spellinfo.target);
+	else if (!ft_strcmp(button->name, "Steal"))
+		steal(data, button->spellinfo.caster, button->spellinfo.target);
 }
 
 void	draw_other_inventory(t_data *data, t_entity *inventory[INVENTORY_SIZE])

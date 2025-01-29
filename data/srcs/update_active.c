@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 20:25:04 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 05:41:02 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:32:34 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	apply_spelltype_filter_color(t_data *data, t_entity *entity);
 void	show_advantage(t_data *data, t_spellinfo *info);
+void	ai_play(t_data *data, t_entity *current);
 
 void	entity_filter(t_entity *entity, uint32_t color)
 {
@@ -42,6 +43,12 @@ void	entity_properties_effect(t_data *data, t_entity *entity)
 		entity_filter(entity, 0xFF8A7084);
 	if (entity->sheet.properties & hypnotized)
 		entity_filter(entity, 0xFFF41CFF);
+	if (entity->sheet.properties & hunter_marked)
+		entity_filter(entity, 0xFFD94158);
+	if (entity->sheet.properties & acid)
+		entity_filter(entity, 0xFF8CFC03);
+	if (entity->sheet.properties & silenced)
+		entity_filter(entity, 0xFF6E6E6E);
 }
 
 void	radius_filter(void *data, t_entity *target,
@@ -87,6 +94,8 @@ void	update_all_active(t_data *data)
 	{
 		current = i->content;
 		i = i->next;
+		// if (!current)
+		// 	continue ;
 		if (current->current_anim)
 			continue_anim(data, current);
 		update_entity_properties(data, current, false);

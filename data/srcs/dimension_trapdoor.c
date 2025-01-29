@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 01:33:38 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 01:41:46 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:30:39 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,5 @@ void	init_trapdoor_button(t_data *data, t_button *button)
 	button->spellinfo.timer = 1;
 	button->name = "Dimension trapdoor";
 	button->description = "Teleport selected entity to selected position";
+	button->spellinfo.can_be_silenced = true;
 }

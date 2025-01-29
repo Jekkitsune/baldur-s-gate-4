@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 19:08:22 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 19:53:06 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:29:07 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	init_shadow_sword_button(t_data *data, t_button *button)
 	button->name = "Shadow sword";
 	button->description = "Replace your weapon for a melee 4d8 weapon for 5 \
 turns";
+	button->spellinfo.can_be_silenced = true;
 }
 
 void	misty_step(void *data_param, void *spell_param)
@@ -82,4 +83,5 @@ void	init_misty_step_button(t_data *data, t_button *button)
 	button->spellinfo.timer = 1;
 	button->name = "Misty step";
 	button->description = "Teleport yourself to selected position";
+	button->spellinfo.can_be_silenced = true;
 }

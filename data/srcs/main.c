@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 03:37:16 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 20:43:19 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,13 @@ void	init_test(t_data *data)
 	if (test2)
 		ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
 
-	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
+	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa2", ""));
 	add_active(data, test2, NULL);
 	possess_control(test2, true);
 	if (test2)
 		ft_lstadd_front(&data->round_manager.party, ft_lstnew(test2));
 
-	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa", ""));
+	test2 = spawn_entity(data, get_prefab(data, "wizard"), vec(26, 9), ft_strjoin("lisa3", ""));
 	add_active(data, test2, NULL);
 	possess_control(test2, true);
 	if (test2)
@@ -85,6 +85,8 @@ int	main(int argc, char **argv)
 	if (!check_textures(data.wall_tex))
 		exit_free(&data, "Cannot create texture");
 
+
+	printf("sizeof int %lu, sizeof long %lu, sizeof t_property %lu\n", sizeof(int), sizeof(long), sizeof(t_property));
 	init_game(&data);
 
 	init_test(&data);

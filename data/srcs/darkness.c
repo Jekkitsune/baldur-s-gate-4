@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 13:53:37 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 20:06:10 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:28:43 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,5 @@ void	init_darkness_button(t_data *data, t_button *button)
 	button->name = "Darkness";
 	button->description = "Create a zone of darkness, creatures inside are \
 invisible and blinded except with truesight, concentration needed";
+	button->spellinfo.can_be_silenced = true;
 }

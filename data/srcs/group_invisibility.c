@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 01:46:24 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 02:56:55 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:30:47 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,5 @@ void	init_group_invi_button(t_data *data, t_button *button)
 	while invisible and ennemies cannot engage combat and in combat, can't see \
 	you if more than 1 cell away, requires concentration";
 	button->spellinfo.target_self = true;
+	button->spellinfo.can_be_silenced = true;
 }

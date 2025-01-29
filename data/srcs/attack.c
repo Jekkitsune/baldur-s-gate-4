@@ -6,13 +6,15 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 05:02:33 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 19:51:11 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/29 12:10:42 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 void	init_shadow_sword_atk(t_data *data, t_button *button, t_entity *entity);
+void	init_monk_punch(t_button *button, t_entity *entity);
+void	check_infused_hit(t_data *data, t_spellinfo *spell);
 
 void	properties_atk(t_data *data, t_button *button, t_entity *entity,
 	t_entity *weapon)
@@ -43,8 +45,11 @@ void	atk(void *data_param, void *spell_param)
 	spell->nb = rand_res + modif(spell->caster->sheet.stats[spell->stat]);
 	if (spell->caster->sheet.properties & enraged)
 		spell->nb += class_bonus_dmg(spell->caster);
-	atk = roll_atk(data, spell, spell->caster->sheet.atk_bonus);
+	atk = roll_atk(data, spell, spell->caster->sheet.atk_bonus
+		+ modif(spell->caster->sheet.stats[spell->stat]));
 	atk_dmg(data, spell, atk, rand_res);
+	if (atk >= spell->target->sheet.ac)
+		check_infused_hit(data, spell);
 }
 
 void	init_range(t_data *data, t_button *button, t_entity *weapon)
@@ -65,12 +70,14 @@ void	init_melee(t_data *data, t_button *button, t_entity *entity,
 		button->spellinfo.stat = DEX;
 	if (!weapon)
 	{
+		button->img = get_tex(data, "punch_button");
+		button->spellinfo.range = 1.5;
+		if (entity->sheet.properties & bare_hands_master)
+			return (init_monk_punch(button, entity));
 		if (has_dice(entity->sheet.dice_dmg))
 			copy_dice(button->spellinfo.dice, entity->sheet.dice_dmg);
 		else
 			set_dice(button->spellinfo.dice, D1, 1);
-		button->spellinfo.range = 1.5;
-		button->img = get_tex(data, "punch_button");
 		return ;
 	}
 	button->img = get_tex(data, "melee_button");

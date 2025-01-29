@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:43:48 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 22:53:04 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:32:53 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ t_bool	check_action_cost(t_spellinfo *spell)
 {
 	t_sheet		*sheet;
 
-	if (!spell->caster)
+	if (!spell->caster || (spell->can_be_silenced
+		&& spell->caster->sheet.properties & silenced))
 		return (false);
 	sheet = &spell->caster->sheet;
 	if (spell->cost_attack)

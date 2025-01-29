@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:06:02 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 22:21:01 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 17:20:04 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	compare_buttons(t_data *data, t_button **current_best,
 	}
 	current_average = get_dice_average((*current_best)->spellinfo.dice);
 	compare_average = get_dice_average(compare->spellinfo.dice);
-	if (compare_average > current_average
+	if (compare_average >= current_average
 		&& get_best_spell_pos(data, &compare->spellinfo, entity))
 		*current_best = compare;
 }

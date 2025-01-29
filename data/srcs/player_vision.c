@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 13:21:29 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 09:35:46 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void	show_screen(t_data *data)
 		show_end_turn_button(data);
 		if (data->player.possession->sheet.inventory_open)
 			draw_inventory(data, data->player.possession->sheet.inventory);
+		else
+			data->player.shop_mode = false;
 	}
 	show_health_bar(data);
 	show_minimap(data);

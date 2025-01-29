@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 19:58:58 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 20:23:16 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:29:16 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,5 @@ void	init_hadar_button(t_data *data, t_button *button)
 terrain and creatures inside are \
 invisible and blinded except with truesight, all creatures must succeed a DEX \
 save or get 4D6 damage concentration needed";
+	button->spellinfo.can_be_silenced = true;
 }

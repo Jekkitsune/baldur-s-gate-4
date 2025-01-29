@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 20:53:42 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 02:57:05 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:29:37 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,5 @@ void	init_banishment_button(t_data *data, t_button *button)
 	button->spellinfo.timer = 1;
 	button->name = "Banishment";
 	button->description = "Impose a CHA save throw to get banished for 5 turns";
+	button->spellinfo.can_be_silenced = true;
 }

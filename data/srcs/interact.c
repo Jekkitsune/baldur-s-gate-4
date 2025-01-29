@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 23:54:44 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/25 02:48:55 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 13:03:21 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ void	interact(void *data_param, void *spell_param)
 		open_other_inventory(data,
 			get_button_pointer(spell->caster->sheet.buttons, "Interact"),
 			spell->target, spell->caster);
-	else if (spell->target)
+	else if (spell->target && !(spell->target->sheet.type == living
+		&& (!spell->target->sheet.alive)))
 		take(data_param, spell_param);
 	else
 		open_door_pos(data, spell->pos);

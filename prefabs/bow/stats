@@ -1,0 +1,8 @@
+WEIGHT:5
+DESCRIPTION:C larc dans minecraft
+TYPE:weapon_1
+DICE:8:1
+SIZE:0.3
+RANGE:5.5
+PRICE:10
+PROPERTIES:range

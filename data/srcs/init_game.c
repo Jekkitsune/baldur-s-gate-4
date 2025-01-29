@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 01:06:19 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 07:10:23 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 19:33:48 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	init_prefabs(t_data *data)
 	init_one_prefab(data, "prefabs/warlock", "warlock");
 	init_one_prefab(data, "prefabs/wizard", "wizard");
 	init_one_prefab(data, "prefabs/sword", "sword");
+	init_one_prefab(data, "prefabs/bow", "bow");
 	init_one_prefab(data, "prefabs/gold", "gold");
 }
 

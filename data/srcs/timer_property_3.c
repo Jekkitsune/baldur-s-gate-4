@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 08:33:44 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 03:06:20 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 18:38:53 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void	start_turn_effect(t_data *data, t_entity *entity)
 	if (entity->sheet.properties & webbed)
 		web_effect(data, entity);
 	try_resist_spell(data, entity, paralyzed, WIS);
-	if (entity->sheet.properties & (banished | paralyzed | hypnotized))
+	if (entity->sheet.properties & (banished | paralyzed | hypnotized
+		| stunned))
 		next_turn(data);
 }

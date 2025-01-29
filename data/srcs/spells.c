@@ -6,11 +6,14 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 03:49:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 03:27:58 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 20:17:21 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void		concentration_save(t_data *data, t_entity *entity, int dmg);
+t_entity	*get_hunter_mark_caster(t_entity *target);
 
 void	apply_cell(t_data *data, t_cell cell, t_spellinfo spell,
 	void (*effect)(void *data, t_entity *target, t_entity *caster, int nb))
@@ -66,11 +69,12 @@ void	damage(t_data *data, t_entity *entity, int dmg)
 	add_timer_property(data, prop, 0.3, false);
 	if (entity->sheet.properties & hypnotized)
 		remove_specific_prop(data, entity, hypnotized);
-	if (entity->sheet.hp <= 0
-		|| !saving_throw(data, entity, CON, ft_max(10, dmg / 2)))
-		break_concentration(data, entity, 0);
+	concentration_save(data, entity, dmg);
+	check_attack_neutral(data, entity);
 	if (entity->sheet.hp <= 0)
 	{
+		if (get_hunter_mark_caster(entity))
+			get_hunter_mark_caster(entity)->sheet.spell_slot[0]++;
 		leave_combat(data, entity);
 		change_anim(entity, "dead", false);
 		entity->sheet.alive = false;

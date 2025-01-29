@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 05:48:11 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/29 12:16:53 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,38 +85,57 @@ typedef int	t_dice[NB_DICE];
 
 typedef enum e_property
 {
-	finesse = 1,
-	range = 1 << 1,
-	restrained = 1 << 2,
-	melee = 1 << 3,
-	heal_effect = 1 << 4,
-	hit_effect = 1 << 5,
-	shop_keeper = 1 << 6,
-	unarmored_defense = 1 << 7,
-	enraged = 1 << 8,
-	reckless_atk = 1 << 9,
-	giant_rage = 1 << 10,
-	giant = 1 << 11,
-	hellish_rebuke = 1 << 12,
-	acid_puddle_prop = 1 << 13,
-	blinded = 1 << 14,
-	invisible = 1 << 15,
-	true_sight = 1 << 16,
-	agonizing_blast = 1 << 17,
+	finesse = 1ULL,
+	range = 1ULL << 1,
+	restrained = 1ULL << 2,
+	melee = 1ULL << 3,
+	heal_effect = 1ULL << 4,
+	hit_effect = 1ULL << 5,
+	shop_keeper = 1ULL << 6,
+	unarmored_defense = 1ULL << 7,
+	enraged = 1ULL << 8,
+	reckless_atk = 1ULL << 9,
+	giant_rage = 1ULL << 10,
+	giant = 1ULL << 11,
+	hellish_rebuke = 1ULL << 12,
+	acid_puddle_prop = 1ULL << 13,
+	blinded = 1ULL << 14,
+	invisible = 1ULL << 15,
+	true_sight = 1ULL << 16,
+	agonizing_blast = 1ULL << 17,
 	seasoned_spellcaster = 1 << 18,
-	shadow_sword_prop = 1 << 19,
-	hunger_of_hadar_prop = 1 << 20,
-	difficult_terrain = 1 << 21,
-	banished = 1 << 22,
-	eldritch_lifesteal = 1 << 23,
-	webbed = 1 << 24,
-	paralyzed = 1 << 25,
-	hypnotized = 1 << 26,
-	dominated = 1 << 27,
-	concentration_plus = 1 << 28,
+	shadow_sword_prop = 1ULL << 19,
+	hunger_of_hadar_prop = 1ULL << 20,
+	difficult_terrain = 1ULL << 21,
+	banished = 1ULL << 22,
+	eldritch_lifesteal = 1ULL << 23,
+	webbed = 1ULL << 24,
+	paralyzed = 1ULL << 25,
+	hypnotized = 1ULL << 26,
+	dominated = 1ULL << 27,
+	concentration_plus = 1ULL << 28,
+	menaced_advantage = 1ULL << 29,
+	crit_1 = 1ULL << 30,
+	crit_3 = 1ULL << 31,
+	spiritual_defense = 1ULL << 32,
+	bare_hands_master = 1ULL << 33,
+	dodge = 1ULL << 34,
+	stunned = 1ULL << 35,
+	healing_hand_plus = 1ULL << 36,
+	master_archer = 1ULL << 37,
+	hunter_marked = 1ULL << 38,
+	acid = 1ULL << 39,
+	infused_acid = 1ULL << 40,
+	close_shooter = 1ULL << 41,
+	infused_restrained = 1ULL << 42,
+	silenced = 1ULL << 43,
+	infused_silenced = 1ULL << 44,
+	sharp_shooter = 1ULL << 45,
+	master_hunter = 1ULL << 46,
+	marked_ac = 1ULL << 47,
 }	t_property;
 
-# define NB_PROPERTIES 29
+# define NB_PROPERTIES 48
 
 # define PROPERTIES_TAB ((char * const[NB_PROPERTIES]) { \
     "finesse", \
@@ -148,6 +167,25 @@ typedef enum e_property
 	"hypnotized",\
 	"dominated",\
 	"concentration_plus",\
+	"menaced_advantage",\
+	"crit_1",\
+	"crit_3",\
+	"spiritual_defense",\
+	"bare_hands_master",\
+	"dodge",\
+	"stunned",\
+	"healing_hand_plus",\
+	"master_archer",\
+	"hunter_marked",\
+	"acid",\
+	"infused_acid",\
+	"close_shooter",\
+	"infused_restrained",\
+	"silenced",\
+	"infused_silenced",\
+	"sharp_shooter",\
+	"master_hunter",\
+	"marked_ac",\
 })
 
 typedef struct s_vector
@@ -221,6 +259,7 @@ typedef enum e_spelltype
 	take_type = 4,
 	move_type = 5,
 	check_type = 6,
+	dash_type = 7,
 }	t_spelltype;
 
 typedef struct s_spellinfo
@@ -246,6 +285,7 @@ typedef struct s_spellinfo
 	int			cost_bonus;
 	int			cost_spell_slot;
 	int			concentration;
+	t_bool		can_be_silenced;
 }	t_spellinfo;
 
 typedef struct s_timer_effect
@@ -292,6 +332,7 @@ typedef	struct s_level
 	int			add_pv;
 	int			add_pb;
 	int			add_nb_attack;
+	int			add_speed;
 	int			add_spell_slot[SPELL_MAX_LV];
 	t_dice		current_bonus_dice;
 }	t_level;
@@ -336,7 +377,7 @@ typedef struct s_sheet
 	t_button	inventory_button;
 	t_type		type;
 	t_texture	*portrait;
-	int			properties : NB_PROPERTIES + 1;
+	long		properties;
 	int			team;
 	int			default_team;
 	t_bool		in_fight;
@@ -831,7 +872,7 @@ void		smooth_possess(t_data *data, t_entity *entity);
 void		add_prop_refresh(t_data *data, t_entity *entity, t_property prop);
 void		long_rest(t_data *data, t_entity *entity);
 int			class_bonus_dmg(t_entity *entity);
-int			advantage(t_entity *caster, t_entity *target);
+int			advantage(t_data *data, t_entity *caster, t_entity *target);
 void		level_up_party(t_data *data);
 void		reset_active_button(t_data *data);
 void		damage_cell(t_data *data, t_vector pos, int nb);
@@ -851,6 +892,9 @@ t_bool		dont_draw(t_data *data, t_entity *entity);
 int			add_concentration(t_data *data, t_entity *entity);
 void		heal_entity(t_data *data, t_entity *entity, int heal);
 void		join_party(t_data *data, t_entity *entity);
+void		check_attack_neutral(t_data *data, t_entity *entity);
+void		add_dice(t_dice adder, t_dice added);
+t_bool		is_menaced(t_data *data, t_entity *entity, t_entity *banned);
 
 //ia
 void		base_aggro(void *data_param, void *entity_param);
@@ -871,6 +915,7 @@ void		init_atk_button(t_data *data, t_button *button, t_entity *entity);
 
 void		init_check_button(t_data *data, t_button *button);
 void		init_move_button(t_data *data, t_button *button);
+void		init_dash_button(t_data *data, t_button *button);
 void		init_interact_button(t_data *data, t_button *button);
 void		init_inventory_button(t_data *data, t_button *button);
 
@@ -918,5 +963,22 @@ void		init_group_invi_button(t_data *data, t_button *button);
 void		init_hypnotic_button(t_data *data, t_button *button);
 
 void		init_dominate_button(t_data *data, t_button *button);
+
+void		init_steal_button(t_data *data, t_button *button);
+void		init_sneak_atk_button(t_data *data, t_button *button);
+
+void		init_dash_bonus_button(t_data *data, t_button *button);
+
+void		init_bonus_punch_button(t_data *data, t_button *button);
+void		init_flurry_button(t_data *data, t_button *button);
+void		init_healing_hands_button(t_data *data, t_button *button);
+void		init_step_wind_button(t_data *data, t_button *button);
+void		init_stunning_strike_button(t_data *data, t_button *button);
+
+void		init_hunter_mark_button(t_data *data, t_button *button);
+void		init_special_arrow_button(t_data *data, t_button *button,
+	t_property prop);
+void		init_sharp_shooter_button(t_data *data, t_button *button);
+void		init_arrow_rain_button(t_data *data, t_button *button);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 04:46:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/25 12:50:39 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 15:21:25 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	refresh_entity_class(t_entity *entity, int level)
 		entity->sheet.max_hp += class->level[i_level].add_pv;
 		entity->sheet.properties |= class->level[i_level].properties;
 		entity->sheet.nb_attack += class->level[i_level].add_nb_attack;
+		entity->sheet.speed += class->level[i_level].add_speed;
 		sum_stat_tab(entity->sheet.stats, class->level[i_level].add_stats, 6);
 		i_level++;
 	}

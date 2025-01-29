@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 10:17:01 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 11:24:27 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 09:38:58 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,10 @@ void	buy_item(t_data *data, int item_index, t_entity *giver,
 
 	selling = in_party(data, giver);
 	item = giver->sheet.inventory[item_index];
+	if (!item)
+		return ;
 	price = item->sheet.price;
-	if (!item || (!selling && price > data->player.gold))
+	if (!selling && price > data->player.gold)
 		return ;
 	if (add_to_inventory(data, receiver, item, true))
 		giver->sheet.inventory[item_index] = NULL;

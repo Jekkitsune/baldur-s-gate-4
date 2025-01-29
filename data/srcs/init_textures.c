@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 01:20:38 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 04:59:29 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/29 12:12:01 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,24 @@ void	init_more_buttons(t_data *data)
 	add_button(data, "textures/group_invi_button.png", "group_invi_button");
 	add_button(data, "textures/hypnotic_button.png", "hypnotic_button");
 	add_button(data, "textures/dominate_button.png", "dominate_button");
+	add_button(data, "textures/steal_button.png", "steal_button");
+	add_button(data, "textures/sneak_atk_button.png", "sneak_atk_button");
+	add_button(data, "textures/sneak_range_button.png", "sneak_range_button");
+	add_button(data, "textures/dash_button.png", "dash_button");
+	add_button(data, "textures/dash_bonus_button.png", "dash_bonus_button");
+	add_button(data, "textures/punch_bonus_button.png", "punch_bonus_button");
+	add_button(data, "textures/flurry_button.png", "flurry_button");
+	add_button(data, "textures/healing_hands_button.png",
+		"healing_hands_button");
+	add_button(data, "textures/step_wind_button.png", "step_wind_button");
+	add_button(data, "textures/stunning_strike_button.png",
+		"stunning_strike_button");
+	add_button(data, "textures/hunter_mark_button.png", "hunter_mark_button");
+	add_button(data, "textures/acid_arrow_button.png", "acid_arrow_button");
+	add_button(data, "textures/ensnaring_button.png", "ensnaring_button");
+	add_button(data, "textures/silencing_button.png", "silencing_button");
+	add_button(data, "textures/sharp_shooter_button.png", "sharp_shoot_button");
+	add_button(data, "textures/arrow_rain_button.png", "arrow_rain_button");
 }
 
 void	init_buttons(t_data *data)

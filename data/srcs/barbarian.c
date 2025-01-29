@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 02:53:18 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 17:01:17 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 10:22:01 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	init_rage_button(t_data *data, t_button *button)
 	button->spellinfo.range = 0;
 	button->spellinfo.visible_target = true;
 	button->spellinfo.effect = rage;
-	button->spellinfo.type = buff;
+	button->spellinfo.type = check_type;
 	button->spellinfo.cost_bonus = 1;
 	button->func = action_select;
 	button->img = get_tex(data, "rage_button");
@@ -69,7 +69,7 @@ void	init_reckless_button(t_data *data, t_button *button)
 	button->spellinfo.range = 0;
 	button->spellinfo.visible_target = true;
 	button->spellinfo.effect = reckless_attack;
-	button->spellinfo.type = buff;
+	button->spellinfo.type = check_type;
 	button->func = action_select;
 	button->img = get_tex(data, "reckless_button");
 	button->name = "Reckless attack";

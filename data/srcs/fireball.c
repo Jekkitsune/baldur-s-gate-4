@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 19:30:20 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 17:15:12 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/28 22:41:18 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,14 @@ void	init_fireball_button(t_data *data, t_button *button)
 	button->spellinfo.effect = fireball;
 	button->spellinfo.type = offensive;
 	button->spellinfo.cost_action = 1;
-	//button->spellinfo.cost_spell_slot = 3;
+	button->spellinfo.cost_spell_slot = 4;
 	button->func = action_select;
 	button->img = get_tex(data, "fireball_button");
 	button->spellinfo.anim = "cast";
 	button->spellinfo.timer = 1.5;
 	button->name = "Fireball";
 	button->description = "8d6 dmg on a huge zone, DEX save";
+	button->spellinfo.can_be_silenced = true;
 }
 
 void	fireball(void *data_param, void *spell_param)
