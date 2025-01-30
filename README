@@ -32,10 +32,10 @@ PRICE:(int)
 ACTION:(str1):(str2):(str3):(etc)
 PROPERTIES:(str1):(str2):(str3):(etc)
 
-"map.dat" file format: (order and number of parameters does not matter, tex and upper wall str are not path but name in the tex list, you can use NO SO WE EA)
+"map.dat" file format: (order and number of parameters does not matter, TEX/UPPER WALL/CEILING/FLOOR str are texture's path or texture name if already loaded, you can use NO SO WE EA)
 for gold amount put int as next thing in the list -> gold,50,item
-
-CELL:POS:(int),(int)(,(int),(int) optionnal):TEX:(str):UPPER WALL:(str):KEY:(str):TRAVEL:(str):CEILING:(int)
+FLOOR:(str path of the default floor tex, mandatory)
+CELL:POS:(int),(int)(,(int),(int) optionnal):TEX:(str):UPPER WALL:(str):KEY:(str):TRAVEL:(str):CEILING:(str):FLOOR(str)
 ENTITY:PREFAB:(str):POS:(int,int):NAME:(str):LVL:(int):TEAM:(int):BEHAVIOR:(str):DIALOG:(str1)\(str2)\(etc):PROPERTIES:(str1),(str2),(etc):INVENTORY:(str1),(str2),(etc)
 
 

@@ -8,6 +8,12 @@
 		"time.h": "c",
 		"cstdint": "c",
 		"libft.h": "c",
-		"stat.h": "c"
+		"stat.h": "c",
+		"string": "c",
+		"string_view": "c",
+		"array": "c",
+		"format": "c",
+		"initializer_list": "c",
+		"span": "c"
 	}
 }

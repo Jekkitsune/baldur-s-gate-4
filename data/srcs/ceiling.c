@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/21 18:37:18 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 02:07:54 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,17 @@ void	handle_skybox2(t_data *data, t_ceiling c, t_skybox s, t_vector it)
 void	handle_skybox(t_data *data, t_ceiling c, int x, int y)
 {
 	t_skybox	s;
-	bool		ceiling;
+	t_cell		*cell;
 
 	s = *c.s;
-	ceiling = c.cell.x >= 0 && c.cell.y >= 0
-		&& c.cell.x < data->current_map->size.x
-		&& c.cell.y < data->current_map->size.y
-		&& data->current_map->arr[c.cell.x][c.cell.y].ceiling;
-	if (data->sky_box && !ceiling)
+	cell = NULL;
+	if (in_bound(data->current_map, c.cell))
+		cell = &data->current_map->arr[c.cell.x][c.cell.y];
+	if (data->sky_box && (!cell || !cell->ceiling || !cell->ceiling_tex))
 		handle_skybox2(data, c, s, vec(x, y));
 	else
 	{
-		c.color = data->ceiling->tab[c.t.x][c.t.y];
+		c.color = cell->ceiling_tex->tab[c.t.x][c.t.y];
 		if (data->win_size.y - y - 1 < c.lim)
 			data->screen_buffer[data->win_size.y - y - 1][x] = c.color;
 	}
@@ -62,24 +61,28 @@ void	handle_skybox(t_data *data, t_ceiling c, int x, int y)
 
 void	calculate_ceiling(t_data *data, t_ceiling c, int y)
 {
-	int	x;
+	int			x;
+	int			tex_size;
 
 	x = -1;
+	tex_size = data->current_map->floor->size;
 	while (++x < data->win_size.x)
 	{
 		c.cell.x = (int) c.floor.x;
 		c.cell.y = (int) c.floor.y;
-		c.t.y = ((int)(data->ceiling->size * (c.floor.y - c.cell.y)) % \
-			(data->ceiling->size - 1));
-		c.t.x = ((int)(data->ceiling->size * (c.floor.x - c.cell.x)) % \
-			(data->ceiling->size - 1));
-		if (c.t.x < 0)
-			c.t.x = 0;
-		if (c.t.y < 0)
-			c.t.y = 0;
+		if (in_bound(data->current_map, c.cell)
+			&& data->current_map->arr[c.cell.x][c.cell.y].ceiling_tex)
+			tex_size = data->current_map->arr[c.cell.x][c.cell.y].\
+			ceiling_tex->size;
+		c.t.y = ((int)(tex_size * (c.floor.y - c.cell.y)) % \
+			(tex_size - 1));
+		c.t.x = ((int)(tex_size * (c.floor.x - c.cell.x)) % \
+			(tex_size - 1));
+		c.t.x = ft_max(c.t.x, 0);
+		c.t.y = ft_max(c.t.y, 0);
+		handle_skybox(data, c, x, y);
 		c.floor.x += c.floor_step.x;
 		c.floor.y += c.floor_step.y;
-		handle_skybox(data, c, x, y);
 	}
 }
 

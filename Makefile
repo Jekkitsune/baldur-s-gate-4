@@ -6,7 +6,7 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/29 12:20:03 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/30 00:59:07 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,6 +90,7 @@ SRCS = main.c\
 		buttons_draw.c\
 		buttons_draw_2.c\
 		buttons_inventory.c\
+		buttons_inventory_2.c\
 		inventory.c\
 		inventory_2.c\
 		inventory_draw_utils.c\

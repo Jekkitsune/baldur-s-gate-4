@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 01:20:38 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/29 12:12:01 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 01:36:56 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,19 +78,17 @@ void	init_buttons(t_data *data)
 
 void	init_textures(t_data *data)
 {
-	add_tex(data, path_to_tex(data, "textures/s1.png"), ft_strdup("skybox1"));
-	add_tex(data, path_to_tex(data, "textures/s2.png"), ft_strdup("skybox2"));
-	add_tex(data, path_to_tex(data, "textures/s3.png"), ft_strdup("skybox3"));
-	add_tex(data, path_to_tex(data, "textures/s4.png"), ft_strdup("skybox4"));
+	add_tex(data, path_to_tex(data, "textures/env/skybox1.png"),
+		ft_strdup("skybox1"));
+	add_tex(data, path_to_tex(data, "textures/env/skybox2.png"),
+		ft_strdup("skybox2"));
+	add_tex(data, path_to_tex(data, "textures/env/skybox3.png"),
+		ft_strdup("skybox3"));
+	add_tex(data, path_to_tex(data, "textures/env/skybox4.png"),
+		ft_strdup("skybox4"));
 	data->sky_box_tex[0] = get_tex(data, "skybox1");
 	data->sky_box_tex[1] = get_tex(data, "skybox2");
 	data->sky_box_tex[2] = get_tex(data, "skybox3");
 	data->sky_box_tex[3] = get_tex(data, "skybox4");
-	add_tex(data, path_to_tex(data, "textures/brickwall.png"),
-		ft_strdup("ceiling"));
-	add_tex(data, path_to_tex(data, "textures/woodwall.png"),
-		ft_strdup("floor"));
-	data->ceiling = get_tex(data, "ceiling");
-	data->floor = get_tex(data, "floor");
 	init_buttons(data);
 }

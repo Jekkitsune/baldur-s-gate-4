@@ -1,7 +1,7 @@
-NO textures/image.png
-EA textures/image.png
-WE textures/image.png
-SO textures/image.png
+NO textures/env/plain_wall.png
+EA textures/env/plain_wall.png
+WE textures/env/plain_wall.png
+SO textures/env/plain_wall.png
 
 F 220,100,0
 C 225,30,0

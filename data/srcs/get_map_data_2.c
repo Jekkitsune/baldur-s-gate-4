@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 02:45:59 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 22:47:37 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/29 19:04:34 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	add_entity_map_behavior(t_data *data, t_entity *entity, char **splited);
 
 void	set_entity_map_properties(t_data *data, t_entity *entity, char *prop)
 {
-	char	**splited;
-	int		i;
+	char				**splited;
+	int					i;
 
 	splited = ft_split(prop, ',');
 	if (!splited)
@@ -31,6 +31,7 @@ void	set_entity_map_properties(t_data *data, t_entity *entity, char *prop)
 		entity->sheet.properties |= get_property(data, splited[i]);
 		i++;
 	}
+	entity->sheet.default_properties = entity->sheet.properties;
 	ft_free_tab(splited);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:27:28 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 19:22:20 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 01:55:07 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ t_texture	*path_to_tex(t_data *data, char *path)
 	void		*img;
 	t_vector	size;
 
+	if (!path)
+		return (NULL);
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
 		return (NULL);

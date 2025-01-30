@@ -6,16 +6,17 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 01:24:47 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 05:52:48 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 01:34:14 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	remove_endl(char **splited);
-char	**get_next_stat(int fd);
-void	set_entity_map(t_data *data, char **splited);
-void	get_cell_pos(char **splited_pos, t_vector *start, t_vector *end);
+void		remove_endl(char **splited);
+char		**get_next_stat(int fd);
+void		set_entity_map(t_data *data, char **splited);
+void		get_cell_pos(char **splited_pos, t_vector *start, t_vector *end);
+t_texture	*get_or_add_tex(t_data *data, char *path);
 
 char	*map_param(char **splited, char *name)
 {
@@ -36,19 +37,21 @@ void	set_cell_data(t_data *data, char **splited, t_cell *cell)
 	char		*current;
 	t_texture	*tex;
 
-	tex = get_tex(data, map_param(splited, "TEX"));
+	tex = get_or_add_tex(data, map_param(splited, "TEX"));
 	if (tex)
-	{
-		cell->tex[0] = tex;
-		cell->tex[1] = tex;
-		cell->tex[2] = tex;
-		cell->tex[3] = tex;
-	}
-	tex = get_tex(data, map_param(splited, "UPPER WALL"));
+		set_all_cell_tex(cell, tex);
+	tex = get_or_add_tex(data, map_param(splited, "UPPER WALL"));
 	if (tex)
 		cell->upper_wall = tex;
-	if (map_param(splited, "CEILING"))
+	tex = get_or_add_tex(data, map_param(splited, "CEILING"));
+	if (tex)
+	{
+		cell->ceiling_tex = tex;
 		cell->ceiling = true;
+	}
+	tex = get_or_add_tex(data, map_param(splited, "FLOOR"));
+	if (tex)
+		cell->floor = tex;
 	current = map_param(splited, "KEY");
 	if (current)
 		cell->key = get_prefab(data, current);
@@ -92,6 +95,8 @@ void	set_map_data(t_data *data, char **splited)
 		set_cell(data, splited);
 	else if (!ft_strcmp(splited[0], "ENTITY"))
 		set_entity_map(data, splited);
+	else if (!ft_strcmp(splited[0], "FLOOR"))
+		data->current_map->floor = get_or_add_tex(data, splited[1]);
 }
 
 void	init_map_data(t_data *data)
