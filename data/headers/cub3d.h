@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 06:08:14 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/30 08:38:56 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -627,6 +627,7 @@ typedef struct s_data
 	char 			**properties_tab;
 	t_button_lst	*button_lst;
 	t_bool			shown_other_inventory;
+	bool			ready;
 }	t_data;
 
 typedef struct s_button_lst
@@ -901,6 +902,8 @@ t_bool		is_menaced(t_data *data, t_entity *entity, t_entity *banned);
 void		set_all_cell_tex(t_cell *cell, t_texture *tex);
 size_t		str_size(char *str, float size);
 void		draw_str_background(t_data *data);
+void		selection_screen(t_data *data);
+t_entity	*in_party_name(t_data *data, char *name);
 
 //ia
 void		base_aggro(void *data_param, void *entity_param);

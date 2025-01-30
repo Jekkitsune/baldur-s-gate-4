@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_map_data.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 01:24:47 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 01:34:14 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 06:15:16 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	set_cell_data(t_data *data, char **splited, t_cell *cell)
 	}
 	tex = get_or_add_tex(data, map_param(splited, "FLOOR"));
 	if (tex)
-		cell->floor = tex;
+		cell->floor_tex = tex;
 	current = map_param(splited, "KEY");
 	if (current)
 		cell->key = get_prefab(data, current);

@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 06:10:25 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/30 06:13:45 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	handle_skybox(t_data *data, t_ceiling c, int x, int y)
 	cell = NULL;
 	if (in_bound(data->current_map, c.cell))
 		cell = &data->current_map->arr[c.cell.x][c.cell.y];
-	if (data->sky_box && (!cell || !cell->ceiling || !cell->ceiling_tex))
+	if (!cell || !cell->ceiling || !cell->ceiling_tex)
 		handle_skybox2(data, c, s, vec(x, y));
 	else
 	{

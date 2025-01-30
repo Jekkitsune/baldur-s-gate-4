@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 01:20:38 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 06:09:48 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/30 06:14:38 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,5 @@ void	init_textures(t_data *data)
 	data->sky_box_tex[3] = get_tex(data, "skybox4");
 	if (!data->sky_box_tex[0] || !data->sky_box_tex[1] || !data->sky_box_tex[2] || !data->sky_box_tex[3])
 		exit_free(data, "Error: give the skybox back\n");
-	add_tex(data, path_to_tex(data, "textures/brickwall.png"),
-		ft_strdup("ceiling"));
-	add_tex(data, path_to_tex(data, "textures/woodwall.png"),
-		ft_strdup("floor"));
-	data->ceiling = get_tex(data, "ceiling");
-	data->floor = get_tex(data, "floor");
 	init_buttons(data);
 }

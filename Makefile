@@ -6,7 +6,7 @@
 #    By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/30 06:07:23 by gmassoni         ###   ########.fr        #
+#    Updated: 2025/01/30 08:30:37 by gmassoni         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -180,6 +180,8 @@ SRCS = main.c\
 		special_arrow_2.c\
 		sharp_shooter.c\
 		arrow_rain.c\
+		selection_screen.c\
+		selection_screen_2.c
 
 LIBFT = data/libft/libft.a
 

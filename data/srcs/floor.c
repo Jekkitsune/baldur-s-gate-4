@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 06:10:02 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/30 06:13:59 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	calculate_floor(t_data *data, t_floor *f, int y)
 		f->cell.y = (int) f->floor.y;
 		tex = data->current_map->floor;
 		if (in_bound(data->current_map, f->cell)
-			&& data->current_map->arr[f->cell.x][f->cell.y].floor)
-			tex = data->current_map->arr[f->cell.x][f->cell.y].floor;
+			&& data->current_map->arr[f->cell.x][f->cell.y].floor_tex)
+			tex = data->current_map->arr[f->cell.x][f->cell.y].floor_tex;
 		f->t.y = ((int)(tex->size * (f->floor.y - f->cell.y)) \
 			% (tex->size - 1));
 		f->t.x = ((int)(tex->size * (f->floor.x - f->cell.x)) \

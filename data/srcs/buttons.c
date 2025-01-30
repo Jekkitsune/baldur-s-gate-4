@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buttons.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 20:48:52 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 12:39:36 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 08:58:21 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 t_button	*button_inventory(t_data *data, t_entity *entity);
 void		check_click_other_inventory(t_data *data);
+void		check_click_selection_screen(t_data *data);
 
 t_button	*get_button_pointer(t_button *tab, char *name)
 {
@@ -65,12 +66,10 @@ void	click_action_button(t_data *data, t_button *button)
 			data->player.active_button->spellinfo);
 }
 
-void	check_button_click(t_data *data)
+void	check_action_button(t_data *data, t_vector mouse)
 {
 	t_button	*button;
-	t_vector	mouse;
 
-	mlx_mouse_get_pos(data->mlx, &mouse.x, &mouse.y);
 	if (data->player.possession
 		&& data->player.possession->possess_control
 		&& data->player.possession->sheet.alive
@@ -86,6 +85,19 @@ void	check_button_click(t_data *data)
 		else
 			check_click_end_turn(data, mouse);
 	}
+}
+
+void	check_button_click(t_data *data)
+{
+	t_vector	mouse;
+
+	mlx_mouse_get_pos(data->mlx, &mouse.x, &mouse.y);
+	if (!data->ready)
+	{
+		check_click_selection_screen(data);
+		return ;
+	}
+	check_action_button(data, mouse);
 	check_click_party_icon(data, mouse);
 	check_click_participants_icon(data, mouse);
 	check_click_other_inventory(data);
