@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 11:14:11 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 13:52:29 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/29 23:22:21 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ t_bool	travel(t_data *data, t_map *new_map)
 	if (!new_map || data->round_manager.combat)
 		return (false);
 	pos = get_start_pos(new_map, data->current_map);
-	pos = new_map->start;
 	if (pos.x == -1)
 		return (false);
 	change_party_map(data, new_map, pos);

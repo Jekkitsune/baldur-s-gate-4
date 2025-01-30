@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 05:53:08 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/30 06:10:02 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,26 @@ void	calculate_floor(t_data *data, t_floor *f, int y)
 {
 	int			x;
 	uint32_t	color;
+	t_texture	*tex;
 
 	x = -1;
 	while (++x < data->win_size.x)
 	{
 		f->cell.x = (int) f->floor.x;
 		f->cell.y = (int) f->floor.y;
-		f->t.y = ((int)(data->floor->size * (f->floor.y - f->cell.y)) \
-			% (data->floor->size - 1));
-		f->t.x = ((int)(data->floor->size * (f->floor.x - f->cell.x)) \
-			% (data->floor->size - 1));
-		if (f->t.x < 0)
-			f->t.x = 0;
-		if (f->t.y < 0)
-			f->t.y = 0;
+		tex = data->current_map->floor;
+		if (in_bound(data->current_map, f->cell)
+			&& data->current_map->arr[f->cell.x][f->cell.y].floor)
+			tex = data->current_map->arr[f->cell.x][f->cell.y].floor;
+		f->t.y = ((int)(tex->size * (f->floor.y - f->cell.y)) \
+			% (tex->size - 1));
+		f->t.x = ((int)(tex->size * (f->floor.x - f->cell.x)) \
+			% (tex->size - 1));
+		f->t.x = ft_max(f->t.x, 0);
+		f->t.y = ft_max(f->t.y, 0);
 		f->floor.x += f->floor_step.x;
 		f->floor.y += f->floor_step.y;
-		color = data->floor->tab[f->t.x][f->t.y];
+		color = tex->tab[f->t.x][f->t.y];
 		data->screen_buffer[y][x] = color;
 	}
 }

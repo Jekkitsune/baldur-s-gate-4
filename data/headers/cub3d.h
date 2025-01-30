@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 05:50:03 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/30 06:08:14 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define DOOR '2'
 # define NB_BUTTON 20
 # define INVENTORY_SIZE 20
-# define MAX_PARTIC_ICON 8
+# define MAX_PARTIC_ICON 6
 
 # define NB_RAYS (1600)
 # define FOV 0.7
@@ -102,7 +102,7 @@ typedef enum e_property
 	invisible = 1ULL << 15,
 	true_sight = 1ULL << 16,
 	agonizing_blast = 1ULL << 17,
-	seasoned_spellcaster = 1 << 18,
+	seasoned_spellcaster = 1ULL << 18,
 	shadow_sword_prop = 1ULL << 19,
 	hunger_of_hadar_prop = 1ULL << 20,
 	difficult_terrain = 1ULL << 21,
@@ -378,7 +378,8 @@ typedef struct s_sheet
 	t_button	inventory_button;
 	t_type		type;
 	t_texture	*portrait;
-	long		properties;
+	t_property	properties;
+	t_property	default_properties;
 	int			team;
 	int			default_team;
 	t_bool		in_fight;
@@ -537,6 +538,7 @@ typedef	struct s_map
 	t_list		*active_entities;
 	char		*path;
 	t_vector	start;
+	t_texture	*floor;
 }	t_map;
 
 typedef struct s_player
@@ -896,6 +898,7 @@ void		join_party(t_data *data, t_entity *entity);
 void		check_attack_neutral(t_data *data, t_entity *entity);
 void		add_dice(t_dice adder, t_dice added);
 t_bool		is_menaced(t_data *data, t_entity *entity, t_entity *banned);
+void		set_all_cell_tex(t_cell *cell, t_texture *tex);
 size_t		str_size(char *str, float size);
 void		draw_str_background(t_data *data);
 

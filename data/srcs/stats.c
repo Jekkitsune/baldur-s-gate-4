@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 23:28:28 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 16:09:07 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/29 19:04:12 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	reset_stats(t_entity *entity, t_entity *prefab)
 	entity->sheet.spell_bonus = prefab->sheet.spell_bonus;
 	entity->sheet.spell_dc = prefab->sheet.spell_dc;
 	entity->sheet.speed = prefab->sheet.speed;
-	entity->sheet.properties = prefab->sheet.properties;
+	entity->sheet.properties = prefab->sheet.properties
+		| entity->sheet.default_properties;
 	entity->sheet.nb_attack = prefab->sheet.nb_attack;
 	entity->size_scale = prefab->size_scale;
 	copy_stat_tab(entity->sheet.stats, prefab->sheet.stats, 6);

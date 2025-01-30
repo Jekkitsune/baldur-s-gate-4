@@ -6,7 +6,7 @@
 /*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 03:52:10 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/30 06:09:04 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,30 @@ void	draw_ray(t_data *data, float diff, t_impact *ray, int i)
 		+ (data->player.height / ray->length)), ray);
 		i2++;
 	}
-	draw_upper_walls(data, diff, ray, i);
 }
 
 void	show_environment(t_data *data)
 {
 	float		diff;
 	int			i;
+	t_bool		draw_up_wall;
 
-	if (data->floor && data->player.height >= -5000)
+	if (data->player.height >= -5000)
 		show_floor(data);
-	if (data->ceiling && data->player.height <= 5000)
+	if (data->player.height <= 5000)
 		show_ceiling(data);
 	i = 0;
 	diff = (float)data->win_size.x / (float)NB_RAYS;
+	draw_up_wall = false;
+	if (in_bound(data->current_map, data->player.pos)
+		&& !data->current_map->arr[data->player.pos.x][data->player.pos.y].\
+		upper_wall)
+		draw_up_wall = true;
 	while (i < NB_RAYS)
 	{
 		draw_ray(data, diff, &data->player.vision[i], i);
+		if (draw_up_wall)
+			draw_upper_walls(data, diff, &data->player.vision[i], i);
 		i++;
 	}
 	draw_entities_fog(data, diff);

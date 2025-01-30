@@ -6,13 +6,29 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 04:59:22 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 12:51:55 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 01:55:19 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 char	*map_param(char **splited, char *name);
+
+t_texture	*get_or_add_tex(t_data *data, char *path)
+{
+	t_texture	*res;
+
+	if (!path)
+		return (NULL);
+	res = get_tex(data, path);
+	if (res)
+		return (res);
+	res = path_to_tex(data, path);
+	if (!res)
+		return (NULL);
+	add_tex(data, res, ft_strdup(path));
+	return (res);
+}
 
 void	cell_loop_range(t_vector *start, t_vector *end)
 {

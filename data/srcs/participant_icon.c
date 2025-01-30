@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 18:51:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 11:05:31 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 01:48:42 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,11 @@ void	check_click_participants_icon(t_data *data, t_vector mouse)
 	{
 		if (mouse.x >= pos.x && mouse.x <= pos.x + data->button_scale_size
 			&& mouse.y >= pos.y && mouse.y <= pos.y + data->button_scale_size
-			&& i++ < MAX_PARTIC_ICON && curr_poss(data, participants->content))
+			&& i < MAX_PARTIC_ICON && curr_poss(data, participants->content))
 			return ;
 		participants = participants->next;
 		pos.x += data->button_scale_size;
+		i++;
 	}
 }
 
@@ -78,10 +79,11 @@ void	check_participants_hover(t_data *data)
 	{
 		if (mouse.x >= pos.x && mouse.x <= pos.x + data->button_scale_size
 			&& mouse.y >= pos.y && mouse.y <= pos.y + data->button_scale_size
-			&& i++ < MAX_PARTIC_ICON)
+			&& i < MAX_PARTIC_ICON)
 			hover_character_button(data, pos, participants->content, mouse);
 		participants = participants->next;
 		pos.x += data->button_scale_size;
+		i++;
 	}
 }
 

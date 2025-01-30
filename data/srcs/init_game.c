@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 01:06:19 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 19:33:48 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/29 23:15:25 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,20 @@ void	init_prefabs(t_data *data)
 {
 	init_one_prefab(data, "prefabs/warlock", "warlock");
 	init_one_prefab(data, "prefabs/wizard", "wizard");
+	init_one_prefab(data, "prefabs/barbarian", "barbarian");
+	init_one_prefab(data, "prefabs/rogue", "rogue");
+	init_one_prefab(data, "prefabs/ranger", "ranger");
+	init_one_prefab(data, "prefabs/monk", "monk");
+	init_one_prefab(data, "prefabs/gobelin", "gobelin");
 	init_one_prefab(data, "prefabs/sword", "sword");
 	init_one_prefab(data, "prefabs/bow", "bow");
 	init_one_prefab(data, "prefabs/gold", "gold");
+	init_one_prefab(data, "prefabs/gobelin barbarian", "gobelin barbarian");
+	init_one_prefab(data, "prefabs/gobelin rogue", "gobelin rogue");
+	init_one_prefab(data, "prefabs/gobelin ranger", "gobelin ranger");
+	init_one_prefab(data, "prefabs/gobelin warlock", "gobelin warlock");
+	init_one_prefab(data, "prefabs/gobelin wizard", "gobelin wizard");
+	init_one_prefab(data, "prefabs/amogus", "amogus");
 }
 
 void	init_all_maps_data(t_data *data)
@@ -40,6 +51,8 @@ void	init_all_maps_data(t_data *data)
 	{
 		data->current_map = lst->content;
 		init_map_data(data);
+		if (!data->current_map->floor)
+			exit_free(data, "a map does not have any floor tex\n");
 		lst = lst->next;
 	}
 	data->current_map = data->map_list->content;

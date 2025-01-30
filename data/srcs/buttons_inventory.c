@@ -6,11 +6,13 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:52:38 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 08:02:42 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 00:00:32 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	set_button_inventory(t_button *button, t_entity *item);
 
 void	drop(t_data *data, t_spellinfo *spell)
 {
@@ -84,24 +86,12 @@ void	set_inventory_button(t_entity *entity, int i)
 		return ;
 	used = entity->sheet.inventory[i];
 	button = &entity->sheet.inventory_button;
+	ft_bzero(button, sizeof(t_button));
 	button->spellinfo.effect = NULL;
 	button->spellinfo.radius = 0;
 	button->spellinfo.nb = i;
-	if (!used)
-	{
-		button->spellinfo.summon = NULL;
-		button->func = empty_button;
-		button->spellinfo.cost_attack = 0;
-		return ;
-	}
-	button->spellinfo.cost_attack = 1;
 	button->spellinfo.caster = entity;
-	button->spellinfo.range = ft_max(entity->sheet.stats[STR] / 2, 1);
-	button->spellinfo.visible_target = true;
-	button->spellinfo.summon = used;
-	button->func = action_select;
-	if (used->sheet.type != consumable)
-		button->spellinfo.effect = throw;
+	set_button_inventory(button, used);
 }
 
 t_button	*button_inventory(t_data *data, t_entity *entity)

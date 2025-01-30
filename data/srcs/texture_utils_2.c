@@ -6,11 +6,19 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 19:22:09 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 05:17:24 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/29 23:05:52 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	set_all_cell_tex(t_cell *cell, t_texture *tex)
+{
+	cell->tex[0] = tex;
+	cell->tex[1] = tex;
+	cell->tex[2] = tex;
+	cell->tex[3] = tex;
+}
 
 t_texture	*get_default_tex(t_data *data, char *name)
 {
