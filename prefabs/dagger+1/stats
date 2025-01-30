@@ -1,0 +1,8 @@
+TYPE:weapon_1
+RANGE:1.5
+DESCRIPTION:The classic weapon for a thief or a murderer, +1 ATK +1 DMG
+ATK BONUS:1
+DICE:4:1
+DICE:1:1
+PROPERTIES:finesse
+SIZE:0.3

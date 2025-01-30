@@ -1,0 +1,4 @@
+TYPE:consumable
+ACTION:Enlarge potion
+SIZE:0.3
+DESCRIPTION:"Enlarge target for 3 turns, in this state, regains deals 1D8 dmg bonus and has more melee range actions per turn"

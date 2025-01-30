@@ -1,0 +1,7 @@
+TYPE:weapon_1
+RANGE:1.5
+DESCRIPTION:A staff used by any academic wizard, +1 SPELL +1 DC
+SPELL BONUS:1
+SPELL DC:1
+DICE:6:1
+SIZE:0.3

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 23:40:23 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/29 23:58:27 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 11:57:08 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ void	consume(void *data_param, void *spell_param)
 	spell = spell_param;
 	action = &spell->summon->sheet.buttons[0];
 	if (action->spellinfo.effect)
+	{
+		spell->nb = roll(action->spellinfo.dice);
 		action->spellinfo.effect(data, spell);
+	}
 }
 
 void	set_button_inventory(t_button *button, t_entity *item)

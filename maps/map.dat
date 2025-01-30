@@ -4,8 +4,8 @@ ENTITY:PREFAB:warlock:POS:20,3:NAME:Ltouzali:BEHAVIOR:base_aggro:TEAM:1:INVENTOR
 ENTITY:PREFAB:warlock:POS:20,2:NAME:Babonnet:BEHAVIOR:base_aggro:TEAM:1
 ENTITY:PREFAB:warlock:POS:20,4:NAME:Adjoly:BEHAVIOR:base_aggro:TEAM:1
 ENTITY:PREFAB:amogus:POS:29,3:NAME:Yroussea:BEHAVIOR:base_aggro:DIALOG:Salut mec\Comment ca va\J'ai plein de chose a dire\genre\feur\ou\coubeh\allez salut:PROPERTIES:shop_keeper:INVENTORY:sword,sword,sword
-ENTITY:PREFAB:sword:POS:25,9
-ENTITY:PREFAB:sword:POS:25,9
-ENTITY:PREFAB:sword:POS:25,9
+ENTITY:PREFAB:sword+3:POS:25,9
 ENTITY:PREFAB:bow:POS:25,8
 FLOOR:textures/env/plain_floor.png
+ENTITY:PREFAB:gigantic helm:POS:25,7
+ENTITY:PREFAB:acid gloves:POS:25,6

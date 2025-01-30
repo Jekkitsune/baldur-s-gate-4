@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 18:10:49 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/27 03:55:34 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 14:10:24 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,15 @@ void	get_party_combat(t_data *data)
 	while (lst && lst->content)
 	{
 		current = lst->content;
-		change_anim(current, "idle", true);
-		roll_initiative(data, current);
-		new = ft_lstnew(current);
-		if (!new)
-			return ;
-		insert_in_combat(data, new, current->sheet.initiative);
+		if (current->sheet.alive)
+		{
+			change_anim(current, "idle", true);
+			roll_initiative(data, current);
+			new = ft_lstnew(current);
+			if (!new)
+				return ;
+			insert_in_combat(data, new, current->sheet.initiative);
+		}
 		lst = lst->next;
 	}
 }

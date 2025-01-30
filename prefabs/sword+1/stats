@@ -1,0 +1,7 @@
+TYPE:weapon_1
+RANGE:1.5
+DESCRIPTION:The best weapon for any warrior, +1 ATK +1 DMG
+ATK BONUS:1
+DICE:6:2
+DICE:1:1
+SIZE:0.3

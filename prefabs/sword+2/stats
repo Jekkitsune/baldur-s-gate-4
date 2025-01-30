@@ -1,0 +1,7 @@
+TYPE:weapon_1
+RANGE:1.5
+DESCRIPTION:A fine weapon that will serve well a good swordman, +2 ATK +2 DMG
+ATK BONUS:2
+DICE:6:2
+DICE:1:2
+SIZE:0.3

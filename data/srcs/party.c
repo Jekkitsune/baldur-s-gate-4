@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 10:37:11 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 01:42:43 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 12:37:32 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,12 @@ void	show_end_turn_button(t_data *data)
 	pos.y = data->win_size.y - (data->button_scale_size * 1.5) - 10;
 	draw_borders(data, pos);
 	draw_hover(data, pos, 0xDD6B5333);
+	show_tex(data, get_tex(data, "end_turn"), pos);
 	mlx_mouse_get_pos(data->mlx, &mouse.x, &mouse.y);
 	if (mouse.x >= pos.x && mouse.x <= pos.x + data->button_scale_size
 		&& mouse.y >= pos.y && mouse.y <= pos.y + data->button_scale_size)
 		draw_hover(data, pos, 0x44000000);
+	
 }
 
 void	check_click_party_icon(t_data *data, t_vector mouse)

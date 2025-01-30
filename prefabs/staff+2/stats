@@ -1,0 +1,7 @@
+TYPE:weapon_1
+RANGE:1.5
+DESCRIPTION:A staff that enpowers the magic abilities of its user, +2 SPELL +2 DC
+SPELL BONUS:2
+SPELL DC:2
+DICE:6:1
+SIZE:0.3

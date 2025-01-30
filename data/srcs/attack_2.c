@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 05:18:42 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 23:02:11 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 14:49:49 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ int	roll_atk(t_data *data, t_spellinfo *spell, int atk_bonus)
 		show_info(data, "%s got a critical fail...", spell->caster->sheet.name);
 		atk = -200;
 	}
+	show_info(data, "%s rolled a %d to attack", spell->caster->sheet.name, atk);
 	atk += atk_bonus;
 	if (spell->caster->sheet.properties & sharp_shooter)
 		atk -= 5;

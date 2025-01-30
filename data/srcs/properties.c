@@ -6,11 +6,13 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 19:01:11 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/29 12:22:07 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 16:06:41 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	set_more_properties_stat(t_entity *entity, t_property prop);
 
 void	check_was_dominated(t_data *data, t_entity *entity)
 {
@@ -55,6 +57,7 @@ void	set_properties_stat(t_entity *entity, t_property prop)
 		entity->sheet.ac -= 2;
 	if (prop & marked_ac)
 		entity->sheet.ac -= 2;
+	set_more_properties_stat(entity, prop);
 }
 
 void	add_prop_refresh(t_data *data, t_entity *entity, t_property prop)
@@ -65,14 +68,14 @@ void	add_prop_refresh(t_data *data, t_entity *entity, t_property prop)
 
 t_property	get_property(t_data *data, char *name)
 {
-	int	i;
+	t_property	i;
 
 	(void)data; //a changer!!
 	i = 0;
 	while (i < NB_PROPERTIES)
 	{
 		if (!ft_strcmp(PROPERTIES_TAB[i], name))
-			return (1 << i);
+			return (1ULL << i);
 		i++;
 	}
 	return (0);

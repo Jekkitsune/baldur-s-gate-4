@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inventory_draw_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:55:19 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 04:42:02 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/30 11:37:03 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,13 @@ void	draw_active_inventory(t_data *data, t_vector start)
 	if (data->player.active_button && data->player.possession
 		&& &data->player.possession->sheet.inventory_button
 		== data->player.active_button
-		&& data->player.active_button->active > 0)
+		&& data->player.active_button->start.x > 0)
 	{
-		if (data->player.active_button->active - 1 >= NON_EQUIP)
+		if (data->player.active_button->start.x >= NON_EQUIP)
 			start.y += data->button_scale_size / 2;
-		start.x = start.x + (((data->player.active_button->active - 1) % 2)
+		start.x = start.x + (((data->player.active_button->start.x) % 2)
 				* data->button_scale_size);
-		start.y = start.y + (((data->player.active_button->active - 1) / 2)
+		start.y = start.y + (((data->player.active_button->start.x) / 2)
 				* data->button_scale_size);
 		draw_hover(data, start, 0xAA000000);
 	}

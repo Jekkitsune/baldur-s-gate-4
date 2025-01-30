@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 23:54:44 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/29 18:53:20 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 11:44:09 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,6 @@ void	interact(void *data_param, void *spell_param)
 		take(data_param, spell_param);
 	else
 		open_door_pos(data, spell->pos);
-	if (spell->target)
-	{
-		printf("%d %d\n", spell->target->sheet.type, spell->target->sheet.alive);
-	}
 }
 
 void	init_interact_button(t_data *data, t_button *button)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+         #
+#    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/30 08:30:37 by gmassoni         ###   ########.fr        #
+#    Updated: 2025/01/30 12:44:13 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -115,6 +115,7 @@ SRCS = main.c\
 		check.c\
 		check_2.c\
 		properties.c\
+		properties_2.c\
 		timer_effect.c\
 		timer_property.c\
 		timer_property_2.c\
@@ -181,7 +182,9 @@ SRCS = main.c\
 		sharp_shooter.c\
 		arrow_rain.c\
 		selection_screen.c\
-		selection_screen_2.c
+		selection_screen_2.c\
+		consumable.c\
+		consumable_2.c
 
 LIBFT = data/libft/libft.a
 

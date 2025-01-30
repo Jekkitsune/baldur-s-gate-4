@@ -1,0 +1,8 @@
+TYPE:weapon_1
+RANGE:6.5
+DESCRIPTION:It is told that this bow was the weapon of the best archer that the world ever known, +3 ATK +3 DMG
+ATK BONUS:3
+DICE:8:1
+DICE:1:3
+PROPERTIES:range
+SIZE:0.3

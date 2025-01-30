@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 08:38:56 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:43:32 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,10 @@ typedef enum e_property
 	sharp_shooter = 1ULL << 45,
 	master_hunter = 1ULL << 46,
 	marked_ac = 1ULL << 47,
+	haste = 1ULL << 48,
 }	t_property;
 
-# define NB_PROPERTIES 48
+# define NB_PROPERTIES 49
 
 # define PROPERTIES_TAB ((char * const[NB_PROPERTIES]) { \
     "finesse", \
@@ -185,6 +186,7 @@ typedef enum e_property
 	"sharp_shooter",\
 	"master_hunter",\
 	"marked_ac",\
+	"haste",\
 })
 
 typedef struct s_vector
@@ -989,5 +991,12 @@ void		init_special_arrow_button(t_data *data, t_button *button,
 	t_property prop);
 void		init_sharp_shooter_button(t_data *data, t_button *button);
 void		init_arrow_rain_button(t_data *data, t_button *button);
+
+//	consumable
+
+void		init_heal_potion_button(t_data *data, t_button *button);
+void		init_greater_heal_potion_button(t_data *data, t_button *button);
+void		init_speed_potion_button(t_data *data, t_button *button);
+void		init_enlarge_potion_button(t_data *data, t_button *button);
 
 #endif

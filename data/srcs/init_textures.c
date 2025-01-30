@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 01:20:38 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 06:14:38 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:35:02 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	init_more_buttons(t_data *data)
 	add_button(data, "textures/silencing_button.png", "silencing_button");
 	add_button(data, "textures/sharp_shooter_button.png", "sharp_shoot_button");
 	add_button(data, "textures/arrow_rain_button.png", "arrow_rain_button");
+	add_button(data, "textures/end_turn.png", "end_turn");
 }
 
 void	init_buttons(t_data *data)

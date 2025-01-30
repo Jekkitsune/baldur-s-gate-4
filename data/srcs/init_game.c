@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 01:06:19 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/29 23:15:25 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 16:17:59 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ void	init_prefabs(t_data *data)
 	init_one_prefab(data, "prefabs/ranger", "ranger");
 	init_one_prefab(data, "prefabs/monk", "monk");
 	init_one_prefab(data, "prefabs/gobelin", "gobelin");
-	init_one_prefab(data, "prefabs/sword", "sword");
-	init_one_prefab(data, "prefabs/bow", "bow");
 	init_one_prefab(data, "prefabs/gold", "gold");
 	init_one_prefab(data, "prefabs/gobelin barbarian", "gobelin barbarian");
 	init_one_prefab(data, "prefabs/gobelin rogue", "gobelin rogue");
@@ -40,6 +38,34 @@ void	init_prefabs(t_data *data)
 	init_one_prefab(data, "prefabs/gobelin warlock", "gobelin warlock");
 	init_one_prefab(data, "prefabs/gobelin wizard", "gobelin wizard");
 	init_one_prefab(data, "prefabs/amogus", "amogus");
+	init_one_prefab(data, "prefabs/healing potion", "healing potion");
+	init_one_prefab(data, "prefabs/greater healing potion", "greater healing potion");
+	init_one_prefab(data, "prefabs/speed potion", "speed potion");
+	init_one_prefab(data, "prefabs/enlarge potion", "enlarge potion");
+	init_one_prefab(data, "prefabs/armor+1", "armor+1");
+	init_one_prefab(data, "prefabs/armor+2", "armor+2");
+	init_one_prefab(data, "prefabs/armor+3", "armor+3");
+	init_one_prefab(data, "prefabs/sword+1", "sword+1");
+	init_one_prefab(data, "prefabs/sword+2", "sword+2");
+	init_one_prefab(data, "prefabs/sword+3", "sword+3");
+	init_one_prefab(data, "prefabs/bow+1", "bow+1");
+	init_one_prefab(data, "prefabs/bow+2", "bow+2");
+	init_one_prefab(data, "prefabs/bow+3", "bow+3");
+	init_one_prefab(data, "prefabs/dagger+1", "dagger+1");
+	init_one_prefab(data, "prefabs/dagger+2", "dagger+2");
+	init_one_prefab(data, "prefabs/dagger+3", "dagger+3");
+	init_one_prefab(data, "prefabs/staff+1", "staff+1");
+	init_one_prefab(data, "prefabs/staff+2", "staff+2");
+	init_one_prefab(data, "prefabs/staff+3", "staff+3");
+	init_one_prefab(data, "prefabs/helm of intellect", "helm of intellect");
+	init_one_prefab(data, "prefabs/stylish hat", "stylish hat");
+	init_one_prefab(data, "prefabs/dexterity gloves", "dexterity gloves");
+	init_one_prefab(data, "prefabs/strength gloves", "strength gloves");
+	init_one_prefab(data, "prefabs/cloth of wisdom", "cloth of wisdom");
+	init_one_prefab(data, "prefabs/velocity boots", "velocity boots");
+	init_one_prefab(data, "prefabs/bracers of defense", "bracers of defense");
+	init_one_prefab(data, "prefabs/acid gloves", "acid gloves");
+	init_one_prefab(data, "prefabs/gigantic helm", "gigantic helm");
 }
 
 void	init_all_maps_data(t_data *data)

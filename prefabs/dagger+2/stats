@@ -1,0 +1,8 @@
+TYPE:weapon_1
+RANGE:1.5
+DESCRIPTION:A blade that will cut any throat, +2 ATK +2 DMG
+ATK BONUS:2
+DICE:4:1
+DICE:1:2
+PROPERTIES:finesse
+SIZE:0.3
