@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing4.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/29 13:55:07 by gmassoni          #+#    #+#             */
+/*   Updated: 2025/01/29 15:08:36 by gmassoni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 bool	assign_color(char **split, uint32_t *c, char color[9])
@@ -102,7 +114,12 @@ char	**get_map_infos(t_data *data, int fd, t_map *level)
 		lines[i] = NULL;
 	get_lines(fd, lines);
 	if (!process_first_infos(data, lines))
+	{
+		i = -1;
+		while (++i < 6)
+			free(lines[i]);
 		return (NULL);
+	}
 	i = -1;
 	while (++i < 6)
 		free(lines[i]);

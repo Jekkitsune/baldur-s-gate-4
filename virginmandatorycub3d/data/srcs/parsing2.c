@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing2.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/29 13:57:36 by gmassoni          #+#    #+#             */
+/*   Updated: 2025/01/29 17:49:17 by gmassoni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 bool	check_textures(t_texture *default_tex[4])
@@ -57,22 +69,18 @@ bool	check_map(t_data *data, char **map)
 
 	i = -1;
 	while (map[++i])
-		if (!ft_strlen(map[i]))
-			return (false);
-	i = -1;
-	while (map[++i])
 	{
 		j = -1;
 		while (map[i][++j])
 		{
 			if (!check_char(map, i, j, data))
-				return (false);
+				return (free_map(map));
 		}
 	}
 	if (vec_cmp(data->player.pos, vec(-1, -1)))
-		return (false);
+		return (free_map(map));
 	if (!is_map_closed(map))
-		return (false);
+		return (free_map(map));
 	return (true);
 }
 

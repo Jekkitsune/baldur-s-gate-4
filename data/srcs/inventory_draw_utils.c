@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inventory_draw_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:55:19 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/24 07:38:59 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 04:42:02 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,18 +80,22 @@ void	draw_invbutton_name(t_data *data, t_entity *inventory[INVENTORY_SIZE],
 	if (index < 0 || !inventory[index] || !inventory[index]->sheet.name)
 		return ;
 	mlx_mouse_get_pos(data->mlx, &mouse_pos.x, &mouse_pos.y);
-	pos = vec(mouse_pos.x - 5, mouse_pos.y - 10);
+	pos = vec(mouse_pos.x, mouse_pos.y - 10);
 	if (inventory[index]->sheet.type == gold)
 		name = ft_itoa(inventory[index]->sheet.price);
 	else
 		name = ft_strdup(inventory[index]->sheet.name);
-	to_put = strput(name, pos, 20, 0xFF000000);
+	to_put = strput(name, pos, 20, 0xFFFFFFFF);
+	to_put->bg = 0x99000000;
+	to_put->left = true;
 	screen_string_put(data, to_put, 0);
 	if (data->player.description_mode && inventory[index]->sheet.description)
 	{
 		pos.y -= 10;
 		to_put = strput(ft_strdup(inventory[index]->sheet.description),
-				pos, 20, 0xFF000000);
+				pos, 20, 0xFFFFFFFF);
+		to_put->bg = 0x99000000;
+		to_put->left = true;
 		screen_string_put(data, to_put, 0);
 	}
 	pos.y -= 10;

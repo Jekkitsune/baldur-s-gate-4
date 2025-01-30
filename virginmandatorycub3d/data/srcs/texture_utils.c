@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 19:27:28 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 19:22:20 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/29 17:15:20 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ t_texture	*path_to_tex(t_data *data, char *path)
 		return (NULL);
 	close(fd);
 	img = NULL;
+	if (ft_strlen(path) < 4)
+		return (NULL);
 	if (!ft_strcmp(path + ft_strlen(path) - 4, ".png"))
 		img = mlx_png_file_to_image(data->mlx, path, &size.x, &size.y);
 	else if (!ft_strcmp(path + ft_strlen(path) - 4, ".jpg"))

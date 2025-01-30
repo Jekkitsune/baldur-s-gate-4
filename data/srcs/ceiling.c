@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ceiling.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/21 18:37:18 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 05:50:27 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	handle_skybox2(t_data *data, t_ceiling c, t_skybox s, t_vector it)
 			c.t.x = 0;
 		c.color = s.right_tex->tab[c.t.x][c.t.y];
 	}
-	if (it.y < c.lim)
-		data->screen_buffer[it.y][it.x] = c.color;
+	if (data->win_size.y - it.y - 1 < c.lim)
+		data->screen_buffer[data->win_size.y - it.y - 1][it.x] = c.color;
 }
 
 void	handle_skybox(t_data *data, t_ceiling c, int x, int y)
@@ -50,7 +50,7 @@ void	handle_skybox(t_data *data, t_ceiling c, int x, int y)
 		&& c.cell.x < data->current_map->size.x
 		&& c.cell.y < data->current_map->size.y
 		&& data->current_map->arr[c.cell.x][c.cell.y].ceiling;
-	if (data->sky_box && !ceiling)
+	if (!ceiling)
 		handle_skybox2(data, c, s, vec(x, y));
 	else
 	{

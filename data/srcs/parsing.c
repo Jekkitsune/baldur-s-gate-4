@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 21:09:45 by gmassoni          #+#    #+#             */
-/*   Updated: 2025/01/24 12:27:03 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/29 14:29:23 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,14 @@ bool	parsing(int argc, char *argv[], t_data *data)
 	int	i;
 
 	i = 1;
-	if (argc == 1 || !format_test(argv[i]))
+	if (argc == 1)
 	{
 		ft_putstr_fd("Error\nExpected at arguments in .cub format\n", 2);
 		return (false);
 	}
 	while (i < argc)
 	{
-		if (!parse_map(argv[i], data))
+		if (!format_test(argv[i]) || !parse_map(argv[i], data))
 			return (false);
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   skybox.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/21 18:32:52 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/29 13:22:43 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ void	get_tex_skybox(t_data *data, t_skybox *s)
 		s->right_tex = data->sky_box_tex[s->index];
 		if (s->index == 0)
 			s->index = 4;
-		if (data->sky_box)
-			s->left_tex = data->sky_box_tex[s->index - 1];
+		s->left_tex = data->sky_box_tex[s->index - 1];
 	}
 }
 

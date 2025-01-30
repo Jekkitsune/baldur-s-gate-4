@@ -1,9 +1,9 @@
 NO ./woodwall.png
 SO ./brickwall.png
 WE ./bluewall.png
-EA ./pebblewall.png
+E ./pebblewall.png
 
-C 100,100,100
+F 100,100,100
 F 100,100,100
 
              11111111111111111111111111111111  1111 111111111111

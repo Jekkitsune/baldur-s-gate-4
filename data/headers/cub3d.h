@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/29 12:16:53 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 05:50:03 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,12 @@
 # define INVENTORY_SIZE 20
 # define MAX_PARTIC_ICON 8
 
-# define NB_RAYS (1600 / 2)
+# define NB_RAYS (1600)
 # define FOV 0.7
-# define HEIGHT (900 / 2)
-# define WIDTH (1600 / 2)
+# define WIDTH (1600)
+# define HEIGHT (900)
 # define HEIGHT_CAP 5000
-# define DEFAULT_FONT "Paul.ttf"
-//# define DEFAULT_FONT "default"
+# define DEFAULT_FONT "font.ttf"
 
 # define HITBOX_VALUE 5.0
 
@@ -223,6 +222,8 @@ typedef	struct s_cell
 	t_texture	*upper_wall;
 	t_entity	*key;
 	t_map		*travel;
+	t_texture	*ceiling_tex;
+	t_texture	*floor_tex;
 }	t_cell;
 
 typedef struct s_animation
@@ -579,11 +580,14 @@ typedef struct minimap
 
 typedef struct	s_strput
 {
-	char			*str;
-	t_vector		pos;
-	uint32_t		color;
-	float			size;
-	long 			duration;
+	char		*str;
+	t_vector	pos;
+	uint32_t	color;
+	float		size;
+	long 		duration;
+	bool		centered;
+	bool		left;
+	uint32_t	bg;
 }	t_strput;
 
 typedef struct s_button_lst t_button_lst;
@@ -606,12 +610,9 @@ typedef struct s_data
 	void			*screen_display;
 	int				on_screen;
 	uint32_t		**screen_buffer;
-	bool			sky_box;
 	t_entity		**prefab_tab;
 	int				nb_prefab;
 	int				button_scale_size;
-	t_texture		*ceiling;
-	t_texture		*floor;
 	t_texture		*wall_tex[4];
 	t_texture		*sky_box_tex[4];
 	t_list			*string_to_put;
@@ -895,6 +896,8 @@ void		join_party(t_data *data, t_entity *entity);
 void		check_attack_neutral(t_data *data, t_entity *entity);
 void		add_dice(t_dice adder, t_dice added);
 t_bool		is_menaced(t_data *data, t_entity *entity, t_entity *banned);
+size_t		str_size(char *str, float size);
+void		draw_str_background(t_data *data);
 
 //ia
 void		base_aggro(void *data_param, void *entity_param);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gmassoni <gmassoni@student.42angoulem      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/29 13:56:51 by gmassoni          #+#    #+#             */
+/*   Updated: 2025/01/29 13:59:00 by gmassoni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	free_tex(t_texture *tex)
@@ -30,7 +42,7 @@ void	free_data(t_data *data)
 	{
 		i = -1;
 		while (++i < data->map->size.x)
-				free(data->map->arr[i]);
+			free(data->map->arr[i]);
 		free(data->map->arr);
 		free(data->map->path);
 		free(data->map);
@@ -41,7 +53,7 @@ void	free_data(t_data *data)
 	if (data->screen_display)
 		mlx_destroy_image(data->mlx, data->screen_display);
 	i = -1;
-	while (++i < data->win_size.y && data->screen_buffer\
+	while (++i < data->win_size.y && data->screen_buffer \
 		&& data->screen_buffer[i])
 		free(data->screen_buffer[i]);
 	if (data->screen_buffer)

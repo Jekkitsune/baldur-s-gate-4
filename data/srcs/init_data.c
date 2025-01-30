@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:13:43 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/25 06:07:52 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/29 13:19:25 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ t_data	*init_data(t_data *data)
 	data->button_scale_size = 75 * data->win_size.x / 1920;
 	data->scale = 10;
 	data->render_distance = 500;
-	data->sky_box = true;
 	init_screen_buffer(data);
 	init_shape_tab(data);
 	mlx_mouse_hide();

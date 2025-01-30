@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_data.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/29 13:55:33 by gmassoni          #+#    #+#             */
+/*   Updated: 2025/01/29 15:01:55 by gmassoni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	init_screen_buffer(t_data *data)
@@ -30,14 +42,14 @@ t_data	*init_data(t_data *data)
 	data->win_size.x = WIDTH;
 	data->win_size.y = HEIGHT;
 	data->mlx = mlx_init();
-	data->win = mlx_new_window(data->mlx, data->win_size.x,\
+	data->win = mlx_new_window(data->mlx, data->win_size.x, \
 		data->win_size.y, "cub3d");
+	mlx_mouse_hide();
+	mlx_mouse_move(data->mlx, data->win, data->win_size.x / 2, \
+		data->win_size.y / 2);
 	data->scale = 10;
 	data->screen_display = NULL;
 	data->render_distance = 500;
 	init_screen_buffer(data);
-	mlx_mouse_hide();
-	mlx_mouse_move(data->mlx, data->win, data->win_size.x / 2,\
-		data->win_size.y / 2);
 	return (data);
 }

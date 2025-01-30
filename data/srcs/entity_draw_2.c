@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   entity_draw_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:41:58 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 01:49:18 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 05:51:35 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,12 @@ void	draw_entity_dialog(t_data *data, t_entity *entity)
 		< entity->dialog.dialog_size)
 	{
 		str = entity->dialog.dialog_tab[entity->dialog.dialog_i];
-		to_put = strput(ft_strdup(str), vec(entity->draw_x.x, entity->draw_y.x),
-				30, 0xFF000000);
+		to_put = strput(ft_strdup(str),
+			vec(entity->draw_x.y - ((entity->draw_x.y - entity->draw_x.x) / 2),
+			entity->draw_y.x),
+				30, 0xFFFFFFFF);
+		to_put->centered = true;
+		to_put->bg = 0xAA000000;
 		screen_string_put(data, to_put, 0);
 	}
 }

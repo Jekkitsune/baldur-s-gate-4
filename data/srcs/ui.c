@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ui.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 22:55:51 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/17 00:20:21 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 05:58:29 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	show_action_cost(t_data *data, t_spellinfo *info)
 
 void	draw_health_name(t_data *data, t_entity *selected)
 {
+	t_strput	*to_put;
+
 	if (selected->sheet.name)
 	{
 		draw_rectangle(data, vec((data->win_size.x / 2)
@@ -67,11 +69,10 @@ void	draw_health_name(t_data *data, t_entity *selected)
 			vec((data->win_size.x / 2) + (ft_strlen(selected->sheet.name)
 					* (data->button_scale_size / 3)),
 				data->button_scale_size - 2), 0xAA000000);
-		screen_string_put(data, strput(ft_strdup(selected->sheet.name),
-				vec((data->win_size.x / 2)
-					- (ft_strlen(selected->sheet.name) * 5),
-					data->button_scale_size - 10), data->button_scale_size,
-				0xFFAAAAAA), 0);
+		to_put = strput(ft_strdup(selected->sheet.name), vec(data->win_size.x / \
+		2, data->button_scale_size - 10), data->button_scale_size, 0xFFAAAAAA);
+		to_put->centered = true;
+		screen_string_put(data, to_put, 0);
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 23:51:28 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/29 17:13:47 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,5 +150,7 @@ uint32_t	convert(char *color, char *base);
 void		get_hexa(char hexa[2], int value);
 char		**get_map(t_data *data, int fd, t_map *level);
 void		get_lines(int fd, char *lines[7]);
+bool		free_map(char **map);
+void		finish_gnl(int fd);
 
 #endif

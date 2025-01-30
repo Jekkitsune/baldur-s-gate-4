@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 01:20:38 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/29 12:12:01 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/29 18:14:57 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ void	init_textures(t_data *data)
 	data->sky_box_tex[1] = get_tex(data, "skybox2");
 	data->sky_box_tex[2] = get_tex(data, "skybox3");
 	data->sky_box_tex[3] = get_tex(data, "skybox4");
+	if (!data->sky_box_tex[0] || !data->sky_box_tex[1] || !data->sky_box_tex[2] || !data->sky_box_tex[3])
+		exit_free(data, "Error: give the skybox back\n");
 	add_tex(data, path_to_tex(data, "textures/brickwall.png"),
 		ft_strdup("ceiling"));
 	add_tex(data, path_to_tex(data, "textures/woodwall.png"),

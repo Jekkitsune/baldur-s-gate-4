@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   floor.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/21 18:36:32 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 05:53:08 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ void	show_floor(t_data *data)
 	int			p;
 	t_floor		f;
 
+
 	f.horizon = (data->win_size.y / 2) + data->player.pitch;
 	y = f.horizon - 1;
 	if (y < 0)
-		y = - 1;
+		y = -1;
 	while (++y < data->win_size.y)
 	{
 		f.ray_dir_0.x = data->player.direction.x - data->player.camera_plane.x;

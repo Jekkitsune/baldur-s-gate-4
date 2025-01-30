@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/25 07:17:10 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 05:50:48 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,6 @@ int	key_down_manager(int key, void *param)
 		register_player_movement(data, key, 1);
 	if (key == 225)
 		data->player.description_mode = 1;
-	if (key == 6 && data->sky_box_tex[0] && data->sky_box_tex[1]
-		&& data->sky_box_tex[2] && data->sky_box_tex[3])
-		data->sky_box = !data->sky_box;
 	return (0);
 }
 

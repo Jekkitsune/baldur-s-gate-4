@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player_vision.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 19:42:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 09:35:46 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 03:52:10 by gmassoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,6 @@ void	show_screen(t_data *data)
 	}
 	show_health_bar(data);
 	show_minimap(data);
+	draw_str_background(data);
 	put_screen(data);
 }

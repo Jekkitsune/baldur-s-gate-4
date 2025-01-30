@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   player_vision.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gmassoni <gmassoni@student.42angoulem      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/29 13:57:12 by gmassoni          #+#    #+#             */
+/*   Updated: 2025/01/29 13:58:16 by gmassoni         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 int	get_tex_column(t_data *data, t_texture *tex, t_impact *ray)
@@ -69,10 +81,10 @@ void	show_screen(t_data *data)
 
 	i = -1;
 	while (++i < NB_RAYS)
-		draw_ray(data, (float)data->win_size.x / (float)NB_RAYS,\
+		draw_ray(data, (float)data->win_size.x / (float)NB_RAYS, \
 		&data->player.vision[i], i);
 	if (!data->screen_display)
-		data->screen_display = mlx_new_image(data->mlx, data->win_size.x,\
+		data->screen_display = mlx_new_image(data->mlx, data->win_size.x, \
 		data->win_size.y);
 	i = -1;
 	while (++i < data->win_size.y)
