@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   text_library.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maldavid <kbz_8.dev@akel-engine.com>       +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/10 11:59:57 by maldavid          #+#    #+#             */
-/*   Updated: 2024/03/25 16:17:06 by maldavid         ###   ########.fr       */
+/*   Updated: 2025/01/31 02:40:07 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <renderer/renderer.h>
 #include <algorithm>
 #include <core/profiler.h>
+#include <iostream>
 
 namespace mlx
 {
@@ -49,8 +50,8 @@ namespace mlx
 			core::error::report(e_kind::warning, "Text Library : trying to remove a text with an unkown or invalid ID '%d'", id);
 			return;
 		}
-		_cache[id]->destroy();
-		_cache.erase(id);
+		// _cache[id]->destroy(); //FIXME: maldavid more like mauvaid david haha
+		// _cache.erase(id);
 	}
 
 	void TextLibrary::clearLibrary()
