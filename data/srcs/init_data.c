@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:13:43 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/31 11:59:59 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 14:15:17 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,14 @@ void	init_properties_tab(t_data *data)
 	if (fd == -1)
 		exit_free(data, "No properties file");
 	data->properties_tab[i] = get_next_line(fd);
-	while (i < NB_PROPERTIES && data->properties_tab[i])
+	while (i < NB_PROPERTIES - 1 && data->properties_tab[i])
 	{
 		i++;
 		data->properties_tab[i] = get_next_line(fd);
+		data->properties_tab[i][ft_strlen(data->properties_tab[i]) - 1] = 0;
 	}
+	finish_gnl(fd);
+	close(fd);
 }
 
 t_data	*init_data(t_data *data)
