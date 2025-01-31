@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 18:10:49 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 14:10:24 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 06:21:07 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	get_party_combat(t_data *data)
 			if (!new)
 				return ;
 			insert_in_combat(data, new, current->sheet.initiative);
+			call_allies(data, current);
 		}
 		lst = lst->next;
 	}

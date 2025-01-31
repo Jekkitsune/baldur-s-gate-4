@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 10:17:01 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 09:38:58 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:06:24 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		other_inventory_hover_index(t_data *data);
 t_bool	add_to_inventory(t_data *data, t_entity *taker, t_entity *taken,
-		t_bool no_equip);
+			t_bool no_equip);
 
 void	show_price(t_data *data, int price, t_vector pos)
 {
@@ -38,7 +38,7 @@ void	add_gold(t_data *data, t_entity *to_add)
 {
 	if (to_add->sheet.type != gold)
 		return ;
-	data->player.gold  += to_add->sheet.price;
+	data->player.gold += to_add->sheet.price;
 	destroy_entity(data, to_add);
 }
 

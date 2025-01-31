@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:31:25 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 19:04:47 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:15:42 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	atk(void *data_param, void *spell_param);
 void	properties_atk(t_data *data, t_button *button, t_entity *entity,
-	t_entity *weapon);
+			t_entity *weapon);
 
 void	stunning_strike(void *data_param, void *spell_param)
 {
@@ -59,6 +59,6 @@ stunned";
 	if (button->user->sheet.class)
 		copy_dice(button->spellinfo.dice,
 			button->user->sheet.class->level[ft_min(button->user->sheet.level
-			- 1, MAX_LEVEL - 1)].current_bonus_dice);
+				- 1, MAX_LEVEL - 1)].current_bonus_dice);
 	properties_atk(data, button, button->user, NULL);
 }

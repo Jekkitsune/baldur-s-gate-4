@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:21:42 by fparis            #+#    #+#             */
-/*   Updated: 2024/11/20 19:38:55 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/30 23:52:25 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,5 @@ void	init_player(t_data *data)
 	data->player.mouse_button[2] = 0;
 	data->player.focus_mode = 0;
 	get_all_rays(data);
+	data->player.gold = 60;
 }

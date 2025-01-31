@@ -6,11 +6,13 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 14:59:31 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 12:58:03 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 00:21:24 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+t_bool	can_aggro(t_entity *entity, t_entity *current);
 
 t_bool	try_ia_action(t_data *data, t_entity *entity, t_entity *target,
 	t_spellinfo spell)
@@ -113,12 +115,7 @@ void	base_aggro(void *data_param, void *entity_param)
 	while (lst)
 	{
 		current = lst->content;
-		if (current && current->sheet.alive && current->sheet.team
-			!= entity->sheet.team && get_dist(entity->pos, current->pos) < 4
-			&& !(current->sheet.properties & invisible)
-			&& (!(entity->sheet.properties & blinded)
-			|| (entity->sheet.properties & true_sight))
-			&& !(entity->sheet.properties & (hypnotized)))
+		if (can_aggro(entity, current))
 		{
 			enter_combat(data, entity);
 			return ;

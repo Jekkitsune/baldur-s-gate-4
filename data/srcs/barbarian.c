@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 02:53:18 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 10:22:01 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:11:57 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	rage(void *data_param, void *spell_param)
 		return ;
 	if (spell->caster->sheet.properties & giant_rage)
 		time_prop = new_timer_property(enraged | giant, spell->caster,
-			NULL, NULL);
+				NULL, NULL);
 	else
 		time_prop = new_timer_property(enraged, spell->caster, NULL, NULL);
 	add_timer_property(data, time_prop, 6, true);

@@ -6,14 +6,14 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 03:49:41 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 20:17:21 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 00:20:11 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 void		concentration_save(t_data *data, t_entity *entity, int dmg);
-t_entity	*get_hunter_mark_caster(t_entity *target);
+void		kill(t_data *data, t_entity *entity);
 
 void	apply_cell(t_data *data, t_cell cell, t_spellinfo spell,
 	void (*effect)(void *data, t_entity *target, t_entity *caster, int nb))
@@ -72,17 +72,11 @@ void	damage(t_data *data, t_entity *entity, int dmg)
 	concentration_save(data, entity, dmg);
 	check_attack_neutral(data, entity);
 	if (entity->sheet.hp <= 0)
-	{
-		if (get_hunter_mark_caster(entity))
-			get_hunter_mark_caster(entity)->sheet.spell_slot[0]++;
-		leave_combat(data, entity);
-		change_anim(entity, "dead", false);
-		entity->sheet.alive = false;
-		entity->behavior.func = death;
-	}
+		kill(data, entity);
 }
 
-t_entity	*browse_entity_cell(t_data *data, t_list *lst, int index, t_entity *arrow)
+t_entity	*browse_entity_cell(t_data *data, t_list *lst, int index,
+		t_entity *arrow)
 {
 	t_list			*tmp;
 
@@ -124,6 +118,6 @@ t_entity	*cycle_entity_cell(t_data *data, int move)
 		index -= size;
 	while (index < 0)
 		index += size;
-	return (browse_entity_cell(data,\
+	return (browse_entity_cell(data, \
 	data->current_map->arr[pos.x][pos.y].entities, index, data->player.arrow));
 }

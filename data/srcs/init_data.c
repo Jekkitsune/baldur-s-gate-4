@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:13:43 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 09:02:12 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:59:59 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,23 @@ void	init_mlx_events(t_data *data)
 	mlx_on_event(data->mlx, data->win, MLX_MOUSEUP, mouse_up_manager, data);
 }
 
+void	init_properties_tab(t_data *data)
+{
+	int	i;
+	int	fd;
+
+	i = 0;
+	fd = open("data/properties", O_RDONLY);
+	if (fd == -1)
+		exit_free(data, "No properties file");
+	data->properties_tab[i] = get_next_line(fd);
+	while (i < NB_PROPERTIES && data->properties_tab[i])
+	{
+		i++;
+		data->properties_tab[i] = get_next_line(fd);
+	}
+}
+
 t_data	*init_data(t_data *data)
 {
 	ft_bzero(data, sizeof(t_data));
@@ -58,14 +75,14 @@ t_data	*init_data(t_data *data)
 		exit_free(data, "Error while loading mlx");
 	data->button_scale_size = 75 * data->win_size.x / 1920;
 	data->scale = 10;
-	data->render_distance = 500;
+	data->render_distance = 5000;
 	init_screen_buffer(data);
 	init_shape_tab(data);
-	//mlx_mouse_hide();
 	mlx_mouse_move(data->mlx, data->win, data->win_size.x / 2,
 		data->win_size.y / 2);
 	srand(time(NULL));
 	mlx_set_fps_goal(data->mlx, FPS_CAP);
 	data->round_manager.party_lvl = 1;
+	init_properties_tab(data);
 	return (data);
 }

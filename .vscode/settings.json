@@ -4,6 +4,12 @@
 		"array": "c",
 		"string": "c",
 		"string_view": "c",
-		"span": "c"
+		"span": "c",
+		"text_encoding": "c",
+		"typeinfo": "c",
+		"cub3d.h": "c",
+		"format": "c",
+		"initializer_list": "c",
+		"memory_resource": "cpp"
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 04:59:22 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 01:55:19 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 07:51:02 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,12 @@ void	(*get_behavior(char *name))(void *data, void *entity)
 		return (NULL);
 	if (!ft_strcmp(name, "base_aggro"))
 		return (base_aggro);
+	if (!ft_strcmp(name, "become_merchant"))
+		return (become_merchant);
+	if (!ft_strcmp(name, "talk_join_party"))
+		return (talk_join_party);
+	if (!ft_strcmp(name, "king_talk"))
+		return (king_talk);
 	return (NULL);
 }
 

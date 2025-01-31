@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 02:29:55 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 22:30:57 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:12:44 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	hypnotic_pattern_zone(t_data *data, t_spellinfo *spell, t_cell *cell)
 	{
 		if (lst->content && ((t_entity *)lst->content)->sheet.alive
 			&& !saving_throw(data, lst->content, WIS,
-			spell->caster->sheet.spell_dc))
+				spell->caster->sheet.spell_dc))
 		{
 			time_prop = new_timer_property(hypnotized, lst->content,
-				spell->caster, NULL);
+					spell->caster, NULL);
 			if (time_prop)
 				time_prop->id_concentration = spell->concentration;
 			add_timer_property(data, time_prop, 4, true);

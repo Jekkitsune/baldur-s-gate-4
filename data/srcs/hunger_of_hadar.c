@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 19:58:58 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 22:29:16 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:32:57 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	hunger_of_hadar_zone(t_data *data, t_spellinfo *spell, t_cell *cell)
 		lst = lst->next;
 	}
 	time_prop = new_timer_property(blinded | hunger_of_hadar_prop
-		| difficult_terrain, NULL,
-		spell->caster, cell);
+			| difficult_terrain, NULL,
+			spell->caster, cell);
 	if (time_prop)
 		time_prop->color = 0x9921006E;
 	time_prop->id_concentration = spell->concentration;

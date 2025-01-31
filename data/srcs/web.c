@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 23:54:00 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 22:30:13 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:35:24 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ void	web_effect(t_data *data, t_entity *entity)
 {
 	t_timer_property	*time_prop;
 
-	if (!in_bound(data->current_map, entity->pos) ||
-		saving_throw(data, entity, DEX, 13))
+	if (!in_bound(data->current_map, entity->pos)
+		|| saving_throw(data, entity, DEX, 13))
 		return ;
 	else
 	{
 		show_info(data, "%s got stuck on the web!", entity->sheet.name);
 		time_prop = new_timer_property(restrained, entity, entity,
-			&data->current_map->arr[entity->pos.x][entity->pos.y]);
+				&data->current_map->arr[entity->pos.x][entity->pos.y]);
 		if (time_prop)
 			time_prop->color = 0x99BBBBBB;
 		add_timer_property(data, time_prop, 1, true);

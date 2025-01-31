@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ui.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 22:55:51 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 05:58:29 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/31 01:34:00 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,10 @@ void	draw_health_name(t_data *data, t_entity *selected)
 
 	if (selected->sheet.name)
 	{
-		draw_rectangle(data, vec((data->win_size.x / 2)
-				- (ft_strlen(selected->sheet.name) * 6), 1),
-			vec((data->win_size.x / 2) + (ft_strlen(selected->sheet.name)
-					* (data->button_scale_size / 3)),
-				data->button_scale_size - 2), 0xAA000000);
 		to_put = strput(ft_strdup(selected->sheet.name), vec(data->win_size.x / \
 		2, data->button_scale_size - 10), data->button_scale_size, 0xFFAAAAAA);
 		to_put->centered = true;
+		to_put->bg = 0xAA000000;
 		screen_string_put(data, to_put, 0);
 	}
 }

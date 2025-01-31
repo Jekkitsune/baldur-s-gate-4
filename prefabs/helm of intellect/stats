@@ -2,3 +2,4 @@ TYPE:head
 DESCRIPTION:A magic protection that increases its wearer intelligence, +4 INT
 INT:4
 SIZE:0.3
+PRICE:100

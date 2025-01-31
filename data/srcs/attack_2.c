@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 05:18:42 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 14:49:49 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:35:09 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,23 +47,23 @@ int	advantage(t_data *data, t_entity *caster, t_entity *target)
 	if (!target || !caster || target == caster)
 		return (0);
 	if ((!(caster->sheet.properties & true_sight)
-		&& (caster->sheet.properties & blinded
-		|| target->sheet.properties & invisible))
+			&& (caster->sheet.properties & blinded
+				|| target->sheet.properties & invisible))
 		|| target->sheet.properties & dodge
 		|| (!(caster->sheet.properties & close_shooter)
-		&& caster->sheet.properties & range
-		&& get_dist(caster->pos, target->pos) < 2))
+			&& caster->sheet.properties & range
+			&& get_dist(caster->pos, target->pos) < 2))
 		advantage -= 1;
 	else if ((!(target->sheet.properties & true_sight)
-		&& target->sheet.properties & blinded)
+			&& target->sheet.properties & blinded)
 		|| caster->sheet.properties & invisible)
 		advantage += 1;
 	if (target->sheet.properties & reckless_atk
 		|| caster->sheet.properties & reckless_atk
 		|| target->sheet.properties & (restrained | paralyzed | hypnotized
-		| stunned)
+			| stunned)
 		|| (is_menaced(data, target, caster)
-		&& caster->sheet.properties & menaced_advantage))
+			&& caster->sheet.properties & menaced_advantage))
 		advantage += 1;
 	return (advantage);
 }

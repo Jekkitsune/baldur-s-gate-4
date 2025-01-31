@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 19:42:11 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/29 12:19:17 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:05:41 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ void	hunter_mark(void *data_param, void *spell_param)
 	show_info(data, "%s cast Hunter's mark!", spell->caster->sheet.name);
 	if (spell->caster->sheet.properties & master_hunter)
 		time_prop = new_timer_property(hunter_marked | marked_ac,
-			spell->target, spell->caster, NULL);
+				spell->target, spell->caster, NULL);
 	else
 		time_prop = new_timer_property(hunter_marked,
-			spell->target, spell->caster, NULL);
+				spell->target, spell->caster, NULL);
 	if (time_prop)
 	{
 		time_prop->id_concentration = spell->concentration;
@@ -95,5 +95,5 @@ on marked target";
 	if (button->user->sheet.class)
 		copy_dice(button->spellinfo.dice,
 			button->user->sheet.class->level[ft_min(button->user->sheet.level
-			- 1, MAX_LEVEL - 1)].current_bonus_dice);
+				- 1, MAX_LEVEL - 1)].current_bonus_dice);
 }

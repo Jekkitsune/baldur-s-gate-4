@@ -1,0 +1,34 @@
+FLOOR:textures/env/plain_floor.png
+CELL:POS:16,25:TEX:textures/env/house_door.png:TRAVEL:maps/arena.cub
+CELL:POS:15,0:TEX:textures/env/house_door.png:TRAVEL:maps/field.cub
+CELL:POS:4,11,13,15:FLOOR:textures/env/house_floor.png:CEILING:textures/env/house_ceiling.png:UPPER WALL:textures/env/village_wall.png:TEX:textures/env/house_wall.png
+CELL:POS:4,11:TEX:textures/env/village_wall.png
+CELL:POS:13,11:TEX:textures/env/village_wall.png
+CELL:POS:4,15:TEX:textures/env/village_wall.png
+CELL:POS:13,15:TEX:textures/env/village_wall.png
+CELL:POS:9,15:TEX:textures/env/house_door.png
+CELL:POS:4,3,22,8:FLOOR:textures/env/house_floor.png:CEILING:textures/env/house_ceiling.png:UPPER WALL:textures/env/village_wall.png:TEX:textures/env/house_wall.png
+CELL:POS:4,3:TEX:textures/env/village_wall.png
+CELL:POS:22,3:TEX:textures/env/village_wall.png
+CELL:POS:4,8:TEX:textures/env/village_wall.png
+CELL:POS:22,8:TEX:textures/env/village_wall.png
+CELL:POS:4,4:TEX:textures/env/house_door.png
+CELL:POS:22,4:TEX:textures/env/house_door.png
+CELL:POS:9,8:TEX:textures/env/house_door.png
+CELL:POS:23,12,27,15:FLOOR:textures/env/house_floor.png:CEILING:textures/env/house_ceiling.png:UPPER WALL:textures/env/village_wall.png:TEX:textures/env/house_wall.png
+CELL:POS:23,12:TEX:textures/env/village_wall.png
+CELL:POS:27,15:TEX:textures/env/village_wall.png
+CELL:POS:23,15:TEX:textures/env/village_wall.png
+CELL:POS:27,12:TEX:textures/env/village_wall.png
+CELL:POS:23,14:TEX:textures/env/house_door.png
+CELL:POS:21,18,30,22:FLOOR:textures/env/house_floor.png:CEILING:textures/env/house_ceiling.png:UPPER WALL:textures/env/village_wall.png:TEX:textures/env/house_wall.png
+CELL:POS:21,18:TEX:textures/env/village_wall.png
+CELL:POS:30,22:TEX:textures/env/village_wall.png
+CELL:POS:21,22:TEX:textures/env/village_wall.png
+CELL:POS:30,18:TEX:textures/env/village_wall.png
+CELL:POS:21,20:TEX:textures/env/house_door.png
+ENTITY:PREFAB:tavern:POS:9,4:NAME:30 GOLD for long rest
+ENTITY:PREFAB:gobelin king:POS:8,12:NAME:His majesty the gobelin king:BEHAVIOR:king_talk:DIALOG:Greetings you that come from far away\Welcome in my modest kingdom\May you find peace during your stay\I have heard that you wanted to get inside the dungeon in the east of the plains\Well I can get you the key to it\However, I will ask you to do something for me before\See, my dear daughter the princess has been captured by an enemy clan\They led her to the north, where our army fights to get her back\Join them, and together, win over them\Do as so, and your reward is guaranteed:INVENTORY:dungeon key
+ENTITY:PREFAB:gobelin:POS:5,22:NAME:Gobelin:BEHAVIOR:base_aggro:DIALOG:You stranger, who vanquished our best warriors\May you honour our king of a service\You will be well rewarded\Go find him in the palace
+ENTITY:PREFAB:gobelin:POS:26,13:NAME:Gobelin:BEHAVIOR:base_aggro:DIALOG:We are the gobelins\Our people is great and our culture is rich\But no one knows us\Jk im just a misspelled goblin
+ENTITY:PREFAB:merchant:POS:27,20:NAME:The merchant:BEHAVIOR:base_aggro:DIALOG:Wanna buy something?\I gotcha!:PROPERTIES:shop_keeper:INVENTORY:sword+2,staff+2,dagger+2,armor+2,bow+2,healing potion,greater healing potion,healing potion,speed potion,speed potion,greater healing potion,enlarge potion:LVL:5

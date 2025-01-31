@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 20:53:42 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 22:29:37 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:20:06 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	banishment(void *data_param, void *spell_param)
 	else
 	{
 		time_prop = new_timer_property(banished, spell->target, spell->caster,
-			NULL);
+				NULL);
 		if (time_prop)
 			time_prop->id_concentration = spell->concentration;
 		add_timer_property(data, time_prop, 5, true);

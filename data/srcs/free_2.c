@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 23:11:45 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/15 23:12:18 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 11:58:38 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,16 @@ void	free_tex_lst(t_data *data)
 	free_tex(data->wall_tex[1]);
 	free_tex(data->wall_tex[2]);
 	free_tex(data->wall_tex[3]);
+}
+
+void	free_properties_tab(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < NB_PROPERTIES)
+	{
+		free(data->properties_tab[i]);
+		i++;
+	}
 }

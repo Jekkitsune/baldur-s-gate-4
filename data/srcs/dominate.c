@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 04:17:30 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 22:31:03 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:17:06 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	dominate_effect(t_data *data, t_spellinfo *spell)
 	t_timer_property	*time_prop;
 
 	time_prop = new_timer_property(dominated, spell->target, spell->caster,
-		NULL);
+			NULL);
 	if (!time_prop)
 		return ;
 	time_prop->id_concentration = spell->concentration;
@@ -40,7 +40,7 @@ void	dominate(void *data_param, void *spell_param)
 {
 	t_data				*data;
 	t_spellinfo			*spell;
-	
+
 	data = data_param;
 	spell = spell_param;
 	if (!spell->target || spell->target->sheet.properties & dominated

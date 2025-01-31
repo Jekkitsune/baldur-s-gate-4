@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:52:10 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 13:37:51 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:32:15 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_fog	*new_fog(t_data *data, t_impact *ray, float fog_length)
 {
 	t_fog	*new_fog;
-
 
 	new_fog = ft_calloc(sizeof(t_fog), 1);
 	if (!new_fog)

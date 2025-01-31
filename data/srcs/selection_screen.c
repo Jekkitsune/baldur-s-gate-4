@@ -3,63 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   selection_screen.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 06:26:58 by gmassoni          #+#    #+#             */
-/*   Updated: 2025/01/30 09:41:29 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/31 13:26:00 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	draw_bg(t_data *data, int size, t_vector pos, uint32_t color)
+t_texture	*get_tex_selection(t_bool selected, t_entity *entity, int index)
 {
-	int	i;
-	int	j;
+	int			anim_index;
+	int			size;
+	t_texture	*tex;
 
-	i = pos.x;
-	while (i < pos.x + size)
-	{
-		j = pos.y;
-		while (j < pos.y + size)
-		{
-			data->screen_buffer[j][i] = color;
-			j++;
-		}
-		i++;
-	}
-}
-
-int	is_selected(t_data *data, char *class, t_vector pos, int size)
-{
-	t_vector	mouse;
-	
-	mlx_mouse_get_pos(data->mlx, &mouse.x, &mouse.y);
-	if (in_party_name(data, class))
-		return (2);
-	else if (mouse.x < pos.x || mouse.x > pos.x + size
-		|| mouse.y < pos.y || mouse.y > pos.y + size)
-		return (0);
+	size = HEIGHT * 0.35;
+	if (!selected)
+		anim_index = get_anim_index(entity, "idle");
 	else
-		return (1);
-}
-
-void	draw_border(t_data *data, t_vector pos, int size, uint32_t color)
-{
-	int	i;
-	int	j;
-
-	i = pos.x - 2;
-	while (i < pos.x + size + 2)
-	{
-		j = pos.y - 2;
-		while (j < pos.y + size + 2)
-		{
-			ft_pixel_put(data, j, i, color);
-			j++;
-		}
-		i++;
-	}
+		anim_index = get_anim_index(entity, "select");
+	if (anim_index == -1)
+		return (NULL);
+	tex = resize(entity->anim[anim_index].tab[index \
+		% entity->anim[anim_index].size], size);
+	if (!tex)
+		return (NULL);
+	return (tex);
 }
 
 void	print_class(t_data *data, t_vector pos, char *class, int index)
@@ -67,7 +37,6 @@ void	print_class(t_data *data, t_vector pos, char *class, int index)
 	t_entity	*entity;
 	t_texture	*tex;
 	int			size;
-	int			anim_index;
 	t_bool		selected;
 	t_strput	*to_put;
 
@@ -76,29 +45,14 @@ void	print_class(t_data *data, t_vector pos, char *class, int index)
 	if (!entity)
 		return ;
 	selected = is_selected(data, class, pos, size);
-	if (!selected)
-		anim_index = get_anim_index(entity, "idle");
-	else
-		anim_index = get_anim_index(entity, "select");
-	if (anim_index == -1)
-		return ;
-	tex = resize(entity->anim[anim_index].tab[index % entity->anim[anim_index].size], size);
+	tex = get_tex_selection(selected, entity, index);
 	if (!tex)
 		return ;
-	if (!selected)
-		draw_bg(data, size, pos, 0xFF232323);
-	else if (selected == 1)
-	{
-		draw_border(data, pos, size, 0xFFFFFFFF);
-		draw_bg(data, size, pos, 0xFF303030);
-	}
-	else
-	{
-		draw_border(data, pos, size, 0xFFE6C302);
-		draw_bg(data, size, pos, 0xFF353535);
-	}
+	chose_border(data, selected, size, pos);
 	show_tex(data, tex, pos);
-	to_put = strput(ft_strdup(entity->sheet.name), vec(pos.x, pos.y + size + 20), data->button_scale_size / 2, 0xFFFFFFFF);
+	to_put = strput(ft_strdup(entity->sheet.name),
+			vec(pos.x, pos.y + size + 20),
+			data->button_scale_size / 2, 0xFFFFFFFF);
 	screen_string_put(data, to_put, 0);
 	free_tex(tex);
 }
@@ -120,12 +74,33 @@ void	start_button(t_data *data, t_vector size, t_vector pos)
 		while (++j < pos.y + size.y)
 			ft_pixel_put(data, j, i, color);
 	}
-	to_put = strput(ft_strdup("start"), vec(pos.x + (size.x / 2), pos.y + (size.y / 1.5)), data->button_scale_size / 2, 0xFF000000);
+	to_put = strput(ft_strdup("start"), vec(pos.x + (size.x / 2),
+				pos.y + (size.y / 1.5)),
+			data->button_scale_size / 2, 0xFF000000);
 	to_put->centered = true;
 	screen_string_put(data, to_put, 0);
 }
 
-void    selection_screen(t_data *data)
+void	print_classes(t_data *data, unsigned int nb)
+{
+	print_class(data, vec(data->win_size.x * 0.1,
+			data->win_size.y * 0.1), "barbarian", nb);
+	print_class(data, vec(data->win_size.x * 0.4,
+			data->win_size.y * 0.55), "rogue", nb);
+	print_class(data, vec(data->win_size.x * 0.4,
+			data->win_size.y * 0.1), "warlock", nb);
+	print_class(data, vec(data->win_size.x * 0.1,
+			data->win_size.y * 0.55), "wizard", nb);
+	print_class(data, vec(data->win_size.x * 0.7,
+			data->win_size.y * 0.1), "monk", nb);
+	print_class(data, vec(data->win_size.x * 0.7,
+			data->win_size.y * 0.55), "ranger", nb);
+	start_button(data, vec(data->win_size.x * 0.06, data->win_size.y * 0.06),
+		vec(data->win_size.x * 0.92, data->win_size.y * 0.03));
+	put_screen(data);
+}
+
+void	selection_screen(t_data *data)
 {
 	t_vector			it;
 	static unsigned int	nb = 0;
@@ -148,12 +123,5 @@ void    selection_screen(t_data *data)
 		nb2 = 0;
 		nb++;
 	}
-	print_class(data, vec(data->win_size.x * 0.1, data->win_size.y * 0.1), "barbarian", nb);
-	print_class(data, vec(data->win_size.x * 0.4, data->win_size.y * 0.55), "rogue", nb);
-	print_class(data, vec(data->win_size.x * 0.4, data->win_size.y * 0.1), "warlock", nb);
-	print_class(data, vec(data->win_size.x * 0.1, data->win_size.y * 0.55), "wizard", nb);
-	print_class(data, vec(data->win_size.x * 0.7, data->win_size.y * 0.1), "monk", nb);
-	print_class(data, vec(data->win_size.x * 0.7, data->win_size.y * 0.55), "ranger", nb);
-	start_button(data, vec(data->win_size.x * 0.06, data->win_size.y * 0.06), vec(data->win_size.x * 0.92, data->win_size.y * 0.03));
-	put_screen(data);
+	print_classes(data, nb);
 }

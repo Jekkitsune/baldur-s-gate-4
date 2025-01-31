@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 18:51:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 01:48:42 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:03:35 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	hover_character_button(t_data *data, t_vector pos, t_entity *entity,
 	if (!entity)
 		return ;
 	to_put = strput(ft_strdup(entity->sheet.name),
-		vec(mouse_pos.x - 5, mouse_pos.y - 5), 20, 0xFF000000);
+			vec(mouse_pos.x - 5, mouse_pos.y - 5), 20, 0xFF000000);
 	screen_string_put(data, to_put, 0);
 	entity_filter(entity, 0xFF888888);
 }

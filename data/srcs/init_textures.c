@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 01:20:38 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 12:35:02 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:36:08 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ void	init_textures(t_data *data)
 	data->sky_box_tex[1] = get_tex(data, "skybox2");
 	data->sky_box_tex[2] = get_tex(data, "skybox3");
 	data->sky_box_tex[3] = get_tex(data, "skybox4");
-	if (!data->sky_box_tex[0] || !data->sky_box_tex[1] || !data->sky_box_tex[2] || !data->sky_box_tex[3])
+	if (!data->sky_box_tex[0] || !data->sky_box_tex[1]
+		|| !data->sky_box_tex[2] || !data->sky_box_tex[3])
 		exit_free(data, "Error: give the skybox back\n");
 	init_buttons(data);
 }

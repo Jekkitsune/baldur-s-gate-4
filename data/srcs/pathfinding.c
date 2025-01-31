@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 22:00:32 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 23:45:17 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 01:33:25 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ t_path	*get_path(t_data *data, t_vector start, t_vector goal, t_bool closest)
 	path = NULL;
 	add_path(start, start, &path);
 	current = path;
-	while (current && i < 1000
+	while (current && i < 10000
 		&& ((!closest && (current->pos.x != goal.x || current->pos.y != goal.y))
 			|| (closest && !adjacent(goal, current->pos))))
 	{

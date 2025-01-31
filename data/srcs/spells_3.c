@@ -6,11 +6,13 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 09:02:12 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 10:57:05 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 23:39:25 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+t_entity	*get_hunter_mark_caster(t_entity *target);
 
 void	call_neutral(__attribute__((unused)) void *data, t_entity *target,
 	__attribute__((unused)) t_entity *caster, __attribute__((unused)) int nb)
@@ -56,4 +58,18 @@ void	concentration_save(t_data *data, t_entity *entity, int dmg)
 	}
 	else
 		show_info(data, "%s kept his concentration!", entity->sheet.name);
+}
+
+void	kill(t_data *data, t_entity *entity)
+{
+	if (!entity)
+		return ;
+	if (entity->sheet.team && entity->sheet.exp > 0)
+		data->round_manager.party_exp += entity->sheet.exp;
+	if (get_hunter_mark_caster(entity))
+		get_hunter_mark_caster(entity)->sheet.spell_slot[0]++;
+	leave_combat(data, entity);
+	change_anim(entity, "dead", false);
+	entity->sheet.alive = false;
+	entity->behavior.func = death;
 }

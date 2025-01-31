@@ -1,0 +1,8 @@
+FLOOR:textures/env/village_floor.png
+CELL:POS:9,19:TEX:textures/env/house_door.png:TRAVEL:maps/plain.cub
+CELL:POS:8,0:TEX:textures/env/house_door.png:TRAVEL:maps/gob.cub
+ENTITY:PREFAB:gobelin ranger:POS:4,3:NAME:Gobelin ranger:BEHAVIOR:base_aggro:TEAM:1:EXP:25:INVENTORY:gold,20,greater health potion,bow+1:LVL:2
+ENTITY:PREFAB:gobelin barbarian:POS:6,3:NAME:Gobelin barbarian:BEHAVIOR:base_aggro:TEAM:1:EXP:25:INVENTORY:gold,20,sword+1:LVL:2
+ENTITY:PREFAB:gobelin warlock:POS:8,3:NAME:Gobelin warlock:BEHAVIOR:base_aggro:TEAM:1:EXP:25:INVENTORY:gold,20,speed potion,staff+1:LVL:2
+ENTITY:PREFAB:gobelin:POS:10,3:NAME:Gobelin:BEHAVIOR:base_aggro:TEAM:1:EXP:15:INVENTORY:gold,10
+ENTITY:PREFAB:velocity boots:POS:1,3

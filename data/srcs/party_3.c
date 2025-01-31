@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   party_3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 04:51:18 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 08:57:22 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/31 10:05:17 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	join_party(t_data *data, t_entity *entity)
 {
-	if (!entity)
+	if (!entity || in_party(data, entity))
 		return ;
 	possess_control(entity, true);
 	if (!entity->active)
@@ -36,4 +36,13 @@ t_entity	*in_party_name(t_data *data, char *name)
 		lst = lst->next;
 	}
 	return (NULL);
+}
+
+void	check_party_exp(t_data *data)
+{
+	while (data->round_manager.party_exp >= 100)
+	{
+		data->round_manager.party_exp -= 100;
+		level_up_party(data);
+	}
 }

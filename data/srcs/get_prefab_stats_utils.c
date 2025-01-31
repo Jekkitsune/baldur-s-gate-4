@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:18:24 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/23 10:09:25 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 23:14:05 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ t_type	get_type(char *type)
 		return (consumable);
 	if (!ft_strcmp(type, "gold"))
 		return (gold);
+	if (!ft_strcmp(type, "tavern"))
+		return (tavern);
 	return (object);
 }
 

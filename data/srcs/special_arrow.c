@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 21:02:11 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 22:49:17 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:10:21 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ensnaring_strike(void *data_param, void *spell_param)
 	if (!spell->caster || !apply_action_cost(data, spell))
 		return ;
 	time_prop = new_timer_property(infused_restrained, spell->caster,
-		NULL, NULL);
+			NULL, NULL);
 	add_timer_property(data, time_prop, 1, true);
 	show_info(data, "%s infused its arrow with magical vines!",
 		spell->caster->sheet.name);
@@ -56,7 +56,7 @@ void	silencing_strike(void *data_param, void *spell_param)
 	if (!spell->caster || !apply_action_cost(data, spell))
 		return ;
 	time_prop = new_timer_property(infused_silenced, spell->caster,
-		NULL, NULL);
+			NULL, NULL);
 	add_timer_property(data, time_prop, 1, true);
 	show_info(data, "%s infused its arrow with anti-magic energy!",
 		spell->caster->sheet.name);

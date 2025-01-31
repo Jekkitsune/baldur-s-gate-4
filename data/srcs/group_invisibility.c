@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 01:46:24 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 22:30:47 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:25:03 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	group_invisibility(void *data_param, void *spell_param)
 		if (lst->content)
 		{
 			time_prop = new_timer_property(invisible, lst->content,
-				spell->caster, NULL);
+					spell->caster, NULL);
 			if (time_prop)
 				time_prop->id_concentration = spell->concentration;
 			add_timer_property(data, time_prop, 10, true);

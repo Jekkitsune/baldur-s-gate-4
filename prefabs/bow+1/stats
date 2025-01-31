@@ -1,8 +1,9 @@
 TYPE:weapon_1
-RANGE:5.5
+RANGE:7.0
 DESCRIPTION:A conveniant bow for a good archer, +1 ATK +1 DMG
 ATK BONUS:1
 DICE:8:1
 DICE:1:1
 PROPERTIES:range
 SIZE:0.3
+PRICE:15

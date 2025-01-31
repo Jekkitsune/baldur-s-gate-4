@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:50:43 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 15:37:21 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:08:14 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ void	init_button_lst(t_data *data)
 	add_button_lst(data, "Fireball", init_fireball_button);
 	add_button_lst(data, "Rage", init_rage_button);
 	add_button_lst(data, "Healing potion", init_heal_potion_button);
-	add_button_lst(data, "Greater healing potion", init_greater_heal_potion_button);
+	add_button_lst(data, "Greater healing potion",
+		init_greater_heal_potion_button);
 	add_button_lst(data, "Speed potion", init_speed_potion_button);
 	add_button_lst(data, "Enlarge potion", init_enlarge_potion_button);
 	add_button_lst(data, "Dash bonus", init_dash_bonus_button);

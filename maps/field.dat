@@ -1,0 +1,25 @@
+FLOOR:textures/env/village_floor.png
+CELL:POS:9,41:TEX:textures/env/house_door.png:TRAVEL:maps/gob.cub
+ENTITY:PREFAB:tree:POS:2,20
+ENTITY:PREFAB:tree:POS:6,34
+ENTITY:PREFAB:tree:POS:11,12
+ENTITY:PREFAB:gobelin ranger:POS:15,15:NAME:Gobelin ranger:BEHAVIOR:base_aggro:TEAM:1:EXP:35:INVENTORY:gold,20,greater health potion,bow+2:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:gobelin ranger:POS:7,8:NAME:Gobelin ranger:BEHAVIOR:base_aggro:TEAM:1:EXP:35:INVENTORY:gold,20,greater health potion,bow+2:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:gobelin barbarian:POS:14,17:NAME:Gobelin barbarian:BEHAVIOR:base_aggro:TEAM:1:EXP:35:INVENTORY:gold,20,sword+2:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:gobelin barbarian:POS:5,10:NAME:Gobelin barbarian:BEHAVIOR:base_aggro:TEAM:1:EXP:35:INVENTORY:gold,20,sword+2:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:gobelin warlock:POS:13,18:NAME:Gobelin warlock:BEHAVIOR:base_aggro:TEAM:1:EXP:35:INVENTORY:gold,20,speed potion,staff+2:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:gobelin warlock:POS:1,2:NAME:Gobelin warlock:BEHAVIOR:base_aggro:TEAM:1:EXP:35:INVENTORY:gold,20,speed potion,staff+2:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:gobelin:POS:20,10:NAME:Gobelin:BEHAVIOR:base_aggro:TEAM:1:EXP:35:INVENTORY:gold,35,dagger+3:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:gobelin wizard:POS:10,20:NAME:Gobelin wizard:BEHAVIOR:base_aggro:TEAM:1:EXP:35:INVENTORY:gold,20,staff+2:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:gobelin wizard:POS:11,19:NAME:Gobelin wizard:BEHAVIOR:base_aggro:TEAM:1:EXP:35:INVENTORY:gold,20,staff+2:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:gobelin rogue:POS:20,15:NAME:Gobelin rogue:BEHAVIOR:base_aggro:TEAM:1:EXP:35:INVENTORY:gold,20,dagger+2:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:gobelin rogue:POS:4,8:NAME:Gobelin rogue:BEHAVIOR:base_aggro:TEAM:1:EXP:35:INVENTORY:gold,20,dagger+2:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:gobelin:POS:18,17:NAME:Gobelin:BEHAVIOR:base_aggro:TEAM:1:EXP:35:INVENTORY:gold,20,bow+1:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:gobelin:POS:19,4:NAME:Gobelin:BEHAVIOR:base_aggro:TEAM:1:EXP:35:INVENTORY:gold,20,sword+2:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:gobelin:POS:2,6:NAME:Gobelin:BEHAVIOR:base_aggro:TEAM:1:EXP:35:INVENTORY:gold,20:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:gobelin princess:POS:1,1:NAME:Gobelin princess:BEHAVIOR:talk_join_party:DIALOG:Ho, my father sent you!\Thank you so much adventurers, I really thought this was my end\Take me back to my father, he will surely be kind with you\And again, thank you
+ENTITY:PREFAB:gobelin wizard:POS:5,23:NAME:Gobelin wizard:BEHAVIOR:base_aggro:INVENTORY:staff+2:LVL:3
+ENTITY:PREFAB:gobelin warlock:POS:17,25:NAME:Gobelin warlock:BEHAVIOR:base_aggro:INVENTORY:staff+2:LVL:3
+ENTITY:PREFAB:gobelin barbarian:POS:13,24:NAME:Gobelin barbarian:BEHAVIOR:base_aggro:INVENTORY:sword+2:LVL:3
+ENTITY:PREFAB:gobelin rogue:POS:4,26:NAME:Gobelin rogue:BEHAVIOR:base_aggro:INVENTORY:dagger+2:LVL:3
+ENTITY:PREFAB:gobelin ranger:POS:15,28:NAME:Gobelin ranger:BEHAVIOR:base_aggro:INVENTORY:bow+2:LVL:3

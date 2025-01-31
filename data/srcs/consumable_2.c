@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 11:59:22 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 12:29:57 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:06:04 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	enlarge_potion(void *data_param, void *spell_param)
 		return ;
 	time_prop = new_timer_property(giant, spell->target, NULL, NULL);
 	add_timer_property(data, time_prop, 3, true);
-	show_info(data, "%s drank a potion of enlargement!", spell->target->sheet.name);
+	show_info(data, "%s drank a potion of enlargement!",
+		spell->target->sheet.name);
 	destroy_consumable(data, spell->target, spell->summon);
 }
 

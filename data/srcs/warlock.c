@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 13:23:43 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 22:29:28 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 09:41:13 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	eldritch_blast(void *data_param, void *spell_param)
 
 	data = data_param;
 	spell = spell_param;
-	if (!spell->target ||  !apply_action_cost(data, spell))
+	if (!spell->target || !apply_action_cost(data, spell))
 		return ;
 	show_info(data, "%s cast Eldritch blast", spell->caster->sheet.name);
 	atk = roll_atk(data, spell, spell->caster->sheet.spell_bonus);
@@ -69,7 +69,7 @@ void	eldritch_blast(void *data_param, void *spell_param)
 
 void	init_eldritch_blast_button(t_data *data, t_button *button)
 {
-	button->spellinfo.range = 5;
+	button->spellinfo.range = 6.5;
 	button->spellinfo.visible_target = true;
 	button->spellinfo.effect = eldritch_blast;
 	button->spellinfo.type = offensive;

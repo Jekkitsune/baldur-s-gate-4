@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 23:07:22 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/29 12:07:50 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:04:15 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	atk(void *data_param, void *spell_param);
 void	properties_atk(t_data *data, t_button *button, t_entity *entity,
-	t_entity *weapon);
+			t_entity *weapon);
 
 void	arrow_rain_zone(t_data *data, t_spellinfo *spell, t_cell *cell)
 {
@@ -78,4 +78,3 @@ void	init_arrow_rain_button(t_data *data, t_button *button)
 	button->spellinfo.range = weapon->sheet.range;
 	properties_atk(data, button, button->user, weapon);
 }
-

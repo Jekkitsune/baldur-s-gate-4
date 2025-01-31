@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:06:02 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 17:20:04 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 01:42:54 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ t_button	*get_best_action(t_data *data, t_entity *entity, int min_range,
 		{
 			current->spellinfo.caster = entity;
 			if (current->spellinfo.type == type
+				&& current->func == action_select
 				&& current->spellinfo.range >= min_range
 				&& check_action_cost(&current->spellinfo))
 				compare_buttons(data, &best, current, entity);

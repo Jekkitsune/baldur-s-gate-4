@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 23:25:12 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/22 04:46:46 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 11:59:15 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	free_tex_lst(t_data *data);
 void	free_all_maps(t_data *data);
+void	free_properties_tab(t_data *data);
 
 void	free_tex(t_texture *tex)
 {
@@ -90,6 +91,7 @@ void	free_data(t_data *data)
 		i++;
 	}
 	free(data->screen_buffer);
+	free_properties_tab(data);
 }
 
 void	exit_free(t_data *data, char *error)

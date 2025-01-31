@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   put_screen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 21:34:36 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 03:32:45 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/31 02:14:44 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	put_all_strings(t_data *data)
 	t_strput		*current_str;
 	static float	size = 0;
 
+	size = data->button_scale_size;
 	lst = data->string_to_put;
 	while (lst)
 	{

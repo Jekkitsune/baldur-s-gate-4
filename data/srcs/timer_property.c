@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 17:19:04 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 16:09:17 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:25:28 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	timer_prop_lst_add(t_timer_property *tproperty);
 void	add_cell_property(t_data *data, t_timer_property *prop);
 void	update_entity_concentration(t_data *data, t_entity *entity,
-	t_bool round);
+			t_bool round);
 
 t_timer_property	*new_timer_property(t_property property, t_entity *entity,
 	t_entity *caster, t_cell *cell)

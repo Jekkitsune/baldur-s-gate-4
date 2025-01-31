@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 09:08:13 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 16:09:00 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:16:25 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	try_resist_spell(t_data *data, t_entity *entity, t_property prop,
 			{
 				caster = current->caster;
 				if (caster && saving_throw(data, entity, stat,
-					caster->sheet.spell_dc))
+						caster->sheet.spell_dc))
 					pop_free_property(data, current);
 			}
 		}

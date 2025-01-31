@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 13:04:44 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 13:51:27 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:12:19 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	init_barbarian_class(t_data *data)
 	class->level[0].add_spell_slot[0] = 1;
 	class->level[0].current_bonus_dice[D1] = 2;
 	class->level[0].properties = unarmored_defense;
-	init_rage_button(data, &class->level[0].buttons[0]); 
+	init_rage_button(data, &class->level[0].buttons[0]);
 	class->level[1].add_stats[STR] = 1;
 	class->level[1].add_stats[CON] = 1;
 	class->level[1].add_spell_slot[0] = 1;

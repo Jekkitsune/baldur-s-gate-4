@@ -6,13 +6,13 @@
 #    By: fparis <fparis@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/01 15:23:49 by fparis            #+#    #+#              #
-#    Updated: 2025/01/30 12:44:13 by fparis           ###   ########.fr        #
+#    Updated: 2025/01/31 13:43:53 by fparis           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 CC = cc
-CFLAGS = -g3 -Ofast -fno-short-enums -Wextra -Wall ##-Werror
+CFLAGS = -g3 -Ofast -fno-short-enums -Wextra -Wall -Werror
 NAME = cub3D
 HEADER = data/headers
 
@@ -66,6 +66,7 @@ SRCS = main.c\
 		ia.c\
 		ia_2.c\
 		ia_fight.c\
+		ia_fight_2.c\
 		ia_fights_utils.c\
 		update_active.c\
 		update_active_2.c\
@@ -94,6 +95,7 @@ SRCS = main.c\
 		inventory.c\
 		inventory_2.c\
 		inventory_draw_utils.c\
+		inventory_draw_utils_2.c\
 		actions.c\
 		actions_2.c\
 		actions_3.c\
@@ -115,7 +117,6 @@ SRCS = main.c\
 		check.c\
 		check_2.c\
 		properties.c\
-		properties_2.c\
 		timer_effect.c\
 		timer_property.c\
 		timer_property_2.c\
@@ -183,14 +184,21 @@ SRCS = main.c\
 		arrow_rain.c\
 		selection_screen.c\
 		selection_screen_2.c\
+		selection_screen_3.c\
 		consumable.c\
-		consumable_2.c
+		consumable_2.c\
+		special_behavior.c\
+		tavern.c\
+		init_prefabs.c\
 
 LIBFT = data/libft/libft.a
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 all: $(NAME)
+
+run:
+	./$(NAME) maps/start_village.cub maps/plain.cub maps/arena.cub maps/gob.cub maps/field.cub maps/dungeon.cub
 
 $(NAME): $(OBJS) $(LIBFT)
 	@$(CC) $(CFLAGS) $^ -o $(NAME) $(LIBFT) data/macroLibX/libmlx.so -lSDL2 -I $(HEADER) -lm

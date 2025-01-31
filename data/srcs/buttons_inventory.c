@@ -6,14 +6,13 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:52:38 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 12:59:39 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 07:57:35 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 void	set_button_inventory(t_button *button, t_entity *item);
-int		get_inventory_item_i(t_entity *user, t_entity *used);
 
 void	drop(t_data *data, t_spellinfo *spell)
 {
@@ -25,7 +24,8 @@ void	drop(t_data *data, t_spellinfo *spell)
 	if (!spell->caster || !drop)
 		return ;
 	i = get_inventory_item_i(spell->caster, drop);
-	if (i < 0 || i >= INVENTORY_SIZE || spell->caster->sheet.inventory[i] != drop)
+	if (i < 0 || i >= INVENTORY_SIZE || spell->caster->sheet.inventory[i]
+		!= drop)
 		return ;
 	new_lst = ft_lstnew(drop);
 	if (!new_lst)

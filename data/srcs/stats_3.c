@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 03:53:16 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 13:40:19 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:15:30 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	long_rest(t_data *data, t_entity *entity)
 	round_refresh_stat(entity);
 	if (!prefab)
 		return ;
-	copy_stat_tab(entity->sheet.spell_slot, prefab->sheet.spell_slot, SPELL_MAX_LV);
+	copy_stat_tab(entity->sheet.spell_slot, prefab->sheet.spell_slot,
+		SPELL_MAX_LV);
 	if (entity->sheet.type == living)
 		entity->sheet.alive = true;
 	entity->sheet.hp = entity->sheet.max_hp;

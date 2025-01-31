@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 16:27:00 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 20:09:18 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 12:32:02 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	default_shape(__attribute__((unused)) t_data *data,
 
 int	in_minimap(t_data *data, t_vector vec)
 {
-	if (vec.x < data->minimap.pos.x || vec.x >= data->minimap.UI_size
+	if (vec.x < data->minimap.pos.x || vec.x >= data->minimap.ui_size
 		+ data->minimap.pos.x || vec.y < data->minimap.pos.y || vec.y
-		>= data->minimap.UI_size + data->minimap.pos.y)
+		>= data->minimap.ui_size + data->minimap.pos.y)
 		return (0);
 	return (1);
 }

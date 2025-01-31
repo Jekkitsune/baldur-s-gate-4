@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 23:29:59 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 22:29:46 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 09:41:23 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	healing_word(void *data_param, void *spell_param)
 
 	data = data_param;
 	spell = spell_param;
-	if (!spell->target ||  !apply_action_cost(data, spell))
+	if (!spell->target || !apply_action_cost(data, spell))
 		return ;
 	show_info(data, "%s cast Healing word", spell->caster->sheet.name);
 	heal_entity(data, spell->target, spell->nb);
@@ -63,7 +63,7 @@ void	fire_bolt(void *data_param, void *spell_param)
 
 	data = data_param;
 	spell = spell_param;
-	if (!spell->target ||  !apply_action_cost(data, spell))
+	if (!spell->target || !apply_action_cost(data, spell))
 		return ;
 	show_info(data, "%s cast Fire bolt", spell->caster->sheet.name);
 	atk = roll_atk(data, spell, spell->caster->sheet.spell_bonus);
@@ -73,7 +73,7 @@ void	fire_bolt(void *data_param, void *spell_param)
 
 void	init_fire_bolt_button(t_data *data, t_button *button)
 {
-	button->spellinfo.range = 5;
+	button->spellinfo.range = 6.5;
 	button->spellinfo.visible_target = true;
 	button->spellinfo.effect = fire_bolt;
 	button->spellinfo.type = offensive;

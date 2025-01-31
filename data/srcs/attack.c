@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 05:02:33 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/29 12:10:42 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:14:30 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	atk(void *data_param, void *spell_param)
 	if (spell->caster->sheet.properties & enraged)
 		spell->nb += class_bonus_dmg(spell->caster);
 	atk = roll_atk(data, spell, spell->caster->sheet.atk_bonus
-		+ modif(spell->caster->sheet.stats[spell->stat]));
+			+ modif(spell->caster->sheet.stats[spell->stat]));
 	atk_dmg(data, spell, atk, rand_res);
 	if (atk >= spell->target->sheet.ac)
 		check_infused_hit(data, spell);

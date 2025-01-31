@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 20:26:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 15:10:12 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:27:30 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,65 +103,3 @@ void	draw_entity(t_data *data, t_entity *entity)
 	}
 	draw_entity_dialog(data, entity);
 }
-
-void	draw_closest(t_data *data, t_list **entities_lst,
-	t_fog **fog_lst, float diff)
-{
-	t_entity	*current_entity;
-
-	current_entity = NULL;
-	if (*entities_lst)
-		current_entity = (*entities_lst)->content;
-	if (*fog_lst && (!current_entity
-		|| (*fog_lst)->length >= current_entity->distance))
-	{
-		draw_fog(data, diff, *fog_lst);
-		*fog_lst = (*fog_lst)->next;
-	}
-	else if (current_entity)
-	{
-		if (current_entity->nb_impact)
-			draw_entity(data, current_entity);
-		current_entity->nb_impact = 0;
-		*entities_lst = (*entities_lst)->next;
-	}
-}
-
-void	draw_entities_fog(t_data *data, float diff)
-{
-	t_list		*entities_lst;
-	t_fog		*fog_lst;
-
-	entities_lst = data->player.visible_entities;
-	fog_lst = data->player.visible_fog;
-	while (entities_lst || fog_lst)
-	{
-		while (entities_lst && !entities_lst->content)
-			entities_lst = entities_lst->next;
-		draw_closest(data, &entities_lst, &fog_lst, diff);
-	}
-	free_visible_lst(data);
-}
-
-// void	draw_entities(t_data *data)
-// {
-// 	t_list		*i;
-// 	t_entity	*entity;
-// 	t_list		*to_free;
-
-// 	i = data->player.visible_entities;
-// 	while (i)
-// 	{
-// 		entity = i->content;
-// 		if (entity && entity->nb_impact)
-// 		{
-// 			draw_entity(data, entity);
-// 			entity->nb_impact = 0;
-// 		}
-// 		to_free = i;
-// 		i = i->next;
-// 		free(to_free);
-// 		data->player.visible_entities = i;
-// 	}
-// 	data->player.visible_entities = NULL;
-// }

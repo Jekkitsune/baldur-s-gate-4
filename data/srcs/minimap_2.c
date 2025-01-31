@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 00:44:16 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/17 00:45:05 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 12:32:12 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	create_chunk_tab(t_minimap *minimap)
 {
 	int	i;	
 
-	minimap->chunk_size = (minimap->UI_size / minimap->fig_size) + 2;
+	minimap->chunk_size = (minimap->ui_size / minimap->fig_size) + 2;
 	minimap->chunk_size += (minimap->chunk_size % 2 == 0);
 	i = 0;
 	minimap->chunk = ft_calloc(sizeof(char *), minimap->chunk_size);

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 11:00:04 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/29 12:11:28 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:17:26 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ void	sneak_atk(void *data_param, void *spell_param)
 	spell = spell_param;
 	if (!spell->target || !spell->target->sheet.alive
 		|| (advantage(data, spell->caster, spell->target) < 1
-		&& !is_menaced(data, spell->target, spell->caster))
+			&& !is_menaced(data, spell->target, spell->caster))
 		|| !apply_action_cost(data, spell))
 		return ;
 	rand_res = roll(spell->dice);
 	spell->nb = rand_res + modif(spell->caster->sheet.stats[DEX]);
 	atk = roll_atk(data, spell, spell->caster->sheet.atk_bonus
-		+ modif(spell->caster->sheet.stats[DEX]));
+			+ modif(spell->caster->sheet.stats[DEX]));
 	show_info(data, "%s use sneak attack!", spell->caster->sheet.name);
 	atk_dmg(data, spell, atk, rand_res);
 }

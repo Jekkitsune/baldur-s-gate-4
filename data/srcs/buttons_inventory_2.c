@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 23:40:23 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 11:57:08 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 21:42:57 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	set_button_inventory(t_button *button, t_entity *item)
 	}
 	button->spellinfo.cost_attack = 1;
 	button->spellinfo.range = ft_max(button->spellinfo.caster->sheet.stats[STR]
-		/ 2, 1);
+			/ 2, 1);
 	button->spellinfo.summon = item;
 	button->spellinfo.effect = throw;
 }

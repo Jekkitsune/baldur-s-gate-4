@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 20:08:50 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 19:00:49 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 06:22:24 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	join_ally_fight(void *data, t_entity *target, t_entity *caster,
 	__attribute__((unused)) int nb)
 {
 	if (target && !target->sheet.in_fight && caster && target->sheet.team
-		== caster->sheet.team)
+		== caster->sheet.team && !in_party(data, target))
 		enter_combat(data, target);
 }
 

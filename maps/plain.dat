@@ -1,0 +1,20 @@
+CELL:POS:30,28:TEX:textures/env/house_door.png:TRAVEL:maps/start_village.cub
+CELL:POS:30,4:TEX:textures/env/house_door.png:TRAVEL:maps/arena.cub
+CELL:POS:75,14:TEX:textures/env/dungeon_wall.png:TRAVEL:maps/dungeon.cub:KEY:dungeon key
+FLOOR:textures/env/plain_floor.png
+ENTITY:PREFAB:tree:POS:11,7
+ENTITY:PREFAB:tree:POS:64,10
+ENTITY:PREFAB:tree:POS:10,20
+ENTITY:PREFAB:tree:POS:30,15
+ENTITY:PREFAB:tree:POS:70,17
+ENTITY:PREFAB:tree:POS:55,8
+ENTITY:PREFAB:gobelin:POS:23,7:NAME:Gobelin:BEHAVIOR:base_aggro:TEAM:1:EXP:15:INVENTORY:gold,10,bow+1
+ENTITY:PREFAB:gobelin:POS:25,7:NAME:Gobelin:BEHAVIOR:base_aggro:TEAM:1:EXP:15:INVENTORY:gold,10,health potion
+ENTITY:PREFAB:gobelin:POS:25,9:NAME:Gobelin:BEHAVIOR:base_aggro:TEAM:1:EXP:15:INVENTORY:gold,10
+ENTITY:PREFAB:gobelin:POS:60,8:NAME:Gobelin:BEHAVIOR:base_aggro:TEAM:1:EXP:15:INVENTORY:gold,10
+ENTITY:PREFAB:gobelin:POS:62,8:NAME:Gobelin:BEHAVIOR:base_aggro:TEAM:1:EXP:15:INVENTORY:gold,10,health potion
+ENTITY:PREFAB:gobelin:POS:62,10:NAME:Gobelin:BEHAVIOR:base_aggro:TEAM:1:EXP:15:INVENTORY:gold,10
+ENTITY:PREFAB:gobelin:POS:70,21:NAME:Gobelin:BEHAVIOR:base_aggro:TEAM:1:EXP:15:INVENTORY:gold,10
+ENTITY:PREFAB:gobelin:POS:72,21:NAME:Gobelin:BEHAVIOR:base_aggro:TEAM:1:EXP:15:INVENTORY:gold,10,speed potion
+ENTITY:PREFAB:gobelin:POS:72,23:NAME:Gobelin:BEHAVIOR:base_aggro:TEAM:1:EXP:15:INVENTORY:gold,10,sword+1
+ENTITY:PREFAB:bracers of defense:POS:73,25

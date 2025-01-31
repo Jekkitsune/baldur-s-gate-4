@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmassoni <gmassoni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 05:50:48 by gmassoni         ###   ########.fr       */
+/*   Updated: 2025/01/31 03:17:51 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,7 @@ int	key_up_manager(int key, void *param)
 		cycle_entity_cell(data, +1);
 	if (key == 44)
 	{
-		level_up_party(data);
 		long_rest(data, data->player.possession);
-		//printf("nb attack:%d\n", data->player.possession->sheet.nb_attack);
 	}
 	return (0);
 }

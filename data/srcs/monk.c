@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:14:02 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 19:10:14 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:18:24 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	atk(void *data_param, void *spell_param);
 void	properties_atk(t_data *data, t_button *button, t_entity *entity,
-	t_entity *weapon);
+			t_entity *weapon);
 
 void	healing_hands(void *data_param, void *spell_param)
 {
@@ -52,7 +52,7 @@ void	init_healing_hands_button(t_data *data, t_button *button)
 	if (button->user->sheet.class)
 		copy_dice(button->spellinfo.dice,
 			button->user->sheet.class->level[ft_min(button->user->sheet.level
-			- 1, MAX_LEVEL - 1)].current_bonus_dice);
+				- 1, MAX_LEVEL - 1)].current_bonus_dice);
 	if (button->user->sheet.properties & healing_hand_plus)
 		button->spellinfo.dice[D1] += button->user->sheet.pb;
 }
@@ -76,7 +76,7 @@ void	init_bonus_punch_button(t_data *data, t_button *button)
 	if (button->user->sheet.class)
 		copy_dice(button->spellinfo.dice,
 			button->user->sheet.class->level[ft_min(button->user->sheet.level
-			- 1, MAX_LEVEL - 1)].current_bonus_dice);
+				- 1, MAX_LEVEL - 1)].current_bonus_dice);
 	properties_atk(data, button, button->user, NULL);
 }
 
@@ -86,5 +86,5 @@ void	init_monk_punch(t_button *button, t_entity *entity)
 	if (entity->sheet.class)
 		copy_dice(button->spellinfo.dice,
 			entity->sheet.class->level[ft_min(entity->sheet.level - 1,
-			MAX_LEVEL - 1)].current_bonus_dice);
+				MAX_LEVEL - 1)].current_bonus_dice);
 }

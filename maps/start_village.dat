@@ -1,0 +1,16 @@
+FLOOR:textures/env/village_floor.png
+CELL:POS:4,4,9,8:FLOOR:textures/env/house_floor.png:TEX:textures/env/house_wall.png:UPPER WALL:textures/env/house_wall.png:CEILING:textures/env/house_ceiling.png
+CELL:POS:4,12,11,19:FLOOR:textures/env/house_floor.png:TEX:textures/env/house_wall.png:UPPER WALL:textures/env/house_wall.png:CEILING:textures/env/house_ceiling.png
+CELL:POS:21,4,25,8:FLOOR:textures/env/house_floor.png:TEX:textures/env/house_wall.png:UPPER WALL:textures/env/house_wall.png:CEILING:textures/env/house_ceiling.png
+CELL:POS:14,12,26,19:FLOOR:textures/env/house_floor.png:TEX:textures/env/house_wall.png:UPPER WALL:textures/env/house_wall.png:CEILING:textures/env/house_ceiling.png
+CELL:POS:6,8:TEX:textures/env/house_door.png
+CELL:POS:7,12:TEX:textures/env/house_door.png
+CELL:POS:21,6:TEX:textures/env/house_door.png
+CELL:POS:18,12:TEX:textures/env/house_door.png
+CELL:POS:14,17:TEX:textures/env/house_door.png
+CELL:POS:26,17:TEX:textures/env/house_door.png
+ENTITY:PREFAB:amogus:POS:24,5:NAME:amogus:BEHAVIOR:base_aggro:DIALOG:I am a sad amogus.\Why ? Well, let's say it's the fault of the....\impostor\sus\This guy litterally killed every single member of my crew on the starship\He litteraly vented right before my eyes but nobody believed me...\And now we all pay the price\Now, leave me be in my sorrow.
+ENTITY:PREFAB:giver:POS:20,17:NAME:The quest giver:BEHAVIOR:become_merchant:DIALOG:Hello there\This is not a Star Wars reference but in fact a quest that I'm giving to you\The quest is very simple\There is a dungeon (Like dungeon and dragons(this game is based on this so pls check it out)) in the North of this village (let's assume this is baldur's gate)\In this dungeon lives a very cruel and powerful wizard that frightens the nearby population\Could you please take care of this evil man and bring back the balance in the force\Only YOU can do it as you are the chosen\And yes this time, it is a Star Wars reference\Now, go and find the man, but warn !\It's dangerous to go alone, there are a lot of goblins in this area\In fact, their king is settled in the very north of the plain (yes, there only one plain)\Are you strong enough to brave this challenge?\Will you prove worthy of this noble task?\Only the future will tell us...\I wish you a merry christmas\just kidding\I wish you the best of lucks to overcome this challenge and become the elden lord\Oh, and, warn the people that you think to be your friends
+ENTITY:PREFAB:merchant:POS:7,5:NAME:The merchant:BEHAVIOR:base_aggro:DIALOG:Wanna buy something?\I gotcha!:PROPERTIES:shop_keeper:INVENTORY:sword+1,staff+1,dagger+1,armor+1,bow+1,healing potion,healing potion,healing potion,speed potion:LVL:5
+CELL:POS:14,0:TEX:textures/env/house_door.png:TRAVEL:maps/plain.cub
+ENTITY:PREFAB:tavern:POS:22,17:NAME:30 GOLD for long rest

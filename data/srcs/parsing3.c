@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 21:09:45 by gmassoni          #+#    #+#             */
-/*   Updated: 2025/01/24 12:31:53 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 01:59:12 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,6 @@ bool	check_map(t_data *data, char **map, t_map *level)
 	int	i;
 	int	j;
 
-	i = -1;
-	while (map[++i])
-		if (!ft_strlen(map[i]))
-			return (false);
 	i = -1;
 	while (map[++i])
 	{

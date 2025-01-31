@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 18:44:42 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 11:21:21 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:25:58 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	update_data_time(t_data *data)
 {
-	struct timeval	new_time;
+	struct timeval			new_time;
+	static int				fps = 0;
+	static unsigned long	count = 0;
 
 	gettimeofday(&new_time, NULL);
-	data->frame_time = ((new_time.tv_sec - data->current_time.tv_sec)
-		* 1000000) + new_time.tv_usec - data->current_time.tv_usec;
-	static int fps = 0;
-	static unsigned long count = 0;
+	data->frame_time = ((new_time.tv_sec - data->current_time.tv_sec) \
+	* 1000000) + new_time.tv_usec - data->current_time.tv_usec;
 	if (new_time.tv_sec != data->current_time.tv_sec)
 	{
 		data->player.speed = (double) 1 / ((double)fps / (double) FPS_CAP);
@@ -57,10 +57,6 @@ int	loop(void *param)
 	return (0);
 }
 
-void	init_test(t_data *data)
-{
-}
-
 int	main(int argc, char **argv)
 {
 	t_data	data;
@@ -71,7 +67,6 @@ int	main(int argc, char **argv)
 	if (!check_textures(data.wall_tex))
 		exit_free(&data, "Cannot create texture");
 	init_game(&data);
-	init_test(&data);
 	init_mlx_events(&data);
 	mlx_loop_hook(data.mlx, loop, &data);
 	mlx_loop(data.mlx);

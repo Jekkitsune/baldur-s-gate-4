@@ -1,0 +1,19 @@
+FLOOR:textures/env/dungeon_floor.png
+CELL:POS:0,9:TEX:textures/env/dungeon_wall.png:TRAVEL:maps/plain.cub
+CELL:POS:0,0,51,24:CEILING:textures/env/dungeon_ceiling.png
+CELL:POS:25,17:KEY:boss key:TEX:textures/env/house_door.png
+ENTITY:PREFAB:merchant:POS:10,3:NAME:The merchant:BEHAVIOR:base_aggro:DIALOG:Wanna buy something?\I gotcha!:PROPERTIES:shop_keeper:INVENTORY:sword+3,staff+3,dagger+3,bow+3,healing potion,greater healing potion,speed potion,speed potion,greater healing potion,enlarge potion,enlarge potion,healing potion:LVL:5
+ENTITY:PREFAB:amogus:NAME:yroussea:POS:8,4:BEHAVIOR:base_aggro:DIALOG:Je connais des nombres\Je connais tous les nombres:INVENTORY:cloth of wisdom,dexterity gloves,gigantic helm,helm of intellect,strength gloves,stylish hat:PROPERTIES:shop_keeper
+ENTITY:PREFAB:armor+3:POS:28,5
+ENTITY:PREFAB:gobelin ranger:POS:30,2:NAME:Gobelin ranger:BEHAVIOR:base_aggro:TEAM:1:EXP:45:INVENTORY:gold,50,greater health potion,bow+3,armor+2:LVL:4:PROPERTIES:evil
+ENTITY:PREFAB:gobelin rogue:POS:31,3:NAME:Gobelin rogue:BEHAVIOR:base_aggro:TEAM:1:EXP:45:INVENTORY:gold,50,greater health potion,dagger+3,armor+2:LVL:4:PROPERTIES:evil
+ENTITY:PREFAB:gobelin barbarian:POS:33,3:NAME:Gobelin barbarian:BEHAVIOR:base_aggro:TEAM:1:EXP:45:INVENTORY:gold,50,greater health potion,sword+3,armor+2:LVL:4:PROPERTIES:evil
+ENTITY:PREFAB:gobelin wizard:POS:34,4:NAME:Gobelin wizard:BEHAVIOR:base_aggro:TEAM:1:EXP:45:INVENTORY:gold,50,greater health potion,staff+3,armor+2:LVL:4:PROPERTIES:evil
+ENTITY:PREFAB:gobelin warlock:POS:36,5:NAME:Gobelin warlock:BEHAVIOR:base_aggro:TEAM:1:EXP:45:INVENTORY:gold,50,greater health potion,bow+3,armor+2:LVL:4:PROPERTIES:evil
+ENTITY:PREFAB:wizard:POS:1,20:NAME:Evil wizard:BEHAVIOR:base_aggro:TEAM:1:EXP:100:INVENTORY:gold,50,enlarge potion,staff+1:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:warlock:POS:2,20:NAME:Evil warlock:BEHAVIOR:base_aggro:TEAM:1:EXP:100:INVENTORY:gold,50,speed potion,healing potion,staff+1:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:barbarian:POS:3,20:NAME:Evil barbarian:BEHAVIOR:base_aggro:TEAM:1:EXP:100:INVENTORY:gold,50,greater healing potion,sword+1:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:monk:POS:4,20:NAME:Evil monk:BEHAVIOR:base_aggro:TEAM:1:EXP:100:INVENTORY:gold,50,healing potion,boss key:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:ranger:POS:5,20:NAME:Evil ranger:BEHAVIOR:base_aggro:TEAM:1:EXP:100:INVENTORY:gold,50,greater healing potion,bow+1:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:rogue:POS:6,20:NAME:Evil rogue:BEHAVIOR:base_aggro:TEAM:1:EXP:100:INVENTORY:gold,50,healing potion,boss key,dagger+1:LVL:3:PROPERTIES:evil
+ENTITY:PREFAB:boss:POS:39,17:NAME:The evil and mysterious wizard:BEHAVIOR:base_aggro:TEAM:1:EXP:100000:LVL:5

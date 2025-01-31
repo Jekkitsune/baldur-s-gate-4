@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 13:53:37 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 22:28:43 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:38:42 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	darkness_zone(t_data *data, t_spellinfo *spell, t_cell *cell)
 	t_timer_property	*time_prop;
 
 	time_prop = new_timer_property(blinded | invisible, NULL,
-		spell->caster, cell);
+			spell->caster, cell);
 	if (time_prop)
 		time_prop->color = 0x99000000;
 	time_prop->id_concentration = spell->concentration;

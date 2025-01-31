@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 00:55:19 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 11:37:03 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 21:46:00 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	draw_inventory_img(t_data *data, t_entity *entity, t_vector start);
 void	show_price(t_data *data, int price, t_vector pos);
 void	draw_gold_button(t_data *data, t_vector inventory_start);
+void	draw_description(t_data *data, t_entity *inventory[INVENTORY_SIZE],
+			int index, t_vector pos);
 
 void	draw_equip(t_data *data, t_entity *inventory[INVENTORY_SIZE],
 	t_vector start, int hover_index)
@@ -89,15 +91,7 @@ void	draw_invbutton_name(t_data *data, t_entity *inventory[INVENTORY_SIZE],
 	to_put->bg = 0x99000000;
 	to_put->left = true;
 	screen_string_put(data, to_put, 0);
-	if (data->player.description_mode && inventory[index]->sheet.description)
-	{
-		pos.y -= 10;
-		to_put = strput(ft_strdup(inventory[index]->sheet.description),
-				pos, 20, 0xFFFFFFFF);
-		to_put->bg = 0x99000000;
-		to_put->left = true;
-		screen_string_put(data, to_put, 0);
-	}
+	draw_description(data, inventory, index, pos);
 	pos.y -= 10;
 	if (data->player.shop_mode)
 		show_price(data, inventory[index]->sheet.price, pos);

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 00:24:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 18:40:48 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:34:17 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	round_refresh_stat(t_entity *entity)
 	entity->sheet.reaction = 1;
 	entity->sheet.walked = entity->sheet.speed;
 	if (entity->sheet.properties & (banished | paralyzed | hypnotized
-		| stunned))
+			| stunned))
 	{
 		entity->sheet.walked = 0;
 		entity->sheet.action = 0;

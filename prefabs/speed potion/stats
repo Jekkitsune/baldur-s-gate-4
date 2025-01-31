@@ -2,3 +2,4 @@ TYPE:consumable
 ACTION:Speed potion
 SIZE:0.3
 DESCRIPTION:Grant haste effect to target for 3 turns, in this state, regains 2 actions per turn
+PRICE:25

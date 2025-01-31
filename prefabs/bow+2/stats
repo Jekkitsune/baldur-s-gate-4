@@ -1,8 +1,9 @@
 TYPE:weapon_1
-RANGE:5.5
+RANGE:7.0
 DESCRIPTION:One of the finest bows ever made, +2 ATK +2 DMG
 ATK BONUS:2
 DICE:8:1
 DICE:1:2
 PROPERTIES:range
 SIZE:0.3
+PRICE:25

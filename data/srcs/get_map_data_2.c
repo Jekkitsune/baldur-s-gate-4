@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 02:45:59 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/29 19:04:34 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 23:32:23 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*map_param(char **splited, char *name);
 t_bool	add_to_inventory(t_data *data, t_entity *taker, t_entity *taken,
-		t_bool no_equip);
+			t_bool no_equip);
 void	add_entity_map_behavior(t_data *data, t_entity *entity, char **splited);
 
 void	set_entity_map_properties(t_data *data, t_entity *entity, char *prop)
@@ -50,7 +50,7 @@ void	set_entity_map_inventory(t_data *data, t_entity *entity, char *inv)
 	while (splited[i])
 	{
 		item = spawn_entity(data, get_prefab(data, splited[i]), entity->pos,
-			ft_strdup(splited[i]));
+				ft_strdup(splited[i]));
 		if (item && item->sheet.type == gold && splited[i + 1])
 			item->sheet.price = ft_atoi(splited[++i]);
 		add_to_inventory(data, entity, item, no_equip);
@@ -69,6 +69,9 @@ void	set_team(t_entity *entity, char **splited)
 		entity->sheet.default_team = ft_atoi(current);
 		entity->sheet.team = entity->sheet.default_team;
 	}
+	current = map_param(splited, "EXP");
+	if (current)
+		entity->sheet.exp = ft_atoi(current);
 }
 
 t_entity	*set_entity_map_data(t_data *data, char **splited, t_entity *prefab,
@@ -115,9 +118,10 @@ void	set_entity_map(t_data *data, char **splited)
 	if (!tmp_splited)
 		return ;
 	pos.x = ft_atoi(tmp_splited[0]);
-	pos.y = ft_atoi(tmp_splited[1]);
+	if (tmp_splited[0])
+		pos.y = ft_atoi(tmp_splited[1]);
 	ft_free_tab(tmp_splited);
-	if (!in_bound(data->current_map, pos))
+	if (!in_bound(data->current_map, pos) || pos.x == 0)
 		return ;
 	prefab = get_prefab(data, map_param(splited, "PREFAB"));
 	if (!prefab)

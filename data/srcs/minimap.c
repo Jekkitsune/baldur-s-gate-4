@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 21:33:33 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/17 00:55:46 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 12:32:14 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	draw_figs_loop(t_data *data, t_vector offset, t_vector pos, int color)
 		while (++i.x < data->minimap.fig_size)
 		{
 			if ((pos.x + i.x + offset.x >= 0)
-				&& (pos.x + i.x + offset.x < data->minimap.UI_size)
+				&& (pos.x + i.x + offset.x < data->minimap.ui_size)
 				&& (pos.y + i.y + offset.y >= 0)
-				&& (pos.y + i.y + offset.y < data->minimap.UI_size))
+				&& (pos.y + i.y + offset.y < data->minimap.ui_size))
 			{
 				if (i.x == 0 || i.x == data->minimap.fig_size - 1 || i.y == 0
 					|| i.y == data->minimap.fig_size - 1)
@@ -52,10 +52,10 @@ void	draw_figs(t_data *data, t_vector fig)
 	pos.x = fig.x * data->minimap.fig_size;
 	pos.y = fig.y * data->minimap.fig_size;
 	offset.x = -((data->minimap.chunk_size * data->minimap.fig_size) / 2)
-		+ (data->minimap.UI_size / 2)
+		+ (data->minimap.ui_size / 2)
 		- (data->player.offset.x * (data->minimap.fig_size / data->scale) / 2);
 	offset.y = -((data->minimap.chunk_size * data->minimap.fig_size) / 2)
-		+ (data->minimap.UI_size / 2)
+		+ (data->minimap.ui_size / 2)
 		- (data->player.offset.y * (data->minimap.fig_size / data->scale) / 2);
 	if (data->minimap.chunk[fig.x][fig.y] == WALL)
 		color = 0xFF5D5D5E;
@@ -70,8 +70,8 @@ void	draw_player_vision(t_data *data)
 	t_vector	p_delta_posx;
 	int			i;
 
-	center_map = vec(data->minimap.UI_size / 2 \
-	+ data->minimap.pos.x, data->minimap.UI_size / 2 + data->minimap.pos.y);
+	center_map = vec(data->minimap.ui_size / 2 \
+	+ data->minimap.pos.x, data->minimap.ui_size / 2 + data->minimap.pos.y);
 	draw_square(data, center_map, linfo(0xFFb734eb, 4, data->check_shape[0]));
 	i = 0;
 	while (i < NB_RAYS)
@@ -106,9 +106,9 @@ void	show_minimap(t_data *data)
 	draw_player_vision(data);
 }
 
-int	create_minimap(t_data *data, int UI_size, int fig_size)
+int	create_minimap(t_data *data, int ui_size, int fig_size)
 {
-	data->minimap.UI_size = UI_size;
+	data->minimap.ui_size = ui_size;
 	data->minimap.fig_size = fig_size;
 	data->minimap.pos.x = 10;
 	data->minimap.pos.y = 10;

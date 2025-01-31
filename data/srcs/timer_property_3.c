@@ -6,14 +6,14 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 08:33:44 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 12:06:05 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:40:10 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 void	try_resist_spell(t_data *data, t_entity *entity, t_property prop,
-	int stat);
+			int stat);
 
 void	add_cell_property(t_data *data, t_timer_property *prop)
 {
@@ -116,7 +116,7 @@ void	start_turn_effect(t_data *data, t_entity *entity)
 		web_effect(data, entity);
 	try_resist_spell(data, entity, paralyzed, WIS);
 	if (entity->sheet.properties & (banished | paralyzed | hypnotized
-		| stunned))
+			| stunned))
 		next_turn(data);
 	if (entity->sheet.properties & haste)
 		entity->sheet.action++;

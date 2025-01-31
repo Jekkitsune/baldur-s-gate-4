@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 19:08:22 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 22:29:07 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 21:40:57 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	shadow_sword(void *data_param, void *spell_param)
 	spell = spell_param;
 	if (!apply_action_cost(data, spell))
 		return ;
-	time_prop = new_timer_property(shadow_sword_prop, spell->caster, NULL, NULL);
+	time_prop = new_timer_property(shadow_sword_prop, spell->caster, NULL,
+			NULL);
 	add_timer_property(data, time_prop, 5, true);
 	show_info(data, "%s cast Shadow sword!", spell->caster->sheet.name);
 }

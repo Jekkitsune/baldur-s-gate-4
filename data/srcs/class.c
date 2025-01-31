@@ -6,13 +6,13 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 04:46:54 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 15:21:25 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:37:18 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int		class_bonus_dmg(t_entity *entity)
+int	class_bonus_dmg(t_entity *entity)
 {
 	t_class	*class;
 	int		level;
@@ -21,7 +21,7 @@ int		class_bonus_dmg(t_entity *entity)
 	if (!class)
 		return (0);
 	level = ft_min(entity->sheet.level - 1, MAX_LEVEL - 1);
-	return(roll(class->level[level].current_bonus_dice));
+	return (roll(class->level[level].current_bonus_dice));
 }
 
 void	refresh_entity_class(t_entity *entity, int level)

@@ -6,14 +6,14 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/25 07:40:15 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/26 17:02:00 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:09:55 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 void	execute_action(t_data *data, t_spellinfo *spell);
-void	apply_cell(t_data *data, t_cell cell, t_spellinfo spell,
+void	apply_cell(t_data *data, t_cell cell, t_spellinfo spell, \
 		void (*effect)(void *data, t_entity *target, t_entity *caster, int nb));
 
 t_vector	throw_pos(t_data *data, t_vector pos)
@@ -49,7 +49,8 @@ void	man_throw(void *data_param, void *spell_param)
 void	man_throw_launch_pos(t_data *data, t_spellinfo spell, t_entity *entity)
 {
 	if (vec_cmp(data->player.arrow->pos, spell.target->pos)
-		|| !check_dist_obstacle(data, entity, spell.range, spell.visible_target))
+		|| !check_dist_obstacle(data, entity, spell.range,
+			spell.visible_target))
 		return ;
 	spell.pos = data->player.arrow->pos;
 	spell.pos_offset = data->player.offset;
@@ -77,8 +78,8 @@ void	man_throw_select(void *data_param, void *entity_param,
 		if (!spell.effect || !check_dist_obstacle(data, entity, spell.range,
 				spell.visible_target) || !confirm(data->player.active_button))
 			return ;
-		data->player.active_button->spellinfo.target =
-			cycle_entity_cell(data, 0);
+		data->player.active_button->spellinfo.target
+			= cycle_entity_cell(data, 0);
 		data->player.active_button->spellinfo.range = 5;
 		return ;
 	}

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 17:43:48 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/28 22:32:53 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 22:32:41 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_bool	check_action_cost(t_spellinfo *spell)
 	t_sheet		*sheet;
 
 	if (!spell->caster || (spell->can_be_silenced
-		&& spell->caster->sheet.properties & silenced))
+			&& spell->caster->sheet.properties & silenced))
 		return (false);
 	sheet = &spell->caster->sheet;
 	if (spell->cost_attack)
@@ -71,11 +71,9 @@ t_bool	confirm(t_button *pushed)
 	if (pushed && pushed == check)
 	{
 		check = NULL;
-		//printf("c'est bon\n\n");
 		return (true);
 	}
 	check = pushed;
-	//printf("attendons la prochaine\n\n");
 	return (false);
 }
 

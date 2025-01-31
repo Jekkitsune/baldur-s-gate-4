@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 20:59:32 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 21:07:45 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 02:52:58 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	show_check_stats(t_data *data, t_sheet *sheet, t_vector pos)
 	add_to_str(&info, stat_name_nb("CHA", sheet->stats[CHA]));
 	to_put = strput(info, pos, (float)data->button_scale_size
 			/ 1.5, 0xFFFFFFFF);
+	to_put->bg = 0xAA000000;
 	screen_string_put(data, to_put, 3);
 }
 
@@ -46,6 +47,7 @@ void	show_first_info(t_data *data, t_sheet *sheet, t_vector pos)
 	add_to_str(&info, stat_name_nb("carry", sheet->carry));
 	to_put = strput(info, pos, (float)data->button_scale_size
 			/ 1.5, 0xFFFFFFFF);
+	to_put->bg = 0xAA000000;
 	screen_string_put(data, to_put, 3);
 }
 
@@ -63,5 +65,6 @@ void	show_second_info(t_data *data, t_sheet *sheet,
 	add_to_str(&info, stat_name_nb("spell DC", sheet->spell_dc));
 	to_put = strput(info, pos, (float)data->button_scale_size
 			/ 1.5, 0xFFFFFFFF);
+	to_put->bg = 0xAA000000;
 	screen_string_put(data, to_put, 3);
 }

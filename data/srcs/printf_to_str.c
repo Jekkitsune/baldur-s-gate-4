@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 18:45:13 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/16 19:25:07 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 12:32:03 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,10 @@ void	put_screen_info(t_data *data, char *str)
 	if (i >= MAX_SCREEN_INFO)
 		i = replace_oldest(data->screen_info, &data->string_to_put);
 	pos.x = data->minimap.pos.x;
-	pos.y = data->minimap.pos.y * 2 + data->minimap.UI_size
-		+ (data->button_scale_size / 2 * i);
-	to_put = strput(str, pos, (float)data->button_scale_size / 2.0, 0xFF000000);
+	pos.y = data->minimap.pos.y * 2 + data->minimap.ui_size
+		+ (data->button_scale_size / 2 * i) + 10;
+	to_put = strput(str, pos, (float)data->button_scale_size / 2.0, 0xFFFFFFFF);
+	to_put->bg = 0xAA000000;
 	if (screen_string_put(data, to_put, 20))
 		data->screen_info[i] = to_put;
 }

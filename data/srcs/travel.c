@@ -6,14 +6,14 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 11:14:11 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/29 23:22:21 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 04:19:28 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 void	remove_cell_property_entity(t_data *data, t_entity *entity,
-		t_vector last_pos);
+			t_vector last_pos);
 
 t_vector	get_start_pos(t_map *new_map, t_map *last_map)
 {
@@ -34,6 +34,20 @@ t_vector	get_start_pos(t_map *new_map, t_map *last_map)
 	return (vec(-1, -1));
 }
 
+void	re_active_party(t_data *data)
+{
+	t_list		*lst;
+	t_entity	*current;
+
+	lst = data->round_manager.party;
+	while (lst)
+	{
+		current = lst->content;
+		add_active(data, current, current->sheet.wander_ia);
+		lst = lst->next;
+	}
+}
+
 void	change_party_map(t_data *data, t_map *new_map, t_vector pos)
 {
 	t_list		*lst;
@@ -46,9 +60,11 @@ void	change_party_map(t_data *data, t_map *new_map, t_vector pos)
 	while (lst)
 	{
 		current = lst->content;
+		break_concentration(data, current, 0);
 		destroy_active(data, current);
 		remove_cell_property_entity(data, current, current->pos);
-		cell_lst = ft_lstpop(&data->current_map->arr[current->pos.x][current->pos.y].entities, current);
+		cell_lst = ft_lstpop(&data->current_map->\
+		arr[current->pos.x][current->pos.y].entities, current);
 		cell_lst->next = NULL;
 		ft_lstadd_back(new_cell_lst, cell_lst);
 		current->pos = pos;
@@ -56,13 +72,7 @@ void	change_party_map(t_data *data, t_map *new_map, t_vector pos)
 		lst = lst->next;
 	}
 	data->current_map = new_map;
-	lst = data->round_manager.party;
-	while (lst)
-	{
-		current = lst->content;
-		add_active(data, current, current->sheet.wander_ia);
-		lst = lst->next;
-	}
+	re_active_party(data);
 }
 
 t_bool	travel(t_data *data, t_map *new_map)

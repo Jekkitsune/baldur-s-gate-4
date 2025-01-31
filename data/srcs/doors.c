@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 22:52:00 by gmassoni          #+#    #+#             */
-/*   Updated: 2025/01/24 11:45:36 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 12:55:12 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,25 @@ void	update_doors(t_data *data)
 	}
 }
 
+t_bool	has_key(t_data *data, t_entity *key)
+{
+	t_list		*lst;
+	t_entity	*current;
+
+	lst = data->round_manager.party;
+	if (!key)
+		return (true);
+	while (lst)
+	{
+		current = lst->content;
+		lst = lst->next;
+		if (current && get_inventory_name_i(current->sheet.inventory,
+				key->sheet.name) != -1)
+			return (true);
+	}
+	return (false);
+}
+
 void	open_door_pos(t_data *data, t_vector pos)
 {
 	t_cell	*cell;
@@ -54,6 +73,11 @@ void	open_door_pos(t_data *data, t_vector pos)
 	if (!in_bound(data->current_map, pos))
 		return ;
 	cell = &data->current_map->arr[pos.x][pos.y];
+	if (!has_key(data, cell->key))
+	{
+		show_info(data, "Door is locked, you need %s\n", cell->key->sheet.name);
+		return ;
+	}
 	if (cell->travel && travel(data, cell->travel))
 		return ;
 	if (cell->type == DOOR)

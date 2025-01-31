@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 21:09:45 by gmassoni          #+#    #+#             */
-/*   Updated: 2025/01/24 12:45:01 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/30 20:47:49 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,30 @@
 
 void	get_wall_tex(char **split, t_data *data)
 {
-	if (!ft_strcmp(split[0], "NO") && !data->wall_tex[0])
+	if (!ft_strcmp(split[0], "NO"))
+	{
+		if (data->wall_tex[0])
+			add_tex(data, data->wall_tex[0], ft_strdup("no"));
 		data->wall_tex[0] = path_to_tex(data, split[1]);
-	else if (!ft_strcmp(split[0], "SO") && !data->wall_tex[1])
+	}
+	else if (!ft_strcmp(split[0], "SO"))
+	{
+		if (data->wall_tex[1])
+			add_tex(data, data->wall_tex[1], ft_strdup("no"));
 		data->wall_tex[1] = path_to_tex(data, split[1]);
-	else if (!ft_strcmp(split[0], "WE") && !data->wall_tex[2])
+	}
+	else if (!ft_strcmp(split[0], "WE"))
+	{
+		if (data->wall_tex[2])
+			add_tex(data, data->wall_tex[2], ft_strdup("no"));
 		data->wall_tex[2] = path_to_tex(data, split[1]);
-	else if (!ft_strcmp(split[0], "EA") && !data->wall_tex[3])
+	}
+	else if (!ft_strcmp(split[0], "EA"))
+	{
+		if (data->wall_tex[3])
+			add_tex(data, data->wall_tex[3], ft_strdup("no"));
 		data->wall_tex[3] = path_to_tex(data, split[1]);
+	}
 }
 
 bool	process_line(t_data *data, char **split)

@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:21:26 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/30 13:43:32 by fparis           ###   ########.fr       */
+/*   Updated: 2025/01/31 13:48:02 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,16 @@
 # define INVENTORY_SIZE 20
 # define MAX_PARTIC_ICON 6
 
-# define NB_RAYS (1600)
+# define NB_RAYS 1600
 # define FOV 0.7
-# define WIDTH (1600)
-# define HEIGHT (900)
+# define WIDTH 1600
+# define HEIGHT 900
 # define HEIGHT_CAP 5000
 # define DEFAULT_FONT "font.ttf"
 
 # define HITBOX_VALUE 5.0
 
-# define MAX_SCREEN_INFO 10
+# define MAX_SCREEN_INFO 20
 
 # define FPS_CAP 60
 
@@ -78,7 +78,9 @@
 
 # define NB_DICE 8
 
-typedef int	t_dice[NB_DICE];
+typedef int					t_dice[8];
+typedef struct s_map		t_map;
+typedef struct s_entity		t_entity;
 
 //Properties
 
@@ -133,61 +135,10 @@ typedef enum e_property
 	master_hunter = 1ULL << 46,
 	marked_ac = 1ULL << 47,
 	haste = 1ULL << 48,
+	evil = 1ULL << 49,
 }	t_property;
 
-# define NB_PROPERTIES 49
-
-# define PROPERTIES_TAB ((char * const[NB_PROPERTIES]) { \
-    "finesse", \
-    "range", \
-    "restrained",  \
-	"melee",\
-	"heal_effect",\
-	"hit_effect",\
-	"shop_keeper",\
-	"unarmored_defense",\
-	"enraged",\
-	"reckless_atk",\
-	"giant_rage",\
-	"giant",\
-	"hellish_rebuke",\
-	"acid_puddle_prop",\
-	"blinded",\
-	"invisible",\
-	"true_sight",\
-	"agonizing_blast",\
-	"seasoned_spellcaster",\
-	"shadow_sword_prop",\
-	"hunger_of_hadar_prop",\
-	"difficult_terrain",\
-	"banished",\
-	"eldritch_lifesteal",\
-	"webbed",\
-	"paralyzed",\
-	"hypnotized",\
-	"dominated",\
-	"concentration_plus",\
-	"menaced_advantage",\
-	"crit_1",\
-	"crit_3",\
-	"spiritual_defense",\
-	"bare_hands_master",\
-	"dodge",\
-	"stunned",\
-	"healing_hand_plus",\
-	"master_archer",\
-	"hunter_marked",\
-	"acid",\
-	"infused_acid",\
-	"close_shooter",\
-	"infused_restrained",\
-	"silenced",\
-	"infused_silenced",\
-	"sharp_shooter",\
-	"master_hunter",\
-	"marked_ac",\
-	"haste",\
-})
+# define NB_PROPERTIES 50
 
 typedef struct s_vector
 {
@@ -208,10 +159,7 @@ typedef struct s_texture
 	char		*name;
 }	t_texture;
 
-typedef	struct s_map t_map;
-typedef struct s_entity t_entity;
-
-typedef	struct s_cell
+typedef struct s_cell
 {
 	char		type;
 	t_texture	*tex[4];
@@ -249,6 +197,7 @@ typedef enum e_type
 	consumable = 8,
 	gold = 9,
 	effect = 10,
+	tavern = 11,
 }	t_type;
 
 # define NON_EQUIP 6
@@ -294,7 +243,7 @@ typedef struct s_spellinfo
 typedef struct s_timer_effect
 {
 	t_spellinfo		spell;
-	long 			duration;
+	long			duration;
 	t_bool			in_round;
 }	t_timer_effect;
 
@@ -304,7 +253,7 @@ typedef struct s_timer_property
 	t_entity		*caster;
 	t_entity		*entity;
 	t_cell			*cell;
-	long 			duration;
+	long			duration;
 	t_bool			in_round;
 	int				id_concentration;
 	uint32_t		color;
@@ -327,7 +276,7 @@ typedef struct s_button
 # define MAX_LEVEL 5
 # define SPELL_MAX_LV 4
 
-typedef	struct s_level
+typedef struct s_level
 {
 	t_button	buttons[LEVEL_NB_BUTTON];
 	t_property	properties;
@@ -396,6 +345,7 @@ typedef struct s_sheet
 	t_list		*timer_concentration;
 	int			price;
 	int			concentration;
+	int			exp;
 }	t_sheet;
 
 typedef struct s_path
@@ -424,6 +374,7 @@ typedef struct s_round_manager
 	t_list	*party;
 	t_list	*participants;
 	int		party_lvl;
+	int		party_exp;
 }	t_round_manager;
 
 typedef struct s_floor
@@ -515,7 +466,6 @@ typedef struct s_fog
 	struct s_fog	*next;
 }	t_fog;
 
-
 typedef struct s_impact
 {
 	t_vector	wall_pos;
@@ -532,7 +482,7 @@ typedef struct s_impact
 	int			i;
 }	t_impact;
 
-typedef	struct s_map
+typedef struct s_map
 {
 	int			index;
 	t_vector	size;
@@ -574,7 +524,7 @@ typedef struct s_player
 
 typedef struct minimap
 {
-	int			UI_size;
+	int			ui_size;
 	int			fig_size;
 	t_vector	pos;
 	int			chunk_size;
@@ -582,19 +532,19 @@ typedef struct minimap
 	void		*img;
 }	t_minimap;
 
-typedef struct	s_strput
+typedef struct s_strput
 {
 	char		*str;
 	t_vector	pos;
 	uint32_t	color;
 	float		size;
-	long 		duration;
+	long		duration;
 	bool		centered;
 	bool		left;
 	uint32_t	bg;
 }	t_strput;
 
-typedef struct s_button_lst t_button_lst;
+typedef struct s_button_lst	t_button_lst;
 
 typedef struct s_data
 {
@@ -623,10 +573,10 @@ typedef struct s_data
 	t_list			*timer_effect;
 	t_strput		*screen_info[MAX_SCREEN_INFO];
 	t_list			*class_lst;
-	unsigned long 	frame_time;
-	struct timeval 	current_time;
+	unsigned long	frame_time;
+	struct timeval	current_time;
 	t_round_manager	round_manager;
-	char 			**properties_tab;
+	char			*properties_tab[NB_PROPERTIES];
 	t_button_lst	*button_lst;
 	t_bool			shown_other_inventory;
 	bool			ready;
@@ -639,19 +589,21 @@ typedef struct s_button_lst
 	struct s_button_lst	*next;
 }	t_button_lst;
 
-typedef	struct s_linfo
+typedef struct s_linfo
 {
 	int		color;
 	int		width;
 	int		(*check)(t_data *data, t_vector vec);
 }	t_linfo;
 
+typedef t_timer_property	t_tp;
+
 void		print_map(t_map *map);
 void		print_chunk(t_data *data);
 
 int			in_bound(t_map *map, t_vector vec);
 t_vector	vec_sum(t_vector vec1, t_vector vec2);
-int			create_minimap(t_data *data, int UI_size, int fig_size);
+int			create_minimap(t_data *data, int ui_size, int fig_size);
 void		update_chunk(t_data *data);
 void		show_minimap(t_data *data);
 int			key_up_manager(int key, void *param);
@@ -667,9 +619,11 @@ int			in_window(t_vector win_size, t_vector vec);
 void		get_all_rays(t_data *data);
 void		show_screen(t_data *data);
 t_data		*init_data(t_data *data);
-int			default_shape(__attribute__((unused)) t_data *data, __attribute__((unused)) t_vector vec);
+int			default_shape(__attribute__((unused)) t_data *data, \
+__attribute__((unused)) t_vector vec);
 int			in_minimap(t_data *data, t_vector vec);
-t_linfo		linfo(int color, int width, int (*check_shape)(t_data *data, t_vector vec));
+t_linfo		linfo(int color, int width, int (*check_shape)(t_data \
+*data, t_vector vec));
 void		draw_square(t_data *data, t_vector pos, t_linfo info);
 float		angle_add(float angle, float add);
 
@@ -689,7 +643,8 @@ void		show_tex(t_data *data, t_texture *tex, t_vector pos);
 t_texture	*resize(t_texture *tex, int new_size);
 //void		draw_wall(t_data *data, int x, t_vector pos, t_impact *ray);
 void		free_map(t_data *data, t_map *map);
-void		draw_thing(t_data *data, t_vector pos, t_vectorf offset, t_texture *tex);
+void		draw_thing(t_data *data, t_vector pos, t_vectorf offset, \
+t_texture *tex);
 void		ft_pixel_put(t_data *data, int y, int x, uint32_t color);
 void		draw_entities(t_data *data);
 t_entity	*create_entity(t_data *data, t_vector pos, t_texture *tex);
@@ -701,16 +656,19 @@ void		destroy_active(t_data *data, t_entity *entity);
 t_bool		check_activity(t_data *data, t_entity *entity);
 int			ft_inlst(t_list *lst, void *check);
 void		destroy_entity(t_data *data, t_entity *entity);
-t_entity	*add_active(t_data *data, t_entity *entity, void (*behavior)(void *, void *));
+t_entity	*add_active(t_data *data, t_entity *entity, void \
+(*behavior)(void *, void *));
 void		remove_active(t_data *data, t_entity *entity);
 void		update_all_active(t_data *data);
 int			mouse_wheel_manager(int key, void *param);
 void		possess(t_data *data, t_entity *entity);
 void		unpossess(t_data *data);
 void		possess_control(t_entity *entity, t_bool value);
-void		teleport_entity(t_data *data, t_entity *entity, t_vector pos, t_vectorf offset);
+void		teleport_entity(t_data *data, t_entity *entity, t_vector pos, \
+t_vectorf offset);
 float		get_angle_diff(float angle1, float angle2);
-t_entity	*set_entity_tex(t_entity *entity, t_texture *tex2, t_texture *tex3, t_texture *tex4);
+t_entity	*set_entity_tex(t_entity *entity, t_texture *tex2, t_texture *tex3, \
+t_texture *tex4);
 int			mouse_down_manager(int key, void *param);
 int			mouse_up_manager(int key, void *param);
 void		exit_free(t_data *data, char *error);
@@ -725,7 +683,8 @@ void		free_prefab_entity(t_data *data, t_entity *entity);
 int			get_anim_size(char *path);
 t_animation	*add_anim(t_animation **tab, t_animation *new, int *nb_anim);
 t_entity	*get_prefab_data(t_data *data, char *directory);
-t_entity	*spawn_entity(t_data *data, t_entity *prefab, t_vector pos, char *name);
+t_entity	*spawn_entity(t_data *data, t_entity *prefab, t_vector pos, \
+char *name);
 void		add_prefab(t_data *data, t_entity *prefab, char *name);
 void		draw_possession_button(t_data *data, t_button *buttons);
 void		check_button_click(t_data *data);
@@ -743,7 +702,8 @@ void		death(void *arg_data, void *arg_entity);
 float		get_dist(t_vector p1, t_vector p2);
 t_bool		has_obstacle(t_data *data, t_entity *from, t_entity *target);
 t_impact	get_simple_impact(t_vector start, t_vectorf direc, t_data *data);
-t_bool		check_dist_obstacle(t_data *data, t_entity *entity, float dist, t_bool visible_target);
+t_bool		check_dist_obstacle(t_data *data, t_entity *entity, float dist, \
+t_bool visible_target);
 void		damage(t_data *data, t_entity *entity, int dmg);
 void		add_tex(t_data *data, t_texture *tex, char *name);
 void		show_health_bar(t_data *data);
@@ -762,30 +722,35 @@ void		copy_dice(t_dice to_set, t_dice copy);
 t_bool		check_properties(t_property properties, t_property check);
 
 t_entity	*cycle_entity_cell(t_data *data, int move);
-void		inventory_swap(t_data *data, t_entity *entity, int index1, int index2);
+void		inventory_swap(t_data *data, t_entity *entity, int index1, \
+int index2);
 void		free_path(t_path **path);
 void		print_path(t_path *path);
-t_path		*get_path(t_data *data, t_vector start, t_vector goal, t_bool closest);
+t_path		*get_path(t_data *data, t_vector start, t_vector goal, \
+t_bool closest);
 t_path		*pop_path(t_path **path);
 void		entity_moving_to(void *arg_data, void *arg_entity);
 void		move_to(t_data *data, t_entity *entity, t_vector pos);
-void		change_anim_next(t_entity *entity, char *anim1, char *anim2, t_bool loop);
+void		change_anim_next(t_entity *entity, char *anim1, char *anim2, \
+t_bool loop);
 t_bool		is_empty_cell(t_data *data, t_vector pos);
 t_bool		is_ground(t_data *data, t_vector pos);
 
-void		add_timer_effect(t_data *data, t_spellinfo spell, float time, t_bool in_round);
+void		add_timer_effect(t_data *data, t_spellinfo spell, float time, \
+t_bool in_round);
 void		update_all_timer_effects(t_data *data, t_bool round);
 void		clear_entity_timer_effect(t_data *data, t_entity *entity);
 void		show_info(t_data *data, char *str, ...);
 void		add_to_str(char **res, char *str);
 
-t_timer_property	*new_timer_property(t_property property, t_entity *entity,
-	t_entity *caster, t_cell *cell);
-void				add_timer_property(t_data *data, t_timer_property *tproperty, float time, t_bool in_round);
-void				update_entity_properties(t_data *data, t_entity *entity, t_bool round);
-void				clear_entity_timer_prop(t_data *data, t_entity *entity);
-void				set_all_entity_timer_prop(t_data *data, t_entity *entity);
-
+t_tp		*new_timer_property(t_property property, t_entity *entity,
+				t_entity *caster, t_cell *cell);
+void		add_timer_property(t_data *data, t_timer_property *tproperty,
+				float time, t_bool in_round);
+void		update_entity_properties(t_data *data, t_entity *entity,
+				t_bool round);
+void		clear_entity_timer_prop(t_data *data, t_entity *entity);
+void		set_all_entity_timer_prop(t_data *data, t_entity *entity);
 
 void		update_doors(t_data *data);
 void		open_door(t_data *data);
@@ -800,7 +765,8 @@ void		refresh_stats(t_data *data, t_entity *entity);
 
 void		party_follow(t_data *data);
 void		draw_all_actions_box(t_data *data, t_entity *entity);
-void		draw_box_points(t_data *data, t_vector pos, int nb_point, uint32_t color);
+void		draw_box_points(t_data *data, t_vector pos, int nb_point,
+				uint32_t color);
 void		show_action_cost(t_data *data, t_spellinfo *info);
 t_bool		apply_action_cost(t_data *data, t_spellinfo *spell);
 void		round_refresh_stat(t_entity *entity);
@@ -829,13 +795,14 @@ void		check_click_end_turn(t_data *data, t_vector mouse);
 int			get_dice_average(t_dice dice);
 t_bool		check_action_cost(t_spellinfo *spell);
 void		move_closest_to(t_data *data, t_entity *entity, t_entity *target);
-t_bool		get_best_spell_pos(t_data *data, t_spellinfo *spell, t_entity *caster);
+t_bool		get_best_spell_pos(t_data *data, t_spellinfo *spell,
+				t_entity *caster);
 t_bool		has_obstacle_pos(t_data *data, t_vector from, t_vector to);
 t_entity	*get_closest_target(t_data *data, t_entity *entity);
 void		compare_buttons(t_data *data, t_button **current_best,
-			t_button *compare, t_entity *entity);
+				t_button *compare, t_entity *entity);
 t_button	*get_best_action(t_data *data, t_entity *entity, int min_range,
-			t_spelltype type);
+				t_spelltype type);
 void		init_textures(t_data *data);
 void		init_mlx_events(t_data *data);
 t_impact	*found_wall(t_impact *impact, t_vectorf length);
@@ -843,7 +810,7 @@ void		change_pos(t_data *data, t_vectorf *offset, float angle);
 void		change_pos_collide(t_data *data, t_vector pos, t_vectorf *offset,
 				float angle);
 void		draw_rectangle(t_data *data, t_vector start, t_vector end,
-			uint32_t color);
+				uint32_t color);
 void		leave_party(t_data *data, t_entity *entity);
 bool		prep_map(t_data *data, int fd, t_map *level);
 bool		format_test(char *name);
@@ -855,17 +822,20 @@ char		**get_map_infos(t_data *data, int fd, t_map *level);
 void		set_up_data(t_data *data, t_cell *cell, t_vector it, char **map);
 bool		special_atoi(char *str, int *res);
 void		get_hexa(char hexa[2], int value);
+void		init_one_prefab(t_data *data, char *path, char *name);
 void		draw_wall(t_data *data, int x, t_vector pos, t_impact *ray);
 void		show_floor(t_data *data);
 void		show_ceiling(t_data *data);
 void		skybox(t_data *data, t_skybox *s);
 void		free_button_lst(t_data *data);
 void		pop_free_property(t_data *data, t_timer_property *prop);
-void		break_concentration(t_data *data, t_entity *entity, int id_concentration);
+void		break_concentration(t_data *data, t_entity *entity,
+				int id_concentration);
 void		add_cell_property_entity(t_data *data, t_entity *entity);
 void		set_entity_dialog(t_entity *entity, char *str);
 t_button	*get_button_pointer(t_button *tab, char *name);
-void		draw_other_inventory(t_data *data, t_entity *inventory[INVENTORY_SIZE]);
+void		draw_other_inventory(t_data *data,
+				t_entity *inventory[INVENTORY_SIZE]);
 void		show_other_inventory(t_data *data);
 void		open_door_pos(t_data *data, t_vector pos);
 t_bool		in_party(t_data *data, t_entity *entity);
@@ -886,9 +856,10 @@ int			roll_atk(t_data *data, t_spellinfo *spell, int atk_bonus);
 void		atk_dmg(t_data *data, t_spellinfo *spell, int atk, int rand_res);
 char		*stat_to_str(int stat);
 t_bool		saving_throw(t_data *data, t_entity *entity, int stat, int dc);
-t_bool		remove_specific_prop(t_data *data, t_entity *entity, t_property property);
+t_bool		remove_specific_prop(t_data *data, t_entity *entity,
+				t_property property);
 void		zone_effect_cell(t_data *data, t_spellinfo *spel,
-	void (*ef)(t_data *data, t_spellinfo *spel, t_cell *cell));
+				void (*ef)(t_data *data, t_spellinfo *spel, t_cell *cell));
 void		start_turn_effect(t_data *data, t_entity *entity);
 void		sort_fog(t_data *data, t_impact *ray, float fog_length);
 void		draw_fog(t_data *data, float diff, t_fog *fog);
@@ -906,18 +877,35 @@ size_t		str_size(char *str, float size);
 void		draw_str_background(t_data *data);
 void		selection_screen(t_data *data);
 t_entity	*in_party_name(t_data *data, char *name);
+void		tavern_effect(t_data *data);
+void		give_item(t_data *data, t_entity *entity, char *item_name);
+void		debug_start(t_data *data);
+int			get_inventory_name_i(t_entity **inventory, char *name);
+int			get_inventory_item_i(t_entity *user, t_entity *used);
+void		draw_bg(t_data *data, int size, t_vector pos, uint32_t color);
+int			is_selected(t_data *data, char *class, t_vector pos, int size);
+void		draw_border(t_data *data, t_vector pos, int size, uint32_t color);
+void		chose_border(t_data *data, t_bool selected, int size, t_vector pos);
+void		init_prefabs(t_data *data);
 
 //ia
 void		base_aggro(void *data_param, void *entity_param);
 void		martial_ia(void *data_param, void *entity_param);
 void		projectile_ia(void *data_param, void *entity_param);
+void		become_merchant(void *data_param, void *entity_param);
+void		talk_join_party(void *data_param, void *entity_param);
+void		king_talk(void *data_param, void *entity_param);
 
 //spells
 void		init_button_lst(t_data *data);
-void		(*get_button(t_data *data, char *name))(t_data *data, t_button *button);
+void		(*get_button(t_data *data, char *name))(t_data *data,
+				t_button *button);
 
-void		action_select(void *data_param, void *entity_param, t_spellinfo spell);
-void		zone_effect(t_data *data, t_spellinfo spell, void (*effect)(void *data, t_entity *target, t_entity *caster, int nb));
+void		action_select(void *data_param, void *entity_param,
+				t_spellinfo spell);
+void		zone_effect(t_data *data, t_spellinfo spell,
+				void (*effect)(void *data, t_entity *target, t_entity *caster,
+					int nb));
 
 void		take(void *data_param, void *spell_param);
 void		talk(void *data_param, void *spell_param);
@@ -937,11 +925,12 @@ void		init_rage_button(t_data *data, t_button *button);
 void		init_reckless_button(t_data *data, t_button *button);
 void		init_man_throw_button(t_data *data, t_button *button);
 void		man_throw_select(void *data_param, void *entity_param,
-			t_spellinfo spell);
+				t_spellinfo spell);
 
 void		init_eldritch_blast_button(t_data *data, t_button *button);
 void		init_hellish_rebuke_button(t_data *data, t_button *button);
-void		hellish_rebuke_effect(t_data *data, t_entity *caster, t_entity *hitter);
+void		hellish_rebuke_effect(t_data *data, t_entity *caster,
+				t_entity *hitter);
 
 void		init_acid_puddle_button(t_data *data, t_button *button);
 void		acid_puddle_dmg(t_data *data, t_entity *entity);
@@ -968,7 +957,7 @@ void		web_effect(t_data *data, t_entity *entity);
 void		init_hold_person_button(t_data *data, t_button *button);
 
 void		init_trapdoor_button(t_data *data, t_button *button);
-	
+
 void		init_group_invi_button(t_data *data, t_button *button);
 
 void		init_hypnotic_button(t_data *data, t_button *button);
@@ -988,7 +977,7 @@ void		init_stunning_strike_button(t_data *data, t_button *button);
 
 void		init_hunter_mark_button(t_data *data, t_button *button);
 void		init_special_arrow_button(t_data *data, t_button *button,
-	t_property prop);
+				t_property prop);
 void		init_sharp_shooter_button(t_data *data, t_button *button);
 void		init_arrow_rain_button(t_data *data, t_button *button);
 
