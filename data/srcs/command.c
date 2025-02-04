@@ -6,7 +6,7 @@
 /*   By: fparis <fparis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:29:09 by fparis            #+#    #+#             */
-/*   Updated: 2025/01/31 03:17:51 by fparis           ###   ########.fr       */
+/*   Updated: 2025/02/04 17:24:59 by fparis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,5 @@ int	key_up_manager(int key, void *param)
 		cycle_entity_cell(data, -1);
 	else if (key == 27)
 		cycle_entity_cell(data, +1);
-	if (key == 44)
-	{
-		long_rest(data, data->player.possession);
-	}
 	return (0);
 }
